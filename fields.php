@@ -22,16 +22,24 @@ $db_person_terms0   = "terms0";
 $db_person_terms1   = "terms1";
 $db_person_terms2   = "terms2";
 
-$db_contrib_id      = "contrib_id";
-$db_contrib_type    = "contrib_id";
-$db_contrib_discr   = "contrib_id";
-$db_contrib_needs   = "contrib_id";
+$db_contrib_id      = "id";
+$db_contrib_type    = "type";
+$db_contrib_descr   = "description";
+$db_contrib_needs   = "needs";
 
-$db_raffle_code     = "raffle_code";
-$db_person          = "person_id";
+$db_raffle_code     = "code";
+$db_raffle_email    = "email";
 
-$db_buyer_person    = "person_id";
-$db_buyer_raffle    = "raffle_code";
-$db_buyer_id        = "buyer_id";
+$db_buyer_email     = "email";
+$db_buyer_raffle    = "code";
+$db_buyer_id        = "id";
+
+$db_fk_person_contrib0 = "fk_percontrib0";
+$db_fk_person_contrib1 = "fk_percontrib1";
+
+$db_fk_raffle_person = "fk_rafper";
+
+$db_fk_buyer_person = "fk_buyper";
+$db_fk_buyer_raffle = "fk_buyraf";
 
 ?>
