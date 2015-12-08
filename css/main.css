@@ -64,7 +64,7 @@ video {
 
 /*
  * Remove default fieldset styles.
- */
+*/
 
 fieldset {
     border: 0;
@@ -94,22 +94,55 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+body {
+    background-color:#ffffec;
+}
 
+.content {
 
+}
 
+.link {
 
+}
 
+.header {
+    width:100%;
+    text-align:center;
+}
 
+.footer {
+    text-align:center;
+    font-size:x-small;
+}
 
+.error {
+    color:#ff0000;
+}
 
+.user-form {
+    padding:20px;
+}
 
+.user-form fieldset {
+    padding:4px;
+    margin:1px;
+    background:#9dcdc6;
+}
 
+.user-form fieldset legend {
+    background:#9dcdc6;
+}
 
+.user-form fieldset label {
+    display:inline-block;
+    width:120px;
+    margin-left:5px;
+}
 
-
-
-
-
+.user-form fieldset input {
+    display:inline-block;
+}
 
 /* ==========================================================================
    Helper classes

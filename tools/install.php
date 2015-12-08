@@ -1,7 +1,9 @@
 <?php
 
-include $_SERVER['DOCUMENT_ROOT'].'/initialize.php';
-include $_SERVER['DOCUMENT_ROOT'].'/fields.php';
+#include $_SERVER['DOCUMENT_ROOT'].'/initialize.php';
+#include $_SERVER['DOCUMENT_ROOT'].'/fields.php';
+include '../initialize.php';
+include '../fields.php';
 
 try {
     $person_sql = sprintf("CREATE TABLE `%s` (

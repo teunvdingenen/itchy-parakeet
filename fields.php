@@ -14,8 +14,8 @@ $db_person_city     = "city";
 $db_person_gender   = "gender";
 $db_person_phone    = "phone";
 $db_person_visits   = "visits_count";
-$db_person_prev     = "previous_editions";
-$db_person_partner  = "partner_id";
+$db_person_prev     = "editions";
+$db_person_partner  = "partner";
 
 $db_person_contrib0 = "contrib0";
 $db_person_contrib1 = "contrib1";
