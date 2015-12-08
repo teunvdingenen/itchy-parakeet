@@ -6,6 +6,7 @@ $db_table_raffle    = "raffle";
 $db_table_buyer     = "buyer";
 
 $db_person_first    = "firstname";
+$db_person_insert   = "insertion";
 $db_person_last     = "lastname";
 $db_person_birth    = "birthdate";
 $db_person_email    = "email";
