@@ -65,28 +65,28 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         <li>
                             <span>
                                 <label for="firstname">Voornaam</label>
-                                <input class="field text" type="text" name="firstname" value="<?php echo $firstname;?>">
+                                <input class="field text verify" type="text" name="firstname" value="<?php echo $firstname;?>">
                             </span>
                             <span>
                                 <label for="lastname">Achternaam</label>
-                                <input class="field text" type="text" name="lastname" value="<?php echo $lastname;?>">
+                                <input class="field text verify" type="text" name="lastname" value="<?php echo $lastname;?>">
                             </span>
                         </li>
                         <li>
                             <span>
                                 <label for="city">Woonplaats</label>
-                                <input class="field text" type="text" id="city" name="city" value="<?php echo $city;?>">
+                                <input class="field text verify" type="text" id="city" name="city" value="<?php echo $city;?>">
                             </span>
                             <span>
                                 <label for="birthday">Geboortedatum</label>
                                 <span>
-                                    <input id="birthday" name="birthday" class="field text" size="2" maxlength="2" type="text" placeholder="DD">
+                                    <input id="birthday" name="birthday" class="field text number" size="2" maxlength="2" type="text" placeholder="DD">
                                 </span>
                                 <span>
-                                    <input id="birthmonth" name="birthmonth" class="field text" size="2" maxlength="2" type="text" placeholder="MM">
+                                    <input id="birthmonth" name="birthmonth" class="field text number" size="2" maxlength="2" type="text" placeholder="MM">
                                 </span>
                                 <span>
-                                    <input id="birthyear" name="birthyear" class="field text" size="4" maxlength="4" type="text" placeholder="YYYY">
+                                    <input id="birthyear" name="birthyear" class="field text number" size="4" maxlength="4" type="text" placeholder="YYYY">
                                 </span>
                             </span>
                             
@@ -108,11 +108,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         <li>
                             <span>
                                 <label for="email">E-mail</label>
-                                <input class="field text" type="text" name="email" value="<?php echo $email;?>">
+                                <input class="field text verify email" type="text" name="email" value="<?php echo $email;?>">
                             </span>
                             <span>
                                 <label for="phone">Telefoonnummer</label>
-                                <input class="field text" type="text" name="phone" value="<?php echo $phone;?>">
+                                <input class="field text phone" type="text" name="phone" value="<?php echo $phone;?>">
                             </span>
                         </li>
                     </ul>
@@ -150,7 +150,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     <legend>Jouw bijdrage aan het Familiar Forest Festival 2016</legend>
                     <ul>
                         <li>
-                            <span>
+                            <div>
                                 <label for="contrib0">Eerste keus</label>
                                 <select class="field select" name="contrib0" id="contrib0">
                                     <option value="ivbk">Interieur verzorging, bar of keuken</option>
@@ -158,13 +158,25 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                                     <option value="afb">Afbouw</option>
                                     <option value="ontw">Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                                 </select>
-                            </span>
+                            </div>
+                            <div class="terms" id="ivbk0desc">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat id turpis quis dignissim. Maecenas elementum scelerisque pharetra. Sed tincidunt tincidunt purus, quis molestie eros blandit non. Vestibulum consequat dolor a enim porttitor, a vehicula mauris imperdiet. Ut et lectus vestibulum, finibus dolor posuere, elementum purus. Suspendisse at ipsum dapibus, dapibus neque ut, cursus lacus. Ut tristique id orci id aliquam. Integer consectetur magna ac justo ornare, nec imperdiet ipsum accumsan. 
+                            </div>
+                            <div class="terms" id="act0desc">
+                                 Ut viverra pulvinar nisl, in dictum lacus. Aliquam non porta mauris, nec ornare mauris. Fusce metus neque, sodales id dictum vestibulum, vehicula non turpis. Nulla quis placerat enim. Morbi et lorem a dui pharetra interdum in vel nunc. In nec cursus lacus, eu egestas lorem. In elit felis, hendrerit quis enim non, sollicitudin tempus urna. Donec congue sollicitudin libero, non rutrum lorem fringilla vitae. Sed et tempus lectus. Nulla ac scelerisque leo. Sed fermentum facilisis sapien, vel suscipit odio porttitor tempus. Integer sit amet eros quis lorem interdum ullamcorper non quis nisi. Etiam aliquam massa nec magna volutpat, eget vehicula nibh laoreet. 
+                            </div>
+                            <div class="terms" id="afb0desc">
+                                In luctus nisi vitae risus gravida placerat. Etiam quis aliquam metus. Vestibulum sed mattis diam. Nullam sollicitudin vel felis eu imperdiet. Nunc at diam porttitor, aliquam lectus sed, ornare est. Cras et lectus id elit commodo lobortis. Morbi feugiat massa lacus, sit amet mattis lorem convallis nec. Cras vehicula lacus quis risus tempus sagittis. Donec consectetur turpis libero, vitae lobortis arcu pretium quis. Ut ac turpis a ante volutpat pulvinar tincidunt vel enim. Maecenas pretium et diam ac feugiat. Curabitur finibus quam eu sagittis molestie. Duis facilisis pretium mi ut elementum. Praesent volutpat lectus eu mollis ullamcorper. 
+                            </div>
+                            <div class="terms" id="ontw0desc">
+                                 Praesent quis lorem mollis, eleifend turpis gravida, interdum lacus. Vivamus ornare tellus turpis, id congue enim sagittis vel. Etiam dapibus, dui non posuere suscipit, nibh tellus tempor massa, id luctus velit lorem eu sapien. Integer suscipit ante non sapien sagittis luctus. Sed venenatis eros vel ante finibus, et vehicula quam varius. Etiam viverra venenatis dapibus. Nulla euismod nisi dolor, vitae varius libero facilisis non. Ut convallis augue in ultricies faucibus. Curabitur sed nunc quis nibh tincidunt semper.
+                            </div>
                         </li>
                         <li id="contrib0row">
                             <span>
                                 <label for="contrib0desc">Vertel iets over je ervaring hierin</label>
                                 <textarea class="textarea" name="contrib0desc" id="contrib0desc" cols="60" rows="4"><?php echo $contrib0desc; ?></textarea>
-                                <label id="contrib0counter" for="contrib0desc">Max 256 characters</label>
+                                <label id="contrib0counter" for="contrib0desc">Max 256 karakters</label>
                             </span>
                         </li>
                         <li id="act0row">
@@ -183,16 +195,16 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                             <div>
                                 <label for="act0desc">Omschrijving van je act</label>
                                 <textarea class="textarea" name="act0desc" id="act0desc" cols="60" rows="4"><?php echo $act0desc; ?></textarea>
-                                <label for="act0desc">Max 256 characters</label>
+                                <label for="act0desc">Max 256 karakters</label>
                             </div>
                             <div>
                                 <label for="act0need">Wat heb je voor je act nodig?</label>
                                 <textarea class="textarea" name="act0need" id="act1need" cols="60" rows="4"><?php echo $act0need; ?></textarea>
-                                <label for="act0need">Max 256 characters</label>
+                                <label for="act0need">Max 256 karakters</label>
                             </div>
                         </li>
                         <li>
-                            <span>
+                            <div>
                                 <label for="contrib1">Tweede keus</label>
                                 <select class="field select" name="contrib1" id="contrib1">
                                     <option value="ivbk">Interieur verzorging, bar of keuken</option>
@@ -200,13 +212,25 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                                     <option value="afb">Afbouw</option>
                                     <option value="ontw">Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                                 </select>
-                            </span>
+                            </div>
+                            <div class="terms" id="ivbk1desc">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat id turpis quis dignissim. Maecenas elementum scelerisque pharetra. Sed tincidunt tincidunt purus, quis molestie eros blandit non. Vestibulum consequat dolor a enim porttitor, a vehicula mauris imperdiet. Ut et lectus vestibulum, finibus dolor posuere, elementum purus. Suspendisse at ipsum dapibus, dapibus neque ut, cursus lacus. Ut tristique id orci id aliquam. Integer consectetur magna ac justo ornare, nec imperdiet ipsum accumsan. 
+                            </div>
+                            <div class="terms" id="act1desc">
+                                 Ut viverra pulvinar nisl, in dictum lacus. Aliquam non porta mauris, nec ornare mauris. Fusce metus neque, sodales id dictum vestibulum, vehicula non turpis. Nulla quis placerat enim. Morbi et lorem a dui pharetra interdum in vel nunc. In nec cursus lacus, eu egestas lorem. In elit felis, hendrerit quis enim non, sollicitudin tempus urna. Donec congue sollicitudin libero, non rutrum lorem fringilla vitae. Sed et tempus lectus. Nulla ac scelerisque leo. Sed fermentum facilisis sapien, vel suscipit odio porttitor tempus. Integer sit amet eros quis lorem interdum ullamcorper non quis nisi. Etiam aliquam massa nec magna volutpat, eget vehicula nibh laoreet. 
+                            </div>
+                            <div class="terms" id="afb1desc">
+                                In luctus nisi vitae risus gravida placerat. Etiam quis aliquam metus. Vestibulum sed mattis diam. Nullam sollicitudin vel felis eu imperdiet. Nunc at diam porttitor, aliquam lectus sed, ornare est. Cras et lectus id elit commodo lobortis. Morbi feugiat massa lacus, sit amet mattis lorem convallis nec. Cras vehicula lacus quis risus tempus sagittis. Donec consectetur turpis libero, vitae lobortis arcu pretium quis. Ut ac turpis a ante volutpat pulvinar tincidunt vel enim. Maecenas pretium et diam ac feugiat. Curabitur finibus quam eu sagittis molestie. Duis facilisis pretium mi ut elementum. Praesent volutpat lectus eu mollis ullamcorper. 
+                            </div>
+                            <div class="terms" id="ontw1desc">
+                                 Praesent quis lorem mollis, eleifend turpis gravida, interdum lacus. Vivamus ornare tellus turpis, id congue enim sagittis vel. Etiam dapibus, dui non posuere suscipit, nibh tellus tempor massa, id luctus velit lorem eu sapien. Integer suscipit ante non sapien sagittis luctus. Sed venenatis eros vel ante finibus, et vehicula quam varius. Etiam viverra venenatis dapibus. Nulla euismod nisi dolor, vitae varius libero facilisis non. Ut convallis augue in ultricies faucibus. Curabitur sed nunc quis nibh tincidunt semper.
+                            </div>
                         </li>
                         <li id="contrib1row">
                             <span>
                                 <label for="contrib1desc">Vertel iets over je ervaring hierin</label>
                                 <textarea class="textarea" name="contrib1desc" id="contrib1desc" cols="60" rows="4"><?php echo $contrib1desc; ?></textarea>
-                                <label for="contrib1desc">Max 256 characters</label>
+                                <label for="contrib1desc">Max 256 karakters</label>
                             </span>
                         </li>
                         <li id="act1row">
@@ -225,12 +249,12 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                             <div>
                                 <label for="act1desc">Omschrijving van je act</label>
                                 <textarea class="textarea" name="act1desc" id="act1desc" cols="60" rows="4"><?php echo $act1desc; ?></textarea>
-                                <label for="act1desc">Max 256 characters</label>
+                                <label for="act1desc">Max 256 karakters</label>
                             </div>
                             <div>
                                 <label for="act1need">Wat heb je voor je act nodig?</label>
                                 <textarea class="textarea" name="act1desc" id="act1need" cols="60" rows="4"><?php echo $act1need; ?></textarea>
-                                <label for="act1need">Max 256 characters</label>
+                                <label for="act1need">Max 256 karakters</label>
                             </div>
                         </li>
                     </ul>
@@ -239,10 +263,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     <legend>Partner</legend>
                     <ul>
                         <li>
-                            <span>
-                                <input class="field text" type="text" name"partner" id="partner" value="<?php echo $partner;?>"/>
+                            <div class="terms">
+                                Proin ultricies quis lacus in porttitor. Vivamus ullamcorper felis est, in congue neque bibendum sed. Donec egestas lorem quam, vitae ullamcorper tortor efficitur eu. Quisque varius elementum metus, vel luctus nunc elementum vitae. Curabitur lacinia ipsum velit, non facilisis est fermentum nec. Nam varius dolor vitae felis sagittis consectetur. Donec tortor ipsum, suscipit vitae augue non, tempor pellentesque sem. Vivamus aliquet arcu non felis dignissim, quis iaculis dui porta. Nulla pulvinar placerat est, quis sollicitudin augue elementum in. Nunc eleifend placerat dolor eu pulvinar. Proin venenatis auctor bibendum. In ac venenatis lectus, eget tempus augue. 
+                            </div>
+                            <div>
+                                <input class="field text email" type="text" name"partner" id="partner" value="<?php echo $partner;?>"/>
                                 <label for="email">E-mail</label>
-                            </span>
+                            </div>
                         </li>
                     </ul>
                 </fieldset>
