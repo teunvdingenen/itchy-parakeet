@@ -12,7 +12,7 @@
 
 html {
     color: #222;
-    font-size: 1em;
+    font-size: 0.9em;
     line-height: 1.4;
 }
 
@@ -95,35 +95,33 @@ textarea {
    Author's custom styles
    ========================================================================== */
 body {
-    background-color:#ffffec;
+    font-family:"Helvetica";
+    background-color:#2a3891;
 }
 
 .content {
     width:80%;
-    background-color: #c3c3c3;
+    background-color: #D9D9D9;
     margin: 0 auto;
-    text-align: center;
-    border-radius: 10px 10px 10px 10px;
-    padding: 30px;
+    text-align: left;
+    padding: 10px;
 }
 
 .link {
     width:80%;
-    background-color: #c3c3c3;
+    background-color: #D9D9D9;
     margin: 0 auto;
     text-align: center;
-    border-radius: 10px 10px 10px 10px;
     padding: 30px;
 
 }
 
 .header {
     width:80%;
-    background-color: #c3c3c3;
+    background-color: #D9D9D9;
     margin: 0 auto;
     text-align: center;
-    border-radius: 10px 10px 10px 10px;
-    padding: 30px;
+    padding: 10px;
 }
 
 .footer {
@@ -135,31 +133,171 @@ body {
     color:#ff0000;
 }
 
-.user-form {
-    padding:20px;
+form {
+
 }
 
-.user-form fieldset {
+form ul {
+    margin:0;
+    padding:0;
+    list-style-type: none;
+}
+
+* html form ul {
+    width:99%;
+    zoom:1;
+}
+
+form li {
+    margin:9;
+    padding:0 0 0 0;
+    clear:both;
+    background-color: transparent;
+    position:relative;
+}
+
+form li div {
+    width:100%;
+    margin:0;
+    padding:0;
+    float:left;
+    color:#444;
+}
+
+form li span {
+    margin: 0 .3em 0 0 ;
+    padding:0;
+    float:left;
+    color:#444;
+}
+
+form li div span {
+    margin:0;
+    display:block;
+    width:100%;
+    float:left;
+}
+
+form fieldset {
+    border-radius: 10px 10px 10px 10px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    margin:5px;
+    background:white;
+}
+
+form fieldset legend {
     border-radius: 10px 10px 10px 10px;
     padding:10px;
-    margin:10px;
-    background:#9dcdc6;
+    background:white;
+
 }
 
-.user-form fieldset legend {
-    border-radius: 10px 10px 10px 10px;
-    padding:10px;
-    background:#9dcdc6;
+form li div label, form li span label {
+    margin:0;
+    padding-top:5px;
+    padding-bottom: 1px;
+    clear:both;
+    font-size:85%;
+    line-height: 160%;
+    color:#444;
+    display:block;
+    text-align: left;
 }
 
-.user-form fieldset label {
+form fieldset input {
     display:inline-block;
-    width:120px;
-    margin-left:5px;
 }
 
-.user-form fieldset input {
-    display:inline-block;
+label.choice {
+    text-align: left;
+    display:block;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-style: italic;
+    line-height: 150%;
+    margin:-15px 0 0 17px;
+    padding: 0 0 5px 0;
+    color: #777;
+    width:88%;
+}
+
+div.terms {
+    text-align: left;
+    font-size:0.9em;
+    font-style:italic;
+    margin:5 5 5 5;
+    color:#888;
+}
+
+.left{
+  float:left;
+}
+.right{
+  float:right;
+}
+
+form li.complex{
+  padding-bottom:0;
+}
+form li.complex div span{
+  width:auto;
+  margin:0 .3em 0 0;
+  padding-bottom:12px;
+}
+form li.complex div span.full{
+  margin:0;
+}
+form li.complex div span.left,
+form li.complex div span.right{
+  margin:0;
+  width:48%;
+}
+form li.complex div span.full input,
+form li.complex div span.full select,
+form li.complex div span.left input,
+form li.complex div span.right input,
+form li.complex div span.left select,
+form li.complex div span.right select{
+  width:100%;
+}
+
+input.text, input.search, input.file, textarea.textarea, select.select{
+  font-family:"Helvetica";
+  font-size:100%;
+  color:#333;
+  margin:0;
+  padding:2px 0;
+}
+
+input.text, input.search, textarea.textarea{
+  border-top:1px solid #7c7c7c;
+  border-left:1px solid #c3c3c3;
+  border-right:1px solid #c3c3c3;
+  border-bottom:1px solid #ddd;
+  background:#fff url(/images/fieldbg.gif) repeat-x top;
+}
+
+select.select{
+  padding:1px 0 0 0;
+}
+
+input.checkbox, input.radio {
+    display:block;
+    margin: 4px 0 0 0;
+    padding:0;
+    width:13px;
+    height:13px;
+}
+
+input.submit {
+    width:15em;
+    height: 2em;
+    font-size:100%;
+    margin:5px;
+    padding:0 7px 0 7px;
+    width: auto;
+    overflow: visible;
 }
 
 /* ==========================================================================

@@ -2,9 +2,14 @@
 
 $returnVal = "";
 $firstname = $lastname = $insertion = $birthdate = $gender = $email = $phone = $city = $editions 
-    = $contrib0 = $contrib1 = $partner = $terms0 = $terms1 = $terms2 = "";
+    = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need =$partner = $terms0 = $terms1 = $terms2 = "";
 $firstnameErr = $lastnameErr = $insertionErr = $birthdateErr = $genderErr = $emailErr = $phoneErr = $cityErr = $editionsErr 
     = $contrib0Err = $contrib1Err = $partnerErr = $terms0Err = $terms1Err = $terms2Err = "";
+
+if( $_SERVER["REQUEST_METHOD"] == "POST") {
+
+
+}
 
 
 ?>
@@ -50,152 +55,224 @@ $firstnameErr = $lastnameErr = $insertionErr = $birthdateErr = $genderErr = $ema
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut ligula quis lacus consectetur tempus. Integer pretium quam vel nunc aliquet fringilla. Maecenas enim nulla, faucibus ut tincidunt id, auctor at orci. Praesent faucibus tellus ipsum, nec varius erat consectetur at. Etiam ac ultricies ex, a gravida quam. Suspendisse fringilla congue massa a cursus. Nunc condimentum mauris id erat tincidunt laoreet. Sed maximus tortor id mi vestibulum pulvinar. Vestibulum ultricies
         erat sit amet posuere euismod. Curabitur orci mauris, vehicula et dolor at, egestas luctus nunc. Sed non egestas massa. Curabitur eget bibendum arcu. Aliquam erat volutpat. Fusce placerat lacus a dapibus accumsan. Cras vitae interdum metus. Phasellus neque sem, mattis et imperdiet sed, eleifend vel lorem.</p>
         </div>
-
         <div class="content">
         <div class="info"><?php echo $returnVal; ?></div>
-        <form class="user-form" method="post" 
+        <form id="signup-form" class="signup-form" method="post" 
             action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" target="_top">
                 <fieldset>
                     <legend>Persoonlijke Informatie</legend>
-                    <label for="firstname">Voornaam</label>
-                    <input type="text" name="firstname" value="<?php echo $firstname;?>">
-                    <span class="error"><?php echo $firstnameErr;?></span><br>
-                    <label for="insertion">Tussenvoegsel</label>
-                    <input type="text" name="insertion" value="<?php echo $insertion;?>">
-                    <span class="error"><?php echo $insertionErr;?></span><br>
-                    <label for="lastname">Achternaam</label>
-                    <input type="text" name="lastname" value="<?php echo $lastname;?>">
-                    <span class="error"><?php echo $lastnameErr;?></span><br>
-
-                    <label for="birthdate">Geboortedatum</label>
-                    <select id="birthday" name="birthday" value="<?php echo $birthday;?>">
-                    </select>
-                    <select id="birthmonth" name="birthmonth" value="<?php echo $birthmonth;?>">
-                    </select>
-                    <select id="birthyear" name="birthyear" value="<?php echo $birthyear;?>">
-                    </select>
-                    <span class="error"><?php echo $birthdateErr;?></span><br>
-                    
-                    <label for="birthdate">Woonplaats</label>
-                    <input type="text" id="city" name="city" value="<?php echo $city;?>">
-                    <span class="error"><?php echo $cityErr;?></span><br>
-
-                    <!-- TODO: fill gender value from php-->
-                    <label for="gender">Geslacht</label>
-                    <input type="radio" name="gender" id="male" value="male"</input>
-                    <label for="male">Man</label>
-                    <input type="radio" name="gender" id="female" value="female"</input>
-                    <label for="female">Vrouw</label>
-                    <span class="error"><?php echo $genderErr;?></span><br>
-                    <label for="email">E-mail</label>
-                    <input type="text" name="email" value="<?php echo $email;?>">
-                    <span class="error"><?php echo $emailErr;?></span><br>
-                    <label for="phone">Telefoonnummer</label>
-                    <input type="text" name="phone" value="<?php echo $phone;?>">
-                    <span class="error"><?php echo $phoneErr;?></span><br>
+                    <ul>
+                        <li>
+                            <span>
+                                <label for="firstname">Voornaam</label>
+                                <input class="field text" type="text" name="firstname" value="<?php echo $firstname;?>">
+                            </span>
+                            <span>
+                                <label for="lastname">Achternaam</label>
+                                <input class="field text" type="text" name="lastname" value="<?php echo $lastname;?>">
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <label for="city">Woonplaats</label>
+                                <input class="field text" type="text" id="city" name="city" value="<?php echo $city;?>">
+                            </span>
+                            <span>
+                                <label for="birthday">Geboortedatum</label>
+                                <span>
+                                    <input id="birthday" name="birthday" class="field text" size="2" maxlength="2" type="text" placeholder="DD">
+                                </span>
+                                <span>
+                                    <input id="birthmonth" name="birthmonth" class="field text" size="2" maxlength="2" type="text" placeholder="MM">
+                                </span>
+                                <span>
+                                    <input id="birthyear" name="birthyear" class="field text" size="4" maxlength="4" type="text" placeholder="YYYY">
+                                </span>
+                            </span>
+                            
+                        </li>
+                        <li>
+                                    <span>
+                                <label for="gender">Geslacht</label>
+                            <span>
+                            <!-- TODO: fill gender value from php-->
+                                <input class="field radio" type="radio" name="gender" id="male" value="male"</input>
+                                <label class="choice" for="male">Man</label>
+                            </span>
+                            <span>
+                                <input class="field radio" type="radio" name="gender" id="female" value="female"</input>
+                                <label class="choice" for="female">Vrouw</label>
+                            </span>
+                                    </span>
+                        </li>
+                        <li>
+                            <span>
+                                <label for="email">E-mail</label>
+                                <input class="field text" type="text" name="email" value="<?php echo $email;?>">
+                            </span>
+                            <span>
+                                <label for="phone">Telefoonnummer</label>
+                                <input class="field text" type="text" name="phone" value="<?php echo $phone;?>">
+                            </span>
+                        </li>
+                    </ul>
                 </fieldset> 
                 <fieldset>
                     <legend>Voorgaande edities</legend>
-                    <input type="checkbox" name="editions" id="fff2010" value="fff2010">
-                        Familiar Forest Festival 2010</input><br>
-                    <input type="checkbox" name="editions" id="fff2011" value="fff2011">
-                        Familiar Forest Festival 2011</input><br>
-                    <input type="checkbox" name="editions" id="ffcastle" value="ffcastle">
-                        Familiar Castle Festival</input><br>
-                    <input type="checkbox" name="editions" id="fwf2012" value="fwf2012">
-                        Familiar Winter Festival 2012</input><br>
-                    <input type="checkbox" name="editions" id="fh2012" value="fh2012">
-                        Familiar Hemelvaartsnacht 2012</input><br>
-                    <input type="checkbox" name="editions" id="fff2012" value="fff2012">
-                        Familiar Forest Festival 2012</input><br>
-                    <input type="checkbox" name="editions" id="fh2013" value="fh2013">
-                        Familiar Hemelvaartsnacht 2013</input><br>
-                    <input type="checkbox" name="editions" id="fwf2013" value="fwf2013">
-                        Familiar Winter Festival 2013</input><br>
-                    <input type="checkbox" name="editions" id="fff2013" value="fff2013">
-                        Familiar Forest Festival 2013</input><br>
-                    <input type="checkbox" name="editions" id="fwf2014" value="fwf2014">
-                        Familiar Winter Festival 2014</input><br>
-                    <input type="checkbox" name="editions" id="fff2014" value="fff2014">
-                        Familiar Forest Festival 2014</input><br>
-                    <input type="checkbox" name="editions" id="fwf2015" value="fwf2015">
-                        Familiar Winter Festival 2015</input><br>
-                    <input type="checkbox" name="editions" id="fff2015" value="fff2015">
-                        Familiar Forest Festival 2015</input><br>
-                    <span class="error"><?php echo $editionsErr;?></span><br>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fff2010" value="fff2010">
+                    <label class="choice">Familiar Forest Festival 2010</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fff2011" value="fff2011">
+                    <label class="choice">Familiar Forest Festival 2011</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="ffcastle" value="ffcastle">
+                    <label class="choice">Familiar Castle Festival</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fwf2012" value="fwf2012">
+                    <label class="choice">Familiar Winter Festival 2012</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fh2012" value="fh2012">
+                    <label class="choice">Familiar Hemelvaartsnacht 2012</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fff2012" value="fff2012">
+                    <label class="choice">Familiar Forest Festival 2012</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fh2013" value="fh2013">
+                    <label class="choice">Familiar Hemelvaartsnacht 2013</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fwf2013" value="fwf2013">
+                    <label class="choice">Familiar Winter Festival 2013</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fff2013" value="fff2013">
+                    <label class="choice">Familiar Forest Festival 2013</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fwf2014" value="fwf2014">
+                    <label class="choice">Familiar Winter Festival 2014</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fff2014" value="fff2014">
+                    <label class="choice">Familiar Forest Festival 2014</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fwf2015" value="fwf2015">
+                    <label class="choice">Familiar Winter Festival 2015</label>
+                    <input class="field checkbox" type="checkbox" name="editions" id="fff2015" value="fff2015">
+                    <label class="choice">Familiar Forest Festival 2015</label>
                 </fieldset>
                 <fieldset>
                     <legend>Jouw bijdrage aan het Familiar Forest Festival 2016</legend>
-                    <label for="contrib0">Eerste keus</label><br>
-                    <select name="contrib0" id="contrib0">
-                        <option value="ivbk">Interieur verzorging, bar of keuken</option>
-                        <option value="act">Act of Performance</option>
-                        <option value="afb">Afbouw</option>
-                        <option value="ontw">Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
-                    </select><br>
-
-                    <fieldset id="act0">
-                        <legend>Informatie over je act of performance</legend>
-                        <select name="act0type" id="act0type">
-                            <option value="workshop">Workshop / Cursus</option>
-                            <option value="game">Ervaring / Game</option>
-                            <option value="lecture">Lezing</option>
-                            <option value="schmink">Schmink</option>
-                            <option value="other">Anders</option>
-                            <option value="perform">Performance</option>
-                            <option value="install">Installatie Beeld</option>
-                        </select><br>
-                        <input class="textfield-large" type="text" name="act0desc" id="act0desc"><br>
-                        <input class="textfield-large" type="text" name="act0need" id="act0need"><br>
-                    </fieldset>
-
-                    <span class="error"><?php echo $contrib0Err;?></span><br>
-                    <label for="contrib1">Tweede keus</label><br>
-                    <select name="contrib1" id="contrib1">
-                        <option value="ivbk">Interieur verzorging, bar of keuken</option>
-                        <option value="act">Act of Performance</option>
-                        <option value="afb">Afbouw</option>
-                        <option value="ontw">Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
-                    </select><br>
-
-                    <fieldset id="act1">
-                        <legend>Informatie over je act of performance</legend>
-                        <select name="act1type" id="act1type">
-                            <option value="workshop">Workshop / Cursus</option>
-                            <option value="game">Ervaring / Game</option>
-                            <option value="lecture">Lezing</option>
-                            <option value="schmink">Schmink</option>
-                            <option value="other">Anders</option>
-                            <option value="perform">Performance</option>
-                            <option value="install">Installatie Beeld</option>
-                        </select><br>
-                        <input class="textfield-large" type="text" name="act1desc" id="act1desc"><br>
-                        <input class="textfield-large" type="text" name="act1need" id="act1need"><br>
-                    </fieldset>
-
-                    <span class="error"><?php echo $contrib1Err;?></span><br>
+                    <ul>
+                        <li>
+                            <span>
+                                <label for="contrib0">Eerste keus</label>
+                                <select class="field select" name="contrib0" id="contrib0">
+                                    <option value="ivbk">Interieur verzorging, bar of keuken</option>
+                                    <option value="act">Act of Performance</option>
+                                    <option value="afb">Afbouw</option>
+                                    <option value="ontw">Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
+                                </select>
+                            </span>
+                        </li>
+                        <li id="contrib0row">
+                            <span>
+                                <label for="contrib0desc">Vertel iets over je ervaring hierin</label>
+                                <textarea class="textarea" name="contrib0desc" id="contrib0desc" cols="60" rows="4"><?php echo $contrib0desc; ?></textarea>
+                                <label id="contrib0counter" for="contrib0desc">Max 256 characters</label>
+                            </span>
+                        </li>
+                        <li id="act0row">
+                            <div>
+                                <label for="act0type">Informatie over je act of performance</label>
+                                <select class="field select" name="act0type" id="act0type">
+                                    <option value="workshop">Workshop / Cursus</option>
+                                    <option value="game">Ervaring / Game</option>
+                                    <option value="lecture">Lezing</option>
+                                    <option value="schmink">Schmink</option>
+                                    <option value="other">Anders</option>
+                                    <option value="perform">Performance</option>
+                                    <option value="install">Installatie Beeld</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="act0desc">Omschrijving van je act</label>
+                                <textarea class="textarea" name="act0desc" id="act0desc" cols="60" rows="4"><?php echo $act0desc; ?></textarea>
+                                <label for="act0desc">Max 256 characters</label>
+                            </div>
+                            <div>
+                                <label for="act0need">Wat heb je voor je act nodig?</label>
+                                <textarea class="textarea" name="act0need" id="act1need" cols="60" rows="4"><?php echo $act0need; ?></textarea>
+                                <label for="act0need">Max 256 characters</label>
+                            </div>
+                        </li>
+                        <li>
+                            <span>
+                                <label for="contrib1">Tweede keus</label>
+                                <select class="field select" name="contrib1" id="contrib1">
+                                    <option value="ivbk">Interieur verzorging, bar of keuken</option>
+                                    <option value="act">Act of Performance</option>
+                                    <option value="afb">Afbouw</option>
+                                    <option value="ontw">Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
+                                </select>
+                            </span>
+                        </li>
+                        <li id="contrib1row">
+                            <span>
+                                <label for="contrib1desc">Vertel iets over je ervaring hierin</label>
+                                <textarea class="textarea" name="contrib1desc" id="contrib1desc" cols="60" rows="4"><?php echo $contrib1desc; ?></textarea>
+                                <label for="contrib1desc">Max 256 characters</label>
+                            </span>
+                        </li>
+                        <li id="act1row">
+                            <div>
+                                <label for="act1type">Informatie over je act of performance</label>
+                                <select class="field select" name="act1type" id="act1type">
+                                    <option value="workshop">Workshop / Cursus</option>
+                                    <option value="game">Ervaring / Game</option>
+                                    <option value="lecture">Lezing</option>
+                                    <option value="schmink">Schmink</option>
+                                    <option value="other">Anders</option>
+                                    <option value="perform">Performance</option>
+                                    <option value="install">Installatie Beeld</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="act1desc">Omschrijving van je act</label>
+                                <textarea class="textarea" name="act1desc" id="act1desc" cols="60" rows="4"><?php echo $act1desc; ?></textarea>
+                                <label for="act1desc">Max 256 characters</label>
+                            </div>
+                            <div>
+                                <label for="act1need">Wat heb je voor je act nodig?</label>
+                                <textarea class="textarea" name="act1desc" id="act1need" cols="60" rows="4"><?php echo $act1need; ?></textarea>
+                                <label for="act1need">Max 256 characters</label>
+                            </div>
+                        </li>
+                    </ul>
                 </fieldset>
                 <fieldset>
                     <legend>Partner</legend>
-                    <input type="text" name"partner" id="partner" value="<?php echo $partner;?>"/>
-                    <span class="error"><?php echo $partnerErr;?></span><br>
+                    <ul>
+                        <li>
+                            <span>
+                                <input class="field text" type="text" name"partner" id="partner" value="<?php echo $partner;?>"/>
+                                <label for="email">E-mail</label>
+                            </span>
+                        </li>
+                    </ul>
                 </fieldset>
                 <fieldset>
                     <legend>Voorwaarden</legend>
-                    <label for="terms0">Voorwaarden 1</label><br>
-                    <input type="checkbox" name="terms0" id="terms0" value="J">
-                        Ik ga akkoord met deze voorwaarden</input>
-                    <span class="error"><?php echo $terms0Err;?></span><br>
-                    <label for="terms1">Voorwaarden 2</label><br>
-                    <input type="checkbox" name="terms1" id="terms1" value="J">
-                        Ik ga akkoord met deze voorwaarden</input>
-                    <span class="error"><?php echo $terms1Err;?></span><br>
-                    <label for="terms2">Voorwaarden 3</label><br>
-                    <input type="checkbox" name="terms1" id="terms1" value="J">
-                        Ik ga akkoord met deze voorwaarden</input>
-                    <span class="error"><?php echo $terms2Err;?></span><br>
+                    <ul>
+                        <li>
+                            <span>
+                                <div class="terms">Nam sit amet varius orci, vitae venenatis quam. Vestibulum varius nulla non augue placerat, id feugiat tellus pulvinar. Etiam luctus elit massa. Proin in sem nulla. Maecenas sit amet turpis lectus. Donec id leo iaculis, tincidunt nibh venenatis, fringilla dolor. Nunc sit amet quam sem. Quisque eget purus lobortis, tempor odio ut, ultricies diam. Donec ac ultrices turpis. Maecenas egestas tristique dolor at consequat. Aenean sed lectus at lectus ornare iaculis. Ut viverra lectus tortor, ac lacinia dolor vestibulum at. Curabitur rutrum auctor nibh et tempor. </div>
+                                <input class="field checkbox" type="checkbox" name="terms0" id="terms0" value="J">
+                                <label for="terms0" class="choice">Ik ga akkoord met deze voorwaarden</label>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <div class="terms">Praesent fringilla bibendum efficitur. Curabitur hendrerit, neque posuere gravida tempus, nibh felis maximus justo, id aliquam enim risus id sapien. Aliquam lobortis eros et turpis egestas mattis. Nullam tortor nunc, condimentum a sem nec, porttitor ullamcorper erat. Nulla gravida cursus neque, molestie tempus mauris tincidunt a. Proin eu luctus nisi. Morbi ac pulvinar neque. Donec mollis diam elit, lacinia euismod massa gravida ut. Nullam metus orci, egestas eget libero at, porttitor bibendum ipsum. Ut ac justo mollis, pulvinar elit sit amet, accumsan ligula. Sed quis fringilla est. Integer quis risus vitae lectus accumsan consequat sed sit amet sem. Maecenas mi nisi, sagittis vitae pulvinar vitae, imperdiet non ante. Curabitur porttitor tristique sem vel ultricies.</div>
+                                <input class="field checkbox" type="checkbox" name="terms1" id="terms1" value="J">
+                                <label for="terms1" class="choice">Ik ga akkoord met deze voorwaarden</label>
+                            </span>
+                        </li>
+                        <li>
+                            <span>
+                                <div class="terms">Morbi ac mauris arcu. Donec ac sollicitudin lectus. Donec imperdiet volutpat purus quis suscipit. Cras eu purus congue, imperdiet nisl vel, tristique urna. Nulla facilisi. Donec neque dui, lobortis at felis et, porttitor aliquet erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce consectetur luctus felis, in vehicula est aliquam vel. Sed mollis at libero sit amet cursus. Aliquam libero orci, ultricies a lobortis nec, finibus eget sapien. Curabitur eget auctor diam. Phasellus cursus lectus in semper mattis. Nunc vitae scelerisque lorem, ut mollis lacus. Duis fringilla risus in odio fermentum mattis. Mauris turpis metus, molestie vitae leo id, pellentesque vestibulum erat. Pellentesque ac lacinia dui, malesuada blandit risus. </div>
+                                <input class="field checkbox" type="checkbox" name="terms1" id="terms1" value="J">
+                                <label for="terms1" class="choice">Ik ga akkoord met deze voorwaarden</label>
+                            </span>
+                        </li>
+                    </ul>
                 </fieldset>
-            <input type="submit" name="submit" value="Versturen"/>
+            <input class="submit" type="submit" name="submit" value="Versturen"/>
             </form>
         </div>
 
