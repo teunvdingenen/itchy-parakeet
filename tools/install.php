@@ -11,7 +11,7 @@ try {
         `%s` varchar(255) NOT NULL default '',
         `%s` varchar(255) NOT NULL default '',
         `%s` varchar(255) NOT NULL default '',
-        `%s` varchar(16) NOT NULL default '',
+        `%s` date NOT NULL default NULL,
         `%s` varchar(255) NOT NULL default '',
         `%s` varchar(8) NOT NULL default '',
         `%s` varchar(16) NOT NULL default '',

@@ -1,16 +1,193 @@
 <?php
 
 $returnVal = "";
-$firstname = $lastname = $insertion = $birthdate = $gender = $email = $phone = $city = $editions 
-    = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need =$partner = $terms0 = $terms1 = $terms2 = "";
-$firstnameErr = $lastnameErr = $insertionErr = $birthdateErr = $genderErr = $emailErr = $phoneErr = $cityErr = $editionsErr 
-    = $contrib0Err = $contrib1Err = $partnerErr = $terms0Err = $terms1Err = $terms2Err = "";
+$firstname = $lastname = $birthday = $birthmonth = $birthyear = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need =$partner = $terms0 = $terms1 = $terms2 = "";
+$editions = array();
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
+    if( !empty($_POST["firstname"]) ) {
+        $firstname = test_input($_POST["firstname"]);
+    } else {
+        $firstname = "";
+        addError("Je hebt je voornaam niet opgegeven.");
+    }
+    if( !empty($_POST["lastname"]) ) {
+        $lastname = test_input($_POST["lastname"]);
+    } else {
+        $lastname = "";
+        addError("Je hebt je achternaam niet opgegeven.");
+    }
+    if( !empty($_POST["city"]) ) {
+        $city = test_input($_POST["city"]);
+    } else {
+        $city = "";
+        addError("Je hebt je woonplaats niet opgegeven.");
+    }
+    if( !empty($_POST["birthday"]) ) {
+        $birthday = intval(test_input($_POST["birthday"]));
+    } else {
+        $birthday = "";
+    }
+    if( !empty($_POST["birthmonth"]) ) {
+        $birthmonth = intval(test_input($_POST["birthmonth"]));
+    } else {
+        $birthmonth = "";
+    }
+    if( !empty($_POST["birthyear"]) ) {
+        $birthyear = intval(test_input($_POST["birthyear"]));
+    } else {
+        $birthyear = "";
+    }
+    if( $birthday != "" && $birthmonth != "" && $birthyear != "" ) {
+        date_default_timezone_set('UTC');
+        if( !mktime(0,0,0,$birthday, $birthmonth, $birthyear)) {
+            addError("De opgegeven geboortedatum klopt niet.");
+        } else {
+            $birthdate = date( 'Y-m-d H:i:s', mktime(0,0,0,$birthday, $birthmonth, $birthyear));
+        }
+    } else {
+        addError("Je hebt je geboortedatum niet goed opgegeven");
+    }
+    
 
+    if( !empty($_POST["gender"]) ) {
+        $gender = test_input($_POST["gender"]);
+    } else {
+        $gender = "";
+        addError("Je hebt je geslacht niet opgegeven.");
+    }
+    if( !empty($_POST["email"]) ) {
+        $email = test_input($_POST["email"]);
+        if( !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            addError("Je email adres klopt niet");
+        }
+    } else {
+        $email = "";
+        addError("Je hebt geen email adres opgegeven");
+    }
+    if( !empty($_POST["phone"]) ) {
+        $phone = test_input($_POST["phone"]);
+    } else {
+        $phone = "";
+        addError("Je hebt geen telefoonnummer opgegeven");
+    }
 
+    $nr_editions = 0;
+    $editions = isset($_POST['editions']) ? $_POST['editions'] : array();
+    foreach($editions as $edition) {
+        $editions_str .= test_input($edition) . ", ";
+        $nr_editions += 1;
+    }
+
+    if( !empty($_POST["contrib0"])) {
+        $contrib0 = test_input($_POST["contrib0"]);
+    } else {
+        //impossible
+    }
+    if( !empty($_POST["contrib0desc"])) {
+        $contrib0desc = test_input($_POST["contrib0desc"]);
+    } else {
+        $contrib0desc = "";
+    }
+
+    if( !empty($_POST["contrib1"])) {
+        $contrib1 = test_input($_POST["contrib1"]);
+    } else {
+        //impossible
+    }
+    if( !empty($_POST["contrib1desc"])) {
+        $contrib1desc = test_input($_POST["contrib1desc"]);
+    } else {
+        $contrib1desc = "";
+    }
+
+    if( !empty($_POST["act0type"])) {
+        $act0type = test_input($_POST["act0type"]);
+    } else {
+        $act0type = "";
+    }
+
+    if( !empty($_POST["act0desc"])) {
+        $act0desc = test_input($_POST["act0desc"]);
+    } else {
+        $act0desc = "";
+    }
+
+    if( !empty($_POST["act0need"])) {
+        $act0need = test_input($_POST["act0need"]);
+    } else {
+        $act0need = "";
+    }
+
+    if( !empty($_POST["act1type"])) {
+        $act1type = test_input($_POST["act1type"]);
+    } else {
+        $act1type = "";
+    }
+    
+    if( !empty($_POST["act1desc"])) {
+        $act1desc = test_input($_POST["act1desc"]);
+    } else {
+        $act1desc = "";
+    }
+
+    if( !empty($_POST["act1need"])) {
+        $act1need = test_input($_POST["act1need"]);
+    } else {
+        $act1need = "";
+    }
+
+    if( !empty($_POST["partner"])) {
+        $partner = test_input($_POST["partner"]);
+        if( !filter_var($partner, FILTER_VALIDATE_EMAIL)) {
+            addError("Het email adres van je lieveling klopt niet");
+        }
+    } else {
+        $partner = "";
+    }
+
+    if( !empty($_POST["terms0"])) {
+        $terms0 = test_input($_POST["terms0"]);
+    } else {
+        $terms0 = "";
+    }
+    if( !empty($_POST["terms1"])) {
+        $terms1 = test_input($_POST["terms1"]);
+    } else {
+        $terms1 = "";
+    }
+    if( !empty($_POST["terms2"])) {
+        $terms2 = test_input($_POST["terms2"]);
+    } else {
+        $terms2 = "";
+    }
+
+    if( $terms0 == "" || $terms1 == "" || $terms2 == "") {
+        addError("Je moet alle voorwaarden accepteren");
+    }
+
+    if( $returnVal == "" ) {
+        //all good
+    } else {
+        //try again..
+        $returnVal .= "</ul>";
+    }
+} //End POST
+
+function addError($value) {
+    global $returnVal;
+    if( $returnVal == "" ) {
+        $returnVal = "De volgende dingen zijn niet goed gegaan: <ul>";
+    }
+    $returnVal .= "<li>" . $value . "</li>";
 }
 
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+ }
 
 ?>
 <html class="no-js" lang="">
@@ -56,7 +233,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         erat sit amet posuere euismod. Curabitur orci mauris, vehicula et dolor at, egestas luctus nunc. Sed non egestas massa. Curabitur eget bibendum arcu. Aliquam erat volutpat. Fusce placerat lacus a dapibus accumsan. Cras vitae interdum metus. Phasellus neque sem, mattis et imperdiet sed, eleifend vel lorem.</p>
         </div>
         <div class="content">
-        <div class="info"><?php echo $returnVal; ?></div>
+        <div class="error"><?php echo $returnVal; ?></div>
         <form id="signup-form" class="signup-form" method="post" 
             action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" target="_top">
                 <fieldset>
@@ -80,13 +257,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                             <span>
                                 <label for="birthday">Geboortedatum</label>
                                 <span>
-                                    <input id="birthday" name="birthday" class="field text number" size="2" maxlength="2" type="text" placeholder="DD">
+                                    <input id="birthday" name="birthday" class="field text number" size="2" maxlength="2" type="text" placeholder="DD" value="<?php echo $birthday; ?>">
                                 </span>
                                 <span>
-                                    <input id="birthmonth" name="birthmonth" class="field text number" size="2" maxlength="2" type="text" placeholder="MM">
+                                    <input id="birthmonth" name="birthmonth" class="field text number" size="2" maxlength="2" type="text" placeholder="MM" value="<?php echo $birthmonth; ?>">
                                 </span>
                                 <span>
-                                    <input id="birthyear" name="birthyear" class="field text number" size="4" maxlength="4" type="text" placeholder="YYYY">
+                                    <input id="birthyear" name="birthyear" class="field text number" size="4" maxlength="4" type="text" placeholder="YYYY" value="<?php echo $birthyear; ?>">
                                 </span>
                             </span>
                             
@@ -96,11 +273,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label for="gender">Geslacht</label>
                             <span>
                             <!-- TODO: fill gender value from php-->
-                                <input class="field radio" type="radio" name="gender" id="male" value="male"</input>
+                                <input class="field radio" type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?> >
                                 <label class="choice" for="male">Man</label>
                             </span>
                             <span>
-                                <input class="field radio" type="radio" name="gender" id="female" value="female"</input>
+                                <input class="field radio" type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
                                 <label class="choice" for="female">Vrouw</label>
                             </span>
                                     </span>
@@ -119,31 +296,31 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 </fieldset> 
                 <fieldset>
                     <legend>Voorgaande edities</legend>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fff2010" value="fff2010">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2010" value="fff2010" <?php if(in_array("fff2010", $editions)) echo( "checked"); ?> >
                     <label class="choice">Familiar Forest Festival 2010</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fff2011" value="fff2011">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2011" value="fff2011" <?php if(in_array("fff2011", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Forest Festival 2011</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="ffcastle" value="ffcastle">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="ffcastle" value="ffcastle" <?php if(in_array("ffcastle", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Castle Festival</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fwf2012" value="fwf2012">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fwf2012" value="fwf2012" <?php if(in_array("fwf2012", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Winter Festival 2012</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fh2012" value="fh2012">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fh2012" value="fh2012" <?php if(in_array("fh2012", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Hemelvaartsnacht 2012</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fff2012" value="fff2012">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2012" value="fff2012" <?php if(in_array("fff2012", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Forest Festival 2012</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fh2013" value="fh2013">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fh2013" value="fh2013" <?php if(in_array("fh2013", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Hemelvaartsnacht 2013</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fwf2013" value="fwf2013">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fwf2013" value="fwf2013" <?php if(in_array("fwf2013", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Winter Festival 2013</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fff2013" value="fff2013">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2013" value="fff2013" <?php if(in_array("fff2013", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Forest Festival 2013</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fwf2014" value="fwf2014">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fwf2014" value="fwf2014" <?php if(in_array("fwf2014", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Winter Festival 2014</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fff2014" value="fff2014">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2014" value="fff2014" <?php if(in_array("fff2014", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Forest Festival 2014</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fwf2015" value="fwf2015">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fwf2015" value="fwf2015" <?php if(in_array("fwf2015", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Winter Festival 2015</label>
-                    <input class="field checkbox" type="checkbox" name="editions" id="fff2015" value="fff2015">
+                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2015" value="fff2015" <?php if(in_array("fff2015", $editions)) echo( "checked"); ?>>
                     <label class="choice">Familiar Forest Festival 2015</label>
                 </fieldset>
                 <fieldset>
@@ -153,10 +330,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                             <div>
                                 <label for="contrib0">Eerste keus</label>
                                 <select class="field select" name="contrib0" id="contrib0">
-                                    <option value="ivbk">Interieur verzorging, bar of keuken</option>
-                                    <option value="act">Act of Performance</option>
-                                    <option value="afb">Afbouw</option>
-                                    <option value="ontw">Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
+                                    <option value="ivbk" <?= $contrib0 == 'ivbk' ? ' selected="selected"' : '';?>>Interieur verzorging, bar of keuken</option>
+                                    <option value="act" <?= $contrib0 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
+                                    <option value="afb" <?= $contrib0 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                    <option value="ontw" <?= $contrib0 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                                 </select>
                             </div>
                             <div class="terms" id="ivbk0desc">
@@ -183,13 +360,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                             <div>
                                 <label for="act0type">Informatie over je act of performance</label>
                                 <select class="field select" name="act0type" id="act0type">
-                                    <option value="workshop">Workshop / Cursus</option>
-                                    <option value="game">Ervaring / Game</option>
-                                    <option value="lecture">Lezing</option>
-                                    <option value="schmink">Schmink</option>
-                                    <option value="other">Anders</option>
-                                    <option value="perform">Performance</option>
-                                    <option value="install">Installatie Beeld</option>
+                                    <option value="workshop" <?= $act0type == 'workshop' ? ' selected="selected"' : '';?>>Workshop / Cursus</option>
+                                    <option value="game" <?= $act0type == 'game' ? ' selected="selected"' : '';?>>Ervaring / Game</option>
+                                    <option value="lecture" <?= $act0type == 'lecture' ? ' selected="selected"' : '';?>>Lezing</option>
+                                    <option value="schmink" <?= $act0type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
+                                    <option value="other" <?= $act0type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
+                                    <option value="perform" <?= $act0type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
+                                    <option value="install" <?= $act0type == 'install' ? ' selected="selected"' : '';?>>Installatie Beeld</option>
                                 </select>
                             </div>
                             <div>
@@ -207,10 +384,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                             <div>
                                 <label for="contrib1">Tweede keus</label>
                                 <select class="field select" name="contrib1" id="contrib1">
-                                    <option value="ivbk">Interieur verzorging, bar of keuken</option>
-                                    <option value="act">Act of Performance</option>
-                                    <option value="afb">Afbouw</option>
-                                    <option value="ontw">Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
+                                    <option value="ivbk" <?= $contrib1 == 'ivbk' ? ' selected="selected"' : '';?>>Interieur verzorging, bar of keuken</option>
+                                    <option value="act" <?= $contrib1 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
+                                    <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                    <option value="ontw" <?= $contrib1 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                                 </select>
                             </div>
                             <div class="terms" id="ivbk1desc">
@@ -237,13 +414,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                             <div>
                                 <label for="act1type">Informatie over je act of performance</label>
                                 <select class="field select" name="act1type" id="act1type">
-                                    <option value="workshop">Workshop / Cursus</option>
-                                    <option value="game">Ervaring / Game</option>
-                                    <option value="lecture">Lezing</option>
-                                    <option value="schmink">Schmink</option>
-                                    <option value="other">Anders</option>
-                                    <option value="perform">Performance</option>
-                                    <option value="install">Installatie Beeld</option>
+                                    <option value="workshop" <?= $act1type == 'workshop' ? ' selected="selected"' : '';?>>Workshop / Cursus</option>
+                                    <option value="game" <?= $act1type == 'game' ? ' selected="selected"' : '';?>>Ervaring / Game</option>
+                                    <option value="lecture" <?= $act1type == 'lecture' ? ' selected="selected"' : '';?>>Lezing</option>
+                                    <option value="schmink" <?= $act1type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
+                                    <option value="other" <?= $act1type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
+                                    <option value="perform" <?= $act1type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
+                                    <option value="install" <?= $act1type == 'install' ? ' selected="selected"' : '';?>>Installatie Beeld</option>
                                 </select>
                             </div>
                             <div>
@@ -253,14 +430,14 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div>
                                 <label for="act1need">Wat heb je voor je act nodig?</label>
-                                <textarea class="textarea" name="act1desc" id="act1need" cols="60" rows="4"><?php echo $act1need; ?></textarea>
+                                <textarea class="textarea" name="act1need" id="act1need" cols="60" rows="4"><?php echo $act1need; ?></textarea>
                                 <label for="act1need">Max 256 karakters</label>
                             </div>
                         </li>
                     </ul>
                 </fieldset>
                 <fieldset>
-                    <legend>Partner</legend>
+                    <legend>Lieveling</legend>
                     <ul>
                         <li>
                             <div class="terms">
@@ -293,8 +470,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         <li>
                             <span>
                                 <div class="terms">Morbi ac mauris arcu. Donec ac sollicitudin lectus. Donec imperdiet volutpat purus quis suscipit. Cras eu purus congue, imperdiet nisl vel, tristique urna. Nulla facilisi. Donec neque dui, lobortis at felis et, porttitor aliquet erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce consectetur luctus felis, in vehicula est aliquam vel. Sed mollis at libero sit amet cursus. Aliquam libero orci, ultricies a lobortis nec, finibus eget sapien. Curabitur eget auctor diam. Phasellus cursus lectus in semper mattis. Nunc vitae scelerisque lorem, ut mollis lacus. Duis fringilla risus in odio fermentum mattis. Mauris turpis metus, molestie vitae leo id, pellentesque vestibulum erat. Pellentesque ac lacinia dui, malesuada blandit risus. </div>
-                                <input class="field checkbox" type="checkbox" name="terms1" id="terms1" value="J">
-                                <label for="terms1" class="choice">Ik ga akkoord met deze voorwaarden</label>
+                                <input class="field checkbox" type="checkbox" name="terms2" id="terms2" value="J">
+                                <label for="terms2" class="choice">Ik ga akkoord met deze voorwaarden</label>
                             </span>
                         </li>
                     </ul>
