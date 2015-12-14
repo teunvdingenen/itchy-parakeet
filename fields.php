@@ -13,8 +13,8 @@ $db_person_email    = "email";
 $db_person_city     = "city";
 $db_person_gender   = "gender";
 $db_person_phone    = "phone";
-$db_person_visits   = "visits_count";
-$db_person_prev     = "editions";
+$db_person_vists    = "nr_editions";
+$db_person_editions = "editions";
 $db_person_partner  = "partner";
 
 $db_person_contrib0 = "contrib0";

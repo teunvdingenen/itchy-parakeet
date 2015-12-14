@@ -1,5 +1,7 @@
 <?php
 
+include "dbstore.php";
+
 $returnVal = "";
 $firstname = $lastname = $birthday = $birthmonth = $birthyear = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need =$partner = $terms0 = $terms1 = $terms2 = "";
 $editions = array();
@@ -43,7 +45,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         if( !mktime(0,0,0,$birthday, $birthmonth, $birthyear)) {
             addError("De opgegeven geboortedatum klopt niet.");
         } else {
-            $birthdate = date( 'Y-m-d H:i:s', mktime(0,0,0,$birthday, $birthmonth, $birthyear));
+            $birthdate = date( 'Y-m-d H:i:s', mktime(0,0,0, $birthmonth, $birthday, $birthyear));
         }
     } else {
         addError("Je hebt je geboortedatum niet goed opgegeven");
@@ -137,6 +139,27 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $act1need = "";
     }
 
+    $db_contrib0 = $db_contrib0_desc = $db_contrib0_need = "";
+    $db_contrib1 = $db_contrib1_desc = $db_contrib1_need = "";
+
+    if( $contrib0 == "act" ) {
+        $db_contrib0 = $act0type;
+        $db_contrib0_desc = $act0desc;
+        $db_contrib0_need = $act0need;
+    } else {
+        $db_contrib0 = $contrib0;
+        $db_contrib0_desc = $contrib0desc;
+    }
+
+    if( $contrib1 == "act" ) {
+        $db_contrib1 = $act1type;
+        $db_contrib1_desc = $act1desc;
+        $db_contrib1_need = $act1need;
+    } else {
+        $db_contrib1 = $contrib1;
+        $db_contrib1_desc = $contrib1desc;
+    }
+
     if( !empty($_POST["partner"])) {
         $partner = test_input($_POST["partner"]);
         if( !filter_var($partner, FILTER_VALIDATE_EMAIL)) {
@@ -167,10 +190,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if( $returnVal == "" ) {
-        //all good
+        $returnVal = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $terms0, $terms1, $terms2);
     } else {
         //try again..
         $returnVal .= "</ul>";
+    }
+    if( $returnVal == "") {
+        header('Location: success.php');
     }
 } //End POST
 

@@ -6,23 +6,30 @@ include '../initialize.php';
 include '../fields.php';
 
 try {
-    $person_sql = sprintf("CREATE TABLE `%s` (
+    $user_sql = sprintf("CREATE TABLE `%s` (
         `%s` varchar(255) NOT NULL,
         `%s` varchar(255) NOT NULL default '',
+        `%s` varchar(64) NOT NULL default '',
+        PRIMARY KEY (`%s`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Familiar Users';"
+    );
+
+    $person_sql = sprintf("CREATE TABLE `%s` (
+        `%s` varchar(255) NOT NULL,
         `%s` varchar(255) NOT NULL default '',
         `%s` varchar(255) NOT NULL default '',
         `%s` date NOT NULL default NULL,
         `%s` varchar(255) NOT NULL default '',
         `%s` varchar(8) NOT NULL default '',
-        `%s` varchar(16) NOT NULL default '',
+        `%s` varchar(32) NOT NULL default '',
         `%s` int(8) NOT NULL default 0,
         `%s` varchar(255) NOT NULL default '',
         `%s` varchar(255) NOT NULL default '',
-        `%s` varchar(16) NOT NULL default '',
-        `%s` varchar(16) NOT NULL default '',
-        `%s` tinyint(1) NOT NULL default 0,
-        `%s` tinyint(1) NOT NULL default 0,
-        `%s` tinyint(1) NOT NULL default 0,
+        `%s` int(8) NOT NULL default '',
+        `%s` int(8) NOT NULL default '',
+        `%s` varchar(8) NOT NULL default 0,
+        `%s` varchar(8) NOT NULL default 0,
+        `%s` varchar(8) NOT NULL default 0,
         PRIMARY KEY (`%s`),
         UNIQUE KEY (`%s`),
         UNIQUE KEY (`%s`),
@@ -31,14 +38,13 @@ try {
         $db_table_person,
         $db_person_email,
         $db_person_first,
-        $db_person_insert,
         $db_person_last,
         $db_person_birth,
         $db_person_city,
         $db_person_gender,
         $db_person_phone,
         $db_person_visits,
-        $db_person_prev,
+        $db_person_editions,
         $db_person_partner,
         $db_person_contrib0,
         $db_person_contrib1,
@@ -48,10 +54,10 @@ try {
         $db_person_email,
         $db_person_partner,
         $db_person_contrib0,
-        $db_person_contrib1 );
+        $db_person_contrib1);
 
     $contrib_sql = sprintf("CREATE TABLE `%s` (
-        `%s` varchar(16) NOT NULL,
+        `%s` int(8) NOT NULL AUTO_INCREMENT,
         `%s` varchar(16) NOT NULL default '',
         `%s` varchar(255) NOT NULL default '',
         `%s` varchar(255) NOT NULL default '',
