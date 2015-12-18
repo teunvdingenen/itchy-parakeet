@@ -3,6 +3,8 @@
 $db_host    = "localhost";
 $db_user    = "user";
 $db_pass    = "password";
-$db         = "fff_db_test";
+$db_name    = "fff_db_test";
+
+$mailtolink = "<a href='inschrijven@familiar.nl' target='_top'>inschrijven@familiar.nl</a>";
 
 ?>

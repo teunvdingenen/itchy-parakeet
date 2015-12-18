@@ -262,7 +262,7 @@ form li.complex div span.right select{
   width:100%;
 }
 
-input.text, input.search, input.file, textarea.textarea, select.select{
+input.text, input.pass, input.search, input.file, textarea.textarea, select.select{
   font-family:"Helvetica";
   font-size:100%;
   color:#333;
@@ -270,7 +270,7 @@ input.text, input.search, input.file, textarea.textarea, select.select{
   padding:2px 0;
 }
 
-input.text, input.search, textarea.textarea{
+input.text, input.search, input.pass, textarea.textarea{
   border-top:1px solid #7c7c7c;
   border-left:1px solid #c3c3c3;
   border-right:1px solid #c3c3c3;

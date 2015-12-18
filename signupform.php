@@ -1,6 +1,7 @@
-<?php
+<?php session_start();
 
 include "dbstore.php";
+include "functions.php";
 
 $returnVal = "";
 $firstname = $lastname = $birthday = $birthmonth = $birthyear = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need =$partner = $terms0 = $terms1 = $terms2 = "";
@@ -196,6 +197,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $returnVal .= "</ul>";
     }
     if( $returnVal == "") {
+        $_SESSION['success_firstname'] = $firstname;
         header('Location: success.php');
     }
 } //End POST
@@ -207,13 +209,6 @@ function addError($value) {
     }
     $returnVal .= "<li>" . $value . "</li>";
 }
-
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
- }
 
 ?>
 <html class="no-js" lang="">
