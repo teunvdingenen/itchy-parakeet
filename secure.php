@@ -13,7 +13,7 @@ $user_info_permissions = $user_info[$db_user_permissions];
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
     $menu_html .= "<div class='menuitem'><a class='menulink' id='displaysignup' href='#'>Inschrijvingen tonen</a></div>";
     $menu_html .= "<div class='menuitem'><a class='menulink' id='displayraffle' href='#'>Loting tonen</a></div>";
-    $menu_html .= "<div class='menuitem'><a class='menulink' id='displayBuyers' href='#'>Kopers tonen</a></div>";
+    $menu_html .= "<div class='menuitem'><a class='menulink' id='displayBuyers' href='#'>Verkochte tickets tonen</a></div>";
 }
 if( $user_info_permissions & PERMISSION_RAFFLE ) {
     $menu_html .= "<div class='menuitem'><a class='menulink' id='raffle' href='#'>Loting</a></div>";

@@ -12,7 +12,7 @@ $user_info_permissions = $user_info[$db_user_permissions];
 $resultHTML = "<table>";
 
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
-    $sqlresult = get_raffle();
+    $sqlresult = get_buyers();
     $mysqli = new mysqli();
     while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     {

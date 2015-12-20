@@ -182,12 +182,14 @@ body {
 }
 
 table {
-
+    overflow:auto;
 }
 
 th, td {
+    text-align: center;
     padding:5px;
     border-bottom: 1px solid #ddd;
+    height:5em;
 }
 
 tr:nth-child(even) {

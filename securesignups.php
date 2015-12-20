@@ -10,7 +10,23 @@ $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
 $resultHTML = "<table>";
-
+$resultHTML.="<tr>";
+$resultHTML.="<th>Achternaam</th>";
+$resultHTML.="<th>Voornaam</th>";
+$resultHTML.="<th>Geboortedag</th>";
+$resultHTML.="<th>Geslacht</th>";
+$resultHTML.="<th>Woonplaats</th>";
+$resultHTML.="<th>Email</th>";
+$resultHTML.="<th>Telefoon</th>";
+$resultHTML.="<th>Voorgaande Edities</th>";
+$resultHTML.="<th>Partner</th>";
+$resultHTML.="<th>Eerste keus</th>";
+$resultHTML.="<th></th>";
+$resultHTML.="<th></th>";
+$resultHTML.="<th>Tweede keus</th>";
+$resultHTML.="<th></th>";
+$resultHTML.="<th></th>";
+$resultHTML.="</th>";
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
     $sqlresult = get_signups();
     $mysqli = new mysqli();

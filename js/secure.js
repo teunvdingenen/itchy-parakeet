@@ -10,12 +10,12 @@ $(document).ready(function() {
 		});
 	});
 	$("#displaybuyers").click(function() {
-		$.get("securesignups.php", function(response) {
+		$.get("secureshowbuyer.php", function(response) {
 			setContent($(response));
 		});
 	});
 	$("#displayraffle").click(function() {
-		$.get("securesignups.php", function(response) {
+		$.get("secureshowraffle.php", function(response) {
 			setContent($(response));
 		});
 	});
