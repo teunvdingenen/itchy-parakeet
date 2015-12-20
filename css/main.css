@@ -112,7 +112,7 @@ body {
     background-color: #D9D9D9;
     margin: 0 auto;
     text-align: center;
-    padding: 30px;
+    padding: 10px;
 
 }
 
@@ -131,6 +131,71 @@ body {
 
 .error {
     color:#ff0000;
+}
+
+.top {
+    height:1.3em;
+    background-color: #D9D9D9;
+    outline:1px solid;
+}
+
+.top span {
+    padding-left:2px;
+    padding-right:2px;
+}
+
+.menu {
+    height: 100%;
+    width: 20%;
+    position: fixed;
+    outline:1px solid;
+    background-color: #787878;
+}
+
+.menuitem {
+    padding:15px;
+}
+
+.menuitem:hover {
+    background-color: #A3A3A3;
+}
+
+.menulink {
+    color:black;
+}
+
+.secure_content {
+    width:80%;
+    height:100%;
+    outline: 1px solid;
+    position: fixed;
+    right: 0;
+    background-color: white;
+    overflow-x:auto;
+}
+
+.left{
+  float:left;
+}
+.right{
+  float:right;
+}
+
+table {
+
+}
+
+th, td {
+    padding:5px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+tr:hover {
+    background-color: #A0A0A0;
 }
 
 form {
@@ -186,6 +251,11 @@ form fieldset {
     background:white;
 }
 
+form fieldset.login {
+  margin-left:30%;
+  width:30%;
+}
+
 form fieldset legend {
     border-radius: 10px 10px 10px 10px;
     padding:5px 10px 5px 10px;
@@ -228,13 +298,6 @@ div.terms {
     font-style:italic;
     margin:5 5 5 5;
     color:#888;
-}
-
-.left{
-  float:left;
-}
-.right{
-  float:right;
 }
 
 form li.complex{

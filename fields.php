@@ -1,5 +1,21 @@
 <?php
 
+if( !defined('PERMISSION_DISPLAY')){
+	define('PERMISSION_DISPLAY', 1);
+}
+if( !defined('PERMISSION_RAFFLE')){
+    define('PERMISSION_RAFFLE',2);
+}
+if( !defined('PERMISSION_EDIT')){
+   define( 'PERMISSION_EDIT',3);
+}
+if( !defined('PERMISSION_REMOVE')) {
+    define('PERMISSION_REMOVE', 4);
+}
+if( !defined('PERMISSION_USER')) {
+    define('PERMISSION_USER', 5);
+}
+
 $db_table_person    = "person";
 $db_table_contrib   = "contribution";
 $db_table_raffle    = "raffle";
