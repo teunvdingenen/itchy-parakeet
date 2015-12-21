@@ -9,39 +9,115 @@ $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
+$statistic_string = "";
 $resultHTML = "<table>";
 $resultHTML.="<tr>";
-$resultHTML.="<th>Achternaam</th>";
-$resultHTML.="<th>Voornaam</th>";
-$resultHTML.="<th>Geboortedag</th>";
-$resultHTML.="<th>Geslacht</th>";
-$resultHTML.="<th>Woonplaats</th>";
-$resultHTML.="<th>Email</th>";
-$resultHTML.="<th>Telefoon</th>";
-$resultHTML.="<th>Voorgaande Edities</th>";
-$resultHTML.="<th>Partner</th>";
-$resultHTML.="<th>Eerste keus</th>";
-$resultHTML.="<th></th>";
-$resultHTML.="<th></th>";
-$resultHTML.="<th>Tweede keus</th>";
-$resultHTML.="<th></th>";
-$resultHTML.="<th></th>";
+$resultHTML.="<th>Achternaam</th>"; //0
+$resultHTML.="<th>Voornaam</th>"; //1
+$resultHTML.="<th>Geboortedag</th>"; //2
+$resultHTML.="<th>Geslacht</th>"; //3
+$resultHTML.="<th>Woonplaats</th>"; //4
+$resultHTML.="<th>Email</th>"; //5
+$resultHTML.="<th>Telefoon</th>"; //6
+$resultHTML.="<th>Voorgaande Edities</th>"; //8 (7=visists not displayed)
+$resultHTML.="<th>Partner</th>"; //9
+$resultHTML.="<th>Eerste keus</th>"; //10
+$resultHTML.="<th></th>"; //11
+$resultHTML.="<th></th>"; //12
+$resultHTML.="<th>Tweede keus</th>"; //13
+$resultHTML.="<th></th>"; //14
+$resultHTML.="<th></th>"; //15
 $resultHTML.="</th>";
+
+//Statistics
+$total=0;
+$age_max=$age_tot=0;
+$age_min = 9999;
+$gender_m=$gender_f=0;
+$cities = array();
+$editions_tot=$editions_none=0;
+$contrib0 = array();
+$contrib1 = array();
+
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
     $sqlresult = get_signups();
     $mysqli = new mysqli();
     while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     {
         $resultHTML.="<tr>";
-        foreach($row as $value) {
-            $resultHTML.= "<td>" . $value . "</td>";
+        foreach($row as $key=>$value) {
+            if( $key == 2 ) { //birthdate
+                $age = (new DateTime($value))->diff(new DateTime('now'))->y;
+                if( $age > $age_max) {
+                    $age_max = $age;
+                }
+                if( $age < $age_min) {
+                    $age_min = $age;
+                }
+                $age_tot += $age;
+            } elseif( $key == 3 ) { //gender
+                if( $value=='male') $gender_m += 1;
+                elseif( $value=='female') $gender_f += 1;
+            } elseif( $key == 4 ) { //city
+                if(array_key_exists(strtolower($value), $cities)) {
+                    $cities[strtolower($value)] += 1;
+                } else {
+                    $cities[strtolower($value)] = 1;
+                }
+            } elseif( $key == 7 ) { //nr visits
+                $editions_tot += $value;
+                if( $value == 0) {
+                    $editions_none += 1;
+                }
+            } elseif( $key == 10) { //contrib0
+                if( array_key_exists($value, $contrib0) ) {
+                    $contrib0[$value] += 1;
+                } else {
+                    $contrib0[$value] = 1;
+                }
+            } elseif( $key == 13) { //contrib1
+                if( array_key_exists($value, $contrib1) ) {
+                    $contrib1[$value] += 1;
+                } else {
+                    $contrib1[$value] = 1;
+                }
+            }
+            if( $key != 7) {
+                $resultHTML.= "<td>" . $value . "</td>";
+            }
         }
-       $resultHTML.= "</tr>";
+        $resultHTML.= "</tr>";
+        $total += 1;
     }
+    ksort($cities);
+    ksort($contrib0);
+    ksort($contrib1);
+    $statistic_string .= "<ul>";
+    $statistic_string .= "<li>Totaal aantal inschrijvingen: ". $total. "</li>";
+    $statistic_string .= "<li>Leeftijd tussen ".$age_min." en ".$age_max." (Gemiddeld: ".round($age_tot/$total, 2).").</li>";
+    $statistic_string .= "<li>Aantal Heren: ".$gender_m." (".round($gender_m/$total*100, 2) . "%)</li>";
+    $statistic_string .= "<li>Aantal Dames: ".$gender_f." (".round($gender_f/$total*100,2) . "%)</li>"; 
+    $statistic_string .= "<li>Woonplaatsen: ";
+    foreach($cities as $key=>$value) {
+        $statistic_string.= ucfirst($key)."(".$value.") ";
+    }
+    $statistic_string .= "</li>";
+    $statistic_string .= "<li>Edities: Gemiddeld: ".round($editions_tot/$total,2).", waarvan ".$editions_none." geen edities opgegeven hebben.</li>";
+    $statistic_string .= "<li>Eerste keuzes: ";
+    foreach($contrib0 as $key=>$value) {
+        $statistic_string.= $key."(".$value.") ";
+    }
+    $statistic_string.="</li>";
+    $statistic_string .= "<li>Tweede keuzes: ";
+    foreach($contrib1 as $key=>$value) {
+        $statistic_string.= $key."(".$value.") ";
+    }
+    $statistic_string.="</li></ul>";
 } else {
     $resultHTML="You do not have the necessary permissions to view this page";
 }
 $resultHTML.="</table>";
+$resultHTML = $statistic_string . $resultHTML;
 ?>
 
 <!doctype html>
@@ -64,7 +140,6 @@ $resultHTML.="</table>";
         <![endif]-->
 
         <!-- Add your site or application content here -->
-
         <div class="secure_content">
             <?php echo $resultHTML ?>
         </div>

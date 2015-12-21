@@ -181,6 +181,37 @@ body {
   float:right;
 }
 
+.hide_span:focus ~ .statistics {
+    display:none;
+}
+
+.show_span:focus ~ .statistics {
+    display:block;
+}
+
+.statistics {
+    display:none;
+}
+
+ul {
+    margin:0;
+    padding:15px;
+    list-style-type: none;
+}
+
+* html ul {
+    width:99%;
+    zoom:1;
+}
+
+li {
+    margin:9;
+    padding:0 0 0 0;
+    clear:both;
+    background-color: transparent;
+    position:relative;
+}
+
 table {
     overflow:auto;
 }
