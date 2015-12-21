@@ -37,6 +37,7 @@ try {
         `%s` varchar(8) NOT NULL default 0,
         `%s` varchar(8) NOT NULL default 0,
         `%s` varchar(8) NOT NULL default 0,
+        `%s` date NOT NULL default 0,
         PRIMARY KEY (`%s`),
         UNIQUE KEY (`%s`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Personal information';",
@@ -53,6 +54,7 @@ try {
         $db_person_partner,
         $db_person_contrib0,
         $db_person_contrib1,
+        $db_person_date,
         $db_person_terms0,
         $db_person_terms1,
         $db_person_terms2,

@@ -40,15 +40,32 @@ function get_signups() {
 	if( $mysqli->connect_errno ) {
   		return false;
   	} else {
-  		$query = "SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.visits, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id";
+  		$query = "SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id";
   		$result = $mysqli->query($query);
   		if( $result === FALSE ) {
-  			echo $mysqli->error;
-  			echo $query;
+  			 //error
   		}
   	}
   	$mysqli->close();
   	return $result;
+}
+
+function get_signup_statistics() {
+  global $db_host, $db_user, $db_pass, $db_name;
+  global $db_table_person, $db_table_contrib;
+  $result = "";
+  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+  if( $mysqli->connect_errno ) {
+      return false;
+    } else {
+        $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id";
+        $result = $mysqli->query($query);
+        if( $result === FALSE ) {
+            echo $mysqli->error;
+        }
+    }
+    $mysqli->close();
+    return $result;
 }
 
 function get_raffle() {

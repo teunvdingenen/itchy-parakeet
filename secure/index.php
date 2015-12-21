@@ -1,5 +1,5 @@
 <?php session_start();
-include "functions.php";
+include "../functions.php";
 
 if(!isset($_SESSION['loginuser'])) {
     header('Location: login.php');
@@ -42,9 +42,9 @@ if( $user_info_permissions & PERMISSION_USER) {
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <link rel="stylesheet" href="../css/normalize.css">
+        <link rel="stylesheet" href="../css/main.css">
+        <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -60,15 +60,20 @@ if( $user_info_permissions & PERMISSION_USER) {
             <?php echo $menu_html ?>
         </div>
 
+        <div class="statistics_content">
+            <canvas id="testchart" width="200" height="200" style="padding-left:200px;"></canvas>
+        </div>
+
         <div class="secure_content">
 
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+        <script src="../js/plugins.js"></script>
+        <script src="../js/main.js"></script>
         <script src="js/secure.js"></script>
+        <script src="js/Chart.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>

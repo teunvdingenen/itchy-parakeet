@@ -80,7 +80,7 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
     
     // SUPER UGLY! YOU CAN DO BETTER!!
     if( $partner != '') {
-        $person_query = sprintf("INSERT INTO `%s` (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, '%s', '%s', %s, %s, '%s', '%s', '%s')",
+        $person_query = sprintf("INSERT INTO `%s` (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, '%s', '%s', %s, %s, '%s', '%s', '%s', '%s')",
     	    $db_table_person,
             $db_person_email,
             $db_person_first,
@@ -97,6 +97,7 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
             $db_person_terms0,
             $db_person_terms1,
             $db_person_terms2,
+            $db_person_date,
             $mysqli->real_escape_string($email),
             $mysqli->real_escape_string($first),
             $mysqli->real_escape_string($last),
@@ -111,9 +112,10 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
             $contrib1_id,
             $mysqli->real_escape_string($terms0),
             $mysqli->real_escape_string($terms1),
-            $mysqli->real_escape_string($terms2));
+            $mysqli->real_escape_string($terms2),
+            date( 'Y-m-d H:i:s'));
     } else {
-        $person_query = sprintf("INSERT INTO `%s` (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, '%s', %s, %s, '%s', '%s', '%s')",
+        $person_query = sprintf("INSERT INTO `%s` (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`,`%s`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, '%s', %s, %s, '%s', '%s', '%s', '%s')",
             $db_table_person,
             $db_person_email,
             $db_person_first,
@@ -129,6 +131,7 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
             $db_person_terms0,
             $db_person_terms1,
             $db_person_terms2,
+            $db_person_date,
             $mysqli->real_escape_string($email),
             $mysqli->real_escape_string($first),
             $mysqli->real_escape_string($last),
@@ -142,7 +145,8 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
             $contrib1_id,
             $mysqli->real_escape_string($terms0),
             $mysqli->real_escape_string($terms1),
-            $mysqli->real_escape_string($terms2));
+            $mysqli->real_escape_string($terms2),
+            date( 'Y-m-d H:i:s'));
     }
 	
 	if( !$mysqli->query($person_query) ) {

@@ -1,18 +1,51 @@
 <?php session_start();
-include "functions.php";
+include "../functions.php";
 
 if(!isset($_SESSION['loginuser'])) {
-    header('Location: ../login.php');
+    header('Location: login.php');
 }
 
 $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
+$statistic_string = "";
+$resultHTML = "<table>";
+$resultHTML.="<tr>";
+$resultHTML.="<th>Achternaam</th>";
+$resultHTML.="<th>Voornaam</th>";
+$resultHTML.="<th>Geboortedag</th>";
+$resultHTML.="<th>Geslacht</th>";
+$resultHTML.="<th>Woonplaats</th>";
+$resultHTML.="<th>Email</th>";
+$resultHTML.="<th>Telefoon</th>";
+$resultHTML.="<th>Voorgaande Edities</th>";
+$resultHTML.="<th>Partner</th>";
+$resultHTML.="<th>Eerste keus</th>";
+$resultHTML.="<th></th>";
+$resultHTML.="<th></th>";
+$resultHTML.="<th>Tweede keus</th>";
+$resultHTML.="<th></th>";
+$resultHTML.="<th></th>";
+$resultHTML.="</th>";
+
+//Statistics
 
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
-
+    $sqlresult = get_signups();
+    $mysqli = new mysqli();
+    while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
+    {
+        $resultHTML.="<tr>";
+        foreach($row as $key=>$value) {
+            $resultHTML.= "<td>" . $value . "</td>";
+        }
+        $resultHTML.= "</tr>";
+    }
+} else {
+    $resultHTML="You do not have the necessary permissions to view this page";
 }
+$resultHTML.="</table>";
 ?>
 
 <!doctype html>
@@ -27,7 +60,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
-        <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -35,17 +68,14 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
-
         <div class="secure_content">
-
+            <?php echo $resultHTML ?>
         </div>
-
-
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-        <script src="../js/plugins.js"></script>
-        <script src="../js/main.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
 
     </body>
 </html>
