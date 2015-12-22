@@ -2,35 +2,42 @@
 include "functions.php";
 
 if(!isset($_SESSION['loginuser'])) {
-    header('Location: login');
+    header('Location: ../login');
 }
 
 $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-$resultHTML = "<table>";
 
-if( $user_info_permissions & PERMISSION_DISPLAY ) {
-    $sqlresult = get_raffle();
-    $mysqli = new mysqli();
-    while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
-    {
-        $resultHTML.="<tr>";
-        foreach($row as $value) {
-            $resultHTML.= "<td>" . $value . "</td>";
+
+
+
+function get_signup_statistics() {
+  global $db_host, $db_user, $db_pass, $db_name;
+  global $db_table_person, $db_table_contrib;
+  $result = "";
+  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+  if( $mysqli->connect_errno ) {
+      return false;
+    } else {
+        $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, p.signupdate, c0.type, c1.type FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id";
+        $result = $mysqli->query($query);
+        if( $result === FALSE ) {
+            echo $mysqli->error;
         }
-       $resultHTML.= "</tr>";
     }
-} else {
-    $resultHTML="You do not have the necessary permissions to view this page";
+    $mysqli->close();
+    return $result;
 }
-$resultHTML.="</table>";
 
+
+if( !($user_info_permissions & PERMISSION_DISPLAY )) {
+    echo "No access";
+}
 ?>
 
 <!doctype html>
-
 <html class="no-js" lang="">
     <head>
         <meta charset="utf-8">
@@ -42,7 +49,7 @@ $resultHTML.="</table>";
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -55,10 +62,12 @@ $resultHTML.="</table>";
 
         </div>
 
+
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+        <script src="../js/plugins.js"></script>
+        <script src="../js/main.js"></script>
 
     </body>
 </html>

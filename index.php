@@ -29,7 +29,7 @@
         accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam convallis, dolor sed facilisis consequat, nisi massa rutrum lacus, nec auctor ante nisl nec orci. Morbi diam enim, pharetra eu sapien ac, tristique mollis neque.</p> 
         </div>
 
-        <div class="link"><a href="signupform.php">Inschrijven</a></div>
+        <div class="link"><a href="signupform">Inschrijven</a></div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>

@@ -2,7 +2,7 @@
 include "functions.php";
 
 if(!isset($_SESSION['loginuser'])) {
-    header('Location: login.php');
+    header('Location: login');
 }
 
 $user_info = get_user_info($_SESSION['loginuser']);

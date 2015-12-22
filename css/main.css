@@ -96,7 +96,7 @@ textarea {
    ========================================================================== */
 body {
     font-family:"Helvetica";
-    background-color:#2a3891;
+    /*background-color:#2a3891;*/
 }
 
 .content {
@@ -164,6 +164,12 @@ body {
     color:black;
 }
 
+.statsbar {
+    width:80%;
+    right:0;
+    position:fixed;
+}
+
 .secure_content {
     width:80%;
     height:100%;
@@ -171,7 +177,6 @@ body {
     position: fixed;
     right: 0;
     background-color: white;
-    overflow-x:auto;
 }
 
 .left{
@@ -179,18 +184,6 @@ body {
 }
 .right{
   float:right;
-}
-
-.hide_span:focus ~ .statistics {
-    display:none;
-}
-
-.show_span:focus ~ .statistics {
-    display:block;
-}
-
-.statistics {
-    display:none;
 }
 
 ul {

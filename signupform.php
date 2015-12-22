@@ -198,7 +198,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if( $returnVal == "") {
         $_SESSION['success_firstname'] = $firstname;
-        header('Location: success.php');
+        header('Location: success');
     }
 } //End POST
 
@@ -256,7 +256,7 @@ function addError($value) {
         <div class="content">
         <div class="error"><?php echo $returnVal; ?></div>
         <form id="signup-form" class="signup-form" method="post" 
-            action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" target="_top">
+            action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                 <fieldset>
                     <legend>Persoonlijke Informatie</legend>
                     <ul>

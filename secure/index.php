@@ -2,7 +2,7 @@
 include "../functions.php";
 
 if(!isset($_SESSION['loginuser'])) {
-    header('Location: login.php');
+    header('Location: ../login');
 }
 $menu_html = "";
 $user_info = get_user_info($_SESSION['loginuser']);
@@ -11,6 +11,7 @@ $user_info_permissions = $user_info[$db_user_permissions];
 
 // Assemble menu:
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
+    $menu_html .= "<div class='menuitem'><a class='menulink' id ='showstats' href='#'>Main</a></div>";
     $menu_html .= "<div class='menuitem'><a class='menulink' id='displaysignup' href='#'>Inschrijvingen tonen</a></div>";
     $menu_html .= "<div class='menuitem'><a class='menulink' id='displayraffle' href='#'>Loting tonen</a></div>";
     $menu_html .= "<div class='menuitem'><a class='menulink' id='displayBuyers' href='#'>Verkochte tickets tonen</a></div>";
@@ -52,19 +53,15 @@ if( $user_info_permissions & PERMISSION_USER) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class="top">
+        <div id="top" class="top">
             <span class="right"><a href="logout.php">Logout</a></span>
             <span class="right">Welkom <?php echo $user_info_name ?></span>
         </div>
-        <div class="menu">
+        <div id="menu" class="menu">
             <?php echo $menu_html ?>
         </div>
 
-        <div class="statistics_content">
-            <canvas id="testchart" width="200" height="200" style="padding-left:200px;"></canvas>
-        </div>
-
-        <div class="secure_content">
+        <div id="content" class="secure_content">
 
         </div>
 

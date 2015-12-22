@@ -33,7 +33,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $db_hash = $row["password"];
                 if( password_verify($password, $db_hash)) {
                     $_SESSION['loginuser'] = $username;
-                    header('Location: secure/index.php');
+                    header('Location: secure/');
                 } else {
                     $error = TRUE;
                 }
