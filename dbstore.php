@@ -52,8 +52,9 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
         $row = $result->fetch_array(MYSQLI_ASSOC);
         $contrib0_id = $row[$db_contrib_id];
     } else if( $mysqli->query($contrib0_insert_query) ) {
-    	$result =  $mysqli->query("SELECT LAST_INSERT_ID();");
+    	$result =  $mysqli->query($contrib0_select_query);
         if( $result->num_rows > 0 ) {
+            var_dump($row);
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $contrib0_id = $row[$db_contrib_id];    
         } else {
@@ -67,7 +68,7 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
         $row = $result->fetch_array(MYSQLI_ASSOC);
         $contrib1_id = $row[$db_contrib_id];
     } else if( $mysqli->query($contrib1_insert_query) ) {
-        $result =  $mysqli->query("SELECT LAST_INSERT_ID();");
+        $result =  $mysqli->query($contrib1_select_query);
         if( $result->num_rows > 0 ) {
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $contrib1_id = $row[$db_contrib_id];    

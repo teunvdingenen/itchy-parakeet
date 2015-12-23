@@ -465,8 +465,8 @@ function addError($value) {
                                 Proin ultricies quis lacus in porttitor. Vivamus ullamcorper felis est, in congue neque bibendum sed. Donec egestas lorem quam, vitae ullamcorper tortor efficitur eu. Quisque varius elementum metus, vel luctus nunc elementum vitae. Curabitur lacinia ipsum velit, non facilisis est fermentum nec. Nam varius dolor vitae felis sagittis consectetur. Donec tortor ipsum, suscipit vitae augue non, tempor pellentesque sem. Vivamus aliquet arcu non felis dignissim, quis iaculis dui porta. Nulla pulvinar placerat est, quis sollicitudin augue elementum in. Nunc eleifend placerat dolor eu pulvinar. Proin venenatis auctor bibendum. In ac venenatis lectus, eget tempus augue. 
                             </div>
                             <div>
-                                <input class="field text email" type="text" name"partner" id="partner" value="<?php echo $partner;?>"/>
-                                <label for="email">E-mail</label>
+                                <input class="field text email" type="text" name="partner" id="partner" value="<?php echo $partner; ?>">
+                                <label for="partner">E-mail</label>
                             </div>
                         </li>
                     </ul>
