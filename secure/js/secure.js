@@ -36,13 +36,16 @@ $(document).ready(function() {
 	$("#showstats").click(function() {
 		$.get("stats.php", function(response) {
 			setContent($('<div>').html(response));
+			$.getScript("js/statspage.js", function() {
+				console.log("added stats.js");
+			});
 		});
 	});
 	$("#displaysignup").click(function() {
 		$.get("signups.php", function(response) {
 			setContent($('<div>').html(response));
 		});
-		$.post("statistics.php",{"type":"signup"}, function(response){
+		$.post("signupstats.php",{"type":"signup"}, function(response){
 			addStatsBar();
 			setStatisticsTitle(response);
 		});

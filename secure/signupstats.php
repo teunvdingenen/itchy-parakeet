@@ -15,6 +15,7 @@ $statistic_type = $_POST["type"];
 
 $result = array();
 $total=0;
+$ages=array();
 $age_max=$age_tot=0;
 $age_min = 9999;
 $age_a=$age_b=$age_c=$age_d=$age_e=0;
@@ -24,13 +25,22 @@ $visits_tot=$visits_one=$visits_two=$visits_three=$visits_four=$visits_more=$vis
 $has_partner=$no_partner=0;
 $contrib0 = array();
 $contrib1 = array();
+$signupdates = array();
 $sqlresult = 0;
 
-if( $statistic_type == "signup") {
-	$sqlresult = get_signup_statistics();
+$result = "";
+$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+if( $mysqli->connect_errno ) {
+  return false;
+} else {
+    $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type, p.signupdate FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id";
+    $sqlresult = $mysqli->query($query);
+    if( $sqlresult === FALSE ) {
+        echo $mysqli->error;
+    }
 }
+$mysqli->close();
 
-$mysqli = new mysqli();
 while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 {
 	foreach($row as $key=>$value) {
@@ -53,6 +63,11 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 		    } else {
 		    	$age_e+=1;
 		    }
+		    if(array_key_exists($age, $ages)) {
+		    	$ages[$age] += 1;
+		    } else {
+		    	$ages[$age] = 1;
+		    }
 		    $age_tot += $age;
 		} elseif( $key == 1 ) { //gender
 		    if( $value=='male') $gender_m += 1;
@@ -63,7 +78,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 		    } else {
 		        $cities[strtolower($value)] = 1;
 		    }
-		} elseif( $key == 3 ) { 
+		} elseif( $key == 3 ) {  //visits
 		    $visits_tot += $value;
 		    if( $value == 0) {
 		        $visits_none += 1;
@@ -78,7 +93,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 		    } elseif( $value >= 5) {
 		    	$visits_more += 1;
 		    }
-		} elseif( $key == 4 ) {
+		} elseif( $key == 4 ) { //partner
 			if( $value != '' && $value != NULL) {
 				$has_partner += 1;
 			} else {
@@ -96,6 +111,14 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 		    } else {
 		        $contrib1[$value] = 1;
 		    }
+		} elseif( $key == 7) { //signupdate
+			$datetime = new DateTime($value);
+			$datestr = $datetime->format('Y-m-d');
+			if(array_key_exists($datestr, $signupdates)) {
+				$signupdates[$datestr] += 1;
+			} else {
+				$signupdates[$datestr] = 1;
+			}
 		}
 	}
 }
@@ -104,15 +127,19 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 ksort($cities);
 ksort($contrib0);
 ksort($contrib1);
+ksort($signupdates);
+ksort($ages);
 $result["total"] = $total;
 $result["age"] = array('min'=>$age_min, 'max'=>$age_max, '1821'=>$age_a, '2226'=>$age_b, '2730'=>$age_c,
 	'3134'=>$age_d, '35' => $age_e, 'tot' => $age_tot);
+$result["ages"] = $ages;
 $result["gender"] = array('male' => $gender_m, 'female' => $gender_f);
 $result["city"] = $cities;
 $result["visits"] = array('tot'=>$visits_tot, 'none'=>$visits_none, 'one'=>$visits_one, 'two'=>$visits_two,
 	'three'=>$visits_three, 'four'=>$visits_four, 'more'=>$visits_more);
 $result["contrib0"] = $contrib0;
 $result["contrib1"] = $contrib1;
+$result["signupdates"] = $signupdates;
 
 echo json_encode($result);
 ?>

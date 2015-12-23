@@ -1,5 +1,5 @@
 <?php session_start();
-include "functions.php";
+include "../functions.php";
 
 if(!isset($_SESSION['loginuser'])) {
     header('Location: ../login');
@@ -9,32 +9,11 @@ $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-
-
-
-
-function get_signup_statistics() {
-  global $db_host, $db_user, $db_pass, $db_name;
-  global $db_table_person, $db_table_contrib;
-  $result = "";
-  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-  if( $mysqli->connect_errno ) {
-      return false;
-    } else {
-        $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, p.signupdate, c0.type, c1.type FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id";
-        $result = $mysqli->query($query);
-        if( $result === FALSE ) {
-            echo $mysqli->error;
-        }
-    }
-    $mysqli->close();
-    return $result;
-}
-
-
 if( !($user_info_permissions & PERMISSION_DISPLAY )) {
     echo "No access";
+    return;
 }
+
 ?>
 
 <!doctype html>
@@ -59,15 +38,28 @@ if( !($user_info_permissions & PERMISSION_DISPLAY )) {
         <!-- Add your site or application content here -->
 
         <div class="secure_content">
-
+            <div class="toprow">
+                <canvas class="third" id="genderchart"></canvas>
+                <canvas classs="twothird" id="signupschart"></canvas>
+            </div>
+            <div class="secondrow">
+                <canvas class="third" id="visitschart"></canvas>
+                <canvas class="third" id="contrib0chart"></canvas>
+                <canvas class="third" id="contrib1chart"></canvas>
+            </div>
+            <div class="thirdrow">
+                <canvas class="third" id="citychart"></canvas>
+                <canvas class="twothird" id="agechart"></canvas>
+            </div>
         </div>
-
 
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
         <script src="../js/plugins.js"></script>
         <script src="../js/main.js"></script>
+        <script src="js/Chart.js"></script>
+        <script src="js/statspage.js"></script>
 
     </body>
 </html>
