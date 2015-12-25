@@ -40,7 +40,7 @@ if( !($user_info_permissions & PERMISSION_DISPLAY )) {
         <div class="secure_content">
             <div class="toprow">
                 <canvas class="third" id="genderchart"></canvas>
-                <canvas classs="twothird" id="signupschart"></canvas>
+                <canvas class="twothird" id="signupschart"></canvas>
             </div>
             <div class="secondrow">
                 <canvas class="third" id="visitschart"></canvas>
@@ -59,7 +59,7 @@ if( !($user_info_permissions & PERMISSION_DISPLAY )) {
         <script src="../js/plugins.js"></script>
         <script src="../js/main.js"></script>
         <script src="js/Chart.js"></script>
-        <script src="js/statspage.js"></script>
+        <script src="js/chartfunctions.js"></script>
 
     </body>
 </html>

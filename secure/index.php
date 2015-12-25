@@ -45,6 +45,7 @@ if( $user_info_permissions & PERMISSION_USER) {
 
         <link rel="stylesheet" href="../css/normalize.css">
         <link rel="stylesheet" href="../css/main.css">
+        <link rel="stylesheet" href="css/secure.css">
         <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body>
@@ -71,6 +72,7 @@ if( $user_info_permissions & PERMISSION_USER) {
         <script src="../js/main.js"></script>
         <script src="js/secure.js"></script>
         <script src="js/Chart.js"></script>
+        <script src="js/chartfunctions.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>

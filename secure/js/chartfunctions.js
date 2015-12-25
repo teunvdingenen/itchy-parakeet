@@ -32,26 +32,32 @@ function HSVtoRGB(h, s, v) {
     };
 }
 
-function createVisitsChart(visits) {
-	var ctx = $("#visitschart").get(0).getContext("2d");
-	var colorParts = 1 / 10;
-	var i = 0;
-	var data = [];
+function createVisitsChart(visits, canvas) {
+	var ctx = $(canvas).get(0).getContext("2d");
+	var labeldata = [];
+	var values = [];
 	$.each(visits, function(key, val) {
-		if( i == 0 ) { //total
-		} else {
-			var rgbcolor = HSVtoRGB(0.5, 0.2, i*colorParts);
-			var colorhex = rgbToHex(rgbcolor.r, rgbcolor.g, rgbcolor.b);
-			data.push({value: val, color: colorhex, label:key});
-		}
-		i++;
-		
+		values.push(val);
+		labeldata.push(key);
 	});
-	return new Chart(ctx).Pie(data,{segmentShowStroke : true, animationSteps : 200 });
+	var bardata = {
+		labels : labeldata,
+		datasets : [{
+			label: "Leeftijden",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: values
+		}]
+	};
+	return new Chart(ctx).Bar(bardata);
 }
 
-function createSignDateChart(signupdates) {
-	var ctx = $("#signupschart").get(0).getContext("2d");
+function createSignDateChart(signupdates, canvas) {
+	var ctx = $(canvas).get(0).getContext("2d");
 	var labeldata = [];
 	var dates = [];
 	$.each(signupdates, function(key, val) {
@@ -74,13 +80,9 @@ function createSignDateChart(signupdates) {
 	return new Chart(ctx).Line(linedata);
 }
 
-function createContribChart(contrib, isZero) {
-	var ctx;
-	if( isZero ) {
-		ctx = $("#contrib0chart").get(0).getContext("2d");
-	} else {
-		ctx = $("#contrib1chart").get(0).getContext("2d");
-	}
+function createContribChart(contrib, canvas) {
+
+	var ctx = $(canvas).get(0).getContext("2d");
 	var elements = 0; 
 	$.each(contrib, function(key) {
 		elements++;
@@ -94,11 +96,11 @@ function createContribChart(contrib, isZero) {
 		data.push({value: val, color: colorhex, label:key});
 		i++;
 	});
-	return new Chart(ctx).Pie(data,{segmentShowStroke : true, animationSteps : 200 });
+	return new Chart(ctx).Pie(data);
 }
 
-function createGenderChart(genderInfo) {
-	var ctx = $("#genderchart").get(0).getContext("2d");
+function createGenderChart(genderInfo, canvas) {
+	var ctx = $(canvas).get(0).getContext("2d");
 	var colorMale = HSVtoRGB(0.5, 0.2, 0.3);
 	colorMale = rgbToHex(colorMale.r, colorMale.g, colorMale.b);
 	var colorFemale = HSVtoRGB(0.5, 0.2, 0.6);
@@ -113,26 +115,35 @@ function createGenderChart(genderInfo) {
 			color:colorFemale,
 			label:"female"
 		}];
-	return new Chart(ctx).Pie(data,{segmentShowStroke : true, animationSteps : 200 });
+	return new Chart(ctx).Pie(data);
 }
 
-function createCityChart(cities) {
-	var ctx = $("#citychart").get(0).getContext("2d");
-	var elements = 0; 
-	$.each(cities, function(key) {elements++;});
-	var data = [];
-	var colorParts = 1 / (elements + 4);
-	var i = 0;
+function createCityChart(cities, canvas) {
+	var ctx = $(canvas).get(0).getContext("2d");
+
+	var labeldata = [];
+	var values = [];
 	$.each(cities, function(key, val) {
-		var rgbcolor = HSVtoRGB(0.5, 0.2, i*colorParts);
-		var colorhex = rgbToHex(rgbcolor.r, rgbcolor.g, rgbcolor.b);
-		data.push({value: val, color: colorhex, label:key});
-		i++;
+		values.push(val);
+		labeldata.push(key);
 	});
-	return new Chart(ctx).Pie(data,{segmentShowStroke : true, animationSteps : 200 });
+	var bardata = {
+		labels : labeldata,
+		datasets : [{
+			label: "Steden",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: values
+		}]
+	};
+	return new Chart(ctx).Bar(bardata);
 }
 
-function createAgeChart(age) {
+function createAgeChart(age, canvas) {
 	var ctx = $("#agechart").get(0).getContext("2d");
 	var labeldata = [];
 	var dates = [];
@@ -155,20 +166,3 @@ function createAgeChart(age) {
 	};
 	return new Chart(ctx).Line(linedata);
 }
-
-function createCharts(response) {
-	var json = JSON.parse(response);
-	createGenderChart(json['gender']);
-	createSignDateChart(json['signupdates']);
-	createVisitsChart(json['visits']);
-	createContribChart(json['contrib0'], true);
-	createContribChart(json['contrib1'], false);
-	createCityChart(json['city']);
-	createAgeChart(json['ages']);
-}
-
-
-$.post("signupstats.php",{"type":"signup"}, function(response){
-	console.log(response);
-	createCharts(response);	
-});

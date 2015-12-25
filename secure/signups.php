@@ -11,7 +11,7 @@ $user_info_permissions = $user_info[$db_user_permissions];
 
 $statistic_string = "";
 $resultHTML = "<table>";
-$resultHTML.="<tr>";
+$resultHTML.="<tr class='header-row'>";
 $resultHTML.="<th>Achternaam</th>";
 $resultHTML.="<th>Voornaam</th>";
 $resultHTML.="<th>Geboortedag</th>";
