@@ -38,7 +38,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
     {
         $resultHTML.="<tr>";
         foreach($row as $key=>$value) {
-            $resultHTML.= "<td>" . $value . "</td>";
+            $resultHTML.= "<td><div class='table-cell'>" . $value . "</div></td>";
         }
         $resultHTML.= "</tr>";
     }

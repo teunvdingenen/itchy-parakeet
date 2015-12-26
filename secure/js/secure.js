@@ -3,6 +3,10 @@ function setContent(response) {
 	$(".secure_content").html(response.find('.secure_content').html());
 };
 
+function setStatsContent(response) {
+	$("#statsbar").html(response.find('#statsbar').html());
+}
+
 function addCanvas(element, name) {
 	$(element).append("<canvas id='"+name+"'' class='graphcanvas'></canvas>");
 }
@@ -83,11 +87,11 @@ $(document).ready(function() {
 	$("#raffle").click(function() {
 		$.get("raffle.php", function(response) {
 			setContent($('<div>').html(response));
-			$.getScript("js/raffle.js");
-		});
-		$.post("signupstats.php",{"type":"raffle"}, function(response){
 			addStatsBar();
-			//setStatisticsTitle(response);
+			setStatsContent($('<div>').html(response));
+			$.getScript("js/raffle.js", function() {
+				$(document).ready(function() {setupCharts();});
+			});
 		});
 	});
 	$("#editsignup").click(function() {

@@ -79,6 +79,9 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
         $returnVal .= "Failed to store contribution1: (" . $mysqli->error . ") ";
     }
     
+    $first = ucfirst($first);
+    $city = ucfirst(strtolower($city));
+
     // SUPER UGLY! YOU CAN DO BETTER!!
     if( $partner != '') {
         $person_query = sprintf("INSERT INTO `%s` (`%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`, `%s`) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, '%s', '%s', %s, %s, '%s', '%s', '%s', '%s')",

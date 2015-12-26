@@ -226,9 +226,14 @@ table {
 
 th, td {
     text-align: center;
+    vertical-align: center;
     padding:5px;
     border-bottom: 1px solid #ddd;
-    height:5em;
+}
+
+div.table-cell {
+    height: 3em;
+    overflow:auto;
 }
 
 .header-row, .header-row:hover {

@@ -144,7 +144,7 @@ function createCityChart(cities, canvas) {
 }
 
 function createAgeChart(age, canvas) {
-	var ctx = $("#agechart").get(0).getContext("2d");
+	var ctx = $(canvas).get(0).getContext("2d");
 	var labeldata = [];
 	var dates = [];
 	$.each(age, function(key, val) {

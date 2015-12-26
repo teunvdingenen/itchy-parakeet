@@ -58,12 +58,14 @@ if( $user_info_permissions & PERMISSION_USER) {
             <span class="right"><a href="logout.php">Logout</a></span>
             <span class="right">Welkom <?php echo $user_info_name ?></span>
         </div>
-        <div id="menu" class="menu">
-            <?php echo $menu_html ?>
-        </div>
+        <div>
+            <div id="menu" class="menu">
+                <?php echo $menu_html ?>
+            </div>
 
-        <div id="content" class="secure_content">
+            <div id="content" class="secure_content">
 
+            </div>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

@@ -18,7 +18,6 @@ $total=0;
 $ages=array();
 $age_max=$age_tot=0;
 $age_min = 9999;
-$age_a=$age_b=$age_c=$age_d=$age_e=0;
 $gender_m=$gender_f=0;
 $cities = array();
 $visits = array();
@@ -66,17 +65,6 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 		    }
 		    if( $age < $age_min) {
 		        $age_min = $age;
-		    }
-		    if( $age < 22) {
-		    	$age_a+=1;
-		    } elseif( $age < 27) {
-		    	$age_b+=1;
-		    } elseif( $age < 31) {
-		    	$age_c+=1;
-		    } elseif( $age < 34) {
-		    	$age_d+=1;
-		    } else {
-		    	$age_e+=1;
 		    }
 		    if(array_key_exists($age, $ages)) {
 		    	$ages[$age] += 1;
@@ -137,8 +125,7 @@ ksort($signupdates);
 ksort($ages);
 ksort($visits);
 $result["total"] = $total;
-$result["age"] = array('min'=>$age_min, 'max'=>$age_max, '1821'=>$age_a, '2226'=>$age_b, '2730'=>$age_c,
-	'3134'=>$age_d, '35' => $age_e, 'tot' => $age_tot);
+$result["age"] = array('min'=>$age_min, 'max'=>$age_max, 'tot' => $age_tot);
 $result["ages"] = $ages;
 $result["gender"] = array('male' => $gender_m, 'female' => $gender_f);
 $result["city"] = $cities;

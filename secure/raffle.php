@@ -51,7 +51,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         $resultHTML.="<tr>";
         $i = 0;
         foreach($row as $value) {
-            $resultHTML .= "<td class='".$cell_keys[$i]."'>".$value."</td>";
+            $resultHTML .= "<td><div id='".$cell_keys[$i]."' class='table-cell'>".$value."</div></td>";
             $i++;
         }
         $resultHTML.= "</tr>";
@@ -76,7 +76,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -85,15 +85,23 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
 
         <!-- Add your site or application content here -->
 
-        <div class="secure_content">
+        <div id="statsbar">
+            <div class="statistics_content">
+                <canvas id='genderchart'></canvas>
+                <canvas id='ageschart'></canvas>
+                <canvas id='visitschart'></canvas>
+                <canvas id='citieschart'></canvas>
+            </div>        
             <button id='confirm'>Inloten</button>
+        </div>
+        <div id="secure_content" class="secure_content">
             <?php echo $resultHTML ?>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+        <script src="../js/plugins.js"></script>
+        <script src="../js/main.js"></script>
 
     </body>
 </html>
