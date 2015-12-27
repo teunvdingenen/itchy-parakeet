@@ -32,6 +32,12 @@ function HSVtoRGB(h, s, v) {
     };
 }
 
+function calculateAge(birthday) { // birthday is a date
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
 function createVisitsChart(visits, canvas) {
 	var ctx = $(canvas).get(0).getContext("2d");
 	var labeldata = [];
@@ -81,7 +87,6 @@ function createSignDateChart(signupdates, canvas) {
 }
 
 function createContribChart(contrib, canvas) {
-
 	var ctx = $(canvas).get(0).getContext("2d");
 	var elements = 0; 
 	$.each(contrib, function(key) {
@@ -105,13 +110,17 @@ function createGenderChart(genderInfo, canvas) {
 	colorMale = rgbToHex(colorMale.r, colorMale.g, colorMale.b);
 	var colorFemale = HSVtoRGB(0.5, 0.2, 0.6);
 	colorFemale = rgbToHex(colorFemale.r, colorFemale.g, colorFemale.b);
+	var men = genderInfo["male"];
+	var women = genderInfo["female"];
+	if( men === null ) { men = 0;}
+	if( women === null) { women = 0;}
 	var data = [
 		{
-			value: genderInfo["male"],
+			value: men,
 			color: colorMale,
 			label:"male"
 		},{
-			value: genderInfo["female"],
+			value: women,
 			color:colorFemale,
 			label:"female"
 		}];
@@ -164,5 +173,5 @@ function createAgeChart(age, canvas) {
             data: dates
 		}]
 	};
-	return new Chart(ctx).Line(linedata);
+	return new Chart(ctx).Bar(linedata);
 }

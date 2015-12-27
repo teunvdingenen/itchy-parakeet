@@ -87,14 +87,14 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
 
         <div id="statsbar">
             <div class="statistics_content">
-                <canvas id='genderchart'></canvas>
-                <canvas id='ageschart'></canvas>
-                <canvas id='visitschart'></canvas>
-                <canvas id='citieschart'></canvas>
+                <canvas class='forth' id='genderchart'></canvas>
+                <canvas class='forth' id='ageschart'></canvas>
+                <canvas class='forth' id='visitschart'></canvas>
+                <canvas class='forth' id='citieschart'></canvas>
             </div>        
-            <button id='confirm'>Inloten</button>
         </div>
         <div id="secure_content" class="secure_content">
+            <button id='confirm'>Inloten</button>
             <?php echo $resultHTML ?>
         </div>
 
@@ -102,6 +102,9 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
         <script src="../js/plugins.js"></script>
         <script src="../js/main.js"></script>
+        <script src="js/Chart.js"></script>
+        <script src="js/chartfunctions.js"></script>
+        <script src="js/raffle.js"></script>
 
     </body>
 </html>

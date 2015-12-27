@@ -51,7 +51,6 @@ $(document).ready(function() {
 		$.get("statspage.php", function(response) {
 			setContent($('<div>').html(response));
 			$.post("signupstats.php", {"type":"signup"}, function(response){
-				console.log(response);
                 var json = JSON.parse(response);
                 createGenderChart(json['gender'], "#genderchart");
                 createSignDateChart(json['signupdates'], "#signupschart");

@@ -54,13 +54,11 @@ if( $user_info_permissions & PERMISSION_USER) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div id="top" class="top">
-            <span class="right"><a href="logout.php">Logout</a></span>
-            <span class="right">Welkom <?php echo $user_info_name ?></span>
-        </div>
         <div>
             <div id="menu" class="menu">
                 <?php echo $menu_html ?>
+                <div class='menuitem'><a href="logout.php">Logout</a></div>
+                <div class='footer'>Ingelogd als: <?php echo $user_info_name ?></div>
             </div>
 
             <div id="content" class="secure_content">

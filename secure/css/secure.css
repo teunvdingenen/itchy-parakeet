@@ -1,3 +1,7 @@
 .hidecolumn {
 	display:none;
 }
+
+.statistics_content {
+	height:100%;
+}
