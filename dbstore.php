@@ -224,7 +224,6 @@ function storeSignupWithDate($email, $first, $last, $birth, $city, $gender, $pho
     if( $result->num_rows > 0) {
         $row = $result->fetch_array(MYSQLI_ASSOC);
         $contrib0_id = $row[$db_contrib_id];
-        $returnVal .= "Found contribution: " . implode(", ", $row);
     } else if( $mysqli->query($contrib0_insert_query) ) {
     	$result = $mysqli->query($contrib0_select_query);
         $contrib0_isNew = true;
@@ -241,7 +240,6 @@ function storeSignupWithDate($email, $first, $last, $birth, $city, $gender, $pho
     if( $result->num_rows > 0) {
         $row = $result->fetch_array(MYSQLI_ASSOC);
         $contrib1_id = $row[$db_contrib_id];
-        $returnVal .= "Found contribution: " . implode(", ", $row);
     } else if( $mysqli->query($contrib1_insert_query) ) {
         $result =  $mysqli->query($contrib1_select_query);
         $contrib1_isNew = true;
