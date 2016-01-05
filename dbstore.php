@@ -47,6 +47,7 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
         );
 
 	$contrib0_id = $contrib1_id = 0;
+    $contrib0_isNew = $contrib1_isNew = false;
     $result = $mysqli->query($contrib0_select_query);
     if( $result->num_rows > 0) {
         $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -54,9 +55,9 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
     } else if( $mysqli->query($contrib0_insert_query) ) {
     	$result =  $mysqli->query($contrib0_select_query);
         if( $result->num_rows > 0 ) {
-            var_dump($row);
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $contrib0_id = $row[$db_contrib_id];    
+            $contrib0_isNew = true;
         } else {
             //FATAL ERROR NIGH IMPOSSIBLE
         }
@@ -71,7 +72,8 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
         $result =  $mysqli->query($contrib1_select_query);
         if( $result->num_rows > 0 ) {
             $row = $result->fetch_array(MYSQLI_ASSOC);
-            $contrib1_id = $row[$db_contrib_id];    
+            $contrib1_id = $row[$db_contrib_id];
+            $contrib1_isNew = true;    
         } else {
             //FATAL ERROR NIGH IMPOSSIBLE
         }
@@ -161,6 +163,12 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
 		    //TODO SEND ME AN EMAIL
             //$returnVal .= "Failed to add person: " . $mysqli->error . ") \n" . $person_query;
             $returnVal = "Er is helaas iets fout gegaan. Er is een mail verstuurd hierover en zal snel worden opgepakt. Probeer het inschrijven later nog eens!" . $mysqli->error . $person_query;
+            if( $contrib0_isNew ) {
+                $mysqli->query(sprintf("DELETE FROM `%s` WHERE `%s` = '%s';", $db_table_contrib, $db_contrib_id, $contrib0_id));    
+            }
+            if( $contrib1_isNew) {
+                $mysqli->query(sprintf("DELETE FROM `%s` WHERE `%s` = '%s';", $db_table_contrib, $db_contrib_id, $contrib1_id));
+            }
         }
 	}
     $mysqli->close();
@@ -211,18 +219,20 @@ function storeSignupWithDate($email, $first, $last, $birth, $city, $gender, $pho
         );
 
 	$contrib0_id = $contrib1_id = 0;
+    $contrib0_isNew = $contrib1_isNew = false;
     $result = $mysqli->query($contrib0_select_query);
     if( $result->num_rows > 0) {
         $row = $result->fetch_array(MYSQLI_ASSOC);
         $contrib0_id = $row[$db_contrib_id];
+        $returnVal .= "Found contribution: " . implode(", ", $row);
     } else if( $mysqli->query($contrib0_insert_query) ) {
-    	$result =  $mysqli->query($contrib0_select_query);
+    	$result = $mysqli->query($contrib0_select_query);
+        $contrib0_isNew = true;
         if( $result->num_rows > 0 ) {
             $row = $result->fetch_array(MYSQLI_ASSOC);
-            //var_dump($row);
-            $contrib0_id = $row[$db_contrib_id];    
+            $contrib0_id = $row[$db_contrib_id];
         } else {
-            $retunVal .= "Failed too add contribution: (".$mysqli->error .") ";
+            $returnVal .= "Failed too add contribution: (".$mysqli->error .") <br> Query ( ". $contrib0_select_query .")";
         }
     } else {
     	$returnVal .= "Failed to store contribution0: (" . $mysqli->error . ") ";
@@ -231,13 +241,15 @@ function storeSignupWithDate($email, $first, $last, $birth, $city, $gender, $pho
     if( $result->num_rows > 0) {
         $row = $result->fetch_array(MYSQLI_ASSOC);
         $contrib1_id = $row[$db_contrib_id];
+        $returnVal .= "Found contribution: " . implode(", ", $row);
     } else if( $mysqli->query($contrib1_insert_query) ) {
         $result =  $mysqli->query($contrib1_select_query);
+        $contrib1_isNew = true;
         if( $result->num_rows > 0 ) {
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $contrib1_id = $row[$db_contrib_id];    
         } else {
-            $retunVal .= "Failed too add contribution: (".$mysqli->error .") ";
+            $returnVal .= "Failed too add contribution: (".$mysqli->error .") <br> Query ( ". $contrib0_select_query .")";
         }
     } else {
         $returnVal .= "Failed to store contribution1: (" . $mysqli->error . ") ";
@@ -324,7 +336,13 @@ function storeSignupWithDate($email, $first, $last, $birth, $city, $gender, $pho
         } else {
 		    //TODO SEND ME AN EMAIL
             //$returnVal .= "Failed to add person: " . $mysqli->error . ") \n" . $person_query;
-            $returnVal = "Er is helaas iets fout gegaan. Er is een mail verstuurd hierover en zal snel worden opgepakt. Probeer het inschrijven later nog eens!" . $mysqli->error . $person_query;
+            $returnVal .= "Er is helaas iets fout gegaan. Er is een mail verstuurd hierover en zal snel worden opgepakt. Probeer het inschrijven later nog eens!<br>" . $mysqli->error . $person_query . "<br>";
+            if( $contrib0_isNew ) {
+                $mysqli->query(sprintf("DELETE FROM `%s` WHERE `%s` = '%s';", $db_table_contrib, $db_contrib_id, $contrib0_id));    
+            }
+            if( $contrib1_isNew) {
+                $mysqli->query(sprintf("DELETE FROM `%s` WHERE `%s` = '%s';", $db_table_contrib, $db_contrib_id, $contrib1_id));
+            }
         }
 	}
     $mysqli->close();
