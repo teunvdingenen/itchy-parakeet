@@ -97,7 +97,7 @@ function removeStat(gender, city, age, visit) {
 }
 
 $(".raffle-table tr").on('click', function() {
-	var email = $(this).children('.email').text();
+	var email = $(this).children().children('#email').text();
 	var gender = $(this).children().children('#gender').text();
 	var city = $(this).children().children('#city').text();
 	var age = calculateAge(new Date($(this).children().children('#birthdate').text()));
@@ -116,8 +116,15 @@ $(".raffle-table tr").on('click', function() {
 	}
 });
 
-$(document).ready(function() {setupCharts();});
+function storeWinners() {
+	$.post("storeRaffle.php", {"winners":winners}, function(response){
+		//var json = JSON.parse(response);
+		console.log(response);
+	});
+}
 
-$('.ok').on('click', function(e){
-	//submit selected
-});
+//$('.confirm').on('click', function(e){
+	
+//});
+
+$(document).ready(function() {setupCharts();});

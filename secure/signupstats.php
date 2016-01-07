@@ -16,12 +16,10 @@ $statistic_type = $_POST["type"];
 $result = array();
 $total=0;
 $ages=array();
-$age_max=$age_tot=0;
-$age_min = 9999;
 $gender_m=$gender_f=0;
 $cities = array();
 $visits = array();
-$has_partner=$no_partner=0;
+//$has_partner=$no_partner=0;
 $contrib0 = array();
 $contrib1 = array();
 $signupdates = array();
@@ -59,22 +57,15 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 {
 	foreach($row as $key=>$value) {
 		if( $key == 0 ) { //birthdate
-		    $age = (new DateTime($value))->diff(new DateTime('now'))->y;
-		    if( $age > $age_max) {
-		        $age_max = $age;
-		    }
-		    if( $age < $age_min) {
-		        $age_min = $age;
-		    }
+			$age = (new DateTime($value))->diff(new DateTime('now'))->y;
 		    if(array_key_exists($age, $ages)) {
 		    	$ages[$age] += 1;
 		    } else {
 		    	$ages[$age] = 1;
 		    }
-		    $age_tot += $age;
 		} elseif( $key == 1 ) { //gender
-		    if( $value=='male') $gender_m += 1;
-		    elseif( $value=='female') $gender_f += 1;
+		    if( $value=='male' || $value=='Male') $gender_m += 1;
+		    elseif( $value=='female' || $value=='Female') $gender_f += 1;
 		} elseif( $key == 2 ) { //city
 		    if(array_key_exists(strtolower($value), $cities)) {
 		        $cities[strtolower($value)] += 1;
@@ -87,12 +78,12 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 		    } else {
 		        $visits[$value] = 1;
 		    }
-		} elseif( $key == 4 ) { //partner
-			if( $value != '' && $value != NULL) {
-				$has_partner += 1;
-			} else {
-				$no_partner += 1;
-			}
+//		} elseif( $key == 4 ) { //partner
+//			if( $value != '' && $value != NULL) {
+//				$has_partner += 1;
+//			} else {
+//				$no_partner += 1;
+//			}
 		} elseif( $key == 5) { //contrib0
 		    if( array_key_exists($value, $contrib0) ) {
 		        $contrib0[$value] += 1;
@@ -124,8 +115,7 @@ ksort($contrib1);
 ksort($signupdates);
 ksort($ages);
 ksort($visits);
-$result["total"] = $total;
-$result["age"] = array('min'=>$age_min, 'max'=>$age_max, 'tot' => $age_tot);
+//$result["total"] = $total;
 $result["ages"] = $ages;
 $result["gender"] = array('male' => $gender_m, 'female' => $gender_f);
 $result["city"] = $cities;

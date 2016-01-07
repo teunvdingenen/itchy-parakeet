@@ -1,5 +1,5 @@
 <?php session_start();
-include "functions.php";
+include "../functions.php";
 
 if(!isset($_SESSION['loginuser'])) {
     header('Location: ../login.php');

@@ -2,7 +2,7 @@
 include "../functions.php";
 
 if(!isset($_SESSION['loginuser'])) {
-    header('Location: login');
+    header('Location: ../login');
 }
 
 $user_info = get_user_info($_SESSION['loginuser']);
@@ -94,7 +94,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
             </div>        
         </div>
         <div id="secure_content" class="secure_content">
-            <button id='confirm'>Inloten</button>
+            <button id='confirm' onclick="storeWinners();">Inloten</button>
             <?php echo $resultHTML ?>
         </div>
 
