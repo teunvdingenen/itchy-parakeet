@@ -79,12 +79,14 @@ try {
     $raffle_sql = sprintf("CREATE TABLE `%s` (
         `%s` varchar(16) NOT NULL,
         `%s` varchar(255) NOT NULL default '',
+        `%s` BOOLEAN NOT NULL DEFAULT FALSE,
         PRIMARY KEY (`%s`),
         UNIQUE KEY (`%s`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Raffle codes';",
         $db_table_raffle,
         $db_raffle_code,
         $db_raffle_email,
+        $db_raffle_called,
         $db_raffle_code,
         $db_raffle_email );
 

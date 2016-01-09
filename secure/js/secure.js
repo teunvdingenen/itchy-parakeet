@@ -11,25 +11,6 @@ function addCanvas(element, name) {
 	$(element).append("<canvas id='"+name+"'' class='graphcanvas'></canvas>");
 }
 
-function setStatisticsTitle(response) {
-	var json = JSON.parse(response);
-
-	var genderInfo = json['gender'];
-	addCanvas('.statsbar', 'gender');
-	var ctx = $("#gender").get(0).getContext("2d");
-	var data = [
-		{
-			value: genderInfo["male"],
-			color: "#0000FF",
-			label:"male"
-		},{
-			value: genderInfo["female"],
-			color:"#FF0000",
-			label:"female"
-		}];
-	var mytestchart = new Chart(ctx).Pie(data,{segmentShowStroke : true, animationSteps : 200 });
-}
-
 function addStatsBar() {
 	if( $("#statsbar").length ) {
 		$("#statsbar").remove();
@@ -69,7 +50,7 @@ $(document).ready(function() {
 		});
 		$.post("signupstats.php",{"type":"signup"}, function(response){
 			addStatsBar();
-			setStatisticsTitle(response);
+			setStatsContent($('<div>').html(response));
 		});
 	});
 	$("#displaybuyers").click(function() {
@@ -79,9 +60,17 @@ $(document).ready(function() {
 	});
 	$("#displayraffle").click(function() { 
 		$.get("displayraffle.php", function(response) {
-			setContent($(response));
+			addStatsBar();
+			setContent($('<div>').html(response));
+			setStatsContent($('<div>').html(response));
 		});
-		
+		$.post("signupstats.php",{"type":"raffle"}, function(response){
+			var json = JSON.parse(response);
+			genderchart = createGenderChart(json['gender'], "#genderchart");
+			citieschart = createCityChart(json['city'], "#citieschart");
+			ageschart = createAgeChart(json['ages'], "#ageschart");
+			visitschart = createVisitsChart(json['visits'], "#visitschart");
+		});
 	});
 	$("#raffle").click(function() {
 		$.get("raffle.php", function(response) {

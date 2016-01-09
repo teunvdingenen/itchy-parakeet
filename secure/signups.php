@@ -68,6 +68,14 @@ $resultHTML.="</table>";
         <![endif]-->
 
         <!-- Add your site or application content here -->
+        <div id="statsbar">
+            <div class="statistics_content">
+                <canvas class='forth' id='genderchart'></canvas>
+                <canvas class='forth' id='ageschart'></canvas>
+                <canvas class='forth' id='visitschart'></canvas>
+                <canvas class='forth' id='citieschart'></canvas>
+            </div>        
+        </div>
         <div class="secure_content">
             <?php echo $resultHTML ?>
         </div>

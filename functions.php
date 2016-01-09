@@ -67,20 +67,6 @@ function get_signup_statistics() {
     return $result;
 }
 
-function get_raffle() {
-	global $db_host, $db_user, $db_pass, $db_name;
-	global $db_table_raffle;
-	$result = "";
-	$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-	if( $mysqli->connect_errno ) {
-  		return false;
-  	} else {
-  		$result = $mysqli->query("SELECT * FROM `$db_table_raffle` WHERE 1");
-  	}
-  	$mysqli->close();
-  	return $result;
-}
-
 function get_buyers() {
 	global $db_host, $db_user, $db_pass, $db_name;
 	global $db_table_buyer;
