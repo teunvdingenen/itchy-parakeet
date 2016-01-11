@@ -5,3 +5,14 @@
 .statistics_content {
 	height:100%;
 }
+
+.raffle_table {
+	width:50%;
+}
+
+.person_info {
+	position:absolute;
+	top:0;
+	right:0;
+	width:38%;
+}

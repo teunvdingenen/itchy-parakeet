@@ -60,10 +60,14 @@ $(document).ready(function() {
 	});
 	$("#displayraffle").click(function() { 
 		$.get("displayraffle.php", function(response) {
-			addStatsBar();
+			//addStatsBar();
 			setContent($('<div>').html(response));
-			setStatsContent($('<div>').html(response));
+			//setStatsContent($('<div>').html(response));
+			$.getScript("js/called.js", function() {
+
+			});
 		});
+		/**
 		$.post("signupstats.php",{"type":"raffle"}, function(response){
 			var json = JSON.parse(response);
 			genderchart = createGenderChart(json['gender'], "#genderchart");
@@ -71,6 +75,7 @@ $(document).ready(function() {
 			ageschart = createAgeChart(json['ages'], "#ageschart");
 			visitschart = createVisitsChart(json['visits'], "#visitschart");
 		});
+		**/
 	});
 	$("#raffle").click(function() {
 		$.get("raffle.php", function(response) {

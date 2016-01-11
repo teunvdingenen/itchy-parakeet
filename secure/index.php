@@ -28,7 +28,7 @@ if( $user_info_permissions & PERMISSION_REMOVE) {
 if( $user_info_permissions & PERMISSION_USER) {
     $menu_html .= "<div class='menuitem'><a class='menulink' id='usermanage' href='#''>Gebruikers</a></div>";
 }
-
+$menu_html .= "<div class='menuitem'><a class='menulink' href='logout.php'>Logout</a></div>";
 ?>
 
 <!doctype html>
@@ -57,7 +57,6 @@ if( $user_info_permissions & PERMISSION_USER) {
         <div>
             <div id="menu" class="menu">
                 <?php echo $menu_html ?>
-                <div class='menuitem'><a href="logout.php">Logout</a></div>
                 <div class='footer'>Ingelogd als: <?php echo $user_info_name ?></div>
             </div>
 
