@@ -52,6 +52,7 @@ $db_raffle_called   = "called";
 $db_buyer_email     = "email";
 $db_buyer_raffle    = "code";
 $db_buyer_id        = "id";
+$db_buyer_complete  = "complete";
 
 $db_user_username  		= "username";
 $db_user_password		= "password";

@@ -33,7 +33,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
     if( $mysqli->connect_errno ) {
-        addError("Ik kon geen connectie maken met de database");
+        addError("Het lijkt erop dat de website kapot is, probeer het later nog eens!");
         //TODO email error
     }
 
@@ -50,33 +50,44 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $_SERVER['PHP_SELF']);
 
         $amount = 100;
-        $order_id = $code;
+        $raffle = $code;
 
         try {
             $payment = $mollie->payments->create(array(
               "amount" => $amount,
               "method" => Mollie_API_Object_Method::IDEAL,
               "description" => "FFF 2016 " . $code,
-              "redirectUrl" => "{$protocol}://{$hostname}{$path}/redirect.php?order_id={$order_id}",
-              "metadata" => array("order_id" => $order_id,),
+              "redirectUrl" => "{$protocol}://{$hostname}{$path}/redirect.php?raffle={$raffle}",
+              "metadata" => array("raffle" => $raffle,),
               "issuer" => !empty($issuer) ? $issuer : NULL
             ));
         } catch (Mollie_API_Exception $e) {
             addError("Er is iets fout gegaan met het aanmaken van de betaling" . $e);
         }
+        storePaymentId($mysqli, $payment->id, $code, $email);
     } else {
         //try again..
         $returnVal .= "</ul>";
     }
+    $mysqli->close();
     if( $returnVal == "") {
         //sendoff to payment
         header('Location: ' . $payment->getPaymentUrl());
     }
 } //End POST
 
-function _exit() {
-    global $returnVal;
-    $returnVal .= "</ul>";
+function storePaymentId($mysqli, $paymentid, $code, $email) {
+    $sqlresult = $mysqli->query(sprintf("INSERT INTO `buyer` (`id`, `code`, `email`) VALUES ('%s','%s','%s')",
+        $mysqli->real_escape_string($paymentid),
+        $mysqli->real_escape_string($code),
+        $mysqli->real_escape_string($email)));
+    if( $sqlresult === FALSE) {
+        return FALSE;
+        //log error: $sqlresult->error
+    } else {
+        
+    }
+    return true;
 }
 
 function checkCode($mysqli, $code, $email) {

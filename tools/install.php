@@ -94,6 +94,7 @@ try {
         `%s` varchar(255) NOT NULL,
         `%s` varchar(16) NOT NULL default '',
         `%s` varchar(255) NOT NULL default '',
+        `%s` BOOLEAN NOT NULL default FALSE,
         PRIMARY KEY (`%s`),
         UNIQUE KEY (`%s`),
         UNIQUE KEY (`%s`)
@@ -102,6 +103,7 @@ try {
         $db_buyer_id,
         $db_buyer_raffle,
         $db_buyer_email,
+        $db_buyer_complete,
         $db_buyer_id,
         $db_buyer_raffle,
         $db_buyer_email );
