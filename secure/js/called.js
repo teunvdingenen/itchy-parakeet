@@ -21,13 +21,13 @@ function setCalled(email) {
 	});
 }
 
-
-
 $(".called-table tr").on('click', function() {
 	if( $(this).hasClass('selected')) {
 		$(this).removeClass('selected');
+		$(".person_info").hide();
 		selected = 0;
 	} else {
+		$(".person_info").show();
 		$(this).addClass('selected');
 		setPersonInfo($(this).children().children('#email').text());
 		if( selected != 0 ) {
@@ -35,4 +35,8 @@ $(".called-table tr").on('click', function() {
 		}
 		selected = $(this);
 	}
+});
+
+$(document).ready(function() { 
+	$(".person_info").hide();
 });

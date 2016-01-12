@@ -86,12 +86,12 @@ $resultHTML.="</table>";
 
         <!-- Add your site or application content here -->
         <div class="secure_content">
-            <span class="raffle_table">
+            <div class="called-content">
                 <?php echo $resultHTML ?>
-            </span>
-            <span class="person_info">
+            </div>
+            <div class="person_info">
 
-            </span>
+            </div>
         </div>
 
 

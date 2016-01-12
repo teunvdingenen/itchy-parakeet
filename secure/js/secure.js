@@ -60,9 +60,8 @@ $(document).ready(function() {
 	});
 	$("#displayraffle").click(function() { 
 		$.get("displayraffle.php", function(response) {
-			//addStatsBar();
 			setContent($('<div>').html(response));
-			//setStatsContent($('<div>').html(response));
+			removeStatsBar();
 			$.getScript("js/called.js", function() {
 
 			});

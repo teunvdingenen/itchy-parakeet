@@ -6,13 +6,20 @@
 	height:100%;
 }
 
-.raffle_table {
-	width:50%;
+.called-content {
+	float:left;
+	width:100%;
+}
+
+.called-table {
+	width:100%;
 }
 
 .person_info {
-	position:absolute;
-	top:0;
+	background-color:#D9D9D9;
+	position: fixed;
+	height:100%;
 	right:0;
-	width:38%;
+	width:40%;
+	overflow:auto;
 }
