@@ -278,13 +278,13 @@ function addError($value) {
                             <span>
                                 <label for="birthday">Geboortedatum</label>
                                 <span>
-                                    <input id="birthday" name="birthday" class="field text number" size="2" maxlength="2" type="text" placeholder="DD" value="<?php echo $birthday; ?>">
+                                    <input id="birthday" name="birthday" class="field text number" size="3" maxlength="2" type="text" placeholder="DD" value="<?php echo $birthday; ?>">
                                 </span>
                                 <span>
-                                    <input id="birthmonth" name="birthmonth" class="field text number" size="2" maxlength="2" type="text" placeholder="MM" value="<?php echo $birthmonth; ?>">
+                                    <input id="birthmonth" name="birthmonth" class="field text number" size="3" maxlength="2" type="text" placeholder="MM" value="<?php echo $birthmonth; ?>">
                                 </span>
                                 <span>
-                                    <input id="birthyear" name="birthyear" class="field text number" size="4" maxlength="4" type="text" placeholder="YYYY" value="<?php echo $birthyear; ?>">
+                                    <input id="birthyear" name="birthyear" class="field text number" size="5" maxlength="4" type="text" placeholder="YYYY" value="<?php echo $birthyear; ?>">
                                 </span>
                             </span>
                             

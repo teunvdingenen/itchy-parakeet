@@ -15,10 +15,9 @@ try
             database_setpayed($mysqli, $payment_id, 1);
             //send email to buyer
         }
-    }
-    elseif (!$payment->isOpen()) {
+    } elseif (!$payment->isOpen()) {
         $remove_success = database_remove($mysqli, $payment_id);
-        echo "removed ".$remove_success;
+        //echo "removed ".$remove_success;
     }
     $mysqli->close();
 }

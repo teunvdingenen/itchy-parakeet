@@ -31,48 +31,53 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $issuer = "";
     }
 
-    $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-    if( $mysqli->connect_errno ) {
-        addError("Het lijkt erop dat de website kapot is, probeer het later nog eens!");
-        //TODO email error
-    }
-
-    $code = $mysqli->real_escape_string($code);
-    $email = $mysqli->real_escape_string($email);
-    if( !checkCode($mysqli, $code, $email)) {
-        addError("We hebben helaas niet je code kunnen verifieren.");
-    }
     if( $returnVal == "" ) {
-        //all checks out!
-        $protocol = isset($_SERVER['HTTPS']) && strcasecmp('off',$_SERVER['HTTPS']) !== 0 ? "https" : "http";
-        $hostname = $_SERVER['HTTP_HOST'];
-        $path = dirname(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] :
-            $_SERVER['PHP_SELF']);
-
-        $amount = 100;
-        $raffle = $code;
-
-        try {
-            $payment = $mollie->payments->create(array(
-              "amount" => $amount,
-              "method" => Mollie_API_Object_Method::IDEAL,
-              "description" => "FFF 2016 " . $code,
-              "redirectUrl" => "{$protocol}://{$hostname}{$path}/redirect.php?raffle={$raffle}",
-              "metadata" => array("raffle" => $raffle,),
-              "issuer" => !empty($issuer) ? $issuer : NULL
-            ));
-        } catch (Mollie_API_Exception $e) {
-            addError("Er is iets fout gegaan met het aanmaken van de betaling" . $e);
+        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+        if( $mysqli->connect_errno ) {
+            addError("Het lijkt erop dat de website kapot is, probeer het later nog eens!");
+            //TODO email error
         }
-        storePaymentId($mysqli, $payment->id, $code, $email);
-    } else {
-        //try again..
-        $returnVal .= "</ul>";
+
+        $code = $mysqli->real_escape_string($code);
+        $email = $mysqli->real_escape_string($email);
+        if( !checkCode($mysqli, $code, $email)) {
+            addError("We hebben helaas niet je code kunnen verifieren.");
+        }
+        if( $returnVal == "" && hasPaid($mysqli, $code)) {
+            addError("Het lijkt erop dat je al betaald hebt. Het word nagekeken en je krijgt snel even bericht hierover!");
+        }
+        if( $returnVal == "" ) {
+            //all checks out!
+            $protocol = isset($_SERVER['HTTPS']) && strcasecmp('off',$_SERVER['HTTPS']) !== 0 ? "https" : "http";
+            $hostname = $_SERVER['HTTP_HOST'];
+            $path = dirname(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] :
+                $_SERVER['PHP_SELF']);
+
+            $amount = 100;
+            $raffle = $code;
+
+            try {
+                $payment = $mollie->payments->create(array(
+                  "amount" => $amount,
+                  "method" => Mollie_API_Object_Method::IDEAL,
+                  "description" => "FFF 2016 " . $code,
+                  "redirectUrl" => "{$protocol}://{$hostname}{$path}/redirect.php?raffle={$raffle}",
+                  "metadata" => array("raffle" => $raffle,),
+                  "issuer" => !empty($issuer) ? $issuer : NULL
+                ));
+            } catch (Mollie_API_Exception $e) {
+                addError("Er is iets fout gegaan met het aanmaken van de betaling" . $e);
+            }
+            storePaymentId($mysqli, $payment->id, $code, $email);
+        } 
+        $mysqli->close();
     }
-    $mysqli->close();
     if( $returnVal == "") {
         //sendoff to payment
         header('Location: ' . $payment->getPaymentUrl());
+    } else {
+        //try again..
+        $returnVal .= "</ul>";
     }
 } //End POST
 
@@ -93,9 +98,11 @@ function storePaymentId($mysqli, $paymentid, $code, $email) {
 function checkCode($mysqli, $code, $email) {
     $sqlresult = $mysqli->query(sprintf("SELECT code FROM raffle WHERE email = '%s'", $email));
     if( $sqlresult === FALSE) {
+        //log error
         return FALSE;
     }
     if( $sqlresult->num_rows != 1 ) {
+        //log error
         return false;
     }
     $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
@@ -105,10 +112,24 @@ function checkCode($mysqli, $code, $email) {
     return true;
 }
 
+function hasPaid($mysqli, $code) {
+    $sqlresult = $mysqli->query(sprintf("SELECT * FROM buyer 
+        WHERE `code`='%s' AND `complete`=1;",$code));
+    if($sqlresult === FALSE) {
+        //log error
+        return FALSE;
+    }
+    if( $sqlresult->num_rows > 0 ) {
+        //TODO IMPORTANT! VERIFY MANUAL
+        return TRUE;
+    }
+    return FALSE;
+}
+
 function addError($value) {
     global $returnVal;
     if( $returnVal == "" ) {
-        $returnVal = "De volgende dingen zijn niet goed gegaan: <ul>";
+        $returnVal = "<ul>";
     }
     $returnVal .= "<li>" . $value . "</li>";
 }

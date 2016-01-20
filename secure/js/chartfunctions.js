@@ -70,8 +70,10 @@ function createSignDateChart(signupdates, canvas) {
 	var ctx = $(canvas).get(0).getContext("2d");
 	var labeldata = [];
 	var dates = [];
+	var value = 0;
 	$.each(signupdates, function(key, val) {
-		dates.push(val);
+		value += val;
+		dates.push(value);
 		labeldata.push(key);
 	});
 	var linedata = {

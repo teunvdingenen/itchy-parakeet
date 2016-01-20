@@ -1,3 +1,8 @@
+span {
+	display:inline-block;
+	vertical-align: top;
+}
+
 .hidecolumn {
 	display:none;
 }
@@ -22,4 +27,28 @@
 	right:0;
 	width:40%;
 	overflow:auto;
+}
+
+.togglestats {
+    width:90%;
+    height:1.5em;
+    right:0;
+    position:fixed;
+    text-align: right;
+}
+
+.togglestats a {
+	padding:2px;
+}
+
+.filterlabel {
+	margin:0;
+    padding-top:5px;
+    padding-bottom: 1px;
+    clear:both;
+    font-size:85%;
+    line-height: 160%;
+    color:#444;
+    display:block;
+    text-align: left;
 }

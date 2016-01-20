@@ -10,7 +10,7 @@ $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
 $resultHTML="<table class='raffle-table'>";
-$resultHTML.="<tr class='header-row'>";
+$resultHTML.="<thead><tr class='header-row'>";
 $resultHTML.="<th>Achternaam</th>";
 $resultHTML.="<th>Voornaam</th>";
 $resultHTML.="<th>Geboortedag</th>";
@@ -27,7 +27,9 @@ $resultHTML.="<th>Tweede keus</th>";
 $resultHTML.="<th></th>";
 $resultHTML.="<th></th>";
 $resultHTML.="<th>Aantal bezoeken</th>";
-$resultHTML.="</th>";
+$resultHTML.="<th>Leeftijd</th>";
+$resultHTML.="</tr></thead>";
+$resultHTML.="<tbody>";
 
 $cell_keys = ['lastname', 'firstname', 'birthdate', 'gender', 'city', 'email', 'phone', 'editions', 'partner', 'contrib0','type0','needs0', 'contrib1','type1','needs1', 'visits'];
 
@@ -54,9 +56,11 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
             $resultHTML .= "<td><div id='".$cell_keys[$i]."' class='table-cell'>".$value."</div></td>";
             $i++;
         }
+        $age = (new DateTime($row[2]))->diff(new DateTime('now'))->y;
+        $resultHTML .= "<td><div id='age' class='table-cell'>".$age."</div></td>";
         $resultHTML.= "</tr>";
     }
-    $resultHTML.="</table>";
+    $resultHTML.="</tbody></table>";
 } else {
     $resultHTML="You do not have the necessary permissions to view this page";
 }
@@ -95,6 +99,37 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         </div>
         <div id="secure_content" class="secure_content">
             <button id='confirm' onclick="storeWinners();">Inloten</button>
+            <div id="filter_bar" class="filter_bar">
+                <span class="fieldpair">
+                    <label class="filterlabel" for"genderfilter">Geslacht:</label>
+                    <select name="genderfilter" id="genderfilter">
+                        <option value="both">Beide</option>
+                        <option value="Male">Man</option>
+                        <option value="Female">Vrouw</option>
+                    </select>
+                </span>
+                <span class="fieldpair">
+                    <label class="filterlabel" for"agefilter">Leeftijd:</label>
+                    <input name="agefilter" id="agefilter" type="text"/>
+                </span>
+                <span class="fieldpair">
+                    <label class="filterlabel" for"city">Woonplaats:</label>
+                    <input name="city" type="city" id="cityfilter"/>
+                </span>
+                <span class="fieldpair">
+                    <label class="filterlabel" for="visits">Aantal edities</label>
+                    <input name="visits" type="text" id="visitsfilter"/>
+                </span>
+                <span class="fieldpair">
+                    <label class="filterlabel" for"editions">Was aanwezig bij:</label>
+                    <input type="text" name="editions" id="editionsfilter"/>
+                </span>
+                <span class="fieldpair">
+                    <label class="filterlabel" for"contrib">Bijdrage:</label>
+                    <input type="text" name="contrib" id="contribfilter"/>
+                </span>
+                <span id="error" class="error"></span>
+            </div>
             <?php echo $resultHTML ?>
         </div>
 
@@ -105,6 +140,6 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         <script src="js/Chart.js"></script>
         <script src="js/chartfunctions.js"></script>
         <script src="js/raffle.js"></script>
-
+        <script src="js/filters.js"></script>
     </body>
 </html>
