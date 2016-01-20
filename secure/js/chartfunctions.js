@@ -116,8 +116,8 @@ function createGenderChart(genderInfo, canvas) {
 	colorMale = rgbToHex(colorMale.r, colorMale.g, colorMale.b);
 	var colorFemale = HSVtoRGB(0.5, 0.2, 0.6);
 	colorFemale = rgbToHex(colorFemale.r, colorFemale.g, colorFemale.b);
-	var men = genderInfo["male"];
-	var women = genderInfo["female"];
+	var men = genderInfo["Male"];
+	var women = genderInfo["Female"];
 	if( men === null ) { men = 0;}
 	if( women === null) { women = 0;}
 	var data = [

@@ -117,7 +117,7 @@ ksort($ages);
 ksort($visits);
 //$result["total"] = $total;
 $result["ages"] = $ages;
-$result["gender"] = array('male' => $gender_m, 'female' => $gender_f);
+$result["gender"] = array('Male' => $gender_m, 'Female' => $gender_f);
 $result["city"] = $cities;
 $result["visits"] = $visits;
 $result["contrib0"] = $contrib0;

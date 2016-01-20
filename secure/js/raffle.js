@@ -40,10 +40,14 @@ function splitlabelsandvalues(data) {
 }
 
 function setupCharts() {
-	genders = {'male':0,'female':0};
+	genders = {'Male':0,'Female':0};
 	$.post("signupstats.php", {"type":"raffle"}, function(response){
 		console.log(response);
 		var json = JSON.parse(response);
+		genders = json['gender'];
+		cities = json['city'];
+		ages = json['ages'];
+		visits = json['visits'];
 		genderchart = createGenderChart(json['gender'], "#genderchart");
 		citieschart = createCityChart(json['city'], "#citieschart");
 		ageschart = createAgeChart(json['ages'], "#ageschart");
@@ -52,6 +56,7 @@ function setupCharts() {
 }
 
 function updateCharts() {
+	/**
 	if(genderchart.segments[0].value == 0 && genderchart.segments[1].value == 0) {
 		genderchart = createGenderChart(genders, "#genderchart");
 	} else {
@@ -59,13 +64,19 @@ function updateCharts() {
 		genderchart.segments[1].value = genders['female'];
 		genderchart.update();
 	}
+	**/
+	genderchart.destroy();
+	citieschart.destroy();
+	ageschart.destroy();
+	visitschart.destroy();
+	genderchart = createGenderChart(genders, "#genderchart");
 	citieschart = createCityChart(cities, "#citieschart");
 	ageschart = createAgeChart(ages, "#ageschart");
 	visitschart = createVisitsChart(visits, "#visitschart");
 }
 
 function addStat(gender, city, age, visit) {
-	genders[gender] = genders[gender]+1;
+	genders[gender] += 1;
 	if( city in cities ) {
 		cities[city] += 1;
 	} else {
