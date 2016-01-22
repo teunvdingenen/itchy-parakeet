@@ -65,8 +65,9 @@ $(document).ready(function() {
 		});
 	});
 	$("#displaybuyers").click(function() {
-		$.get("displaybuyers.php", function(response) {
-			setContent($(response));
+		$.get("buyers.php", function(response) {
+			console.log("beep");
+			setContent($('<div>').html(response));
 		});
 	});
 	$("#displayraffle").click(function() { 
