@@ -5,14 +5,15 @@ include "initialize.php";
 include "functions.php";
 include "fields.php";
 
-
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
+
     if( !empty($_POST["username"]) ) {
         $username = test_input($_POST["username"]);
     } else {
         $username = "";
         $error = TRUE;
     }
+
     if( !empty($_POST["password"]) ) {
         $password = test_input($_POST["password"]);
     } else {
@@ -62,9 +63,9 @@ if($error) {
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="css/main.css" rel="stylesheet">
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -72,34 +73,19 @@ if($error) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <h1 class="header">Lorem ipsum dolor sit amet</h1>
-        <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eget elementum purus. Ut consectetur varius vehicula. Pellentesque imperdiet ex nisl, eget porta mi venenatis et. Nulla facilisi. Fusce sodales justo at felis mollis semper. Suspendisse ut nulla eu lectus sollicitudin congue vel ac arcu. Integer dictum turpis vulputate urna tincidunt, vel pulvinar mi imperdiet. Praesent egestas, mauris in molestie facilisis, metus mauris sollicitudin enim, ut eleifend enim augue quis erat. Nullam ullamcorper tristique sodales. Maecenas et nisi vel tortor vestibulum blandit ac ut tellus. </p> 
-        </div>
-        <div class="content">
-        <div class="error"><?php echo $returnVal; ?></div>
-        <form id="signup-form" class="signup-form" method="post" 
-            action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" target="_top">
-            <fieldset class="login">
-                <legend>Login</legend>
-                <ul>
-                    <li>
-                        <div>
-                            <label for="username">Username</label>
-                            <input class="field text full" type="text" name="username" value="">
-                        </div>
-                        <div>
-                            <label for="password">Password</label>
-                            <input class="field pass full" type="password" name="password" value="">
-                        </div>
-                    </li>
-                    <li>
-                        <input class="submit" type="submit" name="submit" value="Login"/>
-                    </li>
-                </ul>
-            </fieldset>
-        </form>
-        </div>
+        <div class="container">
+            <?php if($returnVal != "") {
+                echo '<div class="alert alert-danger" role="alert">'.$returnVal.'</div>';
+            } ?>
+            <form class="form-signin" method="post">
+                <h2 class="form-signin-heading">Inloggen</h2>
+                <label for="username" class="sr-only">Gebruikersnaam</label>
+                <input type="text" id="username" class="form-control" placeholder="Gebruikersnaam" name="username" required autofocus>
+                <label for="password" class="sr-only">Paswoord</label>
+                <input type="password" id="password" class="form-control" placeholder="Paswoord" name="password" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+        </div> <!-- /container -->
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>

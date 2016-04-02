@@ -11,24 +11,29 @@ $user_info_permissions = $user_info[$db_user_permissions];
 
 // Assemble menu:
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
-    $menu_html .= "<div class='menuitem'><a class='menulink' id ='showstats' href='#'>Main</a></div>";
-    $menu_html .= "<div class='menuitem'><a class='menulink' id='displaysignup' href='#'>Inschrijvingen tonen</a></div>";
-    $menu_html .= "<div class='menuitem'><a class='menulink' id='displayraffle' href='#'>Loting tonen</a></div>";
-    $menu_html .= "<div class='menuitem'><a class='menulink' id='displaybuyers' href='#'>Verkochte tickets tonen</a></div>";
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id ='showstats' href='#'>Main</a></li>";
+    $menu_html .= "<li><a class='menulink' id='displaysignup' href='#'>Inschrijvingen tonen</a></li>";
+    $menu_html .= "<li><a class='menulink' id='displayraffle' href='#'>Loting tonen</a></li>";
+    $menu_html .= "<li><a class='menulink' id='displaybuyers' href='#'>Verkochte tickets tonen</a></li>";
+    $menu_html .= "</ul>";
 }
 if( $user_info_permissions & PERMISSION_RAFFLE ) {
-    $menu_html .= "<div class='menuitem'><a class='menulink' id='raffle' href='#'>Loting</a></div>";
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='raffle' href='#'>Loting</a></li>";
+    $menu_html .= "</ul>";
 }
 if( $user_info_permissions & PERMISSION_EDIT ) {
-    $menu_html .= "<div class='menuitem'><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></div>";
-}
-if( $user_info_permissions & PERMISSION_REMOVE) {
-    $menu_html .= "<div class='menuitem'><a class='menulink' id='removesignup' href='#''>Verwijderen</a></div>";
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></li>";
+    $menu_html .= "<li><a class='menulink' id='removesignup' href='#''>Verwijderen</a></li>";
+    $menu_html .= "</ul>";
 }
 if( $user_info_permissions & PERMISSION_USER) {
-    $menu_html .= "<div class='menuitem'><a class='menulink' id='usermanage' href='#''>Gebruikers</a></div>";
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='usermanage' href='#''>Gebruikers</a></li>";
+    $menu_html .= "</ul>";
 }
-$menu_html .= "<div class='menuitem'><a class='menulink' href='logout.php'>Logout</a></div>";
 ?>
 
 <!doctype html>
@@ -42,10 +47,8 @@ $menu_html .= "<div class='menuitem'><a class='menulink' href='logout.php'>Logou
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
-
-        <link rel="stylesheet" href="../css/normalize.css">
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
         <link rel="stylesheet" href="../css/main.css">
-        <link rel="stylesheet" href="css/secure.css">
         <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body>
@@ -54,13 +57,32 @@ $menu_html .= "<div class='menuitem'><a class='menulink' href='logout.php'>Logou
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div>
-            <div id="menu" class="menu">
-                <?php echo $menu_html ?>
-                <div class='footer'>Ingelogd als: <?php echo $user_info_name ?></div>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Familiar Forest Festival</a>
             </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a class='menulink' href='logout.php'>Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
 
-            <div id="content" class="secure_content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                  <?php echo $menu_html ?>
+                </div>
+            </div>
+            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
             </div>
         </div>

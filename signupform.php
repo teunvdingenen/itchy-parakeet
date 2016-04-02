@@ -204,10 +204,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
 function addError($value) {
     global $returnVal;
-    if( $returnVal == "" ) {
-        $returnVal = "De volgende dingen zijn niet goed gegaan: <ul>";
-    }
-    $returnVal .= "<li>" . $value . "</li>";
+    $returnVal .= '<div class="alert alert-danger" role="alert">' . $value . '</div>';
 }
 
 ?>
@@ -221,8 +218,7 @@ function addError($value) {
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
-
-        <link rel="stylesheet" href="css/normalize.css">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" media="all"
             href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>
@@ -248,259 +244,352 @@ function addError($value) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <h1 class="header">Inschrijven</h1>
-        <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut ligula quis lacus consectetur tempus. Integer pretium quam vel nunc aliquet fringilla. Maecenas enim nulla, faucibus ut tincidunt id, auctor at orci. Praesent faucibus tellus ipsum, nec varius erat consectetur at. Etiam ac ultricies ex, a gravida quam. Suspendisse fringilla congue massa a cursus. Nunc condimentum mauris id erat tincidunt laoreet. Sed maximus tortor id mi vestibulum pulvinar. Vestibulum ultricies
-        erat sit amet posuere euismod. Curabitur orci mauris, vehicula et dolor at, egestas luctus nunc. Sed non egestas massa. Curabitur eget bibendum arcu. Aliquam erat volutpat. Fusce placerat lacus a dapibus accumsan. Cras vitae interdum metus. Phasellus neque sem, mattis et imperdiet sed, eleifend vel lorem.</p>
-        </div>
-        <div class="content">
-        <div class="error"><?php echo $returnVal; ?></div>
-        <form id="signup-form" class="signup-form" method="post" 
-            action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
-                <fieldset>
-                    <legend>Persoonlijke Informatie</legend>
-                    <ul>
-                        <li>
-                            <span>
-                                <label for="firstname">Voornaam</label>
-                                <input class="field text verify" type="text" name="firstname" value="<?php echo $firstname;?>">
-                            </span>
-                            <span>
-                                <label for="lastname">Achternaam</label>
-                                <input class="field text verify" type="text" name="lastname" value="<?php echo $lastname;?>">
-                            </span>
-                        </li>
-                        <li>
-                            <span>
-                                <label for="city">Woonplaats</label>
-                                <input class="field text verify" type="text" id="city" name="city" value="<?php echo $city;?>">
-                            </span>
-                            <span>
-                                <label for="birthday">Geboortedatum</label>
-                                <span>
-                                    <input id="birthday" name="birthday" class="field text number" size="3" maxlength="2" type="text" placeholder="DD" value="<?php echo $birthday; ?>">
-                                </span>
-                                <span>
-                                    <input id="birthmonth" name="birthmonth" class="field text number" size="3" maxlength="2" type="text" placeholder="MM" value="<?php echo $birthmonth; ?>">
-                                </span>
-                                <span>
-                                    <input id="birthyear" name="birthyear" class="field text number" size="5" maxlength="4" type="text" placeholder="YYYY" value="<?php echo $birthyear; ?>">
-                                </span>
-                            </span>
-                            
-                        </li>
-                        <li>
-                                    <span>
-                                <label for="gender">Geslacht</label>
-                            <span>
-                            <!-- TODO: fill gender value from php-->
-                                <input class="field radio" type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?> >
-                                <label class="choice" for="male">Man</label>
-                            </span>
-                            <span>
-                                <input class="field radio" type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
-                                <label class="choice" for="female">Vrouw</label>
-                            </span>
-                                    </span>
-                        </li>
-                        <li>
-                            <span>
-                                <label for="email">E-mail</label>
-                                <input class="field text verify email" type="text" name="email" value="<?php echo $email;?>">
-                            </span>
-                            <span>
-                                <label for="phone">Telefoonnummer</label>
-                                <input class="field text phone" type="text" name="phone" value="<?php echo $phone;?>">
-                            </span>
-                        </li>
-                    </ul>
-                </fieldset> 
-                <fieldset>
-                    <legend>Voorgaande edities</legend>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2010" value="fff2010" <?php if(in_array("fff2010", $editions)) echo( "checked"); ?> >
-                    <label class="choice">Familiar Forest Festival 2010</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2011" value="fff2011" <?php if(in_array("fff2011", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Forest Festival 2011</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="ffcastle" value="ffcastle" <?php if(in_array("ffcastle", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Castle Festival</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fwf2012" value="fwf2012" <?php if(in_array("fwf2012", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Winter Festival 2012</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fh2012" value="fh2012" <?php if(in_array("fh2012", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Hemelvaartsnacht 2012</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2012" value="fff2012" <?php if(in_array("fff2012", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Forest Festival 2012</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fh2013" value="fh2013" <?php if(in_array("fh2013", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Hemelvaartsnacht 2013</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fwf2013" value="fwf2013" <?php if(in_array("fwf2013", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Winter Festival 2013</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2013" value="fff2013" <?php if(in_array("fff2013", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Forest Festival 2013</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fwf2014" value="fwf2014" <?php if(in_array("fwf2014", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Winter Festival 2014</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2014" value="fff2014" <?php if(in_array("fff2014", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Forest Festival 2014</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fwf2015" value="fwf2015" <?php if(in_array("fwf2015", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Winter Festival 2015</label>
-                    <input class="field checkbox" type="checkbox" name="editions[]" id="fff2015" value="fff2015" <?php if(in_array("fff2015", $editions)) echo( "checked"); ?>>
-                    <label class="choice">Familiar Forest Festival 2015</label>
-                </fieldset>
+        <div class="container">
+            <div class="default-text">
+                <h1>Inschrijven</h1>
+                <p class="lead">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut ligula quis lacus consectetur tempus. Integer pretium quam vel nunc aliquet fringilla. Maecenas enim nulla, faucibus ut tincidunt id, auctor at orci. Praesent faucibus tellus ipsum, nec varius erat consectetur at. Etiam ac ultricies ex, a gravida quam. Suspendisse fringilla congue massa a cursus. Nunc condimentum mauris id erat tincidunt laoreet. Sed maximus tortor id mi vestibulum pulvinar. Vestibulum ultricies
+                    erat sit amet posuere euismod. Curabitur orci mauris, vehicula et dolor at, egestas luctus nunc. Sed non egestas massa. Curabitur eget bibendum arcu. Aliquam erat volutpat. Fusce placerat lacus a dapibus accumsan. Cras vitae interdum metus. Phasellus neque sem, mattis et imperdiet sed, eleifend vel lorem.
+                </p>
+            </div>
+            <?php echo $returnVal; ?>
+
+            <form method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+                <div class="form-group row">
+                    <label for="firstname" class="col-sm-2 form-control-label">Voornaam</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname" required>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="lastname" class="col-sm-2 form-control-label">Achternaam</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname"required>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="city" class="col-sm-2 form-control-label">Woonplaats</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="city" placeholder="Woonplaats" value="<?php echo $city;?>" name="city"required>
+                    </div>
+                </div>
+            
+                <div class="form-group row">
+                    <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="date" id="birthdate" value="<?php echo $birthdate;?>" name="birthday"required>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2">Geslacht</label>
+                    <div class="col-sm-10">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
+                                Jongeman
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
+                                Jongedame
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="email" class="col-sm-2 form-control-label">Email</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email" required>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="phone" class="col-sm-2 form-control-label">Telefoonnummer</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $phone;?>" name="phone" required>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2" for="partner">Lieveling<br>Email</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
+                        <div class="alert alert-success">
+                            Proin ultricies quis lacus in porttitor. Vivamus ullamcorper felis est, in congue neque bibendum sed. Donec egestas lorem quam, vitae ullamcorper tortor efficitur eu.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label">Voorgaande edities</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fff2010" value="fff2010" <?php if(in_array("fff2010", $editions)) echo( "checked"); ?> >
+                                Familiar Forest Festival 2010
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fff2011" value="fff2011" <?php if(in_array("fff2011", $editions)) echo( "checked"); ?>>
+                                Familiar Forest Festival 2011
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="ffcastle" value="ffcastle" <?php if(in_array("ffcastle", $editions)) echo( "checked"); ?>>
+                                Familiar Castle Festival                                
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fwf2012" value="fwf2012" <?php if(in_array("fwf2012", $editions)) echo( "checked"); ?>>
+                                Familiar Winter Festival 2012
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fh2012" value="fh2012" <?php if(in_array("fh2012", $editions)) echo( "checked"); ?>>
+                                Familiar Hemelvaartsnacht 2012
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fff2012" value="fff2012" <?php if(in_array("fff2012", $editions)) echo( "checked"); ?>>
+                                Familiar Forest Festival 2012
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fh2013" value="fh2013" <?php if(in_array("fh2013", $editions)) echo( "checked"); ?>>
+                                Familiar Hemelvaartsnacht 2013
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fwf2013" value="fwf2013" <?php if(in_array("fwf2013", $editions)) echo( "checked"); ?>>
+                                Familiar Winter Festival 2013
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fff2013" value="fff2013" <?php if(in_array("fff2013", $editions)) echo( "checked"); ?>>
+                                Familiar Forest Festival 2013
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fwf2014" value="fwf2014" <?php if(in_array("fwf2014", $editions)) echo( "checked"); ?>>
+                                Familiar Winter Festival 2014
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fff2014" value="fff2014" <?php if(in_array("fff2014", $editions)) echo( "checked"); ?>>
+                                Familiar Forest Festival 2014
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fwf2015" value="fwf2015" <?php if(in_array("fwf2015", $editions)) echo( "checked"); ?>>
+                                Familiar Winter Festival 2015
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="editions[]" id="fff2015" value="fff2015" <?php if(in_array("fff2015", $editions)) echo( "checked"); ?>>
+                                Familiar Forest Festival 2015
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                        
                 <fieldset>
                     <legend>Jouw bijdrage aan het Familiar Forest Festival 2016</legend>
-                    <ul>
-                        <li>
-                            <div>
-                                <label for="contrib0">Eerste keus</label>
-                                <select class="field select" name="contrib0" id="contrib0">
-                                    <option value="ivbk" <?= $contrib0 == 'ivbk' ? ' selected="selected"' : '';?>>Interieur verzorging, bar of keuken</option>
-                                    <option value="act" <?= $contrib0 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
-                                    <option value="afb" <?= $contrib0 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
-                                    <option value="ontw" <?= $contrib0 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
-                                </select>
-                            </div>
-                            <div class="terms" id="ivbk0desc">
+                    <div class="form-group row">
+                        <label for="contrib0" class="col-sm-2 form-control-label">Eerste keus</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="contrib0" id="contrib0">
+                                <option value="ivbk" <?= $contrib0 == 'ivbk' ? ' selected="selected"' : '';?>>Interieur verzorging, bar of keuken</option>
+                                <option value="act" <?= $contrib0 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
+                                <option value="afb" <?= $contrib0 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                <option value="ontw" <?= $contrib0 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
+                            </select>
+                            <div class="alert alert-success" id="ivbk0desc">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat id turpis quis dignissim. Maecenas elementum scelerisque pharetra. Sed tincidunt tincidunt purus, quis molestie eros blandit non. Vestibulum consequat dolor a enim porttitor, a vehicula mauris imperdiet. Ut et lectus vestibulum, finibus dolor posuere, elementum purus. Suspendisse at ipsum dapibus, dapibus neque ut, cursus lacus. Ut tristique id orci id aliquam. Integer consectetur magna ac justo ornare, nec imperdiet ipsum accumsan. 
                             </div>
-                            <div class="terms" id="act0desc">
+                            <div class="alert alert-success" id="act0desc">
                                  Ut viverra pulvinar nisl, in dictum lacus. Aliquam non porta mauris, nec ornare mauris. Fusce metus neque, sodales id dictum vestibulum, vehicula non turpis. Nulla quis placerat enim. Morbi et lorem a dui pharetra interdum in vel nunc. In nec cursus lacus, eu egestas lorem. In elit felis, hendrerit quis enim non, sollicitudin tempus urna. Donec congue sollicitudin libero, non rutrum lorem fringilla vitae. Sed et tempus lectus. Nulla ac scelerisque leo. Sed fermentum facilisis sapien, vel suscipit odio porttitor tempus. Integer sit amet eros quis lorem interdum ullamcorper non quis nisi. Etiam aliquam massa nec magna volutpat, eget vehicula nibh laoreet. 
                             </div>
-                            <div class="terms" id="afb0desc">
+                            <div class="alert alert-success" id="afb0desc">
                                 In luctus nisi vitae risus gravida placerat. Etiam quis aliquam metus. Vestibulum sed mattis diam. Nullam sollicitudin vel felis eu imperdiet. Nunc at diam porttitor, aliquam lectus sed, ornare est. Cras et lectus id elit commodo lobortis. Morbi feugiat massa lacus, sit amet mattis lorem convallis nec. Cras vehicula lacus quis risus tempus sagittis. Donec consectetur turpis libero, vitae lobortis arcu pretium quis. Ut ac turpis a ante volutpat pulvinar tincidunt vel enim. Maecenas pretium et diam ac feugiat. Curabitur finibus quam eu sagittis molestie. Duis facilisis pretium mi ut elementum. Praesent volutpat lectus eu mollis ullamcorper. 
                             </div>
-                            <div class="terms" id="ontw0desc">
+                            <div class="alert alert-success" id="ontw0desc">
                                  Praesent quis lorem mollis, eleifend turpis gravida, interdum lacus. Vivamus ornare tellus turpis, id congue enim sagittis vel. Etiam dapibus, dui non posuere suscipit, nibh tellus tempor massa, id luctus velit lorem eu sapien. Integer suscipit ante non sapien sagittis luctus. Sed venenatis eros vel ante finibus, et vehicula quam varius. Etiam viverra venenatis dapibus. Nulla euismod nisi dolor, vitae varius libero facilisis non. Ut convallis augue in ultricies faucibus. Curabitur sed nunc quis nibh tincidunt semper.
                             </div>
-                        </li>
-                        <li id="contrib0row">
-                            <span>
-                                <label for="contrib0desc">Vertel iets over je ervaring hierin</label>
-                                <textarea class="textarea" name="contrib0desc" id="contrib0desc" cols="60" rows="4"><?php echo $contrib0desc; ?></textarea>
-                                <label id="contrib0counter" for="contrib0desc">Max 256 karakters</label>
-                            </span>
-                        </li>
-                        <li id="act0row">
-                            <div>
-                                <label for="act0type">Informatie over je act of performance</label>
-                                <select class="field select" name="act0type" id="act0type">
-                                    <option value="workshop" <?= $act0type == 'workshop' ? ' selected="selected"' : '';?>>Workshop / Cursus</option>
-                                    <option value="game" <?= $act0type == 'game' ? ' selected="selected"' : '';?>>Ervaring / Game</option>
-                                    <option value="lecture" <?= $act0type == 'lecture' ? ' selected="selected"' : '';?>>Lezing</option>
-                                    <option value="schmink" <?= $act0type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
-                                    <option value="other" <?= $act0type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
-                                    <option value="perform" <?= $act0type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
-                                    <option value="install" <?= $act0type == 'install' ? ' selected="selected"' : '';?>>Installatie Beeld</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="act0desc">Omschrijving van je act</label>
-                                <textarea class="textarea" name="act0desc" id="act0desc" cols="60" rows="4"><?php echo $act0desc; ?></textarea>
-                                <label for="act0desc">Max 256 karakters</label>
-                            </div>
-                            <div>
-                                <label for="act0need">Wat heb je voor je act nodig?</label>
-                                <textarea class="textarea" name="act0need" id="act1need" cols="60" rows="4"><?php echo $act0need; ?></textarea>
-                                <label for="act0need">Max 256 karakters</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div>
-                                <label for="contrib1">Tweede keus</label>
-                                <select class="field select" name="contrib1" id="contrib1">
-                                    <option value="ivbk" <?= $contrib1 == 'ivbk' ? ' selected="selected"' : '';?>>Interieur verzorging, bar of keuken</option>
-                                    <option value="act" <?= $contrib1 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
-                                    <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
-                                    <option value="ontw" <?= $contrib1 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
-                                </select>
-                            </div>
-                            <div class="terms" id="ivbk1desc">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="contrib0desc">Vertel iets over je ervaring hierin</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="contrib0desc" id="contrib0desc" cols="60" rows="4"><?php echo $contrib0desc; ?></textarea>
+                            <label id="contrib0counter" for="contrib0desc">Max 256 karakters</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="act0type">Informatie over je act of performance</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="act0type" id="act0type">
+                                <option value="workshop" <?= $act0type == 'workshop' ? ' selected="selected"' : '';?>>Workshop / Cursus</option>
+                                <option value="game" <?= $act0type == 'game' ? ' selected="selected"' : '';?>>Ervaring / Game</option>
+                                <option value="lecture" <?= $act0type == 'lecture' ? ' selected="selected"' : '';?>>Lezing</option>
+                                <option value="schmink" <?= $act0type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
+                                <option value="other" <?= $act0type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
+                                <option value="perform" <?= $act0type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
+                                <option value="install" <?= $act0type == 'install' ? ' selected="selected"' : '';?>>Installatie Beeld</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="act0desc">Omschrijving van je act</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="act0desc" id="act0desc" cols="60" rows="4"><?php echo $act0desc; ?></textarea>
+                            <label for="act0desc">Max 256 karakters</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="act0need">Wat heb je voor je act nodig?</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="act0need" id="act0need" cols="60" rows="4"><?php echo $act0need; ?></textarea>
+                            <label for="act0need">Max 256 karakters</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="contrib0" class="col-sm-2 form-control-label">Tweede keus</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="contrib1" id="contrib1">
+                                <option value="ivbk" <?= $contrib1 == 'ivbk' ? ' selected="selected"' : '';?>>Interieur verzorging, bar of keuken</option>
+                                <option value="act" <?= $contrib1 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
+                                <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                <option value="ontw" <?= $contrib1 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
+                            </select>
+                            <div class="alert alert-success" id="ivbk1desc">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat id turpis quis dignissim. Maecenas elementum scelerisque pharetra. Sed tincidunt tincidunt purus, quis molestie eros blandit non. Vestibulum consequat dolor a enim porttitor, a vehicula mauris imperdiet. Ut et lectus vestibulum, finibus dolor posuere, elementum purus. Suspendisse at ipsum dapibus, dapibus neque ut, cursus lacus. Ut tristique id orci id aliquam. Integer consectetur magna ac justo ornare, nec imperdiet ipsum accumsan. 
                             </div>
-                            <div class="terms" id="act1desc">
+                            <div class="alert alert-success" id="act1desc">
                                  Ut viverra pulvinar nisl, in dictum lacus. Aliquam non porta mauris, nec ornare mauris. Fusce metus neque, sodales id dictum vestibulum, vehicula non turpis. Nulla quis placerat enim. Morbi et lorem a dui pharetra interdum in vel nunc. In nec cursus lacus, eu egestas lorem. In elit felis, hendrerit quis enim non, sollicitudin tempus urna. Donec congue sollicitudin libero, non rutrum lorem fringilla vitae. Sed et tempus lectus. Nulla ac scelerisque leo. Sed fermentum facilisis sapien, vel suscipit odio porttitor tempus. Integer sit amet eros quis lorem interdum ullamcorper non quis nisi. Etiam aliquam massa nec magna volutpat, eget vehicula nibh laoreet. 
                             </div>
-                            <div class="terms" id="afb1desc">
+                            <div class="alert alert-success" id="afb1desc">
                                 In luctus nisi vitae risus gravida placerat. Etiam quis aliquam metus. Vestibulum sed mattis diam. Nullam sollicitudin vel felis eu imperdiet. Nunc at diam porttitor, aliquam lectus sed, ornare est. Cras et lectus id elit commodo lobortis. Morbi feugiat massa lacus, sit amet mattis lorem convallis nec. Cras vehicula lacus quis risus tempus sagittis. Donec consectetur turpis libero, vitae lobortis arcu pretium quis. Ut ac turpis a ante volutpat pulvinar tincidunt vel enim. Maecenas pretium et diam ac feugiat. Curabitur finibus quam eu sagittis molestie. Duis facilisis pretium mi ut elementum. Praesent volutpat lectus eu mollis ullamcorper. 
                             </div>
-                            <div class="terms" id="ontw1desc">
+                            <div class="alert alert-success" id="ontw1desc">
                                  Praesent quis lorem mollis, eleifend turpis gravida, interdum lacus. Vivamus ornare tellus turpis, id congue enim sagittis vel. Etiam dapibus, dui non posuere suscipit, nibh tellus tempor massa, id luctus velit lorem eu sapien. Integer suscipit ante non sapien sagittis luctus. Sed venenatis eros vel ante finibus, et vehicula quam varius. Etiam viverra venenatis dapibus. Nulla euismod nisi dolor, vitae varius libero facilisis non. Ut convallis augue in ultricies faucibus. Curabitur sed nunc quis nibh tincidunt semper.
                             </div>
-                        </li>
-                        <li id="contrib1row">
-                            <span>
-                                <label for="contrib1desc">Vertel iets over je ervaring hierin</label>
-                                <textarea class="textarea" name="contrib1desc" id="contrib1desc" cols="60" rows="4"><?php echo $contrib1desc; ?></textarea>
-                                <label for="contrib1desc">Max 256 karakters</label>
-                            </span>
-                        </li>
-                        <li id="act1row">
-                            <div>
-                                <label for="act1type">Informatie over je act of performance</label>
-                                <select class="field select" name="act1type" id="act1type">
-                                    <option value="workshop" <?= $act1type == 'workshop' ? ' selected="selected"' : '';?>>Workshop / Cursus</option>
-                                    <option value="game" <?= $act1type == 'game' ? ' selected="selected"' : '';?>>Ervaring / Game</option>
-                                    <option value="lecture" <?= $act1type == 'lecture' ? ' selected="selected"' : '';?>>Lezing</option>
-                                    <option value="schmink" <?= $act1type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
-                                    <option value="other" <?= $act1type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
-                                    <option value="perform" <?= $act1type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
-                                    <option value="install" <?= $act1type == 'install' ? ' selected="selected"' : '';?>>Installatie Beeld</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="act1desc">Omschrijving van je act</label>
-                                <textarea class="textarea" name="act1desc" id="act1desc" cols="60" rows="4"><?php echo $act1desc; ?></textarea>
-                                <label for="act1desc">Max 256 karakters</label>
-                            </div>
-                            <div>
-                                <label for="act1need">Wat heb je voor je act nodig?</label>
-                                <textarea class="textarea" name="act1need" id="act1need" cols="60" rows="4"><?php echo $act1need; ?></textarea>
-                                <label for="act1need">Max 256 karakters</label>
-                            </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="contrib1desc">Vertel iets over je ervaring hierin</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="contrib1desc" id="contrib1desc" cols="60" rows="4"><?php echo $contrib1desc; ?></textarea>
+                            <label id="contrib1counter" for="contrib1desc">Max 256 karakters</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="act1type">Informatie over je act of performance</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="act1type" id="act1type">
+                                <option value="workshop" <?= $act1type == 'workshop' ? ' selected="selected"' : '';?>>Workshop / Cursus</option>
+                                <option value="game" <?= $act1type == 'game' ? ' selected="selected"' : '';?>>Ervaring / Game</option>
+                                <option value="lecture" <?= $act1type == 'lecture' ? ' selected="selected"' : '';?>>Lezing</option>
+                                <option value="schmink" <?= $act1type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
+                                <option value="other" <?= $act1type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
+                                <option value="perform" <?= $act1type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
+                                <option value="install" <?= $act1type == 'install' ? ' selected="selected"' : '';?>>Installatie Beeld</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="act1desc">Omschrijving van je act</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="act1desc" id="act1desc" cols="60" rows="4"><?php echo $act1desc; ?></textarea>
+                            <label for="act1desc">Max 256 karakters</label>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="act1need">Wat heb je voor je act nodig?</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="act1need" id="act1need" cols="60" rows="4"><?php echo $act1need; ?></textarea>
+                            <label for="act1need">Max 256 karakters</label>
+                        </div>
+                    </div>
                 </fieldset>
-                <fieldset>
-                    <legend>Lieveling</legend>
-                    <ul>
-                        <li>
-                            <div class="terms">
-                                Proin ultricies quis lacus in porttitor. Vivamus ullamcorper felis est, in congue neque bibendum sed. Donec egestas lorem quam, vitae ullamcorper tortor efficitur eu. Quisque varius elementum metus, vel luctus nunc elementum vitae. Curabitur lacinia ipsum velit, non facilisis est fermentum nec. Nam varius dolor vitae felis sagittis consectetur. Donec tortor ipsum, suscipit vitae augue non, tempor pellentesque sem. Vivamus aliquet arcu non felis dignissim, quis iaculis dui porta. Nulla pulvinar placerat est, quis sollicitudin augue elementum in. Nunc eleifend placerat dolor eu pulvinar. Proin venenatis auctor bibendum. In ac venenatis lectus, eget tempus augue. 
-                            </div>
-                            <div>
-                                <input class="field text email" type="text" name="partner" id="partner" value="<?php echo $partner; ?>">
-                                <label for="partner">E-mail</label>
-                            </div>
-                        </li>
-                    </ul>
-                </fieldset>
+                    
                 <fieldset>
                     <legend>Voorwaarden</legend>
-                    <ul>
-                        <li>
-                            <span>
-                                <div class="terms">Nam sit amet varius orci, vitae venenatis quam. Vestibulum varius nulla non augue placerat, id feugiat tellus pulvinar. Etiam luctus elit massa. Proin in sem nulla. Maecenas sit amet turpis lectus. Donec id leo iaculis, tincidunt nibh venenatis, fringilla dolor. Nunc sit amet quam sem. Quisque eget purus lobortis, tempor odio ut, ultricies diam. Donec ac ultrices turpis. Maecenas egestas tristique dolor at consequat. Aenean sed lectus at lectus ornare iaculis. Ut viverra lectus tortor, ac lacinia dolor vestibulum at. Curabitur rutrum auctor nibh et tempor. </div>
-                                <input class="field checkbox" type="checkbox" name="terms0" id="terms0" value="J">
-                                <label for="terms0" class="choice">Ik ga akkoord met deze voorwaarden</label>
-                            </span>
-                        </li>
-                        <li>
-                            <span>
-                                <div class="terms">Praesent fringilla bibendum efficitur. Curabitur hendrerit, neque posuere gravida tempus, nibh felis maximus justo, id aliquam enim risus id sapien. Aliquam lobortis eros et turpis egestas mattis. Nullam tortor nunc, condimentum a sem nec, porttitor ullamcorper erat. Nulla gravida cursus neque, molestie tempus mauris tincidunt a. Proin eu luctus nisi. Morbi ac pulvinar neque. Donec mollis diam elit, lacinia euismod massa gravida ut. Nullam metus orci, egestas eget libero at, porttitor bibendum ipsum. Ut ac justo mollis, pulvinar elit sit amet, accumsan ligula. Sed quis fringilla est. Integer quis risus vitae lectus accumsan consequat sed sit amet sem. Maecenas mi nisi, sagittis vitae pulvinar vitae, imperdiet non ante. Curabitur porttitor tristique sem vel ultricies.</div>
-                                <input class="field checkbox" type="checkbox" name="terms1" id="terms1" value="J">
-                                <label for="terms1" class="choice">Ik ga akkoord met deze voorwaarden</label>
-                            </span>
-                        </li>
-                        <li>
-                            <span>
-                                <div class="terms">Morbi ac mauris arcu. Donec ac sollicitudin lectus. Donec imperdiet volutpat purus quis suscipit. Cras eu purus congue, imperdiet nisl vel, tristique urna. Nulla facilisi. Donec neque dui, lobortis at felis et, porttitor aliquet erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce consectetur luctus felis, in vehicula est aliquam vel. Sed mollis at libero sit amet cursus. Aliquam libero orci, ultricies a lobortis nec, finibus eget sapien. Curabitur eget auctor diam. Phasellus cursus lectus in semper mattis. Nunc vitae scelerisque lorem, ut mollis lacus. Duis fringilla risus in odio fermentum mattis. Mauris turpis metus, molestie vitae leo id, pellentesque vestibulum erat. Pellentesque ac lacinia dui, malesuada blandit risus. </div>
-                                <input class="field checkbox" type="checkbox" name="terms2" id="terms2" value="J">
-                                <label for="terms2" class="choice">Ik ga akkoord met deze voorwaarden</label>
-                            </span>
-                        </li>
-                    </ul>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="terms0">Kaart verkoop</label>
+                        <div class="col-sm-10">
+                            <div class="alert alert-warning">Nam sit amet varius orci, vitae venenatis quam. Vestibulum varius nulla non augue placerat, id feugiat tellus pulvinar. Etiam luctus elit massa. Proin in sem nulla. Maecenas sit amet turpis lectus. Donec id leo iaculis, tincidunt nibh venenatis, fringilla dolor. Nunc sit amet quam sem. Quisque eget purus lobortis, tempor odio ut, ultricies diam. Donec ac ultrices turpis. Maecenas egestas tristique dolor at consequat. Aenean sed lectus at lectus ornare iaculis. Ut viverra lectus tortor, ac lacinia dolor vestibulum at. Curabitur rutrum auctor nibh et tempor. </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input class="checkbox" type="checkbox" id="terms0" name="terms0" value="J">
+                                    Ik ga akkoord met deze voorwaarden
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="terms1">Verzekering</label>
+                        <div class="col-sm-10">
+                            <div class="alert alert-warning">Praesent fringilla bibendum efficitur. Curabitur hendrerit, neque posuere gravida tempus, nibh felis maximus justo, id aliquam enim risus id sapien. Aliquam lobortis eros et turpis egestas mattis. Nullam tortor nunc, condimentum a sem nec, porttitor ullamcorper erat. Nulla gravida cursus neque, molestie tempus mauris tincidunt a. Proin eu luctus nisi. Morbi ac pulvinar neque. Donec mollis diam elit, lacinia euismod massa gravida ut. Nullam metus orci, egestas eget libero at, porttitor bibendum ipsum. Ut ac justo mollis, pulvinar elit sit amet, accumsan ligula. Sed quis fringilla est. Integer quis risus vitae lectus accumsan consequat sed sit amet sem. Maecenas mi nisi, sagittis vitae pulvinar vitae, imperdiet non ante. Curabitur porttitor tristique sem vel ultricies.</div>
+                            <div class="checkbox">
+                                <label>
+                                    <input class="checkbox" type="checkbox" id="terms1" name="terms1" value="J">
+                                    Ik ga akkoord met deze voorwaarden
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="terms2">Gezondheid</label>
+                        <div class="col-sm-10">
+                            <div class="alert alert-warning">Morbi ac mauris arcu. Donec ac sollicitudin lectus. Donec imperdiet volutpat purus quis suscipit. Cras eu purus congue, imperdiet nisl vel, tristique urna. Nulla facilisi. Donec neque dui, lobortis at felis et, porttitor aliquet erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce consectetur luctus felis, in vehicula est aliquam vel. Sed mollis at libero sit amet cursus. Aliquam libero orci, ultricies a lobortis nec, finibus eget sapien. Curabitur eget auctor diam. Phasellus cursus lectus in semper mattis. Nunc vitae scelerisque lorem, ut mollis lacus. Duis fringilla risus in odio fermentum mattis. Mauris turpis metus, molestie vitae leo id, pellentesque vestibulum erat. Pellentesque ac lacinia dui, malesuada blandit risus. </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input class="checkbox" type="checkbox" id="terms2" name="terms2" value="J">
+                                    Ik ga akkoord met deze voorwaarden
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="terms3">Telefoon en Foto's</label>
+                        <div class="col-sm-10">
+                            <div class="alert alert-warning">Morbi ac mauris arcu. Donec ac sollicitudin lectus. Donec imperdiet volutpat purus quis suscipit. Cras eu purus congue, imperdiet nisl vel, tristique urna. Nulla facilisi. Donec neque dui, lobortis at felis et, porttitor aliquet erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce consectetur luctus felis, in vehicula est aliquam vel. Sed mollis at libero sit amet cursus. Aliquam libero orci, ultricies a lobortis nec, finibus eget sapien. Curabitur eget auctor diam. Phasellus cursus lectus in semper mattis. Nunc vitae scelerisque lorem, ut mollis lacus. Duis fringilla risus in odio fermentum mattis. Mauris turpis metus, molestie vitae leo id, pellentesque vestibulum erat. Pellentesque ac lacinia dui, malesuada blandit risus. </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input class="checkbox" type="checkbox" id="terms3" name="terms3" value="J">
+                                    Ik ga akkoord met deze voorwaarden
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </fieldset>
-            <input class="submit" type="submit" name="submit" value="Versturen"/>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Versturen</button>
             </form>
         </div>
-
-        
     </body>
 </html>
