@@ -120,7 +120,7 @@ function hasPaid($mysqli, $code) {
         return FALSE;
     }
     if( $sqlresult->num_rows > 0 ) {
-        //TODO IMPORTANT! VERIFY MANUAL
+        //TODO IMPORTANT! VERIFY MANUAL through mollie?
         return TRUE;
     }
     return FALSE;
@@ -128,10 +128,7 @@ function hasPaid($mysqli, $code) {
 
 function addError($value) {
     global $returnVal;
-    if( $returnVal == "" ) {
-        $returnVal = "<ul>";
-    }
-    $returnVal .= "<li>" . $value . "</li>";
+    $returnVal .= "<div class='alert alert-danger'>".$value."</div>";
 }
 
 ?>
@@ -145,16 +142,17 @@ function addError($value) {
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <!-- Place favicon.ico in the root directory -->
-
-        <link rel="stylesheet" href="css/normalize.css">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" media="all"
             href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
+        <scirpt src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_nl.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
-        <script src="js/signup.js"></script>
+
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
@@ -172,50 +170,45 @@ function addError($value) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <h1 class="header">Inschrijven</h1>
-        <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut ligula quis lacus consectetur tempus. Integer pretium quam vel nunc aliquet fringilla. Maecenas enim nulla, faucibus ut tincidunt id, auctor at orci. Praesent faucibus tellus ipsum, nec varius erat consectetur at. Etiam ac ultricies ex, a gravida quam. Suspendisse fringilla congue massa a cursus. Nunc condimentum mauris id erat tincidunt laoreet. Sed maximus tortor id mi vestibulum pulvinar. Vestibulum ultricies
-        erat sit amet posuere euismod. Curabitur orci mauris, vehicula et dolor at, egestas luctus nunc. Sed non egestas massa. Curabitur eget bibendum arcu. Aliquam erat volutpat. Fusce placerat lacus a dapibus accumsan. Cras vitae interdum metus. Phasellus neque sem, mattis et imperdiet sed, eleifend vel lorem.</p>
-        </div>
-        <div class="content">
-        <div class="error"><?php echo $returnVal; ?></div>
-        <form id="buyer-form" class="buyer-form" method="post" 
-            action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
-                <fieldset>
-                    <legend>Kaartje Kopen</legend>
-                    <ul>
-                        <li>
-                            <span>
-                                <label for="email">Email</label>
-                                <input class="field text verify email" type="text" name="email">
-                            </span>
-                        </li>
-                        <li>
-                            <span>
-                                <label for="code">Code</label>
-                                <input class="field text verify" type="text" name="code">
-                            </span>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <span>
-                            <label for="issuer">Selecteer je bank:</label>
-                            <select name="issuer">
-                                <?php
-                                    $issuers = $mollie->issuers->all();
-                                    foreach ($issuers as $issuer) {
-                                        if($issuer->method == Mollie_API_Object_Method::IDEAL) {
-                                            echo '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
-                                        }
+
+        <div class="container">
+            <h1>Kaartje Kopen</h1>
+            <div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut ligula quis lacus consectetur tempus. Integer pretium quam vel nunc aliquet fringilla. Maecenas enim nulla, faucibus ut tincidunt id, auctor at orci. Praesent faucibus tellus ipsum, nec varius erat consectetur at. Etiam ac ultricies ex, a gravida quam. Suspendisse fringilla congue massa a cursus. Nunc condimentum mauris id erat tincidunt laoreet. Sed maximus tortor id mi vestibulum pulvinar. Vestibulum ultricies
+                erat sit amet posuere euismod. Curabitur orci mauris, vehicula et dolor at, egestas luctus nunc. Sed non egestas massa. Curabitur eget bibendum arcu. Aliquam erat volutpat. Fusce placerat lacus a dapibus accumsan. Cras vitae interdum metus. Phasellus neque sem, mattis et imperdiet sed, eleifend vel lorem.</p>
+            </div>
+            <form id="buyer-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+
+                <div class="form-group row">
+                    <label for="email" class="col-sm-2 form-control-label">Email</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="code" class="col-sm-2 form-control-label">Code</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="code" placeholder="Code" value="<?php echo $code;?>" name="code">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="issuer" class="col-sm-2 form-control-label">Selecteer je bank:</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="issuer">
+                            <?php
+                                $issuers = $mollie->issuers->all();
+                                foreach ($issuers as $issuer) {
+                                    if($issuer->method == Mollie_API_Object_Method::IDEAL) {
+                                        echo '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
                                     }
-                                ?>
-                            </select>
-                            </span>
-                        </li>
-                    </ul>
-                </fieldset> 
-                <input class="submit" type="submit" name="submit" value="Versturen"/>
+                                }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Naar betalen</button>
             </form>
         </div>
     </body>

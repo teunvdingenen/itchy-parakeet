@@ -4,7 +4,8 @@ include "dbstore.php";
 include "functions.php";
 
 $returnVal = "";
-$firstname = $lastname = $birthday = $birthmonth = $birthyear = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need =$partner = $terms0 = $terms1 = $terms2 = "";
+$firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $familiar = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = "";
+$preparationsbox = false;
 $editions = array();
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -26,32 +27,17 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $city = "";
         addError("Je hebt je woonplaats niet opgegeven.");
     }
-    if( !empty($_POST["birthday"]) ) {
-        $birthday = intval(test_input($_POST["birthday"]));
+    if( !empty($_POST["birthdate"]) ) {
+        $birthdate = test_input($_POST["birthdate"]);
+        //date_default_timezone_set('UTC');
+        //if( !mktime(0,0,0,$birthday, $birthmonth, $birthyear)) {
+        //    addError("De opgegeven geboortedatum klopt niet.");
+        //} else {
+        //    $birthdate = date( 'Y-m-d H:i:s', mktime(0,0,0, $birthmonth, $birthday, $birthyear));
+        //}
     } else {
-        $birthday = "";
+        addError("Je hebt je geboortedatum niet opgegeven");
     }
-    if( !empty($_POST["birthmonth"]) ) {
-        $birthmonth = intval(test_input($_POST["birthmonth"]));
-    } else {
-        $birthmonth = "";
-    }
-    if( !empty($_POST["birthyear"]) ) {
-        $birthyear = intval(test_input($_POST["birthyear"]));
-    } else {
-        $birthyear = "";
-    }
-    if( $birthday != "" && $birthmonth != "" && $birthyear != "" ) {
-        date_default_timezone_set('UTC');
-        if( !mktime(0,0,0,$birthday, $birthmonth, $birthyear)) {
-            addError("De opgegeven geboortedatum klopt niet.");
-        } else {
-            $birthdate = date( 'Y-m-d H:i:s', mktime(0,0,0, $birthmonth, $birthday, $birthyear));
-        }
-    } else {
-        addError("Je hebt je geboortedatum niet goed opgegeven");
-    }
-    
 
     if( !empty($_POST["gender"]) ) {
         $gender = test_input($_POST["gender"]);
@@ -140,6 +126,18 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $act1need = "";
     }
 
+    if( !empty($_POST["motivation"])) {
+        $motivation = test_input($_POST["motivation"]);
+    } else {
+        $motivation = "";
+    }
+
+    if( !empty($_POST["familiar"])) {
+        $familiar = test_input($_POST["familiar"]);
+    } else {
+        $familiar = "";
+    }
+
     $db_contrib0 = $db_contrib0_desc = $db_contrib0_need = "";
     $db_contrib1 = $db_contrib1_desc = $db_contrib1_need = "";
 
@@ -164,10 +162,22 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["partner"])) {
         $partner = test_input($_POST["partner"]);
         if( !filter_var($partner, FILTER_VALIDATE_EMAIL)) {
-            addError("Het email adres van je lieveling klopt niet");
+            addError("Het email adres van je lieveling is niet geldig");
         }
     } else {
         $partner = "";
+    }
+
+    if( !empty($_POST["preparationsbox"])) {
+        $preparationsbox = true;
+        if( !empty($_POST["preparations"])) {
+            $preparations = test_input($_POST["preparations"]);
+        } else {
+            $preparations = "J";
+        }
+    } else {
+        $preparationsbox = false;
+        $preparations = "N";
     }
 
     if( !empty($_POST["terms0"])) {
@@ -186,12 +196,18 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $terms2 = "";
     }
 
-    if( $terms0 == "" || $terms1 == "" || $terms2 == "") {
+    if( !empty($_POST["terms3"])) {
+        $terms3 = test_input($_POST["terms3"]);
+    } else {
+        $terms3 = "";
+    }
+
+    if( $terms0 == "" || $terms1 == "" || $terms2 == "" || $terms3 == "") {
         addError("Je moet alle voorwaarden accepteren");
     }
 
     if( $returnVal == "" ) {
-        $returnVal = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $terms0, $terms1, $terms2);
+        $returnVal = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3);
     } else {
         //try again..
         $returnVal .= "</ul>";
@@ -224,6 +240,8 @@ function addError($value) {
             href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
+        <scirpt src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_nl.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
         <script src="js/signup.js"></script>
@@ -254,32 +272,32 @@ function addError($value) {
             </div>
             <?php echo $returnVal; ?>
 
-            <form method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+            <form id="signup-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                 <div class="form-group row">
                     <label for="firstname" class="col-sm-2 form-control-label">Voornaam</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname" required>
+                        <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="lastname" class="col-sm-2 form-control-label">Achternaam</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname"required>
+                        <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="city" class="col-sm-2 form-control-label">Woonplaats</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" id="city" placeholder="Woonplaats" value="<?php echo $city;?>" name="city"required>
+                        <input class="form-control" type="text" id="city" placeholder="Woonplaats" value="<?php echo $city;?>" name="city">
                     </div>
                 </div>
             
                 <div class="form-group row">
                     <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="date" id="birthdate" value="<?php echo $birthdate;?>" name="birthday"required>
+                        <input class="form-control" type="date" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate">
                     </div>
                 </div>
 
@@ -298,20 +316,21 @@ function addError($value) {
                                 Jongedame
                             </label>
                         </div>
+                        <label for="gender" class="error" style="display:none;"></label>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="email" class="col-sm-2 form-control-label">Email</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email" required>
+                        <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="phone" class="col-sm-2 form-control-label">Telefoonnummer</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $phone;?>" name="phone" required>
+                        <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $phone;?>" name="phone">
                     </div>
                 </div>
 
@@ -322,6 +341,22 @@ function addError($value) {
                         <div class="alert alert-success">
                             Proin ultricies quis lacus in porttitor. Vivamus ullamcorper felis est, in congue neque bibendum sed. Donec egestas lorem quam, vitae ullamcorper tortor efficitur eu.
                         </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label" for="motivation">Motivatie</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="motivation" id="motivation" cols="60" rows="4"><?php echo $motivation; ?></textarea>
+                        <label for="motivation">Max 256 karakters</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label" for="familiar">Hoe ken je Familiar Forest?</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" name="familiar" id="familiar" cols="60" rows="4"><?php echo $familiar; ?></textarea>
+                        <label for="familiar">Max 256 karakters</label>
                     </div>
                 </div>
 
@@ -420,16 +455,16 @@ function addError($value) {
                                 <option value="afb" <?= $contrib0 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
                                 <option value="ontw" <?= $contrib0 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                             </select>
-                            <div class="alert alert-success" id="ivbk0desc">
+                            <div class="alert alert-success" id="ivbk0info">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat id turpis quis dignissim. Maecenas elementum scelerisque pharetra. Sed tincidunt tincidunt purus, quis molestie eros blandit non. Vestibulum consequat dolor a enim porttitor, a vehicula mauris imperdiet. Ut et lectus vestibulum, finibus dolor posuere, elementum purus. Suspendisse at ipsum dapibus, dapibus neque ut, cursus lacus. Ut tristique id orci id aliquam. Integer consectetur magna ac justo ornare, nec imperdiet ipsum accumsan. 
                             </div>
-                            <div class="alert alert-success" id="act0desc">
+                            <div class="alert alert-success" id="act0info">
                                  Ut viverra pulvinar nisl, in dictum lacus. Aliquam non porta mauris, nec ornare mauris. Fusce metus neque, sodales id dictum vestibulum, vehicula non turpis. Nulla quis placerat enim. Morbi et lorem a dui pharetra interdum in vel nunc. In nec cursus lacus, eu egestas lorem. In elit felis, hendrerit quis enim non, sollicitudin tempus urna. Donec congue sollicitudin libero, non rutrum lorem fringilla vitae. Sed et tempus lectus. Nulla ac scelerisque leo. Sed fermentum facilisis sapien, vel suscipit odio porttitor tempus. Integer sit amet eros quis lorem interdum ullamcorper non quis nisi. Etiam aliquam massa nec magna volutpat, eget vehicula nibh laoreet. 
                             </div>
-                            <div class="alert alert-success" id="afb0desc">
+                            <div class="alert alert-success" id="afb0info">
                                 In luctus nisi vitae risus gravida placerat. Etiam quis aliquam metus. Vestibulum sed mattis diam. Nullam sollicitudin vel felis eu imperdiet. Nunc at diam porttitor, aliquam lectus sed, ornare est. Cras et lectus id elit commodo lobortis. Morbi feugiat massa lacus, sit amet mattis lorem convallis nec. Cras vehicula lacus quis risus tempus sagittis. Donec consectetur turpis libero, vitae lobortis arcu pretium quis. Ut ac turpis a ante volutpat pulvinar tincidunt vel enim. Maecenas pretium et diam ac feugiat. Curabitur finibus quam eu sagittis molestie. Duis facilisis pretium mi ut elementum. Praesent volutpat lectus eu mollis ullamcorper. 
                             </div>
-                            <div class="alert alert-success" id="ontw0desc">
+                            <div class="alert alert-success" id="ontw0info">
                                  Praesent quis lorem mollis, eleifend turpis gravida, interdum lacus. Vivamus ornare tellus turpis, id congue enim sagittis vel. Etiam dapibus, dui non posuere suscipit, nibh tellus tempor massa, id luctus velit lorem eu sapien. Integer suscipit ante non sapien sagittis luctus. Sed venenatis eros vel ante finibus, et vehicula quam varius. Etiam viverra venenatis dapibus. Nulla euismod nisi dolor, vitae varius libero facilisis non. Ut convallis augue in ultricies faucibus. Curabitur sed nunc quis nibh tincidunt semper.
                             </div>
                         </div>
@@ -481,16 +516,16 @@ function addError($value) {
                                 <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
                                 <option value="ontw" <?= $contrib1 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                             </select>
-                            <div class="alert alert-success" id="ivbk1desc">
+                            <div class="alert alert-success" id="ivbk1info">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat id turpis quis dignissim. Maecenas elementum scelerisque pharetra. Sed tincidunt tincidunt purus, quis molestie eros blandit non. Vestibulum consequat dolor a enim porttitor, a vehicula mauris imperdiet. Ut et lectus vestibulum, finibus dolor posuere, elementum purus. Suspendisse at ipsum dapibus, dapibus neque ut, cursus lacus. Ut tristique id orci id aliquam. Integer consectetur magna ac justo ornare, nec imperdiet ipsum accumsan. 
                             </div>
-                            <div class="alert alert-success" id="act1desc">
+                            <div class="alert alert-success" id="act1info">
                                  Ut viverra pulvinar nisl, in dictum lacus. Aliquam non porta mauris, nec ornare mauris. Fusce metus neque, sodales id dictum vestibulum, vehicula non turpis. Nulla quis placerat enim. Morbi et lorem a dui pharetra interdum in vel nunc. In nec cursus lacus, eu egestas lorem. In elit felis, hendrerit quis enim non, sollicitudin tempus urna. Donec congue sollicitudin libero, non rutrum lorem fringilla vitae. Sed et tempus lectus. Nulla ac scelerisque leo. Sed fermentum facilisis sapien, vel suscipit odio porttitor tempus. Integer sit amet eros quis lorem interdum ullamcorper non quis nisi. Etiam aliquam massa nec magna volutpat, eget vehicula nibh laoreet. 
                             </div>
-                            <div class="alert alert-success" id="afb1desc">
+                            <div class="alert alert-success" id="afb1info">
                                 In luctus nisi vitae risus gravida placerat. Etiam quis aliquam metus. Vestibulum sed mattis diam. Nullam sollicitudin vel felis eu imperdiet. Nunc at diam porttitor, aliquam lectus sed, ornare est. Cras et lectus id elit commodo lobortis. Morbi feugiat massa lacus, sit amet mattis lorem convallis nec. Cras vehicula lacus quis risus tempus sagittis. Donec consectetur turpis libero, vitae lobortis arcu pretium quis. Ut ac turpis a ante volutpat pulvinar tincidunt vel enim. Maecenas pretium et diam ac feugiat. Curabitur finibus quam eu sagittis molestie. Duis facilisis pretium mi ut elementum. Praesent volutpat lectus eu mollis ullamcorper. 
                             </div>
-                            <div class="alert alert-success" id="ontw1desc">
+                            <div class="alert alert-success" id="ontw1info">
                                  Praesent quis lorem mollis, eleifend turpis gravida, interdum lacus. Vivamus ornare tellus turpis, id congue enim sagittis vel. Etiam dapibus, dui non posuere suscipit, nibh tellus tempor massa, id luctus velit lorem eu sapien. Integer suscipit ante non sapien sagittis luctus. Sed venenatis eros vel ante finibus, et vehicula quam varius. Etiam viverra venenatis dapibus. Nulla euismod nisi dolor, vitae varius libero facilisis non. Ut convallis augue in ultricies faucibus. Curabitur sed nunc quis nibh tincidunt semper.
                             </div>
                         </div>
@@ -532,6 +567,22 @@ function addError($value) {
                             <label for="act1need">Max 256 karakters</label>
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="preparations">Voorbereidingen</label>
+                        <div class="col-sm-10">
+                            <div class="checkbox">
+                                <label for="preparationsbox">
+                                    <input class="checkbox" type="checkbox" id="preparationsbox" name="preparationsbox" <?php if($preparationsbox) echo( "checked"); ?>>
+                                    Ik vind het leuk om te helpen in de voorbereidingen
+                                </label>
+                            </div>
+                            <div class="alert alert-success" id="prepinfo">Nam sit amet varius orci, vitae venenatis quam. Vestibulum varius nulla non augue placerat, id feugiat tellus pulvinar. Etiam luctus elit massa. Proin in sem nulla. Maecenas sit amet turpis lectus. Donec id leo iaculis, tincidunt nibh venenatis, fringilla dolor. Nunc sit amet quam sem. Quisque eget purus lobortis, tempor odio ut, ultricies diam. Donec ac ultrices turpis. Maecenas egestas tristique dolor at consequat. Aenean sed lectus at lectus ornare iaculis. Ut viverra lectus tortor, ac lacinia dolor vestibulum at. Curabitur rutrum auctor nibh et tempor. </div>
+                            <div class="alert alert-success" id="prepintro">Te gek! Wat zou je leuk vinden om te doen?</div>
+                            <textarea class="form-control" name="preparations" id="preparations" cols="60" rows="4"><?php echo $preparations; ?></textarea>
+                            <label id="prepcounter" for="preparations">Max 256 karakters</label>
+                        </div>
+                    </div>
                 </fieldset>
                     
                 <fieldset>
@@ -546,6 +597,7 @@ function addError($value) {
                                     Ik ga akkoord met deze voorwaarden
                                 </label>
                             </div>
+                            <label for="terms0" class="error" style="display:none;"></label>
                         </div>
                     </div>
 
@@ -559,6 +611,7 @@ function addError($value) {
                                     Ik ga akkoord met deze voorwaarden
                                 </label>
                             </div>
+                            <label for="terms1" class="error" style="display:none;"></label>
                         </div>
                     </div>
 
@@ -572,6 +625,7 @@ function addError($value) {
                                     Ik ga akkoord met deze voorwaarden
                                 </label>
                             </div>
+                            <label for="terms2" class="error" style="display:none;"></label>
                         </div>
                     </div>
 
@@ -585,6 +639,7 @@ function addError($value) {
                                     Ik ga akkoord met deze voorwaarden
                                 </label>
                             </div>
+                            <label for="terms3" class="error" style="display:none;"></label>
                         </div>
                     </div>
                 </fieldset>

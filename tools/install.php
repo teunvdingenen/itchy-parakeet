@@ -31,15 +31,18 @@ try {
         `%s` varchar(32) NOT NULL default '',
         `%s` int(8) NOT NULL default 0,
         `%s` varchar(255) NOT NULL default '',
-        `%s` varchar(255) default NULL,
+        `%s` varchar(255) default '',
+        `%s` varchar(255) default '',
+        `%s` varchar(255) default '',
         `%s` int(8) NOT NULL default 0,
         `%s` int(8) NOT NULL default 0,
-        `%s` varchar(8) NOT NULL default 0,
-        `%s` varchar(8) NOT NULL default 0,
-        `%s` varchar(8) NOT NULL default 0,
+        `%s` varchar(255) default '',
         `%s` date NOT NULL default 0,
-        PRIMARY KEY (`%s`),
-        UNIQUE KEY (`%s`)
+        `%s` varchar(8) NOT NULL default 0,
+        `%s` varchar(8) NOT NULL default 0,
+        `%s` varchar(8) NOT NULL default 0,
+        `%s` varchar(8) NOT NULL default 0,
+        PRIMARY KEY (`%s`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Personal information';",
         $db_table_person,
         $db_person_email,
@@ -52,14 +55,17 @@ try {
         $db_person_visits,
         $db_person_editions,
         $db_person_partner,
+        $db_person_motivation,
+        $db_person_familiar,
         $db_person_contrib0,
         $db_person_contrib1,
+        $db_person_preparations,
         $db_person_date,
         $db_person_terms0,
         $db_person_terms1,
         $db_person_terms2,
-        $db_person_email,
-        $db_person_partner
+        $db_person_terms3,
+        $db_person_email
         );
 
     $contrib_sql = sprintf("CREATE TABLE `%s` (

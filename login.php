@@ -77,8 +77,8 @@ if($error) {
             <?php if($returnVal != "") {
                 echo '<div class="alert alert-danger" role="alert">'.$returnVal.'</div>';
             } ?>
-            <form class="form-signin" method="post">
-                <h2 class="form-signin-heading">Inloggen</h2>
+            <form class="form-small" method="post">
+                <h2 class="form-small-heading">Inloggen</h2>
                 <label for="username" class="sr-only">Gebruikersnaam</label>
                 <input type="text" id="username" class="form-control" placeholder="Gebruikersnaam" name="username" required autofocus>
                 <label for="password" class="sr-only">Paswoord</label>

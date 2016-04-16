@@ -32,13 +32,17 @@ $db_person_phone    = "phone";
 $db_person_visits    = "visits";
 $db_person_editions = "editions";
 $db_person_partner  = "partner";
+$db_person_motivation = "motivation";
+$db_person_familiar = "familiar";
 $db_person_date		= "signupdate";
 
 $db_person_contrib0 = "contrib0";
 $db_person_contrib1 = "contrib1";
+$db_person_preparations = "preparations";
 $db_person_terms0   = "terms0";
 $db_person_terms1   = "terms1";
 $db_person_terms2   = "terms2";
+$db_person_terms3   = "terms3";
 
 $db_contrib_id      = "id";
 $db_contrib_type    = "type";
