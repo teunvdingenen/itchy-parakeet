@@ -71,56 +71,24 @@ $(document).ready(function() {
 	$("#contrib0").change(function() {
 		if( $(this).val() == "ivbk") {
 			hideAct0Input();
-			$("#ivbk0info").show();
-			$("#act0info").hide();
-			$("#afb0info").hide();
-			$("#ontw0info").hide();
 		} else if( $(this).val() == "act") {
 			showAct0Input();
-			$("#ivbk0info").hide();
-			$("#act0info").show();
-			$("#afb0info").hide();
-			$("#ontw0info").hide();
 		} else if ($(this).val() == "afb" ) {
 			hideAct0Input();
-			$("#ivbk0info").hide();
-			$("#act0info").hide();
-			$("#afb0info").show();
-			$("#ontw0info").hide();
 		} else if ($(this).val() == "ontw") {
 			hideAct0Input();
-			$("#ivbk0info").hide();
-			$("#act0info").hide();
-			$("#afb0info").hide();
-			$("#ontw0info").show();
 		}
 	});
 
 	$("#contrib1").change(function() {
 		if( $(this).val() == "ivbk") {
 			hideAct1Input();
-			$("#ivbk1info").show();
-			$("#act1info").hide();
-			$("#afb1info").hide();
-			$("#ontw1info").hide();
 		} else if( $(this).val() == "act") {
-			hideAct1Input();
-			$("#ivbk1info").hide();
-			$("#act1info").show();
-			$("#afb1info").hide();
-			$("#ontw1info").hide();
+			showAct1Input();
 		} else if ($(this).val() == "afb" ) {
 			hideAct1Input();
-			$("#ivbk1info").hide();
-			$("#act1info").hide();
-			$("#afb1info").show();
-			$("#ontw1info").hide();
 		} else if ($(this).val() == "ontw") {
 			hideAct1Input();
-			$("#ivbk1info").hide();
-			$("#act1info").hide();
-			$("#afb1info").hide();
-			$("#ontw1info").show();
 		}
 	});
 	$("textarea").keyup(function() {

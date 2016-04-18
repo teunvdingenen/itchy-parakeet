@@ -64,7 +64,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     $nr_editions = 0;
     $editions = isset($_POST['editions']) ? $_POST['editions'] : array();
     foreach($editions as $edition) {
-        $editions_str .= test_input($edition) . ", ";
+        $editions_str .= test_input($edition) . ",";
         $nr_editions += 1;
     }
 
@@ -213,7 +213,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $returnVal .= "</ul>";
     }
     if( $returnVal == "") {
-        $_SESSION['success_firstname'] = $firstname;
+        $_SESSION['success_email'] = $email;
         header('Location: success');
     }
 } //End POST
@@ -228,33 +228,31 @@ function addError($value) {
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Familiar Forest Festival Inschrijfformulier</title>
+        <title>Familiar Forest Inschrijfformulier</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="icon" href="favicon.ico">
         <!-- Place favicon.ico in the root directory -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" media="all"
             href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>
+
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
         <scirpt src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_nl.js"></script>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
         <script src="js/signup.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -266,43 +264,48 @@ function addError($value) {
             <div class="default-text">
                 <h1>Inschrijven</h1>
                 <p class="lead">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut ligula quis lacus consectetur tempus. Integer pretium quam vel nunc aliquet fringilla. Maecenas enim nulla, faucibus ut tincidunt id, auctor at orci. Praesent faucibus tellus ipsum, nec varius erat consectetur at. Etiam ac ultricies ex, a gravida quam. Suspendisse fringilla congue massa a cursus. Nunc condimentum mauris id erat tincidunt laoreet. Sed maximus tortor id mi vestibulum pulvinar. Vestibulum ultricies
-                    erat sit amet posuere euismod. Curabitur orci mauris, vehicula et dolor at, egestas luctus nunc. Sed non egestas massa. Curabitur eget bibendum arcu. Aliquam erat volutpat. Fusce placerat lacus a dapibus accumsan. Cras vitae interdum metus. Phasellus neque sem, mattis et imperdiet sed, eleifend vel lorem.
+                    Welkom op het volledig vernieuwde inschijfformulier voor Familiar Forest!
+                </p>
+                <p>
+                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat! Het inschijfformulier blijft tot 10 Mei 2016 beschikbaar.
+                </p>
+                <p>
+                    Velden gemarkeerd met een * zijn verplicht!
                 </p>
             </div>
             <?php echo $returnVal; ?>
 
             <form id="signup-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                 <div class="form-group row">
-                    <label for="firstname" class="col-sm-2 form-control-label">Voornaam</label>
+                    <label for="firstname" class="col-sm-2 form-control-label">Voornaam*</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="lastname" class="col-sm-2 form-control-label">Achternaam</label>
+                    <label for="lastname" class="col-sm-2 form-control-label">Achternaam*</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="city" class="col-sm-2 form-control-label">Woonplaats</label>
+                    <label for="city" class="col-sm-2 form-control-label">Woonplaats*</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="text" id="city" placeholder="Woonplaats" value="<?php echo $city;?>" name="city">
                     </div>
                 </div>
             
                 <div class="form-group row">
-                    <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum</label>
+                    <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum*</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="date" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-2">Geslacht</label>
+                    <label class="col-sm-2">Geslacht*</label>
                     <div class="col-sm-10">
                         <div class="radio">
                             <label>
@@ -321,14 +324,14 @@ function addError($value) {
                 </div>
 
                 <div class="form-group row">
-                    <label for="email" class="col-sm-2 form-control-label">Email</label>
+                    <label for="email" class="col-sm-2 form-control-label">Email*</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email">
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="phone" class="col-sm-2 form-control-label">Telefoonnummer</label>
+                    <label for="phone" class="col-sm-2 form-control-label">Telefoonnummer*</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $phone;?>" name="phone">
                     </div>
@@ -339,7 +342,7 @@ function addError($value) {
                     <div class="col-sm-10">
                         <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
                         <div class="alert alert-success">
-                            Proin ultricies quis lacus in porttitor. Vivamus ullamcorper felis est, in congue neque bibendum sed. Donec egestas lorem quam, vitae ullamcorper tortor efficitur eu.
+                            Vanaf dit jaar kun je voor het eerst je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! Het is belangrijk dat jij zijn of haar email adres correct invult en andersom! <strong>Communiceer dit dus samen goed naar elkaar!</strong>
                         </div>
                     </div>
                 </div>
@@ -366,25 +369,25 @@ function addError($value) {
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fff2010" value="fff2010" <?php if(in_array("fff2010", $editions)) echo( "checked"); ?> >
-                                Familiar Forest Festival 2010
+                                Familiar Forest 2010
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fff2011" value="fff2011" <?php if(in_array("fff2011", $editions)) echo( "checked"); ?>>
-                                Familiar Forest Festival 2011
+                                Familiar Forest 2011
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="ffcastle" value="ffcastle" <?php if(in_array("ffcastle", $editions)) echo( "checked"); ?>>
-                                Familiar Castle Festival                                
+                                Familiar Castle                                
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fwf2012" value="fwf2012" <?php if(in_array("fwf2012", $editions)) echo( "checked"); ?>>
-                                Familiar Winter Festival 2012
+                                Familiar Winter 2012
                             </label>
                         </div>
                         <div class="checkbox">
@@ -396,7 +399,7 @@ function addError($value) {
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fff2012" value="fff2012" <?php if(in_array("fff2012", $editions)) echo( "checked"); ?>>
-                                Familiar Forest Festival 2012
+                                Familiar Forest 2012
                             </label>
                         </div>
                         <div class="checkbox">
@@ -408,44 +411,44 @@ function addError($value) {
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fwf2013" value="fwf2013" <?php if(in_array("fwf2013", $editions)) echo( "checked"); ?>>
-                                Familiar Winter Festival 2013
+                                Familiar Winter 2013
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fff2013" value="fff2013" <?php if(in_array("fff2013", $editions)) echo( "checked"); ?>>
-                                Familiar Forest Festival 2013
+                                Familiar Forest 2013
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fwf2014" value="fwf2014" <?php if(in_array("fwf2014", $editions)) echo( "checked"); ?>>
-                                Familiar Winter Festival 2014
+                                Familiar Winter 2014
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fff2014" value="fff2014" <?php if(in_array("fff2014", $editions)) echo( "checked"); ?>>
-                                Familiar Forest Festival 2014
+                                Familiar Forest 2014
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fwf2015" value="fwf2015" <?php if(in_array("fwf2015", $editions)) echo( "checked"); ?>>
-                                Familiar Winter Festival 2015
+                                Familiar Winter 2015
                             </label>
                         </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="editions[]" id="fff2015" value="fff2015" <?php if(in_array("fff2015", $editions)) echo( "checked"); ?>>
-                                Familiar Forest Festival 2015
+                                Familiar Forest 2015
                             </label>
                         </div>
                     </div>
                 </div>
                         
                 <fieldset>
-                    <legend>Jouw bijdrage aan het Familiar Forest Festival 2016</legend>
+                    <legend>Jouw bijdrage aan het Familiar Forest 2016</legend>
                     <div class="form-group row">
                         <label for="contrib0" class="col-sm-2 form-control-label">Eerste keus</label>
                         <div class="col-sm-10">
@@ -455,18 +458,6 @@ function addError($value) {
                                 <option value="afb" <?= $contrib0 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
                                 <option value="ontw" <?= $contrib0 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                             </select>
-                            <div class="alert alert-success" id="ivbk0info">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat id turpis quis dignissim. Maecenas elementum scelerisque pharetra. Sed tincidunt tincidunt purus, quis molestie eros blandit non. Vestibulum consequat dolor a enim porttitor, a vehicula mauris imperdiet. Ut et lectus vestibulum, finibus dolor posuere, elementum purus. Suspendisse at ipsum dapibus, dapibus neque ut, cursus lacus. Ut tristique id orci id aliquam. Integer consectetur magna ac justo ornare, nec imperdiet ipsum accumsan. 
-                            </div>
-                            <div class="alert alert-success" id="act0info">
-                                 Ut viverra pulvinar nisl, in dictum lacus. Aliquam non porta mauris, nec ornare mauris. Fusce metus neque, sodales id dictum vestibulum, vehicula non turpis. Nulla quis placerat enim. Morbi et lorem a dui pharetra interdum in vel nunc. In nec cursus lacus, eu egestas lorem. In elit felis, hendrerit quis enim non, sollicitudin tempus urna. Donec congue sollicitudin libero, non rutrum lorem fringilla vitae. Sed et tempus lectus. Nulla ac scelerisque leo. Sed fermentum facilisis sapien, vel suscipit odio porttitor tempus. Integer sit amet eros quis lorem interdum ullamcorper non quis nisi. Etiam aliquam massa nec magna volutpat, eget vehicula nibh laoreet. 
-                            </div>
-                            <div class="alert alert-success" id="afb0info">
-                                In luctus nisi vitae risus gravida placerat. Etiam quis aliquam metus. Vestibulum sed mattis diam. Nullam sollicitudin vel felis eu imperdiet. Nunc at diam porttitor, aliquam lectus sed, ornare est. Cras et lectus id elit commodo lobortis. Morbi feugiat massa lacus, sit amet mattis lorem convallis nec. Cras vehicula lacus quis risus tempus sagittis. Donec consectetur turpis libero, vitae lobortis arcu pretium quis. Ut ac turpis a ante volutpat pulvinar tincidunt vel enim. Maecenas pretium et diam ac feugiat. Curabitur finibus quam eu sagittis molestie. Duis facilisis pretium mi ut elementum. Praesent volutpat lectus eu mollis ullamcorper. 
-                            </div>
-                            <div class="alert alert-success" id="ontw0info">
-                                 Praesent quis lorem mollis, eleifend turpis gravida, interdum lacus. Vivamus ornare tellus turpis, id congue enim sagittis vel. Etiam dapibus, dui non posuere suscipit, nibh tellus tempor massa, id luctus velit lorem eu sapien. Integer suscipit ante non sapien sagittis luctus. Sed venenatis eros vel ante finibus, et vehicula quam varius. Etiam viverra venenatis dapibus. Nulla euismod nisi dolor, vitae varius libero facilisis non. Ut convallis augue in ultricies faucibus. Curabitur sed nunc quis nibh tincidunt semper.
-                            </div>
                         </div>
                     </div>
                     
@@ -488,7 +479,7 @@ function addError($value) {
                                 <option value="schmink" <?= $act0type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
                                 <option value="other" <?= $act0type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
                                 <option value="perform" <?= $act0type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
-                                <option value="install" <?= $act0type == 'install' ? ' selected="selected"' : '';?>>Installatie Beeld</option>
+                                <option value="install" <?= $act0type == 'install' ? ' selected="selected"' : '';?>>Installatie / Beeld</option>
                             </select>
                         </div>
                     </div>
@@ -516,18 +507,6 @@ function addError($value) {
                                 <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
                                 <option value="ontw" <?= $contrib1 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                             </select>
-                            <div class="alert alert-success" id="ivbk1info">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque placerat id turpis quis dignissim. Maecenas elementum scelerisque pharetra. Sed tincidunt tincidunt purus, quis molestie eros blandit non. Vestibulum consequat dolor a enim porttitor, a vehicula mauris imperdiet. Ut et lectus vestibulum, finibus dolor posuere, elementum purus. Suspendisse at ipsum dapibus, dapibus neque ut, cursus lacus. Ut tristique id orci id aliquam. Integer consectetur magna ac justo ornare, nec imperdiet ipsum accumsan. 
-                            </div>
-                            <div class="alert alert-success" id="act1info">
-                                 Ut viverra pulvinar nisl, in dictum lacus. Aliquam non porta mauris, nec ornare mauris. Fusce metus neque, sodales id dictum vestibulum, vehicula non turpis. Nulla quis placerat enim. Morbi et lorem a dui pharetra interdum in vel nunc. In nec cursus lacus, eu egestas lorem. In elit felis, hendrerit quis enim non, sollicitudin tempus urna. Donec congue sollicitudin libero, non rutrum lorem fringilla vitae. Sed et tempus lectus. Nulla ac scelerisque leo. Sed fermentum facilisis sapien, vel suscipit odio porttitor tempus. Integer sit amet eros quis lorem interdum ullamcorper non quis nisi. Etiam aliquam massa nec magna volutpat, eget vehicula nibh laoreet. 
-                            </div>
-                            <div class="alert alert-success" id="afb1info">
-                                In luctus nisi vitae risus gravida placerat. Etiam quis aliquam metus. Vestibulum sed mattis diam. Nullam sollicitudin vel felis eu imperdiet. Nunc at diam porttitor, aliquam lectus sed, ornare est. Cras et lectus id elit commodo lobortis. Morbi feugiat massa lacus, sit amet mattis lorem convallis nec. Cras vehicula lacus quis risus tempus sagittis. Donec consectetur turpis libero, vitae lobortis arcu pretium quis. Ut ac turpis a ante volutpat pulvinar tincidunt vel enim. Maecenas pretium et diam ac feugiat. Curabitur finibus quam eu sagittis molestie. Duis facilisis pretium mi ut elementum. Praesent volutpat lectus eu mollis ullamcorper. 
-                            </div>
-                            <div class="alert alert-success" id="ontw1info">
-                                 Praesent quis lorem mollis, eleifend turpis gravida, interdum lacus. Vivamus ornare tellus turpis, id congue enim sagittis vel. Etiam dapibus, dui non posuere suscipit, nibh tellus tempor massa, id luctus velit lorem eu sapien. Integer suscipit ante non sapien sagittis luctus. Sed venenatis eros vel ante finibus, et vehicula quam varius. Etiam viverra venenatis dapibus. Nulla euismod nisi dolor, vitae varius libero facilisis non. Ut convallis augue in ultricies faucibus. Curabitur sed nunc quis nibh tincidunt semper.
-                            </div>
                         </div>
                     </div>
                     
@@ -549,7 +528,7 @@ function addError($value) {
                                 <option value="schmink" <?= $act1type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
                                 <option value="other" <?= $act1type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
                                 <option value="perform" <?= $act1type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
-                                <option value="install" <?= $act1type == 'install' ? ' selected="selected"' : '';?>>Installatie Beeld</option>
+                                <option value="install" <?= $act1type == 'install' ? ' selected="selected"' : '';?>>Installatie / Beeld</option>
                             </select>
                         </div>
                     </div>
@@ -577,7 +556,7 @@ function addError($value) {
                                     Ik vind het leuk om te helpen in de voorbereidingen
                                 </label>
                             </div>
-                            <div class="alert alert-success" id="prepinfo">Nam sit amet varius orci, vitae venenatis quam. Vestibulum varius nulla non augue placerat, id feugiat tellus pulvinar. Etiam luctus elit massa. Proin in sem nulla. Maecenas sit amet turpis lectus. Donec id leo iaculis, tincidunt nibh venenatis, fringilla dolor. Nunc sit amet quam sem. Quisque eget purus lobortis, tempor odio ut, ultricies diam. Donec ac ultrices turpis. Maecenas egestas tristique dolor at consequat. Aenean sed lectus at lectus ornare iaculis. Ut viverra lectus tortor, ac lacinia dolor vestibulum at. Curabitur rutrum auctor nibh et tempor. </div>
+                            <div class="alert alert-success" id="prepinfo">We zijn altijd op zoek naar enthoursiastelingen die ons willen helpen bij de voorbereidingen voor Famliar Forest. Lijkt het je leuk om ons hierbij te helpen?</div>
                             <div class="alert alert-success" id="prepintro">Te gek! Wat zou je leuk vinden om te doen?</div>
                             <textarea class="form-control" name="preparations" id="preparations" cols="60" rows="4"><?php echo $preparations; ?></textarea>
                             <label id="prepcounter" for="preparations">Max 256 karakters</label>
@@ -590,7 +569,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms0">Kaart verkoop</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Nam sit amet varius orci, vitae venenatis quam. Vestibulum varius nulla non augue placerat, id feugiat tellus pulvinar. Etiam luctus elit massa. Proin in sem nulla. Maecenas sit amet turpis lectus. Donec id leo iaculis, tincidunt nibh venenatis, fringilla dolor. Nunc sit amet quam sem. Quisque eget purus lobortis, tempor odio ut, ultricies diam. Donec ac ultrices turpis. Maecenas egestas tristique dolor at consequat. Aenean sed lectus at lectus ornare iaculis. Ut viverra lectus tortor, ac lacinia dolor vestibulum at. Curabitur rutrum auctor nibh et tempor. </div>
+                            <div class="alert alert-warning">Aanmeldingen en toegangsbewijzen zijn persoonlijk en mogen niet door zelf door de deelnemer worden doorverkocht. Het is wel mogelijk om tussen 7 juli 2016 en 5 augustus 2016 het toegangsbewijs terug te verkopen aan stichting Familiar Forest.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms0" name="terms0" value="J">
@@ -604,7 +583,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms1">Verzekering</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Praesent fringilla bibendum efficitur. Curabitur hendrerit, neque posuere gravida tempus, nibh felis maximus justo, id aliquam enim risus id sapien. Aliquam lobortis eros et turpis egestas mattis. Nullam tortor nunc, condimentum a sem nec, porttitor ullamcorper erat. Nulla gravida cursus neque, molestie tempus mauris tincidunt a. Proin eu luctus nisi. Morbi ac pulvinar neque. Donec mollis diam elit, lacinia euismod massa gravida ut. Nullam metus orci, egestas eget libero at, porttitor bibendum ipsum. Ut ac justo mollis, pulvinar elit sit amet, accumsan ligula. Sed quis fringilla est. Integer quis risus vitae lectus accumsan consequat sed sit amet sem. Maecenas mi nisi, sagittis vitae pulvinar vitae, imperdiet non ante. Curabitur porttitor tristique sem vel ultricies.</div>
+                            <div class="alert alert-warning">Familiar Forest 2016 is een reis. De locatie waar overnacht wordt verplicht de deelnemer om zich te kunnen identificeren en minimaal WA verzekerd te zijn.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms1" name="terms1" value="J">
@@ -618,7 +597,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms2">Gezondheid</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Morbi ac mauris arcu. Donec ac sollicitudin lectus. Donec imperdiet volutpat purus quis suscipit. Cras eu purus congue, imperdiet nisl vel, tristique urna. Nulla facilisi. Donec neque dui, lobortis at felis et, porttitor aliquet erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce consectetur luctus felis, in vehicula est aliquam vel. Sed mollis at libero sit amet cursus. Aliquam libero orci, ultricies a lobortis nec, finibus eget sapien. Curabitur eget auctor diam. Phasellus cursus lectus in semper mattis. Nunc vitae scelerisque lorem, ut mollis lacus. Duis fringilla risus in odio fermentum mattis. Mauris turpis metus, molestie vitae leo id, pellentesque vestibulum erat. Pellentesque ac lacinia dui, malesuada blandit risus. </div>
+                            <div class="alert alert-warning">Tijdens Familiar Forest 2016 is de deelnemer voor zijn eigen gezondheid verantwoordelijk. Als deelnemer is het niet mogelijk Familiar Forest aansprakelijk te stellen voor materiële en immateriële schade.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms2" name="terms2" value="J">
@@ -632,7 +611,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms3">Telefoon en Foto's</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Morbi ac mauris arcu. Donec ac sollicitudin lectus. Donec imperdiet volutpat purus quis suscipit. Cras eu purus congue, imperdiet nisl vel, tristique urna. Nulla facilisi. Donec neque dui, lobortis at felis et, porttitor aliquet erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce consectetur luctus felis, in vehicula est aliquam vel. Sed mollis at libero sit amet cursus. Aliquam libero orci, ultricies a lobortis nec, finibus eget sapien. Curabitur eget auctor diam. Phasellus cursus lectus in semper mattis. Nunc vitae scelerisque lorem, ut mollis lacus. Duis fringilla risus in odio fermentum mattis. Mauris turpis metus, molestie vitae leo id, pellentesque vestibulum erat. Pellentesque ac lacinia dui, malesuada blandit risus. </div>
+                            <div class="alert alert-warning">Het is niet toegestaan een telefoon of camera mee te nemen naar Familiar Forest 2016. Familiar Forest zorgt voor bereikbaarheid en een professionele fotograaf.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms3" name="terms3" value="J">

@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
 
-    <title>Familiar Forest Festival 2016</title>
+    <title>Familiar Forest 2016</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -19,10 +19,6 @@
 
     <!-- Custom styles for this template -->
     <link href="main.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <!-- <script src="../../assets/js/ie-emulation-modes-warning.js"></script> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -36,10 +32,12 @@
     <div class="container">
 
       <div class="default-text">
-        <h1>Lorem ipsum dolor sit amet</h1>
-        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut ligula quis lacus consectetur tempus. Integer pretium quam vel nunc aliquet fringilla. Maecenas enim nulla, faucibus ut tincidunt id, auctor at orci. Praesent faucibus tellus ipsum, nec varius erat consectetur at. Etiam ac ultricies ex, a gravida quam. Suspendisse fringilla congue massa a cursus. Nunc condimentum mauris id erat tincidunt laoreet. Sed maximus tortor id mi vestibulum pulvinar. Vestibulum ultricies
-        erat sit amet posuere euismod. Curabitur orci mauris, vehicula et dolor at, egestas luctus nunc. Sed non egestas massa. Curabitur eget bibendum arcu. Aliquam erat volutpat. Fusce placerat lacus a dapibus accumsan. Cras vitae interdum metus. Phasellus neque sem, mattis et imperdiet sed, eleifend vel lorem.
+        <h1>Familiar Forest 2016</h1>
+        <p class="lead">
+            Hooggeachte avonturiers, vrienden en buitenlui,
         </p>
+        <p>We hebben een wonderbaarlijke stad ontdekt. Een groene stad tussen twee rivieren waar al vierduizend jaar mensen werken aan het cultiveren van een unieke levensvisie. Een plaats waar hangende tuinen worden opgetrokken, waar volgens de legende een gigantische toren gebouwd werd en waar iedereen nog dezelfde taal spreekt. Een plaats waar astronomie, mathematica en geneeskunde tot kunstvorm verheven zijn. Een stad waarvan gedacht werd dat hij al tientallen keren vernietigd is. <p>
+        <p>Maar dit blijkt niet zo te zijn: niet vernietigd, slechts uit het oog verloren. Want nu, duizenden jaren later, heeft deze stad zich ontwikkeld tot iets wat je nergens anders kunt vinden. Een plaats waar al die tijd is gewerkt aan zowel natuur als technologie. Een amalgamatie van duizenden jaren aan kennis. Een realisatie van eeuwen aan dromen en visioenen.</p>
         </div>
 
         <p><a class="btn btn-primary btn-lg" href="signupform" role="button">Inschrijven &raquo;</a></p>
@@ -52,9 +50,8 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+    <script src="js/vendor/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>

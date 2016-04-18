@@ -131,7 +131,7 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
         if($mysqli->errno == 1062) {
             global $mailtolink;
             //TODO filter partner
-            $returnVal = "Zo te zien heb je je al ingeschreven. Als je denkt dat deze observatie fout is kun je even mailen naar: " . $mailtolink . $mysqli->error;
+            $returnVal = "Zo te zien heb je je al ingeschreven. Als je denkt dat deze observatie fout is kun je even mailen naar: " . $mailtolink;
         } else {
 		    //TODO SEND ME AN EMAIL
             //$returnVal .= "Failed to add person: " . $mysqli->error . ") \n" . $person_query;

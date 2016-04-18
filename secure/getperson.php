@@ -27,11 +27,11 @@ if( $mysqli->connect_errno ) {
 } else {
     $query = "";
     if( $level == 'buyer') {
-        $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.visits, r.code, r.called, b.id
+        $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.editions, p.partner, p.motivation, p.familiar, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.visits, r.code, r.called, b.id
             FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id join raffle r on p.email = r.email join buyer b on p.email = b.email
             WHERE  p.email = '%s'", $mysqli->real_escape_string($email));
     } else if( $level == 'raffle' ) {
-        $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.visits, r.code, r.called
+        $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.editions, p.partner, p.motivation, p.familiar, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.visits, r.code, r.called
         FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id join raffle r on p.email = r.email
         WHERE  p.email = '%s'", $mysqli->real_escape_string($email));
     }
@@ -54,6 +54,7 @@ if( $mysqli->connect_errno ) {
     $phone = $row[6];
     $editions = $row[7];
     $partner = $row[8];
+    //TODO add motivation & familiar
     $contrib0_type = $row[9];
     $contrib0_desc = $row[10];
     $contrib0_need = $row[11];

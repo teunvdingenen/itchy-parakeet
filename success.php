@@ -1,4 +1,68 @@
-<?php session_start(); ?>
+<?php session_start(); 
+include "mailer.php";
+include "functions.php";
+include "initialize.php";
+
+$email = "";
+$content = "";
+$weberror = "";
+if( !empty($_SESSION["success_email"]) ){
+    $email = $_SESSION["success_email"];
+}
+
+$signup = get_signup($email);
+if( $signup === FALSE ) {
+    $weberror = "Er is helaas iets fout gegaan met het verwerken van je inschrijving. Probeer het nogmaals of stuur een mailtje naar ".$mailtolink.".";
+} else {
+    $contrib0 = get_contrib($signup["contrib0"]);
+    $contrib1 = get_contrib($signup["contrib1"]);
+
+    $firstname = $signup["firstname"];
+
+    $fullname = $signup["firstname"] ." ". $signup["lastname"];
+    $subject = "Inschrijving Familiar Forest 2016";
+
+    $content = "<html>".get_email_header();
+    $content .= "<p>Lieve ".$firstname.",<p>";
+    $content .= "<p>Bedankt voor je inschrijving voor Familiar Forest 2016! Hieronder vind je de informatie die we van jou ontvangen hebben. Zie je iets vreemds? Reply op deze mail en dan kunnen we er samen even naar kijken.<p>";
+    $content .= "<table>";
+    $content .= "<tr><td>Voornaam</td><td>".$firstname."</td></tr>";
+    $content .= "<tr><td>Achternaam</td><td>".$signup["lastname"]."</td></tr>";
+    $content .= "<tr><td>Woonplaats</td><td>".$signup["city"]."</td></tr>";
+    $content .= "<tr><td>Geboortedatum</td><td>".$signup["birthdate"]."</td></tr>";
+    $content .= "<tr><td>Geslacht</td><td>".$signup["gender"]."</td></tr>";
+    $content .= "<tr><td>Email</td><td>".$signup["email"]."</td></tr>";
+    $content .= "<tr><td>Telefoonnummer</td><td>".$signup["phone"]."</td></tr>";
+    $content .= "<tr><td>Lieveling</td><td>".$signup["partner"]."</td></tr>";
+    $content .= "<tr><td>Motivate</td><td>".$signup["motivation"]."</td></tr>";
+    $content .= "<tr><td>Hoe ken je Familiar?</td><td>".$signup["familiar"]."</td></tr>";
+
+    $content .= "<tr><td>Voorgaande edities</td><td>";
+    $editions = explode(",", $signup["editions"]);
+    foreach($editions as $edition) {
+        $content .= translate_edition($edition) . "<br>";
+    }
+    $content .= "</td></tr>";
+
+    $content .= "<tr><td>Eerste Keus</td><td>".translate_contrib($contrib0["type"])."</td></tr>";
+    $content .= "<tr><td></td><td>".$contrib0["description"]."</td></tr>";
+    if( $contrib0["type"] == "act" ) {
+        $content .= "<tr><td></td><td>".$contrib0["needs"]."</td></tr>";
+    }
+    $content .= "<tr><td>Tweede Keus</td><td>".translate_contrib($contrib1["type"])."</td></tr>";
+    $content .= "<tr><td></td><td>".$contrib1["description"]."</td></tr>";
+    if( $contrib1["type"] == "act" ) {
+        $content .= "<tr><td></td><td>".$contrib1["needs"]."</td></tr>";
+    }
+    $content .= "<tr><td>Voorbereidingen</td><td>".$signup["preparations"]."</td></tr>";
+    $content .= "</table><br><br>";
+    $content .= get_email_footer();
+    $content .= "</html>";
+
+    send_mail($email, $fullname, $subject, $content);
+}
+
+?>
 <!doctype html>
 <html class="no-js" lang="">
     <head>
@@ -10,7 +74,7 @@
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
 
-    <title>Familiar Forest Festival 2016</title>
+    <title>Familiar Forest 2016</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -20,10 +84,6 @@
 
     <!-- Custom styles for this template -->
     <link href="main.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <!-- <script src="../../assets/js/ie-emulation-modes-warning.js"></script> -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -38,29 +98,36 @@
 
         <!-- Add your site or application content here -->
         <div class="container">
-
-            <h1>Lorem ipsum dolor sit amet</h1>
-            <div>
-                <div>Lieve <? echo $_SESSION['success_firstname'] ?>,</div>
-                    <p>Aliquam eros nibh, bibendum at eros in, scelerisque convallis nibh. Morbi eros lacus, fringilla quis vestibulum id, viverra vel orci. Phasellus luctus est nisl, eu suscipit nibh pretium in. Sed mollis, purus sit amet viverra scelerisque, neque sapien ultrices sem, in efficitur tellus ipsum non enim. Sed porttitor cursus ipsum, eget sagittis purus posuere quis. Duis ut sapien quis dolor viverra lacinia. Sed fringilla eros eget vulputate laoreet. Ut pellentesque dolor eu mi pellentesque
-                    accumsan. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam convallis, dolor sed facilisis consequat, nisi massa rutrum lacus, nec auctor ante nisl nec orci. Morbi diam enim, pharetra eu sapien ac, tristique mollis neque.</p> 
-                </div>
-            </div>
+                <?php if( $weberror == "" ) {
+                    echo "
+                    <h1>Inschrijving compleet!</h1>
+                    <div>
+                    <p>Lieve ".$firstname.",</p>
+                    <p>
+                        Bedankt voor je inschrijving! We hebben al je gegevens in goede orde ontvangen en je ontvangt ook nog een email ter bevestiging. Binnenkort zal de loting plaatsvinden en wordt je gebeld als jouw naam hieruit rolt. Je kunt onze <a href='https://www.facebook.com/events/591534081011159/'>Facebook</a> pagina in de gaten houden voor het laatste nieuws!
+                    </p>
+                    <p>
+                        Als je zorgen, vragen of iets anders kwijt wil kun je mailen naar ".$mailtolink.".
+                    <p>
+                    De High Fives zijn gratis, de knuffels oprecht en de liefde oneindig.
+                    </p>
+                     <p>
+                    Stichting Familiar Forest
+                    <br>
+                    <img src='img/logo_small.png' alt='Stichting Familiar Forest'>
+                </p>
+            </div>";
+                } else {
+                    echo "<div class='alert alert-danger' role='alert'>".$weberror."</div>";
+                }
+                ?>
         </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     </body>
 </html>
