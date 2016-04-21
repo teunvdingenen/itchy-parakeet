@@ -55,6 +55,7 @@ if( $signup === FALSE ) {
         $content .= "<tr><td></td><td>".$contrib1["needs"]."</td></tr>";
     }
     $content .= "<tr><td>Voorbereidingen</td><td>".$signup["preparations"]."</td></tr>";
+    $content .= "<tr><td>Datum inschrijving</td><td>".$signup["signupdate"]."</td></tr>";
     $content .= "</table><br><br>";
     $content .= get_email_footer();
     $content .= "</html>";
