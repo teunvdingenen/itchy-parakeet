@@ -1,22 +1,3 @@
-//Depricated
-function setBirthdateOptions() {
-	var html;
-	for(var i=1; i<=31;i++){
-		html += "<option value="+i+">"+i+"</option>";
-	}
-	$("#birthday").append(html);
-	html = "";
-	for(var i=1; i<=12;i++){
-		html += "<option value="+i+">"+i+"</option>";
-	}
-	$("#birthmonth").append(html);
-	html="";
-	for(var i=1900; i<=1998;i++){
-		html += "<option value="+i+">"+i+"</option>";
-	}
-	$("#birthyear").append(html);
-}
-
 function setErrorBorder(f) {
 	f.closest("div").addClass("has-error");
 }

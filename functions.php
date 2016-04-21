@@ -60,7 +60,7 @@ function get_signup_statistics() {
         $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id";
         $result = $mysqli->query($query);
         if( $result === FALSE ) {
-            echo $mysqli->error;
+            //echo $mysqli->error;
         }
     }
     $mysqli->close();
@@ -94,7 +94,7 @@ function get_signup($email) {
     $result = $mysqli->query($query);
     $mysqli->close();
     if( $result === FALSE ) {
-      echo $mysqli->error;
+      //echo $mysqli->error;
       return FALSE;
     } elseif( $result->num_rows == 1 ) {
       $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -118,7 +118,7 @@ function get_contrib($id) {
     $result = $mysqli->query($query);
     $mysqli->close();
     if( $result === FALSE ) {
-      echo $mysqli->error;
+      //echo $mysqli->error;
       return FALSE;
     } elseif( $result->num_rows == 1 ) {
       $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -192,5 +192,4 @@ function translate_edition($edition) {
     return "Onbekend";
   }
 }
-
- ?>
+?>

@@ -1,12 +1,12 @@
 <?php
 include 'initialize.php';
 include 'fields.php';
-//include 'email.php' TODO send email on error
 
 function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_visits, $editions, $partner, $motivation, $familiar, $contrib0, $contrib1, $contrib0_desc, $contrib1_desc, $contrib0_need, $contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3) {
     global $db_person_email, $db_person_first, $db_person_last, $db_person_birth, $db_person_city, $db_person_gender, $db_person_phone, $db_person_visits, $db_person_editions, $db_person_partner, $db_person_motivation, $db_person_familiar, $db_person_contrib0, $db_person_contrib1, $db_contrib_id, $db_contrib_type, $db_contrib_desc, $db_contrib_needs, $db_person_preparations, $db_person_terms0, $db_person_terms1, $db_person_terms2, $db_person_terms3, $db_person_date;
     global $db_table_person, $db_table_contrib;
     global $db_host, $db_user, $db_pass, $db_name;
+    global $mailtolink;
 	$returnVal = "";
 
 	$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
@@ -130,12 +130,9 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
 	if( !$mysqli->query($person_query) ) {
         if($mysqli->errno == 1062) {
             global $mailtolink;
-            //TODO filter partner
             $returnVal = "Zo te zien heb je je al ingeschreven. Als je denkt dat deze observatie fout is kun je even mailen naar: " . $mailtolink;
         } else {
-		    //TODO SEND ME AN EMAIL
-            //$returnVal .= "Failed to add person: " . $mysqli->error . ") \n" . $person_query;
-            $returnVal = "Er is helaas iets fout gegaan. Er is een mail verstuurd hierover en zal snel worden opgepakt. Probeer het inschrijven later nog eens!" . $mysqli->error . $person_query;
+            $returnVal = "Er is helaas iets fout gegaan. Probeer het inschrijven later nog eens of stuur een mail naar: " . $mailtolink;
             if( $contrib0_isNew ) {
                 $mysqli->query(sprintf("DELETE FROM `%s` WHERE `%s` = '%s';", $db_table_contrib, $db_contrib_id, $contrib0_id));    
             }
@@ -320,4 +317,3 @@ function storeSignupWithDate($email, $first, $last, $birth, $city, $gender, $pho
 	return $returnVal;
 }
 ?>
-

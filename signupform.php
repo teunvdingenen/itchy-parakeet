@@ -48,7 +48,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["email"]) ) {
         $email = test_input($_POST["email"]);
         if( !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            addError("Je email adres klopt niet");
+            addError("Het email adres wat je hebt opgegeven lijkt niet te kloppen.");
         }
     } else {
         $email = "";
@@ -207,14 +207,17 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if( $returnVal == "" ) {
-        $returnVal = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3);
+        $db_error = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3);
+        if( $db_error != "" ) {
+            addError($db_error);
+        }
     } else {
         //try again..
-        $returnVal .= "</ul>";
     }
     if( $returnVal == "") {
         $_SESSION['success_email'] = $email;
         header('Location: success');
+    } else {
     }
 } //End POST
 
