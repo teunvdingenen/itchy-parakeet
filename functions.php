@@ -130,8 +130,12 @@ function get_contrib($id) {
 }
 
 function translate_contrib($type) {
-  if( $type == "ivbk") {
-    return "Interieur verzorging, bar of keuken";
+  if( $type == "iv") {
+    return "Interieur verzorging";
+  } else if( $type == "bar" ) {
+    return "Bar";
+  } else if( $type == "keuken" ) {
+    return "Keuken";
   } else if( $type == "workshop" ) {
     return "Workshop of Cursus";
   } else if( $type == "game" ) { 
@@ -148,6 +152,8 @@ function translate_contrib($type) {
     return "Afbouw";
   } else if( $type == "ontw" ) {
     return "Ontwerpen en/of bouw decoraties, podia etc.";
+  } else if( $type == "" ) {
+    return "";
   } else {
     return "Onbekend";
   }
@@ -180,6 +186,8 @@ function translate_edition($edition) {
     return "Familiar Winter Festival 2015";
   } else if( $edition == "fff2015" ) {
     return "Familiar Forest Festival 2015";
+  } else if( $edition == "" ) {
+    return "";
   } else {
     return "Onbekend";
   }

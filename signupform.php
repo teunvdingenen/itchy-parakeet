@@ -262,15 +262,15 @@ function addError($value) {
         <!-- Add your site or application content here -->
         <div class="container">
             <div class="default-text">
-                <h1>Inschrijven</h1>
+                <h1>Inschrijven Familiar Forest 2016: Nieuw Babylon</h1>
                 <p class="lead">
-                    Welkom op het volledig vernieuwde inschijfformulier voor Familiar Forest!
+                    10 en 11 september 2016
                 </p>
                 <p>
-                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat! Het inschijfformulier blijft tot 10 Mei 2016 beschikbaar.
+                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat. Het inschijfformulier blijft tot 10 mei 2016 beschikbaar.
                 </p>
                 <p>
-                    Velden gemarkeerd met een * zijn verplicht!
+                    Velden gemarkeerd met een * zijn verplicht.
                 </p>
             </div>
             <?php echo $returnVal; ?>
@@ -301,6 +301,7 @@ function addError($value) {
                     <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum*</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="date" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate">
+                        <div><label for="birthdate" class="error" style="display:none;"></label></div>
                     </div>
                 </div>
 
@@ -342,110 +343,115 @@ function addError($value) {
                     <div class="col-sm-10">
                         <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
                         <div class="alert alert-success">
-                            Vanaf dit jaar kun je voor het eerst je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! Het is belangrijk dat jij zijn of haar email adres correct invult en andersom! <strong>Communiceer dit dus samen goed naar elkaar!</strong>
+                            Vanaf dit jaar kun je voor het eerst je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! Het is belangrijk dat jij zijn of haar email adres correct invult en andersom! <strong>Communiceer dit dus samen goed naar elkaar! En let op: Als jullie van deze optie gebruik maken worden jullie samen ingeloot <i>of beide uitgeloot</i></strong>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <label class="col-sm-2 form-control-label" for="motivation">Motivatie</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" name="motivation" id="motivation" cols="60" rows="4"><?php echo $motivation; ?></textarea>
-                        <label for="motivation">Max 256 karakters</label>
+                <fieldset>
+                    <legend>Waarom wil jij naar Familiar Forest 2016?</legend>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="motivation">Motivatie</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="motivation" id="motivation" cols="60" rows="4"><?php echo $motivation; ?></textarea>
+                            <label for="motivation">Max 1024 karakters</label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group row">
-                    <label class="col-sm-2 form-control-label" for="familiar">Hoe ken je Familiar Forest?</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" name="familiar" id="familiar" cols="60" rows="4"><?php echo $familiar; ?></textarea>
-                        <label for="familiar">Max 256 karakters</label>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-2 form-control-label">Voorgaande edities</label>
-                    <div class="col-sm-10">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fff2010" value="fff2010" <?php if(in_array("fff2010", $editions)) echo( "checked"); ?> >
-                                Familiar Forest 2010
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fff2011" value="fff2011" <?php if(in_array("fff2011", $editions)) echo( "checked"); ?>>
-                                Familiar Forest 2011
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="ffcastle" value="ffcastle" <?php if(in_array("ffcastle", $editions)) echo( "checked"); ?>>
-                                Familiar Castle                                
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fwf2012" value="fwf2012" <?php if(in_array("fwf2012", $editions)) echo( "checked"); ?>>
-                                Familiar Winter 2012
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fh2012" value="fh2012" <?php if(in_array("fh2012", $editions)) echo( "checked"); ?>>
-                                Familiar Hemelvaartsnacht 2012
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fff2012" value="fff2012" <?php if(in_array("fff2012", $editions)) echo( "checked"); ?>>
-                                Familiar Forest 2012
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fh2013" value="fh2013" <?php if(in_array("fh2013", $editions)) echo( "checked"); ?>>
-                                Familiar Hemelvaartsnacht 2013
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fwf2013" value="fwf2013" <?php if(in_array("fwf2013", $editions)) echo( "checked"); ?>>
-                                Familiar Winter 2013
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fff2013" value="fff2013" <?php if(in_array("fff2013", $editions)) echo( "checked"); ?>>
-                                Familiar Forest 2013
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fwf2014" value="fwf2014" <?php if(in_array("fwf2014", $editions)) echo( "checked"); ?>>
-                                Familiar Winter 2014
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fff2014" value="fff2014" <?php if(in_array("fff2014", $editions)) echo( "checked"); ?>>
-                                Familiar Forest 2014
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fwf2015" value="fwf2015" <?php if(in_array("fwf2015", $editions)) echo( "checked"); ?>>
-                                Familiar Winter 2015
-                            </label>
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="editions[]" id="fff2015" value="fff2015" <?php if(in_array("fff2015", $editions)) echo( "checked"); ?>>
-                                Familiar Forest 2015
-                            </label>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="familiar">Hoe ken je Familiar Forest?</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="familiar" id="familiar" cols="60" rows="4"><?php echo $familiar; ?></textarea>
+                            <label for="familiar">Max 1024 karakters</label>
                         </div>
                     </div>
-                </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Bij welke edities was je aanwezig?</legend>
+                    <div class="form-group row">
+                        <label class="col-sm-2 form-control-label">Voorgaande edities</label>
+                        <div class="col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fff2010" value="fff2010" <?php if(in_array("fff2010", $editions)) echo( "checked"); ?> >
+                                    Familiar Forest 2010
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fff2011" value="fff2011" <?php if(in_array("fff2011", $editions)) echo( "checked"); ?>>
+                                    Familiar Forest 2011
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="ffcastle" value="ffcastle" <?php if(in_array("ffcastle", $editions)) echo( "checked"); ?>>
+                                    Familiar Castle                                
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fwf2012" value="fwf2012" <?php if(in_array("fwf2012", $editions)) echo( "checked"); ?>>
+                                    Familiar Winter 2012
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fh2012" value="fh2012" <?php if(in_array("fh2012", $editions)) echo( "checked"); ?>>
+                                    Familiar Hemelvaartsnacht 2012
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fff2012" value="fff2012" <?php if(in_array("fff2012", $editions)) echo( "checked"); ?>>
+                                    Familiar Forest 2012
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fh2013" value="fh2013" <?php if(in_array("fh2013", $editions)) echo( "checked"); ?>>
+                                    Familiar Hemelvaartsnacht 2013
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fwf2013" value="fwf2013" <?php if(in_array("fwf2013", $editions)) echo( "checked"); ?>>
+                                    Familiar Winter 2013
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fff2013" value="fff2013" <?php if(in_array("fff2013", $editions)) echo( "checked"); ?>>
+                                    Familiar Forest 2013
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fwf2014" value="fwf2014" <?php if(in_array("fwf2014", $editions)) echo( "checked"); ?>>
+                                    Familiar Winter 2014
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fff2014" value="fff2014" <?php if(in_array("fff2014", $editions)) echo( "checked"); ?>>
+                                    Familiar Forest 2014
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fwf2015" value="fwf2015" <?php if(in_array("fwf2015", $editions)) echo( "checked"); ?>>
+                                    Familiar Winter 2015
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="editions[]" id="fff2015" value="fff2015" <?php if(in_array("fff2015", $editions)) echo( "checked"); ?>>
+                                    Familiar Forest 2015
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
                         
                 <fieldset>
                     <legend>Jouw bijdrage aan het Familiar Forest 2016</legend>
@@ -453,10 +459,11 @@ function addError($value) {
                         <label for="contrib0" class="col-sm-2 form-control-label">Eerste keus</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="contrib0" id="contrib0">
-                                <option value="ivbk" <?= $contrib0 == 'ivbk' ? ' selected="selected"' : '';?>>Interieur verzorging, bar of keuken</option>
+                                <option value="iv" <?= $contrib0 == 'iv' ? ' selected="selected"' : '';?>>Interieur verzorging</option>
+                                <option value="bar" <?= $contrib0 == 'bar' ? ' selected="selected"' : '';?>>Bar</option>
+                                <option value="keuken" <?= $contrib0 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib0 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                                 <option value="afb" <?= $contrib0 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
-                                <option value="ontw" <?= $contrib0 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                             </select>
                         </div>
                     </div>
@@ -465,7 +472,7 @@ function addError($value) {
                         <label class="col-sm-2 form-control-label" for="contrib0desc">Vertel iets over je ervaring hierin</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="contrib0desc" id="contrib0desc" cols="60" rows="4"><?php echo $contrib0desc; ?></textarea>
-                            <label id="contrib0counter" for="contrib0desc">Max 256 karakters</label>
+                            <label id="contrib0counter" for="contrib0desc">Max 1024 karakters</label>
                         </div>
                     </div>
 
@@ -487,14 +494,14 @@ function addError($value) {
                         <label class="col-sm-2 form-control-label" for="act0desc">Omschrijving van je act</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="act0desc" id="act0desc" cols="60" rows="4"><?php echo $act0desc; ?></textarea>
-                            <label for="act0desc">Max 256 karakters</label>
+                            <label for="act0desc">Max 1024 karakters</label>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="act0need">Wat heb je voor je act nodig?</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="act0need" id="act0need" cols="60" rows="4"><?php echo $act0need; ?></textarea>
-                            <label for="act0need">Max 256 karakters</label>
+                            <label for="act0need">Max 1024 karakters</label>
                         </div>
                     </div>
 
@@ -502,7 +509,9 @@ function addError($value) {
                         <label for="contrib0" class="col-sm-2 form-control-label">Tweede keus</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="contrib1" id="contrib1">
-                                <option value="ivbk" <?= $contrib1 == 'ivbk' ? ' selected="selected"' : '';?>>Interieur verzorging, bar of keuken</option>
+                                <option value="iv" <?= $contrib1 == 'iv' ? ' selected="selected"' : '';?>>Interieur verzorging</option>
+                                <option value="bar" <?= $contrib1 == 'bar' ? ' selected="selected"' : '';?>>Bar</option>
+                                <option value="keuken" <?= $contrib1 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib1 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                                 <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
                                 <option value="ontw" <?= $contrib1 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
@@ -514,7 +523,7 @@ function addError($value) {
                         <label class="col-sm-2 form-control-label" for="contrib1desc">Vertel iets over je ervaring hierin</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="contrib1desc" id="contrib1desc" cols="60" rows="4"><?php echo $contrib1desc; ?></textarea>
-                            <label id="contrib1counter" for="contrib1desc">Max 256 karakters</label>
+                            <label id="contrib1counter" for="contrib1desc">Max 1024 karakters</label>
                         </div>
                     </div>
 
@@ -536,14 +545,14 @@ function addError($value) {
                         <label class="col-sm-2 form-control-label" for="act1desc">Omschrijving van je act</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="act1desc" id="act1desc" cols="60" rows="4"><?php echo $act1desc; ?></textarea>
-                            <label for="act1desc">Max 256 karakters</label>
+                            <label for="act1desc">Max 1024 karakters</label>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="act1need">Wat heb je voor je act nodig?</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="act1need" id="act1need" cols="60" rows="4"><?php echo $act1need; ?></textarea>
-                            <label for="act1need">Max 256 karakters</label>
+                            <label for="act1need">Max 1024 karakters</label>
                         </div>
                     </div>
 
@@ -559,7 +568,7 @@ function addError($value) {
                             <div class="alert alert-success" id="prepinfo">We zijn altijd op zoek naar enthoursiastelingen die ons willen helpen bij de voorbereidingen voor Famliar Forest. Lijkt het je leuk om ons hierbij te helpen?</div>
                             <div class="alert alert-success" id="prepintro">Te gek! Wat zou je leuk vinden om te doen?</div>
                             <textarea class="form-control" name="preparations" id="preparations" cols="60" rows="4"><?php echo $preparations; ?></textarea>
-                            <label id="prepcounter" for="preparations">Max 256 karakters</label>
+                            <label id="prepcounter" for="preparations">Max 1024 karakters</label>
                         </div>
                     </div>
                 </fieldset>
@@ -567,13 +576,13 @@ function addError($value) {
                 <fieldset>
                     <legend>Voorwaarden</legend>
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="terms0">Kaart verkoop</label>
+                        <label class="col-sm-2 form-control-label" for="terms3">Telefoon en Foto's</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Aanmeldingen en toegangsbewijzen zijn persoonlijk en mogen niet door zelf door de deelnemer worden doorverkocht. Het is wel mogelijk om tussen 7 juli 2016 en 5 augustus 2016 het toegangsbewijs terug te verkopen aan stichting Familiar Forest.</div>
+                            <div class="alert alert-warning">Familiar Forest zorgt voor een professionele fotograaf. Om de sfeer te verhogen en het contact tussen deelnemers te verbeteren is het niet toegestaan een telefoon of camera mee te nemen op het terrein van Familiar Forest 2016.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms0" name="terms0" value="J">
-                                    Ik ga akkoord met deze voorwaarden
+                                    Ik ga akkoord met deze voorwaarde
                                 </label>
                             </div>
                             <label for="terms0" class="error" style="display:none;"></label>
@@ -581,13 +590,14 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
+                        
                         <label class="col-sm-2 form-control-label" for="terms1">Verzekering</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Familiar Forest 2016 is een reis. De locatie waar overnacht wordt verplicht de deelnemer om zich te kunnen identificeren en minimaal WA verzekerd te zijn.</div>
+                            <div class="alert alert-warning">Familiar Forest 2016 is een reis. De locatie verplicht de deelnemer om zich te kunnen identificeren en minimaal WA verzekerd te zijn.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms1" name="terms1" value="J">
-                                    Ik ga akkoord met deze voorwaarden
+                                    Ik ga akkoord met deze voorwaarde
                                 </label>
                             </div>
                             <label for="terms1" class="error" style="display:none;"></label>
@@ -597,11 +607,11 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms2">Gezondheid</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Tijdens Familiar Forest 2016 is de deelnemer voor zijn eigen gezondheid verantwoordelijk. Als deelnemer is het niet mogelijk Familiar Forest aansprakelijk te stellen voor materiële en immateriële schade.</div>
+                            <div class="alert alert-warning">Tijdens Familiar Forest 2016 is de deelnemer voor zijn eigen gezondheid verantwoordelijk. Als deelnemer is het niet mogelijk Familiar Forest aansprakelijk te stellen voor materiële en immateriële schade. <i>Je kunt deze verzekeren door een reisverzekering af te sluiten</i></div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms2" name="terms2" value="J">
-                                    Ik ga akkoord met deze voorwaarden
+                                    Ik ga akkoord met deze voorwaarde
                                 </label>
                             </div>
                             <label for="terms2" class="error" style="display:none;"></label>
@@ -609,13 +619,14 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="terms3">Telefoon en Foto's</label>
+                        <label class="col-sm-2 form-control-label" for="terms0">Kaart verkoop</label>
+                        
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Het is niet toegestaan een telefoon of camera mee te nemen naar Familiar Forest 2016. Familiar Forest zorgt voor bereikbaarheid en een professionele fotograaf.</div>
+                            <div class="alert alert-warning">Aanmeldingen en toegangsbewijzen zijn persoonlijk en mogen niet door zelf door de deelnemer worden doorverkocht. Het is wel mogelijk om tussen 7 juli 2016 en 5 augustus 2016 het toegangsbewijs terug te verkopen aan stichting Familiar Forest.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms3" name="terms3" value="J">
-                                    Ik ga akkoord met deze voorwaarden
+                                    Ik ga akkoord met deze voorwaarde
                                 </label>
                             </div>
                             <label for="terms3" class="error" style="display:none;"></label>

@@ -69,25 +69,17 @@ function hidePreparations() {
 
 $(document).ready(function() {
 	$("#contrib0").change(function() {
-		if( $(this).val() == "ivbk") {
-			hideAct0Input();
-		} else if( $(this).val() == "act") {
+		if( $(this).val() == "act") {
 			showAct0Input();
-		} else if ($(this).val() == "afb" ) {
-			hideAct0Input();
-		} else if ($(this).val() == "ontw") {
+		} else {
 			hideAct0Input();
 		}
 	});
 
 	$("#contrib1").change(function() {
-		if( $(this).val() == "ivbk") {
-			hideAct1Input();
-		} else if( $(this).val() == "act") {
+		if( $(this).val() == "act") {
 			showAct1Input();
-		} else if ($(this).val() == "afb" ) {
-			hideAct1Input();
-		} else if ($(this).val() == "ontw") {
+		} else {
 			hideAct1Input();
 		}
 	});
@@ -95,13 +87,13 @@ $(document).ready(function() {
 		var label = $(this).next();
 		var chars = $(this).val().length;
 		if( chars == 0 ) {
-			label.text("Max 256 karakters.");
+			label.text("Max 1024 karakters.");
 			unsetErrorBorder($(this));
-		} else if( chars >= 256 ) {
+		} else if( chars >= 1024 ) {
 			label.text("");
 			setErrorBorder($(this));
 		} else {
-			var remain = 256-chars;
+			var remain = 1024-chars;
 			label.text( remain + " resterend.");
 			unsetErrorBorder($(this));
 		}
@@ -146,7 +138,7 @@ $(document).ready(function() {
 			},
 			phone: {
 				minlength: 2,
-				maxlength: 255,
+				maxlength: 32,
 				required: true
 			},
 			partner: {
@@ -154,31 +146,31 @@ $(document).ready(function() {
 				email: true
 			},
 			contrib0desc: {
-				maxlength: 255
+				maxlength: 1024
 			},
 			contrib1desc: {
-				maxlength: 255
+				maxlength: 1024
 			},
 			act0desc: {
-				maxlength:255
+				maxlength:1024
 			},
 			act1desc: {
-				maxlength:255
+				maxlength:1024
 			},
 			act0need: {
-				maxlength:255
+				maxlength:1024
 			},
 			act1need: {
-				maxlength:255
+				maxlength:1024
 			},
 			motivation: {
-				maxlength:255
+				maxlength:1024
 			}, 
 			familiar: {
-				maxlength:255
+				maxlength:1024
 			},
 			preparations: {
-				maxlength:255
+				maxlength:1024
 			},
 			terms0: {
 				required: true
@@ -194,10 +186,10 @@ $(document).ready(function() {
 			}
 		},
 		messages: {
-			terms0: "Je bent verplicht de voorwaarden te accepteren",
-			terms1: "Je bent verplicht de voorwaarden te accepteren",
-			terms2: "Je bent verplicht de voorwaarden te accepteren",
-			terms3: "Je bent verplicht de voorwaarden te accepteren"
+			terms0: "Je bent verplicht deze voorwaarde te accepteren",
+			terms1: "Je bent verplicht deze voorwaarde te accepteren",
+			terms2: "Je bent verplicht deze voorwaarde te accepteren",
+			terms3: "Je bent verplicht deze voorwaarde te accepteren"
 		}
 	});
 

@@ -104,7 +104,7 @@ if( $signup === FALSE ) {
                     <div>
                     <p>Lieve ".$firstname.",</p>
                     <p>
-                        Bedankt voor je inschrijving! We hebben al je gegevens in goede orde ontvangen en je ontvangt ook nog een email ter bevestiging. Binnenkort zal de loting plaatsvinden en wordt je gebeld als jouw naam hieruit rolt. Je kunt onze <a href='https://www.facebook.com/events/591534081011159/'>Facebook</a> pagina in de gaten houden voor het laatste nieuws!
+                        Bedankt voor je inschrijving! We hebben al je gegevens in goede orde ontvangen en je ontvangt ook nog een email ter bevestiging. 14 mei 2016 zal de loting plaatsvinden en wordt je gebeld als jouw naam hieruit rolt. Je kunt onze <a href='https://www.facebook.com/events/591534081011159/'>Facebook</a> pagina in de gaten houden voor het laatste nieuws!
                     </p>
                     <p>
                         Als je zorgen, vragen of iets anders kwijt wil kun je mailen naar ".$mailtolink.".

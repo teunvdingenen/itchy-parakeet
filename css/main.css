@@ -4,6 +4,10 @@ body {
 	background-color: #eee;
 }
 
+.error {
+  color: red;
+}
+
 .default-text {
   padding: 40px 15px;
   text-align: center;
