@@ -308,7 +308,7 @@ function addError($value) {
                 <div class="form-group row">
                     <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum*</label>
                     <div class="col-sm-10">
-                        <input class="form-control" type="date" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate">
+                        <input class="form-control ignore" type="date" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate">
                         <div><label for="birthdate" class="error" style="display:none;"></label></div>
                     </div>
                 </div>

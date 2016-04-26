@@ -89,6 +89,7 @@ $(document).ready(function() {
 	});
 
 	$('#signup-form').validate({
+		ignore: ".ignore",
 		rules: {
 			firstname: {
 				minlength: 2,
@@ -179,7 +180,7 @@ $(document).ready(function() {
         email: "Vul hier een geldig e-mailadres in.",
         url: "Vul hier een geldige URL in.",
         date: "Vul hier een geldige datum in.",
-        dateISO: "Vul hier een geldige datum in (ISO-formaat).",
+        dateISO: "Vul hier een geldige datum in.",
         number: "Vul hier een geldig getal in.",
         digits: "Vul hier alleen getallen in.",
         creditcard: "Vul hier een geldig creditcardnummer in.",
