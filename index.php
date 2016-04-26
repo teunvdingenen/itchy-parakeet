@@ -38,8 +38,8 @@
         </p>
         <p>We hebben een wonderbaarlijke stad ontdekt. Een groene stad tussen twee rivieren waar al vierduizend jaar mensen werken aan het cultiveren van een unieke levensvisie. Een plaats waar hangende tuinen worden opgetrokken, waar volgens de legende een gigantische toren gebouwd werd en waar iedereen nog dezelfde taal spreekt. Een plaats waar astronomie, mathematica en geneeskunde tot kunstvorm verheven zijn. Een stad waarvan gedacht werd dat hij al tientallen keren vernietigd is. <p>
         <p>Maar dit blijkt niet zo te zijn: niet vernietigd, slechts uit het oog verloren. Want nu, duizenden jaren later, heeft deze stad zich ontwikkeld tot iets wat je nergens anders kunt vinden. Een plaats waar al die tijd is gewerkt aan zowel natuur als technologie. Een amalgamatie van duizenden jaren aan kennis. Een realisatie van eeuwen aan dromen en visioenen.</p>
-        <p>Schrijf je nu in voor de reis naar nieuw Babylon op 10 en 11 september 2016 en bereid je voor op wat wederom een onvergetelijk avontuur zal worden!
-        <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest 2016</p>
+        <p>Schrijf je nu in voor de reis naar nieuw Babylon op 10 en 11 september 2016 en bereidt je voor op wat wederom een onvergetelijk avontuur zal worden!
+        <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
         </div>
 
         <p><a class="btn btn-primary btn-lg" href="signupform" role="button">Inschrijven voor Familiar Forest 2016 &raquo;</a></p>

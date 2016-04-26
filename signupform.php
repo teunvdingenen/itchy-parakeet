@@ -28,13 +28,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         addError("Je hebt je woonplaats niet opgegeven.");
     }
     if( !empty($_POST["birthdate"]) ) {
+        date_default_timezone_set('Europe/Amsterdam');
         $birthdate = test_input($_POST["birthdate"]);
-        //date_default_timezone_set('UTC');
-        //if( !mktime(0,0,0,$birthday, $birthmonth, $birthyear)) {
-        //    addError("De opgegeven geboortedatum klopt niet.");
-        //} else {
-        //    $birthdate = date( 'Y-m-d H:i:s', mktime(0,0,0, $birthmonth, $birthday, $birthyear));
-        //}
+        if( ($timestamp = strtotime($birthdate)) == FALSE ) {
+            addError("De opgegeven geboortedatum klopt niet.");
+        } else {
+            $birthdate = date( 'Y-m-d H:i:s', $timestamp );
+        }
     } else {
         addError("Je hebt je geboortedatum niet opgegeven");
     }
@@ -264,13 +264,13 @@ function addError($value) {
 
         <!-- Add your site or application content here -->
         <div class="container">
-            <div class="default-text">
+            <div class="form-intro-text">
                 <h1>Inschrijven Familiar Forest 2016: Nieuw Babylon</h1>
                 <p class="lead">
                     10 en 11 september 2016
                 </p>
                 <p>
-                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat. Het inschijfformulier blijft tot 10 mei 2016 beschikbaar.
+                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat. Het inschrijfformulier blijft tot 10 mei 2016 beschikbaar. Heb je hulp nodig? Of wil je meer informatie over het inschrijven dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
                 <p>
                     Velden gemarkeerd met een * zijn verplicht.
@@ -517,7 +517,6 @@ function addError($value) {
                                 <option value="keuken" <?= $contrib1 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib1 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                                 <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
-                                <option value="ontw" <?= $contrib1 == 'ontw' ? ' selected="selected"' : '';?>>Helpen bij het ontwerpen en opbouwen van decoraties, podia, stands, etc.</option>
                             </select>
                         </div>
                     </div>
@@ -625,7 +624,7 @@ function addError($value) {
                         <label class="col-sm-2 form-control-label" for="terms0">Kaart verkoop</label>
                         
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Aanmeldingen en toegangsbewijzen zijn persoonlijk en mogen niet door zelf door de deelnemer worden doorverkocht. Het is wel mogelijk om tussen 7 juli 2016 en 5 augustus 2016 het toegangsbewijs terug te verkopen aan stichting Familiar Forest.</div>
+                            <div class="alert alert-warning">Aanmeldingen en toegangsbewijzen zijn persoonlijk en mogen niet zelf door de deelnemer worden doorverkocht. Het is wel mogelijk om tussen 7 juli 2016 en 5 augustus 2016 het toegangsbewijs terug te verkopen aan stichting Familiar Forest.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms3" name="terms3" value="J">

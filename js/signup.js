@@ -197,5 +197,4 @@ $(document).ready(function() {
 	$("#contrib0").change();
 	$("#contrib1").change();
 	$("#preparationsbox").change();
-	setBirthdateOptions();
 });

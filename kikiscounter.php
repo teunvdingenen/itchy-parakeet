@@ -1,17 +1,33 @@
 <?php session_start();
-include "../functions.php";
+include "initialize.php";
+$allow_count = FALSE;
 
-if(!isset($_SESSION['loginuser'])) {
-    header('Location: ../login.php');
-}
+$html = "<form class='form-small' method='post'><h2 class='form-small-heading'>Paswoord</h2><input type='password' id='password' class='form-control' placeholder='Paswoord' name='password' required><button class='btn btn-lg btn-primary btn-block' type='submit'>Sign in</button></form>";
 
-$user_info = get_user_info($_SESSION['loginuser']);
-$user_info_name = $user_info[$db_user_name];
-$user_info_permissions = $user_info[$db_user_permissions];
+if( $_SERVER["REQUEST_METHOD"] == "POST") {
+    if( !empty($_POST["password"]) ) {
+        if( $_POST["password"] == "mediamanteldraad") {
+            $allow_count = TRUE;
+        }
+    }
 
-
-if( $user_info_permissions & PERMISSION_DISPLAY ) {
-
+    if( $allow_count ) {
+        $count = 0;
+        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+        if( $mysqli->connect_errno ) {
+            $count = "Error01";
+        } else {
+            $query = "SELECT COUNT(*) FROM person;";
+            $result = $mysqli->query($query);
+            if( $count === FALSE ) {
+                $count = "Error02";
+            }
+            $data = $result->fetch_array(MYSQLI_NUM);
+            $count = $data[0];
+        }
+        $html = "<h1>Er zijn nu " . $count . " aanmeldingen Kiki..</h1>";
+        $mysqli->close();
+    }
 }
 ?>
 
@@ -26,7 +42,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
 
-    <title>Familiar Forest 2016</title>
+    <title>Kiki's Aanmeldingen counter</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -50,11 +66,9 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
 
         <!-- Add your site or application content here -->
 
-        <div class="secure_content">
-
+        <div class="container">
+            <?php echo $html ?>
         </div>
-
-
 
         <!-- Bootstrap core JavaScript
         ================================================== -->

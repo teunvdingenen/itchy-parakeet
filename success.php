@@ -1,5 +1,5 @@
 <?php session_start(); 
-include "mailer.php";
+include "sendmail.php";
 include "functions.php";
 include "initialize.php";
 
@@ -30,11 +30,11 @@ if( $signup === FALSE ) {
     $content .= "<tr><td>Achternaam</td><td>".$signup["lastname"]."</td></tr>";
     $content .= "<tr><td>Woonplaats</td><td>".$signup["city"]."</td></tr>";
     $content .= "<tr><td>Geboortedatum</td><td>".$signup["birthdate"]."</td></tr>";
-    $content .= "<tr><td>Geslacht</td><td>".$signup["gender"]."</td></tr>";
+    $content .= "<tr><td>Geslacht</td><td>".translate_gender($signup["gender"])."</td></tr>";
     $content .= "<tr><td>Email</td><td>".$signup["email"]."</td></tr>";
     $content .= "<tr><td>Telefoonnummer</td><td>".$signup["phone"]."</td></tr>";
     $content .= "<tr><td>Lieveling</td><td>".$signup["partner"]."</td></tr>";
-    $content .= "<tr><td>Motivate</td><td>".$signup["motivation"]."</td></tr>";
+    $content .= "<tr><td>Motivatie</td><td>".$signup["motivation"]."</td></tr>";
     $content .= "<tr><td>Hoe ken je Familiar?</td><td>".$signup["familiar"]."</td></tr>";
 
     $content .= "<tr><td>Voorgaande edities</td><td>";
@@ -46,12 +46,12 @@ if( $signup === FALSE ) {
 
     $content .= "<tr><td>Eerste Keus</td><td>".translate_contrib($contrib0["type"])."</td></tr>";
     $content .= "<tr><td></td><td>".$contrib0["description"]."</td></tr>";
-    if( $contrib0["type"] == "act" ) {
+    if( $contrib0["needs"] != "" ) {
         $content .= "<tr><td></td><td>".$contrib0["needs"]."</td></tr>";
     }
     $content .= "<tr><td>Tweede Keus</td><td>".translate_contrib($contrib1["type"])."</td></tr>";
     $content .= "<tr><td></td><td>".$contrib1["description"]."</td></tr>";
-    if( $contrib1["type"] == "act" ) {
+    if( $contrib1["needs"] != "" ) {
         $content .= "<tr><td></td><td>".$contrib1["needs"]."</td></tr>";
     }
     $content .= "<tr><td>Voorbereidingen</td><td>".$signup["preparations"]."</td></tr>";
@@ -105,15 +105,15 @@ if( $signup === FALSE ) {
                     <div>
                     <p>Lieve ".$firstname.",</p>
                     <p>
-                        Bedankt voor je inschrijving! We hebben al je gegevens in goede orde ontvangen en je ontvangt ook nog een email ter bevestiging. 14 mei 2016 zal de loting plaatsvinden en wordt je gebeld als jouw naam hieruit rolt. Je kunt onze <a href='https://www.facebook.com/events/591534081011159/'>Facebook</a> pagina in de gaten houden voor het laatste nieuws!
+                        Bedankt voor je inschrijving! We hebben al je gegevens in goede orde ontvangen en je ontvangt ook nog een email ter bevestiging. 14 mei 2016 zal de loting plaatsvinden en word je gebeld als jouw naam hieruit rolt. Je kunt onze <a href='https://www.facebook.com/events/591534081011159/'>Facebook</a> pagina in de gaten houden voor het laatste nieuws!
                     </p>
                     <p>
-                        Als je zorgen, vragen of iets anders kwijt wil kun je mailen naar ".$mailtolink.".
+                        Als je zorgen, vragen of iets anders kwijt wilt, kan je mailen naar ".$mailtolink.".
                     <p>
-                    De High Fives zijn gratis, de knuffels oprecht en de liefde oneindig.
+                    De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.
                     </p>
                      <p>
-                    Stichting Familiar Forest
+                    Familiar Forest
                     <br>
                     <img src='img/logo_small.png' alt='Stichting Familiar Forest'>
                 </p>

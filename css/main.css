@@ -10,10 +10,15 @@ body {
 
 .default-text {
   padding: 40px 15px;
-  text-align: center;
+  text-align: left;
 }
 
 /* SIGNIN PAGE */
+.form-intro-text {
+  padding: 40px 15px;
+  text-align: center;
+}
+
 .form-small {
 	max-width: 330px;
 	padding: 15px;

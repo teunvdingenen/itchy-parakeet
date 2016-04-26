@@ -1,6 +1,7 @@
 <?php
-
 require 'mailer/PHPMailerAutoload.php';
+include_once('mailer/class.smtp.php');
+
 include 'initialize.php';
 
 function get_email_header() {
@@ -28,22 +29,20 @@ function get_email_footer() {
 }
 
 function send_mail($email, $fullname, $subject, $content) {
-	global $email_pass;
-
-	$mail = new PHPMailer;
-	$mail->isSMTP();
-	$mail->Host = 'smtp02.hostnet.nl';
-	$mail->SMTPAuth = true;
-	$mail->Username = 'info@stichtingfamiliarforest.nl';
-	$mail->Password = $email_pass;
-	$mail->Port = 587;
-
+	$mail = new PHPMailer(true);
+	//$mail->isSMTP();
+	//$mail->Host = 'mailfilter.hostnet.nl';
+	//$mail->SMTPAuth = true;
+	//$mail->Username = 'info@stichtingfamiliarforest.nl';
+	//$mail->Password = 'FDIxMilCcKQPi6VN';
+	//$mail->Port = 587;
+	$mail->CharSet="UTF-8";
+	$mail->Encoding="base64";
 	$mail->setFrom('info@stichtingfamiliarforest.nl','Stichting Familiar Forest');
 	$mail->addAddress($email, $fullname);
 	$mail->addReplyTo('info@stichtingfamiliarforest.nl','Stichting Familiar Forest');
 
 	$mail->isHTML(true);
-
 	$mail->Subject = $subject;
 	$mail->Body = $content;
 
@@ -51,3 +50,4 @@ function send_mail($email, $fullname, $subject, $content) {
 
 	return $mail->send();
 }
+?>

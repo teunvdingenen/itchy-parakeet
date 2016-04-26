@@ -192,4 +192,14 @@ function translate_edition($edition) {
     return "Onbekend";
   }
 }
+
+function translate_gender($gender) {
+  if( $gender == "male" ) { 
+    return "Jongeman";
+  } else if( $gender == "female" ) {
+    return "Jongedame";
+  } else {
+    return "Onbekend";
+  }
+}
 ?>

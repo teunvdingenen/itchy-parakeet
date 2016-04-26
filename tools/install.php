@@ -179,14 +179,14 @@ try {
     }
 
     //add root user
-    $pw_hash = password_hash("password", PASSWORD_DEFAULT);
+    $pw_hash = password_hash("VJNND8NlgVSyE6se", PASSWORD_DEFAULT);
     $user_add_query = sprintf("INSERT INTO `%s` (`%s`, `%s`, `%s`, `%s`) VALUES ('%s', '%s','%s','%s')",
         $db_table_users,
         $db_user_username,
         $db_user_password,
         $db_user_name,
         $db_user_permissions,
-        "root", $pw_hash, "root", 0xFFFF
+        "admin", $pw_hash, "admin", 0xFFFF
         );
     if( $mysqli->query($user_add_query)) {
         printf("Added root user");
