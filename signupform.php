@@ -30,10 +30,15 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["birthdate"]) ) {
         date_default_timezone_set('Europe/Amsterdam');
         $birthdate = test_input($_POST["birthdate"]);
-        if( ($timestamp = strtotime($birthdate)) == FALSE ) {
-            addError("De opgegeven geboortedatum klopt niet.");
+        $date = DateTime::createFromFormat('d/m/Y', $birthdate);
+        if( $date == FALSE ) {
+            if( ($timestamp = strtotime($birthdate)) == FALSE ) {
+                addError("De opgegeven geboortedatum klopt niet.");
+            } else {
+                $birthdate = date( 'Y-m-d H:i:s', $timestamp );
+            }
         } else {
-            $birthdate = date( 'Y-m-d H:i:s', $timestamp );
+            $birthdate = $date->format('Y-m-d H:i:s');
         }
     } else {
         addError("Je hebt je geboortedatum niet opgegeven");

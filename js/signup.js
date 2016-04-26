@@ -111,8 +111,7 @@ $(document).ready(function() {
 				required: true
 			},
 			birthdate: {
-				required: true,
-				date: true
+				required: true
 			},
 			gender: {
 				required: true
