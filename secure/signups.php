@@ -2,16 +2,42 @@
 include "../functions.php";
 
 if(!isset($_SESSION['loginuser'])) {
-    header('Location: login');
+    header('Location: ../login');
 }
-
+$menu_html = "";
 $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
+// Assemble menu:
+if( $user_info_permissions & PERMISSION_DISPLAY ) {
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id ='showstats' href='index'>Main</a></li>";
+    $menu_html .= "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen tonen <span class='sr-only'>(current)</span></a></li>";
+    $menu_html .= "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting tonen</a></li>";
+    $menu_html .= "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets tonen</a></li>";
+    $menu_html .= "</ul>";
+}
+if( $user_info_permissions & PERMISSION_RAFFLE ) {
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loting</a></li>";
+    $menu_html .= "</ul>";
+}
+if( $user_info_permissions & PERMISSION_EDIT ) {
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></li>";
+    $menu_html .= "<li><a class='menulink' id='removesignup' href='#''>Verwijderen</a></li>";
+    $menu_html .= "</ul>";
+}
+if( $user_info_permissions & PERMISSION_USER) {
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='usermanage' href='users''>Gebruikers</a></li>";
+    $menu_html .= "</ul>";
+}
+
 $statistic_string = "";
-$resultHTML = "<table>";
-$resultHTML.="<tr class='header-row'>";
+$resultHTML="<table class='table table-striped table-bordered table-hover table-condensed'>";
+$resultHTML.="<thead><tr class='header-row'>";
 $resultHTML.="<th>Achternaam</th>";
 $resultHTML.="<th>Voornaam</th>";
 $resultHTML.="<th>Geboortedag</th>";
@@ -19,6 +45,8 @@ $resultHTML.="<th>Geslacht</th>";
 $resultHTML.="<th>Woonplaats</th>";
 $resultHTML.="<th>Email</th>";
 $resultHTML.="<th>Telefoon</th>";
+$resultHTML.="<th>Motivatie</th>";
+$resultHTML.="<th>Bekend door</th>";
 $resultHTML.="<th>Voorgaande Edities</th>";
 $resultHTML.="<th>Partner</th>";
 $resultHTML.="<th>Eerste keus</th>";
@@ -27,7 +55,10 @@ $resultHTML.="<th></th>";
 $resultHTML.="<th>Tweede keus</th>";
 $resultHTML.="<th></th>";
 $resultHTML.="<th></th>";
-$resultHTML.="</th>";
+$resultHTML.="<th>Voorbereiding</th>";
+$resultHTML.="<th>Aantal bezoeken</th>";
+$resultHTML.="</tr></thead>";
+$resultHTML.="<tbody>";
 
 //Statistics
 
@@ -47,20 +78,30 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
 }
 $resultHTML.="</table>";
 ?>
-
 <!doctype html>
 <html class="no-js" lang="">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="Teun van Dingenen">
+        <link rel="icon" href="../favicon.ico">
 
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
+        <title>Familiar Forest Dashboard</title>
 
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <!-- Bootstrap core CSS -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="../css/main.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -68,22 +109,45 @@ $resultHTML.="</table>";
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div id="statsbar">
-            <div class="statistics_content">
-                <canvas class='forth' id='genderchart'></canvas>
-                <canvas class='forth' id='ageschart'></canvas>
-                <canvas class='forth' id='visitschart'></canvas>
-                <canvas class='forth' id='citieschart'></canvas>
-            </div>        
-        </div>
-        <div class="secure_content">
-            <?php echo $resultHTML ?>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Familiar Forest Festival</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <li><a class='menulink' href='logout.php'>Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                  <?php echo $menu_html ?>
+                </div>
+            </div>
+            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <?php echo $resultHTML ?>
+            </div>
         </div>
 
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+        <script src="../js/vendor/bootstrap.min.js"></script>
 
+        <script src="../js/plugins.js"></script>
+        <script src="../js/main.js"></script>
+        <script src="js/secure.js"></script>
     </body>
 </html>

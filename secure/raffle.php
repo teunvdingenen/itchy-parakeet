@@ -31,9 +31,11 @@ if( $user_info_permissions & PERMISSION_EDIT ) {
 }
 if( $user_info_permissions & PERMISSION_USER) {
     $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='usermanage' href='#''>Gebruikers</a></li>";
+    $menu_html .= "<li><a class='menulink' id='usermanage' href='users''>Gebruikers</a></li>";
     $menu_html .= "</ul>";
 }
+
+$firstname = $lastname = $gender = $contrib = $requestedage = $optionalnotempty = $agetype = $visits = $visitstype = "";
 
 $resultHTML="<table class='table table-striped table-bordered table-hover table-condensed'>";
 $resultHTML.="<thead><tr class='header-row'>";
@@ -157,39 +159,93 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
             </div>
 
             <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div id="filter_bar" class="filter_bar">
-                    <div class="fieldpair">
-                        <label class="filterlabel" for"genderfilter">Geslacht:</label>
-                        <select name="genderfilter" id="genderfilter">
-                            <option value="both">Beide</option>
-                            <option value="Male">Man</option>
-                            <option value="Female">Vrouw</option>
-                        </select>
+                <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+                    <div class="form-group row">
+                        <label for="firstname" class="col-sm-2 form-control-label">Voornaam</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
+                        </div>
                     </div>
-                    <div class="fieldpair">
-                        <label class="filterlabel" for"agefilter">Leeftijd:</label>
-                        <input name="agefilter" id="agefilter" type="text"/>
+                    <div class="form-group row">
+                        <label for="lastname" class="col-sm-2 form-control-label">Achternaam</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
+                        </div>
                     </div>
-                    <div class="fieldpair">
-                        <label class="filterlabel" for"city">Woonplaats:</label>
-                        <input name="city" type="city" id="cityfilter"/>
+                    <div class="form-group row">
+                        <label class="col-sm-2">Geslacht</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="gender" id="both" value="both" <?php if($gender == "both") echo( "checked"); ?> >
+                                    Beide
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
+                                    Jongeman
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
+                                    Jongedame
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="fieldpair">
-                        <label class="filterlabel" for="visits">Aantal edities</label>
-                        <input name="visits" type="text" id="visitsfilter"/>
+                    <div class="form-group row">
+                        <label for="requestedage" class="col-sm-2 form-control-label">Leeftijd</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="agetype" id="agetype">
+                                <option value="min" <?= $agetype == 'min' ? ' selected="selected"' : '';?>>Minimaal</option>
+                                <option value="max" <?= $agetype == 'max' ? ' selected="selected"' : '';?>>Maximaal</option>
+                                <option value="exact" <?= $agetype == 'exact' ? ' selected="selected"' : '';?>>Precies</option>
+                            </select>
+                            <input class="form-control" type="text" id="requestedage" placeholder="Leeftijd" value="<?php echo $requestedage;?>" name="requestedage">
+                        </div>
                     </div>
-                    <div class="fieldpair">
-                        <label class="filterlabel" for"editions">Was aanwezig bij:</label>
-                        <input type="text" name="editions" id="editionsfilter"/>
+                    <div class="form-group row">
+                        <label for="contrib" class="col-sm-2 form-control-label">Bijdrage</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="contrib" id="contrib">
+                                <option value="iv" <?= $contrib == 'iv' ? ' selected="selected"' : '';?>>Interieur verzorging</option>
+                                <option value="bar" <?= $contrib == 'bar' ? ' selected="selected"' : '';?>>Bar</option>
+                                <option value="keuken" <?= $contrib == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
+                                <option value="act" <?= $contrib == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
+                                <option value="afb" <?= $contrib == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="fieldpair">
-                        <label class="filterlabel" for"contrib">Bijdrage:</label>
-                        <input type="text" name="contrib" id="contribfilter"/>
+                    <div class="form-group row">
+                        <label for="visits" class="col-sm-2 form-control-label">Aantal Bezoeken</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="visitstype" id="visitstype">
+                                <option value="min" <?= $visitstype == 'min' ? ' selected="selected"' : '';?>>Minimaal</option>
+                                <option value="max" <?= $visitstype == 'max' ? ' selected="selected"' : '';?>>Maximaal</option>
+                                <option value="exact" <?= $visitstype == 'exact' ? ' selected="selected"' : '';?>>Precies</option>
+                            </select>
+                            <input class="form-control" type="text" id="visits" placeholder="Bezoeken" value="<?php echo $visits;?>" name="visits">
+                        </div>
                     </div>
-                    <div id="error" class="error"></div>
+                    <div class="form-group row">
+                        <label for="optionalnotempty" class="col-sm-2 form-control-label">Optionele velden</label>
+                        <div class="col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input class="checkbox" type="checkbox" id="optionalnotempty" name="optionalnotempty" value="J" <?php echo ($optionalnotempty=='J' ? 'checked' : '');?>>
+                                    Niet leeg
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
+                </form>
+                <div style='margin-top: 5px;'>
+                    <?php echo $resultHTML ?>
                 </div>
-                <?php echo $resultHTML ?>
-                <div><button id='confirm' onclick="storeWinners();">Inloten</button></div>
+                <div><button class='btn btn-lg btn-primary btn-block' id='confirm' onclick="storeWinners();">Inloten</button></div>
             </div>
         </div>
 

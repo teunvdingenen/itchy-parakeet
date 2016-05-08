@@ -31,7 +31,7 @@ if( $user_info_permissions & PERMISSION_EDIT ) {
 }
 if( $user_info_permissions & PERMISSION_USER) {
     $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='usermanage' href='#''>Gebruikers</a></li>";
+    $menu_html .= "<li><a class='menulink' id='usermanage' href='users''>Gebruikers</a></li>";
     $menu_html .= "</ul>";
 }
 ?>

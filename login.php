@@ -77,7 +77,7 @@ if($error) {
             <?php if($returnVal != "") {
                 echo '<div class="alert alert-danger" role="alert">'.$returnVal.'</div>';
             } ?>
-            <form class="form-small" method="post">
+            <form class="form-small" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>">
                 <h2 class="form-small-heading">Inloggen</h2>
                 <label for="username" class="sr-only">Gebruikersnaam</label>
                 <input type="text" id="username" class="form-control" placeholder="Gebruikersnaam" name="username" required autofocus>

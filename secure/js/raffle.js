@@ -165,6 +165,5 @@ function storeWinners() {
 //});
 
 $(document).ready(function() {
-	setupCharts();
 	setupFilters();
 });
