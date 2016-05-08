@@ -12,15 +12,15 @@ $user_info_permissions = $user_info[$db_user_permissions];
 // Assemble menu:
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
     $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id ='showstats' href='#'>Main</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displaysignup' href='#'>Inschrijvingen tonen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displayraffle' href='#'>Loting tonen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displaybuyers' href='#'>Verkochte tickets tonen</a></li>";
+    $menu_html .= "<li><a class='menulink' id ='showstats' href='index'>Main <span class='sr-only'>(current)</span></a></li>";
+    $menu_html .= "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen tonen</a></li>";
+    $menu_html .= "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting tonen</a></li>";
+    $menu_html .= "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets tonen</a></li>";
     $menu_html .= "</ul>";
 }
 if( $user_info_permissions & PERMISSION_RAFFLE ) {
     $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='raffle' href='#'>Loting</a></li>";
+    $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loting</a></li>";
     $menu_html .= "</ul>";
 }
 if( $user_info_permissions & PERMISSION_EDIT ) {
@@ -40,16 +40,26 @@ if( $user_info_permissions & PERMISSION_USER) {
 <html class="no-js" lang="">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="Teun van Dingenen">
+        <link rel="icon" href="../favicon.ico">
 
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
-        <link rel="stylesheet" href="../css/bootstrap.min.css">
-        <link rel="stylesheet" href="../css/main.css">
-        <script src="../js/vendor/modernizr-2.8.3.min.js"></script>
+        <title>Familiar Forest Dashboard</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="../css/main.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -87,22 +97,15 @@ if( $user_info_permissions & PERMISSION_USER) {
             </div>
         </div>
 
+    <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+        <script src="../js/vendor/bootstrap.min.js"></script>
+
         <script src="../js/plugins.js"></script>
         <script src="../js/main.js"></script>
         <script src="js/secure.js"></script>
-        <script src="js/Chart.js"></script>
-        <script src="js/chartfunctions.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
     </body>
 </html>

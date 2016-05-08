@@ -39,42 +39,6 @@ function splitlabelsandvalues(data) {
 	return [{'labels': labels}, {'values':values}];
 }
 
-function setupCharts() {
-	genders = {'Male':0,'Female':0};
-	$.post("signupstats.php", {"type":"raffle"}, function(response){
-		console.log(response);
-		var json = JSON.parse(response);
-		genders = json['gender'];
-		cities = json['city'];
-		ages = json['ages'];
-		visits = json['visits'];
-		genderchart = createGenderChart(json['gender'], "#genderchart");
-		citieschart = createCityChart(json['city'], "#citieschart");
-		ageschart = createAgeChart(json['ages'], "#ageschart");
-		visitschart = createVisitsChart(json['visits'], "#visitschart");
-	});
-}
-
-function updateCharts() {
-	/**
-	if(genderchart.segments[0].value == 0 && genderchart.segments[1].value == 0) {
-		genderchart = createGenderChart(genders, "#genderchart");
-	} else {
-		genderchart.segments[0].value = genders['male'];
-		genderchart.segments[1].value = genders['female'];
-		genderchart.update();
-	}
-	**/
-	genderchart.destroy();
-	citieschart.destroy();
-	ageschart.destroy();
-	visitschart.destroy();
-	genderchart = createGenderChart(genders, "#genderchart");
-	citieschart = createCityChart(cities, "#citieschart");
-	ageschart = createAgeChart(ages, "#ageschart");
-	visitschart = createVisitsChart(visits, "#visitschart");
-}
-
 function addStat(gender, city, age, visit) {
 	genders[gender] += 1;
 	if( city in cities ) {
@@ -123,7 +87,7 @@ function contains(element, array) {
 }
 
 function filter() {
-    $('.raffle-table > tbody  > tr').each(function() {
+    $('.table > tbody  > tr').each(function() {
         var hasAge = contains($(this).children().children('#age').text(), allowed_ages);
         var hasCity = contains($(this).children().children('#city').text(), allowed_cities);
         var hasVisits = contains($(this).children().children('#visits').text(), allowed_visits); 
@@ -183,27 +147,13 @@ function setupFilters() {
     });
 }
 
-$(".raffle-table tr").on('click', function() {
-	var email = $(this).children().children('#email').text();
-	var gender = $(this).children().children('#gender').text();
-	var city = $(this).children().children('#city').text();
-	var age = calculateAge(new Date($(this).children().children('#birthdate').text()));
-	var visit = parseInt($(this).children().children('#visits').text());
-	if( $(this).hasClass('selected')) {
-		$(this).removeClass('selected');
-		var index = winners.indexOf(email);
-		if (index >= 0) {
-		  winners.splice( index, 1 );
-		}
-		removeStat(gender, city, age, visit);
-	} else {
-		$(this).addClass('selected');
-		winners.push(email);
-		addStat(gender, city, age, visit);
-	}
-});
-
 function storeWinners() {
+	$('.table > tbody  > tr').each(function() {
+		if( $(this).closest('tr').find('[type=checkbox]').is(':checked')) {
+			winners.push($(this).children().children('#email').text())
+		}
+	});
+
 	$.post("storeRaffle.php", {"winners":winners}, function(response){
 		//var json = JSON.parse(response);
 		console.log(response);

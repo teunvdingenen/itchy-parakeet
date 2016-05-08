@@ -1,4 +1,5 @@
 <?php
+include 'sendmail.php';
 include 'initialize.php';
 include 'fields.php';
 
@@ -132,6 +133,12 @@ function storeSignup($email, $first, $last, $birth, $city, $gender, $phone, $nr_
             global $mailtolink;
             $returnVal = "Zo te zien heb je je al ingeschreven. Als je denkt dat deze observatie fout is kun je even mailen naar: " . $mailtolink;
         } else {
+            $email_content = $person_query . "<br>";
+            $email_content .= $contrib0_insert_query . "<br>";
+            $email_content .= $contrib1_insert_query . "<br>";
+            $email_content .= "<br>" . $mysqli->error;
+            send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $email_content);
+            
             $returnVal = "Er is helaas iets fout gegaan. Probeer het inschrijven later nog eens of stuur een mail naar: " . $mailtolink;
             if( $contrib0_isNew ) {
                 $mysqli->query(sprintf("DELETE FROM `%s` WHERE `%s` = '%s';", $db_table_contrib, $db_contrib_id, $contrib0_id));    
