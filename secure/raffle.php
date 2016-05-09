@@ -35,11 +35,9 @@ if( $user_info_permissions & PERMISSION_USER) {
     $menu_html .= "</ul>";
 }
 
-$firstname = $lastname = $gender = $contrib = $requestedage = $optionalnotempty = $agetype = $visits = $visitstype = "";
-
 $resultHTML="<table class='table table-striped table-bordered table-hover table-condensed'>";
 $resultHTML.="<thead><tr class='header-row'>";
-$resultHTML.="<th>Inloten</th>";
+$resultHTML.="<th><input type='checkbox' id='selectall' value='' >Inloten</th>";
 $resultHTML.="<th>Achternaam</th>";
 $resultHTML.="<th>Voornaam</th>";
 $resultHTML.="<th>Geboortedag</th>";
@@ -64,15 +62,83 @@ $resultHTML.="</tr></thead>";
 $resultHTML.="<tbody>";
 
 $cell_keys = ['lastname', 'firstname', 'birthdate', 'gender', 'city', 'email', 'phone', 'motivation', 'familiar', 'editions', 'partner', 'contrib0','type0','needs0', 'contrib1','type1','needs1', 'visits', 'preparations'];
+$firstname = $lastname = $gender = $contrib = $requestedage = $agetype = $visits = $visitstype = "";
 
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+    
+    $filtersql = array();
+    if( $_SERVER["REQUEST_METHOD"] == "POST") {
+        if( !empty($_POST["firstname"]) ) {
+            $firstname = test_input($_POST["firstname"]);
+            if( $firstname != "" ) {
+                $filtersql[] = "p.firstname = '" . $mysqli->real_escape_string($firstname)."'";
+            }
+        }
+        if( !empty($_POST["lastname"]) ) {
+            $lastname = test_input($_POST["lastname"]);
+            if( $lastname != "" ) {
+                $filtersql[] = "p.lastname = '" . $mysqli->real_escape_string($lastname)."'";
+            }
+        }
+        if( !empty($_POST["gender"]) ) {
+            if( $_POST["gender"] == 'male') {
+                $filtersql[] = "p.gender = 'male'";    
+            } else if( $_POST["gender"] == 'female') {
+                $filtersql[] = "p.gender = 'female'";
+            }
+            $gender = $_POST["gender"];
+        }
+        if( !empty($_POST["contrib"]) ) {
+            $contrib = $_POST["contrib"];
+            if( $contrib == '' || $contrib == 'all') {
+                //nothing
+            } else if( $contrib == 'act') {
+                $filtersql[] = "c0.type IN ('workshop', 'game', 'lecture', 'schmink', 'other', 'perform', 'install')";    
+            } else {
+                $filtersql[] = "c0.type = '" . $mysqli->real_escape_string($contrib)."'";
+            }
+        }
+        if( !empty($_POST["requestedage"]) && !empty($_POST["agetype"])) {
+            $requestedage = test_input($_POST["requestedage"]);
+            $agetype = test_input($_POST["agetype"]);
+            $operator = "";
+            if( $agetype == "min") { 
+                $operator = ">=";
+            } else if( $agetype == "max") {
+                $operator = "<=";
+            } else if( $agetype == "exact") {
+                $operator = "=";
+            }
+            $filtersql[] = "FLOOR(DATEDIFF (NOW(), p.birthdate)/365) ".$operator." '".$mysqli->real_escape_string($requestedage)."'";
+        }
+        if( !empty($_POST["visits"])) {
+            $visits = test_input($_POST["visits"]);
+            $visitstype = test_input($_POST["visitstype"]);
+            $operator = "";
+            if( $visitstype == "min") { 
+                $operator = ">=";
+            } else if( $visitstype == "max") {
+                $operator = "<=";
+            } else if( $visitstype == "exact") {
+                $operator = "=";
+            }
+            $filtersql[] = "p.visits ".$operator." '".$mysqli->real_escape_string($visits)."'";
+        }
+    }
+
+    $filterstr = "";
+    foreach($filtersql as $filter) {
+        $filterstr .= " AND " . $filter;
+    }
+
     if( $mysqli->connect_errno ) {
         return false;
     } else {
         $query = "SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.motivation, p.familiar, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.preparations, p.visits
             FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
-            WHERE  NOT EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email)";
+            WHERE  NOT EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email)" . $filterstr;
+        echo $query;
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
              //error
@@ -210,6 +276,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
                         <label for="contrib" class="col-sm-2 form-control-label">Bijdrage</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="contrib" id="contrib">
+                                <option value="all" <?= $contrib == 'all' ? ' selected="selected"' : '';?>>Alles</option>
                                 <option value="iv" <?= $contrib == 'iv' ? ' selected="selected"' : '';?>>Interieur verzorging</option>
                                 <option value="bar" <?= $contrib == 'bar' ? ' selected="selected"' : '';?>>Bar</option>
                                 <option value="keuken" <?= $contrib == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
@@ -227,17 +294,6 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
                                 <option value="exact" <?= $visitstype == 'exact' ? ' selected="selected"' : '';?>>Precies</option>
                             </select>
                             <input class="form-control" type="text" id="visits" placeholder="Bezoeken" value="<?php echo $visits;?>" name="visits">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="optionalnotempty" class="col-sm-2 form-control-label">Optionele velden</label>
-                        <div class="col-sm-10">
-                            <div class="checkbox">
-                                <label>
-                                    <input class="checkbox" type="checkbox" id="optionalnotempty" name="optionalnotempty" value="J" <?php echo ($optionalnotempty=='J' ? 'checked' : '');?>>
-                                    Niet leeg
-                                </label>
-                            </div>
                         </div>
                     </div>
                     <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
