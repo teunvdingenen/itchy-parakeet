@@ -8,6 +8,7 @@ $('#selectall').change(function() {
 }) 
 
 function storeWinners() {
+	var winners = [];
 	$('.table > tbody > tr').each(function() {
 		if( $(this).closest('tr').find('[type=checkbox]').is(':checked')) {
 			winners.push($(this).children().children('#email').text())
@@ -16,7 +17,7 @@ function storeWinners() {
 
 	$.post("storeRaffle.php", {"winners":winners}, function(response){
 		//var json = JSON.parse(response);
-		console.log(response);
+		location.reload();
 	});
 }
 
