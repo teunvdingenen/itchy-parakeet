@@ -118,12 +118,12 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 	}
 }
 
-asort($cities);
-asort($contrib0);
-asort($contrib1);
+arsort($cities);
+arsort($contrib0);
+arsort($contrib1);
 //ksort($signupdates);
-asort($ages);
-asort($visits);
+arsort($ages);
+arsort($visits);
 
 reset($cities);
 reset($visits);
@@ -189,8 +189,7 @@ $resultHTML.="</tr>";
 
 $resultHTML.="<tr>";
 $resultHTML.="<th>Bezoeken</th>";
-$resultHTML.="<td>Nooit: ".$visits[0]. " (" . round($visits[0] / $total * 100) .")</td>";
-for($i = 0; $i < $max_columns-1; $i++) {
+for($i = 0; $i < $max_columns; $i++) {
 	$resultHTML.="<td>".key($visits)." : ".current($visits)." (". round(current($visits)/$total * 100) . "%)</td>";
 	if( next($visits) === FALSE ) {
 		break;
