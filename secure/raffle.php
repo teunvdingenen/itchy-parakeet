@@ -61,6 +61,8 @@ $resultHTML.="<th>Leeftijd</th>";
 $resultHTML.="</tr></thead>";
 $resultHTML.="<tbody>";
 
+$debug = "";
+
 $cell_keys = ['lastname', 'firstname', 'birthdate', 'gender', 'city', 'email', 'phone', 'motivation', 'familiar', 'editions', 'partner', 'contrib0','type0','needs0', 'contrib1','type1','needs1', 'visits', 'preparations'];
 $email = $firstname = $lastname = $gender = $contrib = $contribnr = $requestedage = $agetype = $visits = $visitstype = "";
 
@@ -158,19 +160,49 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
              //error
         }
     }
-
+    $pulled_partners = array();
     while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     {
-        $resultHTML.="<tr>";
-        $resultHTML.="<td><input type='checkbox' id='' value='' ></td>";
-        $i = 0;
-        foreach($row as $value) {
-            $resultHTML .= "<td><div id='".$cell_keys[$i]."' class='table-cell'>".$value."</div></td>";
-            $i++;
+        $partneremail = $row[10];
+        if( !in_array($row[5], $pulled_partners) ) {
+            $resultHTML.="<tr>";
+            $resultHTML.="<td><input type='checkbox' id='' value='' ></td>";
+            $i = 0;
+
+            foreach($row as $value) {
+                $resultHTML .= "<td><div id='".$cell_keys[$i]."' class='table-cell'>".$value."</div></td>";
+                $i++;
+            }
+            $age = (new DateTime($row[2]))->diff(new DateTime('now'))->y;
+            $resultHTML .= "<td><div id='age' class='table-cell'>".$age."</div></td>";
+            $resultHTML.= "</tr>";
+
+            if( $partneremail != "" ) {
+                $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.motivation, p.familiar, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.preparations, p.visits
+                FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
+                WHERE p.email = '%s'", $mysqli->real_escape_string($partneremail));
+                $partnersqlresult = $mysqli->query($query);
+                if( $partnersqlresult === FALSE ) {
+                    //error
+                } else if( $partnerrow = mysqli_fetch_array($partnersqlresult, MYSQLI_NUM) ) {
+                    if( $partnerrow[10] == $row[5]) {
+                        $resultHTML.="<tr class='info'>";
+                        $resultHTML.="<td><input type='checkbox' id='' value='' ></td>";
+                        $i = 0;
+
+                        foreach($partnerrow as $value) {
+                            $resultHTML .= "<td><div id='".$cell_keys[$i]."' class='table-cell'>".$value."</div></td>";
+                            $i++;
+                        }
+                        $age = (new DateTime($partnerrow[2]))->diff(new DateTime('now'))->y;
+                        $resultHTML .= "<td><div id='age' class='table-cell'>".$age."</div></td>";
+                        $resultHTML.= "</tr>";
+
+                        $pulled_partners[] = $partneremail;
+                    }
+                }
+            }
         }
-        $age = (new DateTime($row[2]))->diff(new DateTime('now'))->y;
-        $resultHTML .= "<td><div id='age' class='table-cell'>".$age."</div></td>";
-        $resultHTML.= "</tr>";
     }
     $resultHTML.="</tbody></table>";
 
@@ -240,6 +272,9 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
             </div>
 
             <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div id='statcontent' class="container-fluid">
+
+                </div>
                 <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                     <div class="form-group row">
                         <label for="email" class="col-sm-2 form-control-label">Email</label>
@@ -335,6 +370,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
                     <?php echo $resultHTML ?>
                 </div>
                 <div><button class='btn btn-lg btn-primary btn-block' id='confirm' onclick="storeWinners();">Inloten</button></div>
+                <?=$debug?>
             </div>
         </div>
 

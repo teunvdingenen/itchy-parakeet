@@ -24,5 +24,8 @@ function storeWinners() {
 
 
 $(document).ready(function() {
-
+	$.post("signupstats.php", {"type":"raffle"}, function(response){
+		console.log(response);
+		$("#statcontent").html($(response).find('table'));
+	});
 });

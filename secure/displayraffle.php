@@ -110,7 +110,10 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
         } else if ($key == 4 ) {
             $resultHTML.= "<td><div id='code' class='table-cell'>" . $value . "</div></td>";
         } else if( $key == 5 ) {
-            $Bvalue = ($value == 0 ? 'N' : 'J'); 
+            $Bvalue = '';
+            if( $value == 0 ) $Bvalue = 'N';
+            else if( $value == 1 ) $Bvalue = 'J';
+            else if( $value == 2 ) $Bvalue = 'E'; 
             $resultHTML.= "<td><div class='table-cell'>" . $Bvalue . "</div></td>";
         } else {
             $resultHTML.= "<td><div class='table-cell'>" . $value . "</div></td>";
@@ -180,6 +183,9 @@ $resultHTML.="</table>";
                 </div>
             </div>
             <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div id='statcontent' class="container-fluid">
+
+                </div>
                 <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                     <div class="form-group row">
                         <label for="email" class="col-sm-2 form-control-label">Email</label>

@@ -234,6 +234,9 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
                 </div>
             </div>
             <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div id='statcontent' class="container-fluid">
+
+                </div>
                 <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                     <div class="form-group row">
                         <label for="email" class="col-sm-2 form-control-label">Email</label>
@@ -339,5 +342,13 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         <script src="../js/plugins.js"></script>
         <script src="../js/main.js"></script>
         <script src="js/secure.js"></script>
+        <script> 
+        $(document).ready(function() {
+            $.post("signupstats.php", {"type":"signup"}, function(response){
+                console.log(response);
+                $("#statcontent").html($(response).find('table'));
+            });
+        }); 
+        </script>
     </body>
 </html>
