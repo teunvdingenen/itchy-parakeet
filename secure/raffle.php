@@ -161,10 +161,12 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         }
     }
     $pulled_partners = array();
+    $nr_showing = 0;
     while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     {
         $partneremail = $row[10];
         if( !in_array($row[5], $pulled_partners) ) {
+            $nr_showing += 1;
             $resultHTML.="<tr>";
             $resultHTML.="<td><input type='checkbox' id='' value='' ></td>";
             $i = 0;
@@ -186,6 +188,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
                     //error
                 } else if( $partnerrow = mysqli_fetch_array($partnersqlresult, MYSQLI_NUM) ) {
                     if( $partnerrow[10] == $row[5]) {
+                        $nr_showing += 1;
                         $resultHTML.="<tr class='info'>";
                         $resultHTML.="<td><input type='checkbox' id='' value='' ></td>";
                         $i = 0;
@@ -205,6 +208,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         }
     }
     $resultHTML.="</tbody></table>";
+    $resultHTML.="<p>".$nr_showing." voldoen aan de filter</p>";
 
     $mysqli->close();
 } else {
