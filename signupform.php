@@ -3,6 +3,12 @@
 include "dbstore.php";
 include "functions.php";
 
+date_default_timezone_set('Europe/Amsterdam');
+
+if( strtotime('now') > strtotime('2016-05-11 16:00') ) {
+    header('Location: verlopen');
+}
+
 $returnVal = "";
 $firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $familiar = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = "";
 $preparationsbox = false;
@@ -28,7 +34,6 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         addError("Je hebt je woonplaats niet opgegeven.");
     }
     if( !empty($_POST["birthdate"]) ) {
-        date_default_timezone_set('Europe/Amsterdam');
         $birthdate = test_input($_POST["birthdate"]);
         $date = DateTime::createFromFormat('d/m/Y', $birthdate);
         if( $date == FALSE ) {

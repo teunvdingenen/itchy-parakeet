@@ -1,3 +1,10 @@
+<?php 
+date_default_timezone_set('Europe/Amsterdam');
+
+if( strtotime('now') > strtotime('2016-05-11 16:00') ) {
+    header('Location: verlopen');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
