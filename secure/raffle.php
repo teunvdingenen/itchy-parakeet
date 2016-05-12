@@ -179,10 +179,10 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
             $resultHTML .= "<td><div id='age' class='table-cell'>".$age."</div></td>";
             $resultHTML.= "</tr>";
 
-            if( $partneremail != "" ) {
+            if( $partneremail != "" && $partneremail != $row[5] ) {
                 $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.motivation, p.familiar, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.preparations, p.visits
                 FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
-                WHERE p.email = '%s'", $mysqli->real_escape_string($partneremail));
+                WHERE p.email = '%s' AND NOT EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email)", $mysqli->real_escape_string($partneremail));
                 $partnersqlresult = $mysqli->query($query);
                 if( $partnersqlresult === FALSE ) {
                     //error
