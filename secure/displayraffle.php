@@ -23,6 +23,11 @@ if( $user_info_permissions & PERMISSION_RAFFLE ) {
     $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loting</a></li>";
     $menu_html .= "</ul>";
 }
+if( $user_info_permissions & PERMISSION_CALLER) {
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";
+    $menu_html .= "</ul>";
+}
 if( $user_info_permissions & PERMISSION_EDIT ) {
     $menu_html .= "<ul class='nav nav-sidebar'>";
     $menu_html .= "<li><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></li>";
@@ -34,6 +39,7 @@ if( $user_info_permissions & PERMISSION_USER) {
     $menu_html .= "<li><a class='menulink' id='usermanage' href='users''>Gebruikers</a></li>";
     $menu_html .= "</ul>";
 }
+
 
 $statistic_string = "";
 $resultHTML="<table class='table table-striped table-bordered table-hover table-condensed'>";
@@ -103,7 +109,11 @@ $mysqli->close();
 while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 {
     $resultHTML.="<tr>";
-    $resultHTML.="<td><button class='btn btn-sm unraffle' type='button'>Uitloten</button></td>";
+    $resultHTML.="<td>";
+    if( $user_info_permissions & PERMISSION_RAFFLE ) {
+        $resultHTML.="<button class='btn btn-sm unraffle' type='button'>Uitloten</button>";
+    }
+    $resultHTML.="</td>";
     foreach($row as $key=>$value) {
         if( $key == 2 ) {
             $resultHTML.= "<td><div id='email' class='table-cell'>" . $value . "</div></td>";

@@ -1,4 +1,7 @@
 
+
+
+
 $(document).ready(function() {
 	$('#buyer-form').validate({
 		ignore: ".ignore",

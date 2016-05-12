@@ -23,6 +23,11 @@ if( $user_info_permissions & PERMISSION_RAFFLE ) {
     $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loting <span class='sr-only'>(current)</span></a></li>";
     $menu_html .= "</ul>";
 }
+if( $user_info_permissions & PERMISSION_CALLER) {
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";
+    $menu_html .= "</ul>";
+}
 if( $user_info_permissions & PERMISSION_EDIT ) {
     $menu_html .= "<ul class='nav nav-sidebar'>";
     $menu_html .= "<li><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></li>";

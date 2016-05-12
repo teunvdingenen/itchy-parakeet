@@ -15,6 +15,9 @@ if( !defined('PERMISSION_REMOVE')) {
 if( !defined('PERMISSION_USER')) {
     define('PERMISSION_USER', 16);
 }
+if( !defined('PERMISSION_CALLER')) {
+	define('PERMISSION_CALLER', 32);
+}
 
 $db_table_person    = "person";
 $db_table_contrib   = "contribution";
@@ -26,6 +29,8 @@ $db_person_first    = "firstname";
 $db_person_last     = "lastname";
 $db_person_birth    = "birthdate";
 $db_person_email    = "email";
+$db_person_street	= "street";
+$db_person_postal	= "postal";
 $db_person_city     = "city";
 $db_person_gender   = "gender";
 $db_person_phone    = "phone";
@@ -43,6 +48,7 @@ $db_person_terms0   = "terms0";
 $db_person_terms1   = "terms1";
 $db_person_terms2   = "terms2";
 $db_person_terms3   = "terms3";
+$db_person_terms4   = "terms4";
 
 $db_contrib_id      = "id";
 $db_contrib_type    = "type";

@@ -24,6 +24,11 @@ if( $user_info_permissions & PERMISSION_RAFFLE ) {
     $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loting</a></li>";
     $menu_html .= "</ul>";
 }
+if( $user_info_permissions & PERMISSION_CALLER) {
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";
+    $menu_html .= "</ul>";
+}
 if( $user_info_permissions & PERMISSION_EDIT ) {
     $menu_html .= "<ul class='nav nav-sidebar'>";
     $menu_html .= "<li><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></li>";
@@ -43,6 +48,7 @@ $permission_code = 0;
 
 $usertable="<table class='table table-striped table-bordered table-hover table-condensed'>";
 $usertable.="<thead><tr class='header-row'>";
+$usertable.="<th>Verwijderen</th>";
 $usertable.="<th>Name</th>";
 $usertable.="<th>Gebruikersnaam</th>";
 $usertable.="<th>Permissions</th>";
@@ -58,11 +64,16 @@ if( $mysqli->connect_errno ) {
     if( $results === FALSE ) {
         addError("Failed to get users<br>" . $mysqli->error);
     } else {
-        while($row = mysqli_fetch_array($results,MYSQLI_NUM)) {
+        while($row = mysqli_fetch_array($results,MYSQLI_ASSOC)) {
             $usertable.="<tr>";
-            foreach($row as $key=>$value) {
-                $usertable.= "<td><div class='table-cell'>" . $value . "</div></td>";
+            $usertable.="<td>";
+            if( $row['username'] != "admin" ) {
+                $usertable.="<button class='btn btn-sm removeuser' type='button'>Verwijderen</button>";
             }
+            foreach($row as $key=>$value) {
+                $usertable.= "<td><div class='table-cell' id='".$key."''>" . $value . "</div></td>";
+            }
+            $usertable.="</td>";
             $usertable .="</tr>";
         }
     }
@@ -99,13 +110,15 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     foreach($permissions as $permission) {
         $permission_str = test_input($permission);
         if( $permission_str == "display") {
-            $permission_code = $permission_code | PERMISSION_DISPLAY;
+            $permission_code |= PERMISSION_DISPLAY;
         } else if( $permission_str == "edit") {
-            $permission_code = $permission_code | PERMISSION_EDIT;
+            $permission_code |= PERMISSION_EDIT;
         } else if( $permission_str == "raffle") {
-            $permission_code = $permission_code | PERMISSION_RAFFLE;
+            $permission_code |= PERMISSION_RAFFLE;
         } else if( $permission_str == "user") {
-            $permission_code = $permission_code | PERMISSION_USER;
+            $permission_code |= PERMISSION_USER;
+        } else if( $permission_str == "caller") {
+            $permission_code |= PERMISSION_CALLER;
         }
     }
     if( $repeat != $password ) {
@@ -250,6 +263,11 @@ function addError($value) {
                                     <input type="checkbox" name="permissions[]" id="user" value="user" <?php if(in_array("user", $permissions)) echo( "checked"); ?> > Gebruikers
                                 </label>
                             </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="permissions[]" id="caller" value="caller" <?php if(in_array("caller", $permissions)) echo( "checked"); ?> > Bellen
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
@@ -267,5 +285,13 @@ function addError($value) {
         <script src="../js/plugins.js"></script>
         <script src="../js/main.js"></script>
         <script src="js/secure.js"></script>
+        <script>
+            $('.removeuser').click(function() {
+                var remove = $(this).closest('tr').children().children('#username').text();
+                $.post("removeUser.php", {"remove":remove}, function(response){
+                });
+                location.reload();
+            });
+        </script>
     </body>
 </html>
