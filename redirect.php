@@ -1,5 +1,4 @@
 <?php session_start(); 
-
 include "initialize.php";
 $message = "";
 try {
@@ -13,20 +12,27 @@ try {
     $paid = get_paid($mysqli, $code);
 
     if( $paid === FALSE ) {
-        //log error
-        //sql error
-        $message = "OOPS er is iet fout gegaan";
+        email_error("redirect.php: paid returned FALSE for: ".$firstname. " with code: ". $code);
+        $message = "<p>Er is een fout opgetreden in het betalingsysteem. <br> Voor mail informatie of geruststellingen kun je mailen naar: ".$mailtolink.".</p>";
     } else if( $paid == 0 ) {
-        $message = "NIET BETAALD TEKST";
+        $message = "<p>Het lijkt erop dat de betaling niet gelukt is of je hebt deze afgebroken.<p>";
+        $message .= "<p>Als je per ongeluk iets fout gedaan hebt kun het nogmaal proberen door naar het <a href='buyer'>betalingscherm</a> te gaan.</p>";
+        $message .= "<p>Bij zorgen, voor vragen of je wilt iets anders kwijt, dan kun je altijd mailen naar: ". $mailtolink.".</p>";
     } else {
-        $message = "HELEMAAL GOED TEKST, JE KRIJGT NOG EMAIL";
+        $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou deze zomer Nieuw Babylon te gaan ontdekken.</p>";
+        $message .= "<p>Ter bevestiging ontvang je ook nog een email met wat aanvullende gegevens.</p>";
+        $message .= "<p>Als je zorgen, vragen of je wilt iets anders kwijt wilt kun je altijd mailen naar: ". $mailtolink.".</p>";
     }
-    $message.="<br>Lorem ipsum dolor sit amet, admodum mnesarchum est in. Accusam oporteat adolescens ius et, mea dicit adolescens ex, nec everti veritus detraxit ne. Sale virtute offendit mel at, rebum nulla vim ea, mel id semper epicurei. Vis case eripuit percipit cu, solet noluisse persecuti sea eu. Id has viris invenire, tamquam lobortis pri et.";
-
+    $message .= "<p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig,<br><br>Familiar Forest</p>";
     $mysqli->close();
 } catch (Mollie_API_Exception $e) {
     //email error
-    echo "API call failed: " . htmlspecialchars($e->getMessage());
+    $message = "API call failed: " . htmlspecialchars($e->getMessage());
+}
+
+function email_error($message) {
+    send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);
+            
 }
 
 function get_name($mysqli, $code) {
@@ -65,47 +71,60 @@ function get_paid($mysqli, $code) {
 }
 
 ?>
-<!doctype html>
-<html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
 
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
+    <title>Familiar Forest 2016</title>
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Add your site or application content here -->
-        <h1 class="header">Lorem ipsum dolor sit amet</h1>
-        <div class="content">
-        <div>Lieve <? echo $firstname ?>,</div>
-        <p><? echo $message ?></p> 
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
+
+    <!-- Custom styles for this template -->
+    <link href="css/main.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <div class="default-text">
+        <div></div>
+        <p></p> 
+
+        <h1>Familiar Forest 2016</h1>
+        <p class="lead">
+            Lieve <? echo $firstname ?>,
+        </p>
+        <? echo $message ?>
         </div>
+      </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
+    </div><!-- /.container -->
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
-    </body>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  </body>
 </html>

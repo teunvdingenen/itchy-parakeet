@@ -9,8 +9,11 @@ try {
     _exit();
 }
 
+$methods = ['', 'ideal', 'creditcard'];
+$method_names = ["", "IDeal (+€0,29)", "CreditCard (+€3,61)"];
 $returnVal = "";
-$email = $code = $issuer = "";
+$email = $code = $method = $street = $city = $postal = "";
+
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["email"]) ) {
@@ -25,17 +28,45 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $code = "";
         addError("Je hebt je code niet opgegeven.");
     }
-    if( !empty($_POST["issuer"]) ) {
-        $issuer = test_input($_POST["issuer"]);
+    if( !empty($_POST["method"]) ) {
+        $method = test_input($_POST["method"]);
     } else {
-        $issuer = "";
+        $method = "";
+        addError('Je hebt geen betalingsmethode opgeven.');
+    }
+    if( !empty($_POST["city"]) ) {
+        $city = test_input($_POST["city"]);
+    } else {
+        $city = "";
+        addError("Je hebt je woonplaats niet opgegeven.");
+    }
+    if( !empty($_POST["postal"]) ) {
+        $postal = test_input($_POST["postal"]);
+    } else {
+        $postal = "";
+        addError("Je hebt je postcode niet opgegeven.");
+    }
+    if( !empty($_POST["street"]) ) {
+        $street = test_input($_POST["street"]);
+    } else {
+        $street = "";
+        addError('Je hebt je straat en huisnummer niet opgegeven.');
+    }
+    if( !empty($_POST["terms4"]) ) {
+        $tersm4 = test_input($_POST["terms4"]);
+        if( $terms4 != 'J' ) {
+            addError('Je hebt de voorwaarde niet geaccepteerd.');    
+        }
+    } else {
+        $terms4 = "";
+        addError('Je hebt de voorwaarde niet geaccepteerd.');
     }
 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
         if( $mysqli->connect_errno ) {
             addError("Het lijkt erop dat de website kapot is, probeer het later nog eens!");
-            //TODO email error
+            $email_error("Database connectie is kapot: " . $mysqli->error);
         }
 
         $code = $mysqli->real_escape_string($code);
@@ -44,31 +75,52 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             addError("We hebben helaas niet je code kunnen verifieren.");
         }
         if( $returnVal == "" && hasPaid($mysqli, $code)) {
-            addError("Het lijkt erop dat je al betaald hebt. Het word nagekeken en je krijgt snel even bericht hierover!");
+            addError("Het lijkt erop dat je al betaald hebt. Als je twijfeld of alles wel goed is gegaan kun je mail naar: " . $mailtolink);
         }
         if( $returnVal == "" ) {
-            //all checks out!
-            $protocol = isset($_SERVER['HTTPS']) && strcasecmp('off',$_SERVER['HTTPS']) !== 0 ? "https" : "http";
-            $hostname = $_SERVER['HTTP_HOST'];
-            $path = dirname(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] :
-                $_SERVER['PHP_SELF']);
-
-            $amount = 100;
-            $raffle = $code;
-
-            try {
-                $payment = $mollie->payments->create(array(
-                  "amount" => $amount,
-                  "method" => Mollie_API_Object_Method::IDEAL,
-                  "description" => "FFF 2016 " . $code,
-                  "redirectUrl" => "{$protocol}://{$hostname}{$path}/redirect.php?raffle={$raffle}",
-                  "metadata" => array("raffle" => $raffle,),
-                  "issuer" => !empty($issuer) ? $issuer : NULL
-                ));
-            } catch (Mollie_API_Exception $e) {
-                addError("Er is iets fout gegaan met het aanmaken van de betaling" . $e);
+            $query = sprintf("UPDATE person SET street = '%s', city = '%s', postal = '%s', terms4 = '%s' WHERE email = '%s'",
+                $mysqli->real_escape_string($street),
+                $mysqli->real_escape_string($city),
+                $mysqli->real_escape_string($postal),
+                $mysqli->real_escape_string($terms4),
+                $mysqli->real_escape_string($email)
+            );
+            $sql_result = $mysqli->query($query);
+            if( $sql_result === FALSE ) {
+                addError("We hebben niet je gegevens kunnen aanpassen. Probeer het later nog eens of stuur een email naar: ".$mailtolink);
+                email_error("Error updating person: " . $mysqli->error);
+            } else if( $mysqli->affected_rows != 1 ) {
+                email_error("More then one row effected updating person<br>".$query."<br>Affected rows: ".$mysqli->affected_rows);
             }
-            storePaymentId($mysqli, $payment->id, $code, $email);
+            if( $returnVal == "" ) {
+                //all checks out!
+                $protocol = isset($_SERVER['HTTPS']) && strcasecmp('off',$_SERVER['HTTPS']) !== 0 ? "https" : "http";
+                $hostname = $_SERVER['HTTP_HOST'];
+                $path = dirname(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] :
+                    $_SERVER['PHP_SELF']);
+
+                $amount = 120;
+                $raffle = $code;
+
+                if( $method == 'ideal' ) {
+                    $amount += 0.29;
+                } else if( $method == 'creditcard') {
+                    $amount += 0.25 + $amount * 0.028;
+                }
+
+                try {
+                    $payment = $mollie->payments->create(array(
+                      "amount" => $amount,
+                      "method" => $method,
+                      "description" => "FFF 2016 " . $code,
+                      "redirectUrl" => "{$protocol}://{$hostname}{$path}/redirect.php?raffle={$raffle}",
+                      "metadata" => array("raffle" => $raffle,)
+                    ));
+                } catch (Mollie_API_Exception $e) {
+                    addError("Er is iets fout gegaan met het aanmaken van de betaling" . $e);
+                }
+                storePaymentId($mysqli, $payment->id, $code, $email);
+            }
         } 
         $mysqli->close();
     }
@@ -80,6 +132,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $returnVal .= "</ul>";
     }
 } //End POST
+
+function email_error($message) {
+    send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);
+            
+}
 
 function storePaymentId($mysqli, $paymentid, $code, $email) {
     $sqlresult = $mysqli->query(sprintf("INSERT INTO `buyer` (`id`, `code`, `email`) VALUES ('%s','%s','%s')",
@@ -132,37 +189,30 @@ function addError($value) {
 }
 
 ?>
+<!doctype html>
 <html class="no-js" lang="">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Familiar Forest Festival Inschrijfformulier</title>
-        <meta name="description" content="">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="Teun van Dingenen">
+        <link rel="icon" href="favicon.ico">
 
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <!-- Place favicon.ico in the root directory -->
+        <title>Code verzilveren</title>
+
+        <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" type="text/css" media="all"
-            href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
-        <scirpt src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_nl.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
 
+        <!-- Custom styles for this template -->
+        <link href="css/main.css" rel="stylesheet">
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -172,12 +222,18 @@ function addError($value) {
         <!-- Add your site or application content here -->
 
         <div class="container">
-            <h1>Kaartje Kopen</h1>
-            <div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ut ligula quis lacus consectetur tempus. Integer pretium quam vel nunc aliquet fringilla. Maecenas enim nulla, faucibus ut tincidunt id, auctor at orci. Praesent faucibus tellus ipsum, nec varius erat consectetur at. Etiam ac ultricies ex, a gravida quam. Suspendisse fringilla congue massa a cursus. Nunc condimentum mauris id erat tincidunt laoreet. Sed maximus tortor id mi vestibulum pulvinar. Vestibulum ultricies
-                erat sit amet posuere euismod. Curabitur orci mauris, vehicula et dolor at, egestas luctus nunc. Sed non egestas massa. Curabitur eget bibendum arcu. Aliquam erat volutpat. Fusce placerat lacus a dapibus accumsan. Cras vitae interdum metus. Phasellus neque sem, mattis et imperdiet sed, eleifend vel lorem.</p>
+            <div class="form-intro-text">
+                <h1>Code verzilveren</h1>
+                <p>Dit jaar kost deelname aan Familiar Forest 120 euro. Omdat niet alle betaalmethodes hetzelfde kosten hebben we ervoor gekozen de transactiekosten niet hierin te rekenen. Dat maakt het voor ons gemakkelijker om een betrouwbare begroting te maken. Kort geleden hebben we op onze Facebook een bericht geplaatst over <a href='https://www.facebook.com/events/591534081011159/permalink/601364646694769/?ref=1&amp;action_history=null'>de kosten</a></p>
+                <p>Daarnaast moeten we in verband met aangescherpte regelgeving ook jullie adresgegevens opslaan zodat jullie ook officieel mee kunnen als vrijwilligers bij Familiar Forest.</p>
+                <p>Ben je wel ingelood maar je code vergeten? Ga dan naar deze pagina om je code opnieuw op te vragen.</p>
             </div>
-            <form id="buyer-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+            <?php
+                if( $returnVal != "" ) {
+                    echo $returnVal;
+                }
+            ?>
+            <form id="buyer-form" class="form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
 
                 <div class="form-group row">
                     <label for="email" class="col-sm-2 form-control-label">Email</label>
@@ -194,22 +250,68 @@ function addError($value) {
                 </div>
 
                 <div class="form-group row">
-                    <label for="issuer" class="col-sm-2 form-control-label">Selecteer je bank:</label>
+                    <label for="street" class="col-sm-2 form-control-label">Straat &amp; Huisnummer</label>
                     <div class="col-sm-10">
-                        <select class="form-control" name="issuer">
+                        <input class="form-control" type="text" id="street" placeholder="Straat en Huisnummer" value="<?php echo $street;?>" name="street">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="postal" class="col-sm-2 form-control-label">Postcode</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="postal" placeholder="Postcode" value="<?php echo $postal;?>" name="postal">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="city" class="col-sm-2 form-control-label">Stad</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="city" placeholder="Stad" value="<?php echo $city;?>" name="city">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="method" class="col-sm-2 form-control-label">Selecteer betalingsmethode:</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="method">
                             <?php
-                                $issuers = $mollie->issuers->all();
-                                foreach ($issuers as $issuer) {
-                                    if($issuer->method == Mollie_API_Object_Method::IDEAL) {
-                                        echo '<option value=' . htmlspecialchars($issuer->id) . '>' . htmlspecialchars($issuer->name) . '</option>';
-                                    }
+                                $i = 0;
+                                foreach ($methods as $my_method) {
+                                    echo '<option name="method" value=' . $my_method . '>' . $method_names[$i++] . '</option>';
                                 }
                             ?>
                         </select>
                     </div>
                 </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label" for="terms4">Vrijwilliger</label>
+                    
+                    <div class="col-sm-10">
+                        <div class="alert alert-warning">Deelname aan Familiar Forest betekent dat je jezelf aanmeldt als vrijwilliger bij Stichting Familiar Forest. Tijdens het weekend zul je nader te bepalen werkzaamheden verrichten en zal er een werkbegeleider en aanspreekpunt vanuit de organisatie worden aangewezen.</div>
+                        <div class="checkbox">
+                            <label>
+                                <input class="checkbox" type="checkbox" id="terms4" name="terms4" value="J">
+                                Ik ga akkoord met deze voorwaarde
+                            </label>
+                        </div>
+                        <label for="terms4" class="error" style="display:none;"></label>
+                    </div>
+                </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Naar betalen</button>
             </form>
         </div>
-    </body>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
+        <scirpt src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_nl.js"></script>
+
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+        <script src="js/buyer.js"></script>
+        </body>
 </html>
