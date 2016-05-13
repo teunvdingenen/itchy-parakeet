@@ -130,13 +130,17 @@ body {
     height:110px;
     color:#fff;
     background-color:#585858;
-    margin-bottom:50px;
-    padding-bottom:20px;
+    margin-bottom:20px;
+    padding-bottom:10px;
     padding-top:20px;
 }
 
 #header a {
   color:#efefef;
+}
+
+#signup-button {
+  padding-bottom:20px;
 }
 
 .divider {
