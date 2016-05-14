@@ -1,44 +1,22 @@
 <?php session_start();
 include "../functions.php";
+include "createmenu.php";
 
 if(!isset($_SESSION['loginuser'])) {
     header('Location: ../login');
 }
+
 $menu_html = "";
 $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-// Assemble menu:
-if( $user_info_permissions & PERMISSION_DISPLAY ) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id ='showstats' href='index'>Main <span class='sr-only'>(current)</span></a></li>";
-    $menu_html .= "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen tonen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting tonen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets tonen</a></li>";
-    $menu_html .= "</ul>";
+if( $user_info_permissions & PERMISSION_CALLER != PERMISSION_CALLER ) {
+    echo "503";
+    return 0;
 }
-if( $user_info_permissions & PERMISSION_RAFFLE ) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loting</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_CALLER) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_EDIT ) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='removesignup' href='#''>Verwijderen</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_USER) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='usermanage' href='users''>Gebruikers</a></li>";
-    $menu_html .= "</ul>";
-}
+
+$menu_html = get_menu_html();
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
@@ -46,14 +24,14 @@ if( $mysqli->connect_errno ) {
     return false;
 }
 
-$fbfullname = $fullname = $firstname = $lastname = $contrib0 = $motivation = $phone = $code = $familiar = "";
-
+$fullname = $firstname = $lastname = $contrib0 = $motivation = $phone = $code = $familiar = "";
+$headertext = "Bellen maar!";
 $query = "SELECT p.firstname, p.lastname, c.type, p.familiar, p.motivation, r.email, p.phone, r.code, r.called FROM person p join raffle r on r.email = p.email join contribution c on p.contrib0 = c.id WHERE r.called = 0 ORDER BY RAND() LIMIT 1";
 $result = $mysqli->query($query);
 if( $result === FALSE ) {
     //error
 } else if( $result->num_rows != 1 ) {
-    echo "Er is niemand meer om te bellen!";
+    $headertext = "Er is niemand meer om te bellen!";
 } else {
     $row = $result->fetch_array(MYSQLI_ASSOC);
     $firstname = $row['firstname'];
@@ -64,7 +42,6 @@ if( $result === FALSE ) {
     $contrib0 = translate_contrib($row['type']);
     $motivation = $row['motivation'];
     $familiar = $row['familiar'];
-    $fbfullname = $firstname . "%20" . $lastname;
     $fullname = $firstname . " " . $lastname;
 
     $query = sprintf("UPDATE raffle SET called = 2 WHERE code = '%s'", $mysqli->real_escape_string($code));
@@ -137,7 +114,7 @@ if( $result === FALSE ) {
             <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="text-center">Bellen maar!</h1>
+                        <h1 class="text-center"><?=$headertext?></h1>
                     </div>
                 </div>
                 <div class="row">
@@ -187,17 +164,17 @@ if( $result === FALSE ) {
                         <button class='btn btn-lg btn-info btn-block' id='noanswer' onclick=<?php echo "notAnswered('".$code."');" ?>>Geen antwoord </button>
                     </div>
                     <div class="col-md-6">
-                        <button class='btn btn-lg btn-success btn-block' id='noanswer' onclick=<?php echo "called('".$code."');" ?>>Gebeld!</button>
+                        <button class='btn btn-lg btn-success btn-block' id='answered' onclick=<?php echo "called('".$code."');" ?>>Gebeld!</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <button class='btn btn-lg btn-danger btn-block' id='stalk' onclick=<?php echo "window.open('https://www.facebook.com/search/top/?q=".$fbfullname."')" ?>>STALK</button>
+                        <button class='btn btn-lg btn-danger btn-block' id='stalk' onclick=<?php echo "window.open('https://www.facebook.com/search/top/?q=".str_replace(' ', '%20', $fullname)."')" ?>>STALK</button>
                     </div>
                 </div>
             </div>
         </div>
-
+        <div id="code" style="display:none"><?=$code?></div>
     <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->

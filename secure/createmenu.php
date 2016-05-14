@@ -1,0 +1,44 @@
+<?php
+
+function get_menu_html() {
+    global $db_user_name, $db_user_permissions;
+    $menu_html = "";
+    $user_info = get_user_info($_SESSION['loginuser']);
+    $user_info_name = $user_info[$db_user_name];
+    $user_info_permissions = $user_info[$db_user_permissions];
+
+
+    if( $user_info_permissions & PERMISSION_DISPLAY ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id ='showstats' href='index'>Main</a></li>";
+        $menu_html .= "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen</a></li>";
+        $menu_html .= "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting</a></li>";
+        $menu_html .= "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets</a></li>";
+        $menu_html .= "</ul>";
+    }
+    if( $user_info_permissions & PERMISSION_RAFFLE ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loten</a></li>";
+        $menu_html .= "</ul>";
+    }
+    if( $user_info_permissions & PERMISSION_CALLER) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";
+        $menu_html .= "<li><a class='menulink' id='calleroverview' href='calleroverview''>Bel lijst</a></li>";
+        $menu_html .= "</ul>";
+    }
+    if( $user_info_permissions & PERMISSION_EDIT ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></li>";
+        $menu_html .= "<li><a class='menulink' id='removesignup' href='#''>Verwijderen</a></li>";
+        $menu_html .= "</ul>";
+    }
+    if( $user_info_permissions & PERMISSION_USER) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id='usermanage' href='users'>Gebruikers</a></li>";
+        $menu_html .= "</ul>";
+    }
+    return $menu_html;
+}
+
+?>

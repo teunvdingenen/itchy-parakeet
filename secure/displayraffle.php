@@ -1,5 +1,6 @@
 <?php session_start();
 include "../functions.php";
+include "createmenu.php";
 
 if(!isset($_SESSION['loginuser'])) {
     header('Location: ../login');
@@ -9,37 +10,12 @@ $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-// Assemble menu:
-if( $user_info_permissions & PERMISSION_DISPLAY ) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id ='showstats' href='index'>Main <span class='sr-only'>(current)</span></a></li>";
-    $menu_html .= "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen tonen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting tonen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets tonen</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_RAFFLE ) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loting</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_CALLER) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_EDIT ) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='removesignup' href='#''>Verwijderen</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_USER) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='usermanage' href='users''>Gebruikers</a></li>";
-    $menu_html .= "</ul>";
+if( $user_info_permissions & PERMISSION_DISPLAY != PERMISSION_DISPLAY ) {
+    return false;
 }
 
+// Assemble menu:
+$menu_html = get_menu_html();
 
 $statistic_string = "";
 $resultHTML="<table class='table table-striped table-bordered table-hover table-condensed'>";
@@ -50,7 +26,7 @@ $resultHTML.="<th>Achternaam</th>";
 $resultHTML.="<th>Email</th>";
 $resultHTML.="<th>Telefoon</th>";
 $resultHTML.="<th>Code</th>";
-$resultHTML.="<th>Gebeld</th>";
+$resultHTML.="<th>Status</th>";
 $resultHTML.="</th></thead>";
 
 //Statistics
@@ -121,9 +97,10 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
             $resultHTML.= "<td><div id='code' class='table-cell'>" . $value . "</div></td>";
         } else if( $key == 5 ) {
             $Bvalue = '';
-            if( $value == 0 ) $Bvalue = 'N';
-            else if( $value == 1 ) $Bvalue = 'J';
-            else if( $value == 2 ) $Bvalue = 'E'; 
+            if( $value == 0 ) $Bvalue = 'Nee';
+            else if( $value == 1 ) $Bvalue = 'Ja';
+            else if( $value == 2 ) $Bvalue = 'In behandeling'; 
+            else if( $value == 3 ) $Bvalue = 'Niet opgenomen'; 
             $resultHTML.= "<td><div class='table-cell'>" . $Bvalue . "</div></td>";
         } else {
             $resultHTML.= "<td><div class='table-cell'>" . $value . "</div></td>";

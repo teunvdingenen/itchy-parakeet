@@ -16,7 +16,7 @@ try {
         $message = "<p>Er is een fout opgetreden in het betalingsysteem. <br> Voor mail informatie of geruststellingen kun je mailen naar: ".$mailtolink.".</p>";
     } else if( $paid == 0 ) {
         $message = "<p>Het lijkt erop dat de betaling niet gelukt is of je hebt deze afgebroken.<p>";
-        $message .= "<p>Als je per ongeluk iets fout gedaan hebt kun het nogmaal proberen door naar het <a href='buyer'>betalingscherm</a> te gaan.</p>";
+        $message .= "<p>Als je per ongeluk iets fout gedaan hebt kun het je nogmaals proberen door naar het <a href='buyer'>betalingscherm</a> te gaan.</p>";
         $message .= "<p>Bij zorgen, voor vragen of je wilt iets anders kwijt, dan kun je altijd mailen naar: ". $mailtolink.".</p>";
     } else {
         $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou deze zomer Nieuw Babylon te gaan ontdekken.</p>";

@@ -1,7 +1,7 @@
 <?php session_start();
-
 include "initialize.php";
 include "functions.php";
+
 try {
     include "mollie_api_init.php";
 } catch (Mollie_API_Exception $e) {
@@ -9,10 +9,12 @@ try {
     _exit();
 }
 
-$methods = ['', 'ideal', 'creditcard'];
-$method_names = ["", "IDeal (+€0,29)", "CreditCard (+€3,61)"];
+//$methods = ['', 'ideal', 'creditcard'];
+//$method_names = ["", "IDeal (+€0,29)", "CreditCard (+€3,61)"];
+$methods = ['ideal'];
+$method_names = ["IDeal (+€0,29)"];
 $returnVal = "";
-$email = $code = $method = $street = $city = $postal = "";
+$email = $code = $method = $street = $city = $postal = $terms4 = "";
 
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -53,7 +55,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         addError('Je hebt je straat en huisnummer niet opgegeven.');
     }
     if( !empty($_POST["terms4"]) ) {
-        $tersm4 = test_input($_POST["terms4"]);
+        $terms4 = test_input($_POST["terms4"]);
         if( $terms4 != 'J' ) {
             addError('Je hebt de voorwaarde niet geaccepteerd.');    
         }
@@ -75,7 +77,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             addError("We hebben helaas niet je code kunnen verifieren.");
         }
         if( $returnVal == "" && hasPaid($mysqli, $code)) {
-            addError("Het lijkt erop dat je al betaald hebt. Als je twijfeld of alles wel goed is gegaan kun je mail naar: " . $mailtolink);
+            addError("Het lijkt erop dat je al betaald hebt. Als je twijfelt of alles wel goed is gegaan kun je mail naar: " . $mailtolink);
         }
         if( $returnVal == "" ) {
             $query = sprintf("UPDATE person SET street = '%s', city = '%s', postal = '%s', terms4 = '%s' WHERE email = '%s'",
@@ -119,7 +121,15 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 } catch (Mollie_API_Exception $e) {
                     addError("Er is iets fout gegaan met het aanmaken van de betaling" . $e);
                 }
-                storePaymentId($mysqli, $payment->id, $code, $email);
+                if( isInBuyers($mysqli, $code) ) {
+                    if( !updatePaymentId($mysqli, $payment->id, $code)) {
+                        email_error("Failed to update payment ID: ".$mysqli->error);
+                    }
+                } else {
+                    if( !storePaymentId($mysqli, $payment->id, $code, $email) ) {
+                        email_error("Error storing payment ID: ".$mysqli->error);
+                    }
+                }
             }
         } 
         $mysqli->close();
@@ -133,9 +143,14 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } //End POST
 
-function email_error($message) {
-    send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);
-            
+function isInBuyers($mysqli, $code) {
+    $sqlresult = $mysqli->query(sprintf("SELECT b.id FROM buyer b WHERE b.code = '%s'",
+        $mysqli->real_escape_string($code)));
+    if( $sqlresult->num_rows == 1 ) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 function storePaymentId($mysqli, $paymentid, $code, $email) {
@@ -145,11 +160,22 @@ function storePaymentId($mysqli, $paymentid, $code, $email) {
         $mysqli->real_escape_string($email)));
     if( $sqlresult === FALSE) {
         return FALSE;
-        //log error: $sqlresult->error
     } else {
         
     }
-    return true;
+    return TRUE;
+}
+
+function updatePaymentId($mysqli, $paymentid, $code) {
+    $sqlresult = $mysqli->query(sprintf("UPDATE buyer SET id = '%s' WHERE code = '%s'",
+        $mysqli->real_escape_string($paymentid),
+        $mysqli->real_escape_string($code)));
+    if( $sqlresult === FALSE) {
+        return FALSE;
+    } else {
+        
+    }
+    return TRUE;
 }
 
 function checkCode($mysqli, $code, $email) {
@@ -170,15 +196,18 @@ function checkCode($mysqli, $code, $email) {
 }
 
 function hasPaid($mysqli, $code) {
+    global $mollie;
     $sqlresult = $mysqli->query(sprintf("SELECT * FROM buyer 
-        WHERE `code`='%s' AND `complete`=1;",$code));
+        WHERE `code`='%s';",$code));
     if($sqlresult === FALSE) {
         //log error
         return FALSE;
     }
     if( $sqlresult->num_rows > 0 ) {
-        //TODO IMPORTANT! VERIFY MANUAL through mollie?
-        return TRUE;
+        $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+        if( $mollie->payments->get($row['id'])->isPaid() ) {
+            return TRUE;
+        }
     }
     return FALSE;
 }
@@ -225,8 +254,9 @@ function addError($value) {
             <div class="form-intro-text">
                 <h1>Code verzilveren</h1>
                 <p>Dit jaar kost deelname aan Familiar Forest 120 euro. Omdat niet alle betaalmethodes hetzelfde kosten hebben we ervoor gekozen de transactiekosten niet hierin te rekenen. Dat maakt het voor ons gemakkelijker om een betrouwbare begroting te maken. Kort geleden hebben we op onze Facebook een bericht geplaatst over <a href='https://www.facebook.com/events/591534081011159/permalink/601364646694769/?ref=1&amp;action_history=null'>de kosten</a></p>
-                <p>Daarnaast moeten we in verband met aangescherpte regelgeving ook jullie adresgegevens opslaan zodat jullie ook officieel mee kunnen als vrijwilligers bij Familiar Forest.</p>
-                <p>Ben je wel ingelood maar je code vergeten? Ga dan naar deze pagina om je code opnieuw op te vragen.</p>
+                <p>Daarnaast moeten we ook jullie adresgegevens opslaan zodat jullie ook officieel mee kunnen als vrijwilligers bij Familiar Forest.</p>
+                <p>Familiar Forest vindt plaats op 10 en 11 september 2016, dit formulier blijft toegankelijk tot 1 juni 2016.</p>
+                <!--<p>Ben je wel ingelood maar je code vergeten? Ga dan naar <a href="codevergeten">deze pagina</a> om je code opnieuw op te vragen.</p>-->
             </div>
             <?php
                 if( $returnVal != "" ) {
@@ -273,6 +303,9 @@ function addError($value) {
                 <div class="form-group row">
                     <label for="method" class="col-sm-2 form-control-label">Selecteer betalingsmethode:</label>
                     <div class="col-sm-10">
+                        <div class="alert alert-info" role="alert">
+                            Het is op dit moment nog niet mogelijk om met creditcard te betalen. Hier wordt aan gewerkt en dit zal zo snel mogelijk geactiveerd worden. Houd onze <a href="https://www.facebook.com/FamiliarForest/">Facebook</a> in de gaten of mail naar <?php echo $mailtolink ?> om op de hoogte te blijven van onze vorderingen.
+                        </div>
                         <select class="form-control" name="method">
                             <?php
                                 $i = 0;

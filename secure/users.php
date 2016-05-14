@@ -1,6 +1,7 @@
 <?php session_start();
 include "../functions.php";
 include "../fields.php";
+include "createmenu.php";
 
 if(!isset($_SESSION['loginuser'])) {
     header('Location: ../login');
@@ -10,36 +11,11 @@ $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-// Assemble menu:
-if( $user_info_permissions & PERMISSION_DISPLAY ) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id ='showstats' href='index'>Main</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen tonen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting tonen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets tonen</a></li>";
-    $menu_html .= "</ul>";
+if( $user_info_permissions & PERMISSION_USER != PERMISSION_USER ) {
+    return false;
 }
-if( $user_info_permissions & PERMISSION_RAFFLE ) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loting</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_CALLER) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_EDIT ) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='editsignup' href='#''>Wijzigingen</a></li>";
-    $menu_html .= "<li><a class='menulink' id='removesignup' href='#''>Verwijderen</a></li>";
-    $menu_html .= "</ul>";
-}
-if( $user_info_permissions & PERMISSION_USER) {
-    $menu_html .= "<ul class='nav nav-sidebar'>";
-    $menu_html .= "<li><a class='menulink' id='usermanage' href='users''>Gebruikers<span class='sr-only'>(current)</span></a></li>";
-    $menu_html .= "</ul>";
-}
+
+$menu_html = get_menu_html();
 
 $returnVal = "";
 $fullname = $username = $password = $repeat = "";

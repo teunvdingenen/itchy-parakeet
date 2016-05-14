@@ -41,6 +41,11 @@
         <p>
             Maar niet getreurd! Vanaf 18 mei kun je jezelf weer inschrijven voor de tweede ronde! Je hebt dus nog wel een kans om deel te nemen aan Familiar Forest 2016.
         </p>
+        <p>
+            <div class='alert alert-info'>
+            Binnenkort kunnen de eerste deelnemers hun toegangsbewijzen kopen op deze pagina. Houd onze <a href="https://www.facebook.com/FamiliarForest/">Facebook</a> pagina in de gaten om te zien wanneer de verkoop precies start!</p>
+            </div>
+        </p>
         <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
         </div>
       </div>

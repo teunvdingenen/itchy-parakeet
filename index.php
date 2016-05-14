@@ -136,9 +136,10 @@
                     <div class="col-md-6">
                         <p class="text-muted">
                             Stichting Familiar Forest <br> Sint Antoniesbreestraat 108 <br> 1011HB Amsterdam <br>
-                            Tel: +316 46 06 39 93<br>
+                            Tel: +316 46 37 30 69<br>
                             KVK: 608 735 66 <br>
-                            BTW: NL 854 097 739 B01
+                            BTW: NL 854 097 739 B01 <br>
+                            <a href='mailto:info@stichtingfamiliarforest.nl' target='_top'>info@stichtingfamiliarforest.nl</a>
                         </p>
                     </div>
                     <div class="col-md-5">

@@ -1,6 +1,11 @@
 <?php
 include "initialize.php";
 include "fields.php";
+include "sendmail.php";
+
+function email_error($message) {
+    send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);  
+}
 
 function test_input($data) {
     $data = trim($data);
@@ -156,7 +161,7 @@ function translate_contrib($type) {
   } else if( $type == "" ) {
     return "";
   } else {
-    return "Onbekend";
+    return $type;
   }
 }
 

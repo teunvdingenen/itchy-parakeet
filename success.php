@@ -1,5 +1,4 @@
 <?php session_start(); 
-include "sendmail.php";
 include "functions.php";
 include "initialize.php";
 
@@ -23,8 +22,8 @@ if( $signup === FALSE ) {
     $subject = "Inschrijving Familiar Forest 2016";
 
     $content = "<html>".get_email_header();
-    $content .= "<p>Lieve ".$firstname.",<p>";
-    $content .= "<p>Bedankt voor je inschrijving voor Familiar Forest 2016! Hieronder vind je de informatie die we van jou ontvangen hebben. Zie je iets vreemds? Reply op deze mail en dan kunnen we er samen even naar kijken.<p>";
+    $content .= "<p>Lieve ".$firstname.",</p>";
+    $content .= "<p>Bedankt voor je inschrijving voor Familiar Forest 2016! Hieronder vind je de informatie die we van jou ontvangen hebben. Zie je iets vreemds? Reply op deze mail en dan kunnen we er samen even naar kijken.</p>";
     $content .= "<table>";
     $content .= "<tr><td>Voornaam</td><td>".$firstname."</td></tr>";
     $content .= "<tr><td>Achternaam</td><td>".$signup["lastname"]."</td></tr>";

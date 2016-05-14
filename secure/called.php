@@ -9,7 +9,7 @@ $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-if( $user_info_permissions & PERMISSION_DISPLAY != PERMISSION_DISPLAY ) {
+if( $user_info_permissions & PERMISSION_CALLER != PERMISSION_CALLER ) {
     return false;
 }
 

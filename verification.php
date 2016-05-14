@@ -1,5 +1,7 @@
 <?php
 include "initialize.php";
+include "functions.php";
+
 try
 {
     include "mollie_api_init.php";
@@ -11,54 +13,50 @@ try
     $code = $payment->metadata->raffle;
 
     if ($payment->isPaid()) {
-        if( database_getpayed($mysqli, $payment_id) != 1) {
-            database_setpayed($mysqli, $payment_id, 1);
-            //send email to buyer
+        database_setpayed($mysqli, $payment_id, 1);
+        if( !send_confirmation($mysqli, $payment_id) ) {
+            email_error("Failed to send confirmation for payment: ".$payment_id);
         }
-    } elseif (!$payment->isOpen()) {
-        $remove_success = database_remove($mysqli, $payment_id);
-        //echo "removed ".$remove_success;
+    } else { 
+        database_setpayed($mysqli, $payment_id, 0);
     }
     $mysqli->close();
 }
 catch (Mollie_API_Exception $e) {
     //email error
-    echo "API call failed: " . htmlspecialchars($e->getMessage());
+    email_error("API call failed: " . htmlspecialchars($e->getMessage()));
 }
 
-function database_getpayed($mysqli, $payment_id) {
-    $sqlquery = sprintf("SELECT b.complete FROM `buyer` b WHERE `b.id` = '%s'",
-        $mysqli->real_escape_string($payment_id));
-    $sqlresult = $mysqli->query($sqlquery);
-    if( $sqlresult === FALSE) {
-        return FALSE;
-        //log error
-    }
+function send_confirmation($mysqli, $payment_id) {
+    $query = sprintf("SELECT p.firstname, p.lastname, p.email, r.code
+        FROM person p join raffle r on r.email = p.email join buyer b on b.email = p.email
+        WHERE b.id = '%s'", $mysqli->real_escape_string($payment_id));
+    $sqlresult = $mysqli->query($query);
     if( $sqlresult->num_rows != 1 ) {
         return FALSE;
     }
     $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
-    return $row['complete'];
-}
+    $fullname = $row['firstname']." ".$row['lastname'];
+    $content = get_email_header();
+    $content .= "<p>Lieve ".$row['firstname'].",</p>";
+    $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen naar Familiar Forest 2016 kunnen!</p>";
+    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar het is goed om alvast 10 en 11 september 2016 vrij te maken in je agenda. Houd onze <a href'https://www.facebook.com/events/591534081011159/'>Facebook</a> in de gaten voor meer nieuws.</p>";
+    $content .= "<p>Het is goed om de volgende informatie nog even goed te bewaren:</p>";
+    $content .= "<p>Je deelname code is: " . $row['code'] . "</p>";
+    $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";
 
-function database_remove($mysqli, $payment_id) {
-    $sqlquery = sprintf("DELETE FROM `buyer` WHERE id = '%s'", $mysqli->real_escape_string($payment_id));
-    $sqlresult = $mysqli->query($sqlquery);
-    if( $sqlresult === FALSE) {
-        echo $sqlresult->error;
-        return FALSE;
-        //log error
-    }
+    $content .= get_email_footer();
+
+    send_mail($row['email'], $fullname, "Familiar Forest 2016 Deelname bevestiging", $content);
     return true;
 }
 
 function database_setpayed($mysqli, $payment_id, $payed) {
-    $sqlquery = sprintf("UPDATE buyer set complete='%s' WHERE id = '%s';",
-        $mysqli->real_escape_string($payed),
+    $sqlquery = sprintf("UPDATE buyer set complete=$payed WHERE id = '%s';",
         $mysqli->real_escape_string($payment_id));
     $sqlresult = $mysqli->query($sqlquery);
     if( $sqlresult === FALSE ) {
-        //log error
+        email_error("Failed to set payed for transaction: ".$payment_id);
         return FALSE;
     }
     return true;

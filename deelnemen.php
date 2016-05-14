@@ -1,10 +1,3 @@
-<?php 
-date_default_timezone_set('Europe/Amsterdam');
-
-if( strtotime('now') > strtotime('2016-05-11 16:00') ) {
-    header('Location: verlopen');
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -49,7 +42,8 @@ if( strtotime('now') > strtotime('2016-05-11 16:00') ) {
         <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
         </div>
 
-        <p><a class="btn btn-primary btn-lg" href="signupform" role="button">Inschrijven voor Familiar Forest 2016 &raquo;</a></p>
+        <!-- <p><a class="btn btn-primary btn-lg" href="signupform" role="button">Inschrijven voor Familiar Forest 2016 &raquo;</a></p> -->
+        <p><a class="btn btn-primary btn-lg" href="buyer" role="button">Code verzilveren Familiar Forest 2016 &raquo;</a></p>
       </div>
 
     </div><!-- /.container -->

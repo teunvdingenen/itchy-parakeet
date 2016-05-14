@@ -9,29 +9,37 @@ $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-if( $user_info_permissions & PERMISSION_RAFFLE != PERMISSION_RAFFLE ) {
+if( $user_info_permissions & PERMISSION_CALLER != PERMISSION_CALLER ) {
     echo "503";
-    return 0;
+    return 503;
 }
 
-if( !isset($_POST['remove'])) {
-    return 1;
+if( !isset($_POST['code'])) {
+    echo 1;
 }
+if( !isset($_POST['value'])) {
+    echo 2;
+}
+
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
-    return false;
+    echo 3;
 }
 
-$toremove = $_POST['remove'];
+$code = $_POST['code'];
+$value = $_POST['value'];
 
 $result = $mysqli->query(
-    sprintf("DELETE FROM `%s` WHERE `%s` = '%s';", 
+    sprintf("UPDATE %s SET `%s` = '%s' WHERE `%s` = '%s';", 
         $db_table_raffle, 
+        $db_raffle_called,
+        $mysqli->real_escape_string($value),
         $db_raffle_code, 
-        $mysqli->real_escape_string($toremove)
+        $mysqli->real_escape_string($code)
     ));
 if( $result === FALSE ) {
-    return false;
+    echo 4;
+} else {
+    echo 0;
 }
-return true;
 ?>

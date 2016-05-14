@@ -9,7 +9,7 @@ $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-if( $user_info_permissions & PERMISSION_USERS != PERMISSION_USERS ) {
+if( $user_info_permissions & PERMISSION_USER != PERMISSION_USER ) {
     echo "503";
     return 0;
 }

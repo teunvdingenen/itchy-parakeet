@@ -61,6 +61,12 @@ body {
   border-bottom-left-radius: 0;
 }
 
+.form-small #forgetemail {
+  margin-bottom: 10px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
 /** DASHBOARD **/
 
 /*
