@@ -13,12 +13,16 @@ if( $user_info_permissions & PERMISSION_CALLER != PERMISSION_CALLER ) {
     echo "503";
     return 503;
 }
+$onlyprogress = false;
 
 if( !isset($_POST['code'])) {
     echo 1;
 }
 if( !isset($_POST['value'])) {
     echo 2;
+}
+if( !empty($_POST['onlyinprogress'])) {
+    $onlyprogress = $_POST['onlyinprogress'];
 }
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);

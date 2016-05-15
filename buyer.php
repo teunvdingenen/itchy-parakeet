@@ -256,7 +256,8 @@ function addError($value) {
                 <p>Dit jaar kost deelname aan Familiar Forest 120 euro. Omdat niet alle betaalmethodes hetzelfde kosten hebben we ervoor gekozen de transactiekosten niet hierin te rekenen. Dat maakt het voor ons gemakkelijker om een betrouwbare begroting te maken. Kort geleden hebben we op onze Facebook een bericht geplaatst over <a href='https://www.facebook.com/events/591534081011159/permalink/601364646694769/?ref=1&amp;action_history=null'>de kosten</a></p>
                 <p>Daarnaast moeten we ook jullie adresgegevens opslaan zodat jullie ook officieel mee kunnen als vrijwilligers bij Familiar Forest.</p>
                 <p>Familiar Forest vindt plaats op 10 en 11 september 2016, dit formulier blijft toegankelijk tot 1 juni 2016.</p>
-                <!--<p>Ben je wel ingelood maar je code vergeten? Ga dan naar <a href="codevergeten">deze pagina</a> om je code opnieuw op te vragen.</p>-->
+                <p>Het kan altijd zo zijn dat je onverhoopt toch niet kunt op 10 en 11 september. We raden daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering</p>
+                <p>Ben je wel ingelood maar je code vergeten? Ga dan naar <a href="codevergeten">deze pagina</a> om je code opnieuw op te vragen.</p>
             </div>
             <?php
                 if( $returnVal != "" ) {

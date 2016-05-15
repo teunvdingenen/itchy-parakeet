@@ -44,11 +44,11 @@ if( $result === FALSE ) {
     $familiar = $row['familiar'];
     $fullname = $firstname . " " . $lastname;
 
-    $query = sprintf("UPDATE raffle SET called = 2 WHERE code = '%s'", $mysqli->real_escape_string($code));
-    $mysqli->query($query);
-    if( $mysqli->affected_rows != 1 ) {
+    //$query = sprintf("UPDATE raffle SET called = 2 WHERE code = '%s'", $mysqli->real_escape_string($code));
+    //$mysqli->query($query);
+    //if( $mysqli->affected_rows != 1 ) {
         //error
-    }
+    //}
 
 
 }

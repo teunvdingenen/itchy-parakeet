@@ -64,7 +64,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["notcontacted"]) ) {
         $notcontacted = test_input($_POST["notcontacted"]);
         if( $notcontacted == 'Y') {
-            $filtersql[] = "r.called != 1";
+            $filtersql[] = "r.called != 1 AND r.called != 4";
         }
     }
 }
@@ -108,6 +108,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
             else if( $value == 1 ) $Bvalue = 'Gebeld';
             else if( $value == 2 ) $Bvalue = 'In behandeling'; 
             else if( $value == 3 ) $Bvalue = 'Niet opgenomen'; 
+            else if( $value == 4 ) $Bvalue = 'Mailen'; 
             $resultHTML.= "<td><div class='table-cell'>" . $Bvalue . "</div></td>";
         } else {
             $resultHTML.= "<td><div class='table-cell'>" . $value . "</div></td>";

@@ -17,13 +17,6 @@ if( $user_info_permissions & PERMISSION_DISPLAY != PERMISSION_DISPLAY ) {
 
 $menu_html = get_menu_html();
 
-
-function get_raffle() {
-    global $db_host, $db_user, $db_pass, $db_name;
-    global $db_table_raffle;
-    
-}
-
 $statistic_string = "";
 $resultHTML="<table class='table table-striped table-bordered table-hover table-condensed'>";
 $resultHTML.="<thead><tr class='header-row'>";
@@ -73,7 +66,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$filterstr = "1";
+$filterstr = "b.complete = 1";
 foreach($filtersql as $filter) {
     $filterstr .= " AND " . $filter;
 }
