@@ -1,7 +1,7 @@
 <?php
-include "functions.php";
-include "fields.php";
-include "sendmail.php";
+include_once "functions.php";
+include_once "fields.php";
+include_once "sendmail.php";
 $email=$returnVal="";
 $code = "";
 $firstname = $fullname = "";

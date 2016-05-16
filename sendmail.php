@@ -1,5 +1,5 @@
 <?php
-require 'mailer/PHPMailerAutoload.php';
+require_once 'mailer/PHPMailerAutoload.php';
 include_once('mailer/class.smtp.php');
 
 include 'initialize.php';
@@ -19,7 +19,7 @@ function get_email_header() {
 }
 
 function get_email_footer() {
-	return "De High Fives zijn gratis, de knuffels oprecht en de liefde oneindig.
+	return "<br><br>De High Fives zijn gratis, de knuffels oprecht en de liefde oneindig.
         <br><br>
         Familiar Forest
         <br><br>

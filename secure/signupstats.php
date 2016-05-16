@@ -53,6 +53,19 @@ if( $statistic_type == 'signup') {
             echo $mysqli->error;
         }
     }
+} else if( $statistic_type == 'buyer') {
+	$displayname = "ingelood";
+    if( $mysqli->connect_errno ) {
+        return false;
+    } else {
+        $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type, p.signupdate
+            FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
+            WHERE EXISTS (SELECT 1 FROM buyer as b WHERE p.email = b.email AND b.complete = 1) ";
+        $sqlresult = $mysqli->query($query);
+        if( $sqlresult === FALSE ) {
+            echo $mysqli->error;
+        }
+    }
 }
 $mysqli->close();
 

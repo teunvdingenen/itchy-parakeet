@@ -233,7 +233,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
 function addError($value) {
     global $returnVal;
-    $returnVal .= '<div class="alert alert-danger" role="alert">' . $value . '</div>';
+    $returnVal .= '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ' . $value . '</div>';
 }
 
 ?>

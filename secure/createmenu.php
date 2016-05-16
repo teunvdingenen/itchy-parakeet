@@ -35,6 +35,7 @@ function get_menu_html() {
     }
     if( $user_info_permissions & PERMISSION_USER) {
         $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id='massmail' href='massmail'>Massa Email</a></li>";
         $menu_html .= "<li><a class='menulink' id='usermanage' href='users'>Gebruikers</a></li>";
         $menu_html .= "</ul>";
     }
