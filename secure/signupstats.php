@@ -54,7 +54,7 @@ if( $statistic_type == 'signup') {
         }
     }
 } else if( $statistic_type == 'buyer') {
-	$displayname = "ingelood";
+	$displayname = "Verkochte tickets";
     if( $mysqli->connect_errno ) {
         return false;
     } else {
