@@ -39,6 +39,7 @@ $db_person_editions = "editions";
 $db_person_partner  = "partner";
 $db_person_motivation = "motivation";
 $db_person_familiar = "familiar";
+$db_person_round    = "round";
 $db_person_date		= "signupdate";
 
 $db_person_contrib0 = "contrib0";

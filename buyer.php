@@ -76,8 +76,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         if( !checkCode($mysqli, $code, $email)) {
             addError("We hebben helaas niet je code kunnen verifieren.");
         }
-        if( $returnVal == "" && hasPaid($mysqli, $code)) {
-            addError("Het lijkt erop dat je al betaald hebt. Als je twijfelt of alles wel goed is gegaan kun je mail naar: " . $mailtolink);
+        if( $returnVal == "" ) {
+            $paystatus = hasPaid($mysqli, $code);
+            if( $paystatus == 1 ) {
+                addError("Het lijkt erop dat je al betaald hebt. Als je twijfelt of alles wel goed is gegaan kun je mailen naar: " . $mailtolink);
+            } else if( $paystatus == 2 ) {
+                addError("Je hebt nog een betaling open staan. We kunnen op dit moment niet verifiëren of deze betaald is. Probeer het over een kwartiertje nog eens. Voor meer informatie kun je mailen naar: " . $mailtolink);
+            }
         }
         if( $returnVal == "" ) {
             $query = sprintf("UPDATE person SET street = '%s', city = '%s', postal = '%s', terms4 = '%s' WHERE email = '%s'",
@@ -201,15 +206,17 @@ function hasPaid($mysqli, $code) {
         WHERE `code`='%s';",$code));
     if($sqlresult === FALSE) {
         //log error
-        return FALSE;
+        return 0;
     }
     if( $sqlresult->num_rows > 0 ) {
         $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
         if( $mollie->payments->get($row['id'])->isPaid() ) {
-            return TRUE;
+            return 1;
+        } else if( $mollie->payments->get($row['id'])->isOpen()) {
+            return 2;
         }
     }
-    return FALSE;
+    return 0;
 }
 
 function addError($value) {

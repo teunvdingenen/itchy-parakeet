@@ -14,6 +14,7 @@ function get_menu_html() {
         $menu_html .= "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen</a></li>";
         $menu_html .= "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting</a></li>";
         $menu_html .= "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets</a></li>";
+        $menu_html .= "<li><a class='menulink' id='displaytransactions' href='verifypayments'>Transacties</a></li>";
         $menu_html .= "</ul>";
     }
     if( $user_info_permissions & PERMISSION_RAFFLE ) {

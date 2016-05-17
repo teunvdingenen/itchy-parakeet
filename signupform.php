@@ -1,18 +1,79 @@
 <?php session_start();
 
-include "dbstore.php";
-include "functions.php";
+include_once "dbstore.php";
+include_once "functions.php";
 
 date_default_timezone_set('Europe/Amsterdam');
 
-if( strtotime('now') > strtotime('2016-05-11 16:00') ) {
+if( strtotime('now') > strtotime('2016-06-08 16:00') ) {
     header('Location: verlopen');
 }
+
+$signupround = 1;
 
 $returnVal = "";
 $firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $familiar = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = "";
 $preparationsbox = false;
 $editions = array();
+
+if( $_SERVER["REQUEST_METHOD"] == "GET") {
+    if(!empty($_GET["email"]) ) {
+        $email = test_input($_GET["email"]);
+        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+        $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.phone, p.motivation, p.familiar, 
+                    p.editions, p.partner, c0.type as `c0type`, c0.description as `c0desc`, c0.needs as `c0needs`, c1.type as `c1type`, c1.description as `c1desc`, c1.needs as `c1needs`, p.preparations, 
+                    p.visits
+            FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
+            WHERE p.email = '%s'", $mysqli->real_escape_string($email));
+        $sqlresult = $mysqli->query($query);
+        if($sqlresult === FALSE ) {
+            addError("We konden helaas niet je gegevens ophalen uit de database.".$mysqli->error);
+        } else if( $sqlresult->num_rows == 0 ) {
+            addError("We hebben geen inschrijving kunnen vinden onder het opgegeven email adres.");
+        } else {
+            $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+            $firstname = htmlspecialchars_decode($row['firstname']);
+            $lastname = htmlspecialchars_decode($row['lastname']);
+            $birthdate = htmlspecialchars_decode($row['birthdate']);
+            $gender = htmlspecialchars_decode($row['gender']);
+            $city = htmlspecialchars_decode($row['city']);
+            $phone = htmlspecialchars_decode($row['phone']);
+            $motivation = htmlspecialchars_decode($row['motivation']);
+            $familiar = htmlspecialchars_decode($row['familiar']);
+            $editions_str = htmlspecialchars_decode($row['editions']);
+            $editions = explode(",", $editions_str);
+            $nr_editions = htmlspecialchars_decode($row['visits']);
+            $partner = htmlspecialchars_decode($row['partner']);
+            $preparations = htmlspecialchars_decode($row['preparations']);
+            if( $preparations != "N") {
+                $preparationsbox = true;
+            } else {
+                $preparations = "";
+            }
+
+            $contrib0 = htmlspecialchars_decode($row['c0type']);
+            if( in_array($contrib0, ['iv','bar','keuken','afb'])) {
+                $contrib0desc = htmlspecialchars_decode($row['c0desc']);    
+            } else {
+                $act0type = $contrib0;
+                $contrib0 = 'act';
+                $act0desc = htmlspecialchars_decode($row['c0desc']);
+                $act0need = htmlspecialchars_decode($row['c0needs']);    
+            }
+        
+            $contrib1 = htmlspecialchars_decode($row['c1type']);
+            if( in_array($contrib1, ['iv','bar','keuken','afb'])) {
+                $contrib1desc = htmlspecialchars_decode($row['c1desc']);    
+            } else {
+                $act1type = $contrib1;
+                $contrib1 = 'act';
+                $act1desc = htmlspecialchars_decode($row['c1desc']);
+                $act1need = htmlspecialchars_decode($row['c1needs']);
+            }
+        }
+        $mysqli->close();
+    }
+}
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["firstname"]) ) {
@@ -217,10 +278,22 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if( $returnVal == "" ) {
-        $db_error = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3);
+        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+        $query = sprintf("SELECT * FROM person WHERE email = '%s'",
+            $mysqli->real_escape_string($email));
+        $sqlresult = $mysqli->query($query);
+        if( $sqlresult === FALSE ) {
+            addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
+            email_error("Error getting user to determine update: ".$mysqli->error);
+        } else if( $sqlresult->num_rows == 0 ) {
+            $db_error = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3, $signupround);
+        } else {
+            $db_error = updateSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3, $signupround);
+        }
         if( $db_error != "" ) {
             addError($db_error);
         }
+        $mysqli->close();
     } else {
         //try again..
     }
@@ -280,7 +353,7 @@ function addError($value) {
                     10 en 11 september 2016
                 </p>
                 <p>
-                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat. Het inschrijfformulier blijft tot 10 mei 2016 beschikbaar. Heb je hulp nodig? Of wil je meer informatie over het inschrijven dan kun je mailen naar: <?php echo $mailtolink ?>
+                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat. Het inschrijfformulier blijft tot 8 Juni 2016 beschikbaar. Heb je hulp nodig? Of wil je meer informatie over het inschrijven dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
                 <p>
                     Velden gemarkeerd met een * zijn verplicht.

@@ -1,3 +1,27 @@
+<?php
+include_once "functions.php";
+
+$previous = $email = $header = "";
+
+if( $_SERVER["REQUEST_METHOD"] == "POST") {
+    echo 'post';
+    if( !empty($_POST["previous"]) ) {
+        if( $_POST["previous"] == "true" ) {
+            $previous = true;
+            if( !empty($_POST["email"]) ) {
+                $email = $_POST["email"];
+            }
+            $header = "Location: signupform.php?email=".$email;
+        } else {
+            $previous = false;
+            $header = "Location: signupform";
+        }
+    }
+    header($header);
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +30,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="Teun van Dingenen">
     <link rel="icon" href="favicon.ico">
 
     <title>Familiar Forest 2016</title>
@@ -29,24 +53,55 @@
 
   <body>
 
-    <div class="container">
+        <div class="container">
 
-      <div class="default-text">
-        <h1>Familiar Forest 2016</h1>
-        <p class="lead">
-            Hooggeachte avonturiers, vrienden en buitenlui,
-        </p>
-        <p>We hebben een wonderbaarlijke stad ontdekt. Een groene stad tussen twee rivieren waar al vierduizend jaar mensen werken aan het cultiveren van een unieke levensvisie. Een plaats waar hangende tuinen worden opgetrokken, waar volgens de legende een gigantische toren gebouwd werd en waar iedereen nog dezelfde taal spreekt. Een plaats waar astronomie, mathematica en geneeskunde tot kunstvorm verheven zijn. Een stad waarvan gedacht werd dat hij al tientallen keren vernietigd is. <p>
-        <p>Maar dit blijkt niet zo te zijn: niet vernietigd, slechts uit het oog verloren. Want nu, duizenden jaren later, heeft deze stad zich ontwikkeld tot iets wat je nergens anders kunt vinden. Een plaats waar al die tijd is gewerkt aan zowel natuur als technologie. Een amalgamatie van duizenden jaren aan kennis. Een realisatie van eeuwen aan dromen en visioenen.</p>
-        <p>Schrijf je nu in voor de reis naar nieuw Babylon op 10 en 11 september 2016 en bereidt je voor op wat wederom een onvergetelijk avontuur zal worden!
-        <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
-        </div>
+            <div class="default-text">
+                <h1>Familiar Forest 2016</h1>
+                <p class="lead">
+                    Hooggeachte avonturiers, vrienden en buitenlui,
+                </p>
+                <p>De voorbereidingen voor Familiar Forest 2016 zijn ondertussen in volle gang. Op dit moment kunnen deelnemers zich inschrijven voor de tweede ronde
+                    of als je een code hebt ontvangen deze verzilveren.</p>
+                <p>Je code verzilveren voor de eerste ronde kan tot en met 1 juni 2016<p>
+                <p>Inschrijven voor de tweede ronde kan tot en met 8 juni 2016</p>
+                
+                <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
+                </div>
 
-        <!-- <p><a class="btn btn-primary btn-lg" href="signupform" role="button">Inschrijven voor Familiar Forest 2016 &raquo;</a></p> -->
-        <p><a class="btn btn-primary btn-lg" href="buyer" role="button">Code verzilveren Familiar Forest 2016 &raquo;</a></p>
-      </div>
+                <h3>Ik wil:</h3>
+                <p><a class="btn btn-primary btn-lg" href="buyer" role="button">Mijn code verzilveren <i class="glyphicon glyphicon-chevron-right"></i></a></p>
+                <p><a id="togglebutton" class="btn btn-info btn-lg" role="button" data-toggle="collapse" data-target="#signup-panel">Mezelf inschrijven voor de tweede ronde <i class="glyphicon glyphicon-chevron-right"></i></a></p>
+                <div class="row">
+                    <div id="signup-panel" class="collapse signup-panel">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <form method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top" role="form">
+                                    <div class="form-group">
+                                        <div class="radio form-inline">
+                                            <label for="true">
+                                                <input type="radio" name="previous" id="true" value="true">
+                                               Ik heb me voor de eerste ronde ingeschreven, mijn email adres is:
+                                            </label>
+                                            <input type="email" class="form-control input-sm" id="signup-email" name="email">
+                                        </div>
+                                        <div class="radio">
+                                            <label for="false">
+                                                <input type="radio" name="previous" id="false" value="false">
+                                                Ik heb me niet ingeschreven voor de eerste ronde
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button style="margin-top:5px;"type="submit" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-pencil"></span> Inschrijven
+                                    </button> 
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    </div><!-- /.container -->
+        </div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
@@ -55,6 +110,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
     <script src="js/vendor/bootstrap.min.js"></script>
+    <script>
+    $('#togglebutton').on('click', function(){
+        $(this).children().closest('.glyphicon').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+    });
+    </script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   </body>
 </html>

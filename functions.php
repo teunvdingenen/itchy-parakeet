@@ -1,7 +1,7 @@
 <?php
-include "initialize.php";
-include "fields.php";
-include "sendmail.php";
+include_once "initialize.php";
+include_once "fields.php";
+include_once "sendmail.php";
 
 function email_error($message) {
     send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);  
