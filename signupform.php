@@ -428,8 +428,16 @@ function addError($value) {
                     <label class="col-sm-2" for="partner">Lieveling<br>Email</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
+                        <div class="alert alert-info">
+                            Het kan zijn dat je bij de eerste inschrijving een typfout gemaakt hebt in het emailadres van je lieveling of 
+                            je was je vergeten in te schrijven en daardoor jullie niet samen zijn ingeloot. We doen ons best om in deze gevallen 
+                            alsnog lievelingen te koppelen maar helaas kunnen we niet garanderen dat je alsnog wordt ingeloot bij je lieveling.
+                        </div>
                         <div class="alert alert-success">
-                            Vanaf dit jaar kun je voor het eerst je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! Het is belangrijk dat jij zijn of haar email adres correct invult en andersom! <strong>Communiceer dit dus samen goed naar elkaar! En let op: Als jullie van deze optie gebruik maken worden jullie samen ingeloot <i>of beide uitgeloot</i></strong>
+                            Vanaf dit jaar kun je voor het eerst je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar 
+                            Familiar Forest wilt! Het is belangrijk dat jij zijn of haar email adres correct invult en andersom! 
+                            <strong>Communiceer dit dus samen goed naar elkaar! En let op: Als jullie van deze optie gebruik maken worden 
+                                jullie samen ingeloot <i>of beide uitgeloot</i></strong>
                         </div>
                     </div>
                 </div>
