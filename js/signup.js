@@ -48,11 +48,6 @@ function hidePreparations() {
 	$("#prepintro").hide();
 }
 
-$(".datepicker").datepicker({
-    format: 'dd/mm/yyyy',
-    startDate: '',
-    language: "nl"
-});
 
 $(document).ready(function() {
 	$("#contrib0").change(function() {
@@ -200,7 +195,14 @@ $(document).ready(function() {
         min: jQuery.validator.format("Vul hier een waarde in groter dan of gelijk aan {0}.")
 	});
 
+    $(".datepicker").datepicker({
+        format: 'dd/mm/yyyy',
+        language: "nl"
+    });
+
+
 	$("#contrib0").change();
 	$("#contrib1").change();
 	$("#preparationsbox").change();
+
 });
