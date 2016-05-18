@@ -48,6 +48,12 @@ function hidePreparations() {
 	$("#prepintro").hide();
 }
 
+$(".datepicker").datepicker({
+    format: 'dd/mm/yyyy',
+    startDate: '',
+    language: "nl"
+});
+
 $(document).ready(function() {
 	$("#contrib0").change(function() {
 		if( $(this).val() == "act") {

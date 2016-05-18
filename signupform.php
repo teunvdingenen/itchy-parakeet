@@ -322,6 +322,7 @@ function addError($value) {
         <link rel="icon" href="favicon.ico">
         <!-- Place favicon.ico in the root directory -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/bootstrap-datepicker3.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" media="all"
             href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>
@@ -335,6 +336,8 @@ function addError($value) {
         <!-- Placed at the end of the document so the pages load faster -->
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
         <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/bootstrap-datepicker.js"></script>
+        <script src="js/vendor/bootstrap-datepicker.nl.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
@@ -386,7 +389,7 @@ function addError($value) {
                 <div class="form-group row">
                     <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum*</label>
                     <div class="col-sm-10">
-                        <input class="form-control ignore" type="date" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate">
+                        <input class="form-control ignore datepicker" type="text" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate">
                         <div><label for="birthdate" class="error" style="display:none;"></label></div>
                     </div>
                 </div>
