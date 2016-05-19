@@ -45,10 +45,20 @@ $resultHTML.="<tbody>";
 $cell_keys = ['lastname', 'firstname', 'birthdate', 'gender', 'city', 'email', 'phone', 'motivation', 'familiar', 'editions', 'partner', 'contrib0','type0','needs0', 'contrib1','type1','needs1', 'visits', 'preparations'];
 $email = $firstname = $lastname = $gender = $contrib = $contribnr = $requestedage = $agetype = $visits = $visitstype = "";
 
+$round = -1; //get round
+$limit = 50;
+$page = 0;
+
 if( $user_info_permissions & PERMISSION_DISPLAY ) {
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-    
+    if( $mysqli->connect_errno ) {
+        return false;
+    }
+
     $filtersql = array();
+    if( !empty($_GET['p'])) {
+        $page = $mysqli->real_escape_string($_GET['p']);
+    }
     if( $_SERVER["REQUEST_METHOD"] == "POST") {
         if( !empty($_POST["email"]) ) {
             $email = test_input($_POST["email"]);
@@ -121,24 +131,52 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
             }
             $filtersql[] = "p.visits ".$operator." '".$mysqli->real_escape_string($visits)."'";
         }
+        if( !empty($_POST["round"])) {
+            $roundstr = test_input($_POST["round"]);
+            if( $roundstr == "all") {
+                $round = -1;
+            } else if ($roundstr == "first") {
+                $round = 0;
+            } else if ($roundstr == "second") {
+                $round = 1;
+            } else if ($roundstr == "third") {
+                $round = 2;
+            }
+        } 
+        if( $round != -1 ) {
+            $filtersql[] = sprintf("p.round = %s", $mysqli->real_escape_string($round));
+        }
     }
-
-
     $filterstr = "1";
     foreach($filtersql as $filter) {
         $filterstr .= " AND " . $filter;
     }
+    $query = "SELECT COUNT(*) FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id 
+        WHERE " . $filterstr;
 
-    if( $mysqli->connect_errno ) {
-        return false;
-    } else {
-        $query = "SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.motivation, p.familiar, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.preparations, p.visits
-            FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
-            WHERE " . $filterstr;
-        $sqlresult = $mysqli->query($query);
-        if( $sqlresult === FALSE ) {
-             //error
-        }
+    $sqlresult = $mysqli->query($query);
+    if( $sqlresult === FALSE ) {
+        echo $mysqli->error;
+    }
+    $row = mysqli_fetch_array($sqlresult, MYSQLI_NUM);
+    $entries = $row[0];
+
+    $pages = $entries / $limit;
+    
+    if( $page >= $pages ) {
+        $page = $pages - 1;
+    }
+    if( $page < 0 ) {
+        $page = 0;
+    }
+    $offset = $page * $limit;
+    
+    $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.motivation, p.familiar, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.preparations, p.visits
+        FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
+        WHERE " . $filterstr . " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
+    $sqlresult = $mysqli->query($query);
+    if( $sqlresult === FALSE ) {
+         //error
     }
     $mysqli->close();
 
@@ -216,8 +254,15 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
                 </div>
             </div>
             <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div id='statcontent' class="container-fluid">
-
+                <a id="togglebutton" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#stat-panel"><span class='glyphicon glyphicon-refresh spinning'></span></a>
+                <div class="row">
+                    <div id="stat-panel" class="collapse stat-panel">
+                        <div class="panel panel-default">
+                            <div id="statcontent" class="panel-body">
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                     <div class="form-group row">
@@ -308,9 +353,79 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
                             <input class="form-control" type="text" id="visits" placeholder="Bezoeken" value="<?php echo $visits;?>" name="visits">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="contrib" class="col-sm-2 form-control-label">Ronde</label>
+                        <div class="col-sm-10">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="round" value="all" <?php if($round == -1) echo( "checked"); ?>>
+                                    Alles
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="round" value="first" <?php if($round == 0) echo( "checked"); ?>>
+                                    Eerste Ronde
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="round" value="second" <?php if($round == 1) echo( "checked"); ?> >
+                                    Tweede Ronde
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="round" value="third" <?php if($round == 2) echo( "checked"); ?> >
+                                    Derde Ronde
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
                 </form>
-                <?php echo $resultHTML ?>
+
+                <nav>
+                    <ul class="pagination">
+                        <li>
+                            <a href=<?php echo "?p=".($page-1) ?> aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php 
+                            for($i = 0; $i < $pages; $i++ ) {
+                                printf("<li><a href='?p=%s''>%s</a></li>",$i,$i+1);
+                            }
+                        ?>
+                        <li>
+                            <a href=<?php echo "?p=".($page+1) ?> aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div style='margin-top: 5px;'>
+                    <?php echo $resultHTML ?>
+                </div>
+                <nav>
+                    <ul class="pagination">
+                        <li>
+                            <a href=<?php echo "?p=".($page-1) ?> aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php 
+                            for($i = 0; $i < $pages; $i++ ) {
+                                printf("<li><a href='?p=%s''>%s</a></li>",$i,$i+1);
+                            }
+                        ?>
+                        <li>
+                            <a href=<?php echo "?p=".($page+1) ?> aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
 
@@ -327,10 +442,13 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         <script> 
         $(document).ready(function() {
             $.post("signupstats.php", {"type":"signup"}, function(response){
-                console.log(response);
                 $("#statcontent").html($(response).find('table'));
+                $("#togglebutton").html("Statistieken <i class='glyphicon glyphicon-chevron-right'>");
             });
-        }); 
+            $('#togglebutton').on('click', function(){
+                $(this).children().closest('.glyphicon').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+            });
+        });
         </script>
     </body>
 </html>

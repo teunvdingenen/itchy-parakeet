@@ -35,6 +35,8 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
             $firstname = htmlspecialchars_decode($row['firstname']);
             $lastname = htmlspecialchars_decode($row['lastname']);
             $birthdate = htmlspecialchars_decode($row['birthdate']);
+            $birthdate = DateTime::createFromFormat('Y-m-d', $birthdate);
+            $birthdate = $birthdate->format('d/m/Y');
             $gender = htmlspecialchars_decode($row['gender']);
             $city = htmlspecialchars_decode($row['city']);
             $phone = htmlspecialchars_decode($row['phone']);
@@ -279,19 +281,29 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("SELECT * FROM person WHERE email = '%s'",
+        $query = sprintf("SELECT * FROM raffle WHERE email = '%s'",
             $mysqli->real_escape_string($email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
             addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
-            email_error("Error getting user to determine update: ".$mysqli->error);
-        } else if( $sqlresult->num_rows == 0 ) {
-            $db_error = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3, $signupround);
+            email_error("Error looking for user in raffle: ".$mysqli->error);
+        } else if( $sqlresult->num_rows != 0 ) {
+            addError("Zo te zien ben je al ingeloot en daarom kun je op dit moment niet jezelf inschrijven. Voor meer informatie kun je mailen naar: ".$mailtolink);
         } else {
-            $db_error = updateSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3, $signupround);
-        }
-        if( $db_error != "" ) {
-            addError($db_error);
+            $query = sprintf("SELECT * FROM person WHERE email = '%s'",
+                $mysqli->real_escape_string($email));
+            $sqlresult = $mysqli->query($query);
+            if( $sqlresult === FALSE ) {
+                addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
+                email_error("Error getting user to determine update: ".$mysqli->error);
+            } else if( $sqlresult->num_rows == 0 ) {
+                $db_error = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3, $signupround);
+            } else {
+                $db_error = updateSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3, $signupround);
+            }
+            if( $db_error != "" ) {
+                addError($db_error);
+            }
         }
         $mysqli->close();
     } else {
@@ -431,16 +443,16 @@ function addError($value) {
                     <label class="col-sm-2" for="partner">Lieveling<br>Email</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
-                        <div class="alert alert-info">
-                            Het kan zijn dat je bij de eerste inschrijving een typfout gemaakt hebt in het emailadres van je lieveling of 
-                            je was je vergeten in te schrijven en daardoor jullie niet samen zijn ingeloot. We doen ons best om in deze gevallen 
-                            alsnog lievelingen te koppelen maar helaas kunnen we niet garanderen dat je alsnog wordt ingeloot bij je lieveling.
-                        </div>
                         <div class="alert alert-success">
                             Vanaf dit jaar kun je voor het eerst je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar 
                             Familiar Forest wilt! Het is belangrijk dat jij zijn of haar email adres correct invult en andersom! 
                             <strong>Communiceer dit dus samen goed naar elkaar! En let op: Als jullie van deze optie gebruik maken worden 
                                 jullie samen ingeloot <i>of beide uitgeloot</i></strong>
+                        </div>
+                        <div class="alert alert-info">
+                            Het kan zijn dat je bij de eerste inschrijving een typfout gemaakt hebt in het emailadres van je lieveling of 
+                            je was je vergeten in te schrijven en jullie daardoor niet samen zijn ingeloot. We doen ons best om in deze gevallen 
+                            alsnog lievelingen te koppelen maar helaas kunnen we niet garanderen dat je alsnog wordt ingeloot bij je lieveling.
                         </div>
                     </div>
                 </div>

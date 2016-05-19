@@ -11,8 +11,8 @@ try {
 
 //$methods = ['', 'ideal', 'creditcard'];
 //$method_names = ["", "IDeal (+€0,29)", "CreditCard (+€3,61)"];
-$methods = ['ideal'];
-$method_names = ["IDeal (+€0,29)"];
+$methods = ["",'ideal', 'mistercash', 'banktransfer'];
+$method_names = ["Betaalmethode Selecteren","IDeal (+€0,29)","BanContact/Mister Cash (+€2,05)", "Overboeking(+€0.25)"];
 $returnVal = "";
 $email = $code = $method = $street = $city = $postal = $terms4 = "";
 
@@ -113,6 +113,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $amount += 0.29;
                 } else if( $method == 'creditcard') {
                     $amount += 0.25 + $amount * 0.028;
+                } else if( $method == 'mistercash') {
+                    $amount += 0.25 + $amount *0.015;
+                } else if( $method == 'banktransfer' ) {
+                    $amount += 0.25;
                 }
 
                 try {
@@ -312,7 +316,8 @@ function addError($value) {
                     <label for="method" class="col-sm-2 form-control-label">Selecteer betalingsmethode:</label>
                     <div class="col-sm-10">
                         <div class="alert alert-info" role="alert">
-                            Het is op dit moment nog niet mogelijk om met creditcard te betalen. Hier wordt aan gewerkt en dit zal zo snel mogelijk geactiveerd worden. Houd onze <a href="https://www.facebook.com/FamiliarForest/">Facebook</a> in de gaten of mail naar <?php echo $mailtolink ?> om op de hoogte te blijven van onze vorderingen.
+                            Op dit moment kun je betalen met iDeal, Bancontact/Mister Cash en doormiddel van een overboeking. We vermoeden dat we hiermee het grootste deel van de bezoekers van dienst kunnen zijn.
+                    We hopen ook binnenkort creditcard betalingen te kunnen ontvangen maar weten nog niet wanneer we hiermee kunnen beginnen. Mocht je niet gebruik kunnen maken van de beschikbare betaalmethodes mail dan naar: <?=$mailtolink?>
                         </div>
                         <select class="form-control" name="method">
                             <?php

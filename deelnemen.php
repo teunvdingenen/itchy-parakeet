@@ -4,7 +4,6 @@ include_once "functions.php";
 $previous = $email = $header = "";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
-    echo 'post';
     if( !empty($_POST["previous"]) ) {
         if( $_POST["previous"] == "true" ) {
             $previous = true;
@@ -68,9 +67,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
                 </div>
 
-                <h3>Ik wil:</h3>
-                <p><a class="btn btn-primary btn-lg" href="buyer" role="button">Mijn code verzilveren <i class="glyphicon glyphicon-chevron-right"></i></a></p>
-                <p><a id="togglebutton" class="btn btn-info btn-lg" role="button" data-toggle="collapse" data-target="#signup-panel">Mezelf inschrijven voor de tweede ronde <i class="glyphicon glyphicon-chevron-right"></i></a></p>
+                <p><a class="btn btn-primary btn-lg" href="buyer" role="button">Ik wil mijn code verzilveren <i class="glyphicon glyphicon-chevron-right"></i></a></p>
+                <p><a id="togglebutton" class="btn btn-info btn-lg" role="button" data-toggle="collapse" data-target="#signup-panel">Ik wil me inschrijven voor de tweede ronde <i class="glyphicon glyphicon-chevron-right"></i></a></p>
                 <div class="row">
                     <div id="signup-panel" class="collapse signup-panel">
                         <div class="panel panel-default">

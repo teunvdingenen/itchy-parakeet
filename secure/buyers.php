@@ -28,10 +28,15 @@ $resultHTML.="<th>Code</th>";
 $resultHTML.="<th>Transactie ID</th>";
 $resultHTML.="</th></thead>";
 
-//Statistics
+$limit = 50;
+$page = 0;
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 $email = $firstname = $lastname = $rafflecode = $transactionid = "";
 $filtersql = array();
+
+if( !empty($_GET['p'])) {
+    $page = $mysqli->real_escape_string($_GET['p']);
+}
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["email"]) ) {
@@ -71,8 +76,27 @@ foreach($filtersql as $filter) {
     $filterstr .= " AND " . $filter;
 }
 
+$query = "SELECT COUNT(*) FROM person p join buyer b on p.email = b.email WHERE " . $filterstr;
+
+$sqlresult = $mysqli->query($query);
+if( $sqlresult === FALSE ) {
+    echo $mysqli->error;
+}
+$row = mysqli_fetch_array($sqlresult, MYSQLI_NUM);
+$entries = $row[0];
+
+$pages = $entries / $limit;
+if( $page >= $pages ) {
+        $page = $pages - 1;
+    }
+    if( $page < 0 ) {
+        $page = 0;
+    }
+$offset = $page * $limit;
+
 $sqlresult = "";
-$query = "SELECT p.firstname, p.lastname, p.email, p.phone, b.code, b.id FROM person p join buyer b on p.email = b.email WHERE " . $filterstr;
+$query = sprintf("SELECT p.firstname, p.lastname, p.email, p.phone, b.code, b.id FROM person p join buyer b on p.email = b.email WHERE " . $filterstr. " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
+        $sqlresult = $mysqli->query($query);
 
 if( $mysqli->connect_errno ) {
     return false;
@@ -156,8 +180,15 @@ $resultHTML.="</table>";
                 </div>
             </div>
             <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div id='statcontent' class="container-fluid">
-
+                <a id="togglebutton" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#stat-panel"><span class='glyphicon glyphicon-refresh spinning'></span></a>
+                <div class="row">
+                    <div id="stat-panel" class="collapse stat-panel">
+                        <div class="panel panel-default">
+                            <div id="statcontent" class="panel-body">
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                     <div class="form-group row">
@@ -192,7 +223,47 @@ $resultHTML.="</table>";
                     </div>
                     <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
                 </form>
-                <?php echo $resultHTML ?>
+                <nav>
+                    <ul class="pagination">
+                        <li>
+                            <a href=<?php echo "?p=".($page-1) ?> aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php 
+                            for($i = 0; $i < $pages; $i++ ) {
+                                printf("<li><a href='?p=%s''>%s</a></li>",$i,$i+1);
+                            }
+                        ?>
+                        <li>
+                            <a href=<?php echo "?p=".($page+1) ?> aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div style='margin-top: 5px;'>
+                    <?php echo $resultHTML ?>
+                </div>
+                <nav>
+                    <ul class="pagination">
+                        <li>
+                            <a href=<?php echo "?p=".($page-1) ?> aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php 
+                            for($i = 0; $i < $pages; $i++ ) {
+                                printf("<li><a href='?p=%s''>%s</a></li>",$i,$i+1);
+                            }
+                        ?>
+                        <li>
+                            <a href=<?php echo "?p=".($page+1) ?> aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
 
@@ -210,6 +281,10 @@ $resultHTML.="</table>";
         $(document).ready(function() {
             $.post("signupstats.php", {"type":"buyer"}, function(response){
                 $("#statcontent").html($(response).find('table'));
+                $("#togglebutton").html("Statistieken <i class='glyphicon glyphicon-chevron-right'>");
+            });
+            $('#togglebutton').on('click', function(){
+                $(this).children().closest('.glyphicon').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
             });
         });
         </script>

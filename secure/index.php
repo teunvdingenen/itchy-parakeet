@@ -71,7 +71,22 @@ $menu_html = get_menu_html();
                 </div>
             </div>
             <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
+                <div class="row">
+                    <div class="col-md-6">
+                        <img class="img-responsive" src="../img/familie2015.jpg" alt="Familie Foto 2015">
+                    </div>
+                    <div class="col-md-6">
+                        <img class="img-responsive" src="../img/familie2014.jpg" alt="Familie Foto 2014">
+                    </div>
+                </div>
+                <div class="row" style="padding-top:5px">
+                    <div class="col-md-6">
+                        <img class="img-responsive" src="../img/familie2013.jpg" alt="Familie Foto 2013">
+                    </div>
+                    <div class="col-md-6">
+                        <img class="img-responsive" src="../img/familie2012.jpg" alt="Familie Foto 2012">
+                    </div>
+                </div>
             </div>
         </div>
 
