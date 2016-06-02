@@ -17,6 +17,21 @@ function get_menu_html() {
         $menu_html .= "<li><a class='menulink' id='displaytransactions' href='verifypayments'>Transacties</a></li>";
         $menu_html .= "</ul>";
     }
+    if( $user_info_permissions & PERMISSION_VOLUNTEERS ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id ='volunteers' href='volunteers'>Vrijwilligers</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='bar' href='bar'>Bar</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='kitchen' href='kitchen'>Keuken</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='interiour' href='interiour'>Interieur</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='other' href='other'>Anders</a></li>";
+        $menu_html .= "</ul>";
+
+    }
+    if( $user_info_permissions & PERMISSION_ACTS ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id ='acts' href='acts'>Acts</a></li>";
+        $menu_html .= "</ul>";
+    }
     if( $user_info_permissions & PERMISSION_RAFFLE ) {
         $menu_html .= "<ul class='nav nav-sidebar'>";
         $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loten</a></li>";

@@ -2,6 +2,10 @@
 include "initialize.php";
 include "functions.php";
 
+if( strtotime('now') > strtotime('2016-06-03 00:00') ) {
+    header('Location: deelnemen');
+}
+
 try {
     include "mollie_api_init.php";
 } catch (Mollie_API_Exception $e) {
@@ -217,7 +221,7 @@ function hasPaid($mysqli, $code) {
         if( $mollie->payments->get($row['id'])->isPaid() ) {
             return 1;
         } else if( $mollie->payments->get($row['id'])->isOpen()) {
-            return 2;
+            return 0;
         }
     }
     return 0;
@@ -268,7 +272,7 @@ function addError($value) {
                 <p>Daarnaast moeten we ook jullie adresgegevens opslaan zodat jullie ook officieel mee kunnen als vrijwilligers bij Familiar Forest.</p>
                 <p>Familiar Forest vindt plaats op 10 en 11 september 2016, dit formulier blijft toegankelijk tot 1 juni 2016.</p>
                 <p>Het kan altijd zo zijn dat je onverhoopt toch niet kunt op 10 en 11 september. We raden daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering</p>
-                <p>Ben je wel ingelood maar je code vergeten? Ga dan naar <a href="codevergeten">deze pagina</a> om je code opnieuw op te vragen.</p>
+                <p>Ben je wel ingeloot maar je code vergeten? Ga dan naar <a href="codevergeten">deze pagina</a> om je code opnieuw op te vragen.</p>
             </div>
             <?php
                 if( $returnVal != "" ) {

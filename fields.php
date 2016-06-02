@@ -18,6 +18,12 @@ if( !defined('PERMISSION_USER')) {
 if( !defined('PERMISSION_CALLER')) {
 	define('PERMISSION_CALLER', 32);
 }
+if( !defined('PERMISSION_VOLUNTEERS')) {
+	define('PERMISSION_VOLUNTEERS', 64);
+}
+if( !defined('PERMISSION_ACTS')) {
+	define('PERMISSION_ACTS', 128);
+}
 
 $db_table_person    = "person";
 $db_table_contrib   = "contribution";

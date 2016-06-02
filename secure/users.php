@@ -95,6 +95,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $permission_code |= PERMISSION_USER;
         } else if( $permission_str == "caller") {
             $permission_code |= PERMISSION_CALLER;
+        } else if( $permission_str == "acts") {
+            $permission_code |= PERMISSION_ACTS;
+        } else if( $permission_str == "volunteers") {
+            $permission_code |= PERMISSION_VOLUNTEERS;
         }
     }
     if( $repeat != $password ) {
@@ -242,6 +246,16 @@ function addError($value) {
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="permissions[]" id="caller" value="caller" <?php if(in_array("caller", $permissions)) echo( "checked"); ?> > Bellen
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="permissions[]" id="volunteers" value="volunteers" <?php if(in_array("volunteers", $permissions)) echo( "checked"); ?> > Vrijwilligers
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="permissions[]" id="acts" value="acts" <?php if(in_array("acts", $permissions)) echo( "checked"); ?> > Acts
                                 </label>
                             </div>
                         </div>

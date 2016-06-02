@@ -281,14 +281,14 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("SELECT * FROM raffle WHERE email = '%s'",
+        $query = sprintf("SELECT * FROM buyer WHERE email = '%s' and complete != 1",
             $mysqli->real_escape_string($email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
             addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
-            email_error("Error looking for user in raffle: ".$mysqli->error);
+            email_error("Error looking for user in buyer: ".$mysqli->error);
         } else if( $sqlresult->num_rows != 0 ) {
-            addError("Zo te zien ben je al ingeloot en daarom kun je op dit moment niet jezelf inschrijven. Voor meer informatie kun je mailen naar: ".$mailtolink);
+            addError("Zo te zien heb je al een ticket en daarom kun je op dit moment niet jezelf inschrijven. Voor meer informatie kun je mailen naar: ".$mailtolink);
         } else {
             $query = sprintf("SELECT * FROM person WHERE email = '%s'",
                 $mysqli->real_escape_string($email));
