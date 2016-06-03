@@ -31,22 +31,23 @@ if( $mysqli->connect_errno ) {
 $emails = $_POST['emails'];
 $numbers = $_POST['numbers'];
 $tasks = $_POST['tasks'];
+if ( count($emails) == count($numbers) && count($emails) == count($tasks) ) {
+    for ($i = 0; $i < count($emails); $i++) {
+        $email = $mysqli->real_escape_string($emails[$i]);
+        $number = $mysqli->real_escape_string(intval($numbers[$i]));
+        $task = $mysqli->real_escape_string($tasks[$i]);
 
-foreach ($emails as $key => $value) { //TODO double check if key is in use
-    $raffle_key = get_key($raffle_num + $added);
-    $added += 1;
-
-    $sqlquery = sprintf("INSERT INTO `%s` (`%s`, `%s`) VALUES ('%s', '%s')",
-        $db_table_raffle,
-        $db_raffle_code,
-        $db_raffle_email,
-        $mysqli->real_escape_string($raffle_key),
-        $mysqli->real_escape_string($value));
-    $result = $mysqli->query($sqlquery);
-    if( !$result ) {
-        //TODO handle error
+        $sqlquery = sprintf("UPDATE buyer b SET b.number = %s, b.task = '%s' WHERE b.email = '%s'",
+            $number, $task, $email);
+        $result = $mysqli->query($sqlquery);
+        if( !$result ) {
+            echo $mysqli->error;
+            echo 1;
+        }
     }
+} else {
+    echo 1;
 }
 
-echo $added;
+echo 0;
 ?>

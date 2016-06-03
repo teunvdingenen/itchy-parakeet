@@ -17,7 +17,7 @@ function saveActsChanges() {
 	console.log(numbers);
 	console.log(tasks);
 	$.post("storeVolunteerValues.php", {"emails":emails,"numbers":numbers,"tasks":tasks}, function(response){
-		//var json = JSON.parse(response);
+		console.log(response);
 		location.reload();
 	});
 }
@@ -35,7 +35,7 @@ function saveVolunteerChanges() {
 	console.log(numbers);
 	console.log(tasks);
 	$.post("storeVolunteerValues.php", {"emails":emails,"numbers":numbers,"tasks":tasks}, function(response){
-		//var json = JSON.parse(response);
+		console.log(response);
 		location.reload();
 	});
 }
