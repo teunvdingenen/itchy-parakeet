@@ -11,7 +11,7 @@ $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-if( $user_info_permissions & PERMISSION_VOLUNTEERS != PERMISSION_VOLUNTEERS ) {
+if( $user_info_permissions & PERMISSION_ACTS != PERMISSION_ACTS ) {
     return false;
 }
 
@@ -30,10 +30,10 @@ $resultHTML.="<th>Keuze</th>";
 $resultHTML.="<th>Omschrijving</th>";
 $resultHTML.="<th>Benodigdheden</th>";
 $resultHTML.="<th>Nummer</th>";
-$resultHTML.="<th>Indelen</th>";
+$resultHTML.="<th>Naar vrijwilligers..</th>";
 $resultHTML.="</th></thead>";
 
-$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = 'interieur' AND b.complete = 1 ORDER BY b.number";
+$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = 'act' AND b.complete = 1 AND c0.type = 'schmink' ORDER BY b.number";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
@@ -57,16 +57,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
             $resultHTML.= "<td><div class='table-cell ".$key."'>" . $value . "</div></td>";
         }
     }
-    $resultHTML.="<td><div class='table-cell'><select class='form-control'>
-                                <option value=''>Reserve</option>
-                                <option value='keuken'>Keuken</option>
-                                <option value='bar'>Bar</option>
-                                <option value='other'>Anders</option>
-                                <option value='interiour selected'>Interieur</option>
-                                <option value='thee'>Theetent</option>
-                                <option value='thee'>Campingwinkel</option>
-                                <option value='act'>Naar Acts..</option>
-                            </select></div></td>";
+    $resultHTML.="<td><div class='table-cell'><input class='checkbox' type='checkbox' id='volunteer'></div></td>";
     $resultHTML.="</tr>";
 }
 ?>
@@ -128,11 +119,13 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                 </div>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div style='margin: 5px;'>
+                <div style='margin-top: 5px;'>
                     <?php echo $resultHTML ?>
                 </div>
-                <div class='btn btn-primary btn-lg btn-block' id='save' onclick="saveVolunteerChanges();">Opslaan 
-                    <i class='glyphicon glyphicon-floppy-disk'></i>
+                <div class="row">
+                    <div class='btn btn-primary btn-lg btn-block' id='save' onclick="saveActsChanges();">Opslaan 
+                        <i class='glyphicon glyphicon-floppy-disk'></i>
+                    </div>
                 </div>
             </div>
         </div>

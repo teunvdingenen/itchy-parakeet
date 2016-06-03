@@ -17,21 +17,6 @@ function get_menu_html() {
         $menu_html .= "<li><a class='menulink' id='displaytransactions' href='verifypayments'>Transacties</a></li>";
         $menu_html .= "</ul>";
     }
-    if( $user_info_permissions & PERMISSION_VOLUNTEERS ) {
-        $menu_html .= "<ul class='nav nav-sidebar'>";
-        $menu_html .= "<li><a class='menulink' id ='volunteers' href='volunteers'>Vrijwilligers</a></li>";
-        $menu_html .= "<li><a class='menulink' id ='bar' href='bar'>Bar</a></li>";
-        $menu_html .= "<li><a class='menulink' id ='kitchen' href='kitchen'>Keuken</a></li>";
-        $menu_html .= "<li><a class='menulink' id ='interiour' href='interiour'>Interieur</a></li>";
-        $menu_html .= "<li><a class='menulink' id ='other' href='other'>Anders</a></li>";
-        $menu_html .= "</ul>";
-
-    }
-    if( $user_info_permissions & PERMISSION_ACTS ) {
-        $menu_html .= "<ul class='nav nav-sidebar'>";
-        $menu_html .= "<li><a class='menulink' id ='acts' href='acts'>Acts</a></li>";
-        $menu_html .= "</ul>";
-    }
     if( $user_info_permissions & PERMISSION_RAFFLE ) {
         $menu_html .= "<ul class='nav nav-sidebar'>";
         $menu_html .= "<li><a class='menulink' id='raffle' href='raffle'>Loten</a></li>";
@@ -53,6 +38,29 @@ function get_menu_html() {
         $menu_html .= "<ul class='nav nav-sidebar'>";
         $menu_html .= "<li><a class='menulink' id='massmail' href='massmail'>Massa Email</a></li>";
         $menu_html .= "<li><a class='menulink' id='usermanage' href='users'>Gebruikers</a></li>";
+        $menu_html .= "</ul>";
+    }
+    if( $user_info_permissions & PERMISSION_VOLUNTEERS ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id ='volunteers' href='volunteers'>Vrijwilligers</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='bar' href='bar'>Bar</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='kitchen' href='kitchen'>Keuken</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='interiour' href='interiour'>Interieur</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='other' href='other'>Anders</a></li>";
+        $menu_html .= "</ul>";
+
+    }
+    if( $user_info_permissions & PERMISSION_ACTS ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id ='acts' href='acts'>Acts</a></li>";
+        $menu_html .= "<li><a class='menulink' href='workshops'>Workshops</a></li>";
+        $menu_html .= "<li><a class='menulink' href='games'>Games</a></li>";
+        $menu_html .= "<li><a class='menulink' href='lectures'>Lezingen</a></li>";
+        $menu_html .= "<li><a class='menulink' href='schmink'>Schmink</a></li>";
+        $menu_html .= "<li><a class='menulink' href='otheracts'>Anders</a></li>";
+        $menu_html .= "<li><a class='menulink' href='perform'>Performance</a></li>";
+        $menu_html .= "<li><a class='menulink' href='install'>Installatie</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='rejectedacts' href='rejectedacts'>Afgewezen Acts</a></li>";
         $menu_html .= "</ul>";
     }
     return $menu_html;

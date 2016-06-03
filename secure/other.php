@@ -51,6 +51,8 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
             $resultHTML.= "<td><div class='table-cell email'>" . $value . "</div></td>";
         } else if( $key == 10) {
             $resultHTML.= "<td><div class='table-cell'><input class='form-control' type='text' id='number' value=".$value."></div></td>";
+        } else if( $key == 4 || $key == 7 ) {
+            $resultHTML.= "<td><div class='table-cell ".$key."'>" . translate_contrib($value) . "</div></td>";
         } else {
             $resultHTML.= "<td><div class='table-cell ".$key."'>" . $value . "</div></td>";
         }
@@ -63,6 +65,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                                 <option value='interiour'>Interieur</option>
                                 <option value='thee'>Theetent</option>
                                 <option value='thee'>Campingwinkel</option>
+                                <option value='act'>Naar Acts..</option>
                             </select></div></td>";
     $resultHTML.="</tr>";
 }
