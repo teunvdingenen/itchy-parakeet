@@ -64,7 +64,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                                 <option value='other'>Anders</option>
                                 <option value='interiour'>Interieur</option>
                                 <option value='thee'>Theetent</option>
-                                <option value='thee'>Campingwinkel</option>
+                                <option value='camping'>Campingwinkel</option>
                                 <option value='act'>Naar Acts..</option>
                             </select></div></td>";
     $resultHTML.="</tr>";
