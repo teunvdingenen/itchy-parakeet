@@ -281,7 +281,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("SELECT * FROM buyer WHERE email = '%s' and complete != 1",
+        $query = sprintf("SELECT * FROM buyer WHERE email = '%s' and complete = 1",
             $mysqli->real_escape_string($email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {

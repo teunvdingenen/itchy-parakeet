@@ -32,7 +32,8 @@ $resultHTML.="</th></thead>";
 
 //Statistics
 
-$email = $firstname = $lastname = $rafflecode = $notcontacted = "";
+$email = $firstname = $lastname = $rafflecode = "";
+$notcontacted = "Y";
 $filtersql = array();
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
@@ -63,18 +64,19 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if( !empty($_POST["notcontacted"]) ) {
         $notcontacted = test_input($_POST["notcontacted"]);
-        if( $notcontacted == 'Y') {
-            $filtersql[] = "r.called != 1 AND r.called != 4";
-        }
     }
 }
+if( $notcontacted == 'Y') {
+    $filtersql[] = "r.called != 1 AND r.called != 4";
+}
+
 $filterstr = "1";
 foreach($filtersql as $filter) {
     $filterstr .= " AND " . $filter;
 }
 
 $sqlresult = "";
-$query = "SELECT p.firstname, p.lastname, r.email, p.phone, r.code, r.called FROM person p join raffle r on r.email = p.email WHERE ".$filterstr;
+$query = "SELECT p.firstname, p.lastname, r.email, p.phone, r.code, r.called FROM person p join raffle r on r.email = p.email join buyer b on b.email = p.email WHERE r.valid = 1 AND ".$filterstr;
 
 if( $mysqli->connect_errno ) {
     return false;

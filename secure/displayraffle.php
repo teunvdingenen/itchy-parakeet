@@ -78,7 +78,7 @@ foreach($filtersql as $filter) {
 }
 
 $query = "SELECT COUNT(*) FROM person p join raffle r on r.email = p.email 
-            WHERE NOT EXISTS (SELECT 1 FROM $db_table_buyer as b WHERE  p.email = b.email and b.complete = 1) AND ".$filterstr;
+            WHERE NOT EXISTS (SELECT 1 FROM $db_table_buyer as b WHERE  p.email = b.email and b.complete = 1) AND r.valid = 1 AND ".$filterstr;
 
 $sqlresult = $mysqli->query($query);
 if( $sqlresult === FALSE ) {
@@ -98,7 +98,7 @@ $offset = $page * $limit;
 
 $sqlresult = "";
 $query = sprintf("SELECT p.firstname, p.lastname, r.email, p.phone, r.code, r.called FROM person p join raffle r on r.email = p.email 
-            WHERE NOT EXISTS (SELECT 1 FROM $db_table_buyer as b WHERE  p.email = b.email and b.complete = 1) AND ".$filterstr. " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
+            WHERE NOT EXISTS (SELECT 1 FROM $db_table_buyer as b WHERE  p.email = b.email and b.complete = 1) AND r.valid = 1 AND ".$filterstr. " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
         $sqlresult = $mysqli->query($query);
 
 if( $mysqli->connect_errno ) {
@@ -300,7 +300,7 @@ $resultHTML.="</table>";
         <script src="js/removeraffle.js"></script>
         <script>
         $(document).ready(function() {
-            $.post("signupstats.php", {"type":"raffle"}, function(response){
+            $.post("signupstats.php", {"type":"secondraffle"}, function(response){
                 $("#statcontent").html($(response).find('table'));
                 $("#togglebutton").html("Statistieken <i class='glyphicon glyphicon-chevron-right'>");
             });

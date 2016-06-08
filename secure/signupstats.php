@@ -29,7 +29,7 @@ $result = "";
 $displayname = "";
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $statistic_type == 'signup') {
-	$displayname = "ingeschreven";
+	$displayname = "Ingeschreven";
 	if( $mysqli->connect_errno ) {
 	  return false;
 	} else {
@@ -41,7 +41,7 @@ if( $statistic_type == 'signup') {
 	    }
 	}
 } else if ( $statistic_type == 'raffle' ) {
-	$displayname = "ingelood";
+	$displayname = "Ingelood";
     if( $mysqli->connect_errno ) {
         return false;
     } else {
@@ -61,6 +61,19 @@ if( $statistic_type == 'signup') {
         $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type, p.signupdate
             FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
             WHERE EXISTS (SELECT 1 FROM buyer as b WHERE p.email = b.email AND b.complete = 1) ";
+        $sqlresult = $mysqli->query($query);
+        if( $sqlresult === FALSE ) {
+            echo $mysqli->error;
+        }
+    }
+} else if( $statistic_type == 'secondraffle') {
+	$displayname = "Tweede loting + Verkocht";
+    if( $mysqli->connect_errno ) {
+        return false;
+    } else {
+        $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type, p.signupdate
+            FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
+            WHERE EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email and r.valid = 1) OR EXISTS (SELECT 1 FROM buyer as b WHERE p.email = b.email AND b.complete = 1) ";
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
             echo $mysqli->error;

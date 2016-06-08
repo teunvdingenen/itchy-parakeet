@@ -47,7 +47,7 @@ $debug = "";
 $cell_keys = ['lastname', 'firstname', 'birthdate', 'gender', 'city', 'email', 'phone', 'motivation', 'familiar', 'editions', 'partner', 'contrib0','type0','needs0', 'contrib1','type1','needs1', 'visits', 'preparations'];
 $email = $firstname = $lastname = $gender = $contrib = $contribnr = $requestedage = $agetype = $visits = $visitstype = "";
 
-$round = -1; //TODO get current round
+$round = 1; //TODO get current round
 $limit = 50;
 $page = 0;
 
@@ -142,18 +142,17 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
                 $round = 2;
             }
         } 
-        if( $round != -1 ) {
-            $filtersql[] = sprintf("p.round = %s", $mysqli->real_escape_string($round));
-        }
     }
-
+    if( $round != -1 ) {
+        $filtersql[] = sprintf("p.round = %s", $mysqli->real_escape_string($round));
+    }
     $filterstr = "";
     foreach($filtersql as $filter) {
         $filterstr .= " AND " . $filter;
     }
 
     $query = "SELECT COUNT(*) FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
-            WHERE  NOT EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email)" . $filterstr;
+            WHERE NOT EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE p.email = r.email and r.valid = 1)" . $filterstr;
 
     $sqlresult = $mysqli->query($query);
     if( $sqlresult === FALSE ) {
@@ -176,7 +175,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
     } else {
         $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.motivation, p.familiar, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.preparations, p.visits
             FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
-            WHERE  NOT EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email)" . $filterstr . " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
+            WHERE NOT EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email AND r.valid = 1)" . $filterstr . " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
              //error
@@ -487,7 +486,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         <script src="js/raffle.js"></script>
         <script>
         $(document).ready(function() {
-            $.post("signupstats.php", {"type":"raffle"}, function(response){
+            $.post("signupstats.php", {"type":"secondraffle"}, function(response){
                 $("#statcontent").html($(response).find('table'));
                 $("#togglebutton").html("Statistieken <i class='glyphicon glyphicon-chevron-right'>");
             });

@@ -57,17 +57,24 @@ foreach ($winners as $key => $value) { //TODO double check if key is in use
     $raffle_key = get_key($raffle_num + $added);
     $added += 1;
 
-    $sqlquery = sprintf("INSERT INTO `%s` (`%s`, `%s`) VALUES ('%s', '%s')",
-        $db_table_raffle,
-        $db_raffle_code,
-        $db_raffle_email,
-        $mysqli->real_escape_string($raffle_key),
-        $mysqli->real_escape_string($value));
+    $sqlquery = sprintf("SELECT 1 FROM raffle r WHERE r.email = '%s'", $mysqli->real_escape_string($value));
+    $result = $mysqli->query($sqlquery);
+    if( $result->num_rows != 0 ) {
+        $sqlquery = sprintf("UPDATE raffle SET code = '%s', valid = 1 WHERE email = '%s'",
+            $mysqli->real_escape_string($raffle_key),
+            $mysqli->real_escape_string($value));
+    } else {
+        $sqlquery = sprintf("INSERT INTO `%s` (`%s`, `%s`, `%s`) VALUES ('%s', '%s', 1)",
+            $db_table_raffle,
+            $db_raffle_code,
+            $db_raffle_email,
+            $db_raffle_valid,
+            $mysqli->real_escape_string($raffle_key),
+            $mysqli->real_escape_string($value));
+    }
     $result = $mysqli->query($sqlquery);
     if( !$result ) {
-        //TODO handle error
+        email_error("Failed to add to raffle: email ".$value." code: ".$raffle_key);
     }
 }
-
-echo $added;
 ?>

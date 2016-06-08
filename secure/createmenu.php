@@ -24,7 +24,7 @@ function get_menu_html() {
     }
     if( $user_info_permissions & PERMISSION_CALLER) {
         $menu_html .= "<ul class='nav nav-sidebar'>";
-        $menu_html .= "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";
+        //$menu_html .= "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";
         $menu_html .= "<li><a class='menulink' id='calleroverview' href='calleroverview''>Bel lijst</a></li>";
         $menu_html .= "</ul>";
     }
@@ -46,6 +46,8 @@ function get_menu_html() {
         $menu_html .= "<li><a class='menulink' id ='bar' href='bar'>Bar</a></li>";
         $menu_html .= "<li><a class='menulink' id ='kitchen' href='kitchen'>Keuken</a></li>";
         $menu_html .= "<li><a class='menulink' id ='interiour' href='interiour'>Interieur</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='camping' href='campingwinkel'>Campingwinkel</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='theetent' href='theetent'>Theetent</a></li>";
         $menu_html .= "<li><a class='menulink' id ='other' href='other'>Anders</a></li>";
         $menu_html .= "</ul>";
 

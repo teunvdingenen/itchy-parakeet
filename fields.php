@@ -65,6 +65,7 @@ $db_contrib_needs   = "needs";
 $db_raffle_code     = "code";
 $db_raffle_email    = "email";
 $db_raffle_called   = "called";
+$db_raffle_valid	= "valid";
 
 $db_buyer_email     = "email";
 $db_buyer_raffle    = "code";

@@ -25,8 +25,7 @@ if( $mysqli->connect_errno ) {
 $toremove = $_POST['remove'];
 
 $result = $mysqli->query(
-    sprintf("DELETE FROM `%s` WHERE `%s` = '%s';", 
-        $db_table_raffle, 
+    sprintf("UPDATE raffle set valid = 0 WHERE `%s` = '%s';",  
         $db_raffle_code, 
         $mysqli->real_escape_string($toremove)
     ));
