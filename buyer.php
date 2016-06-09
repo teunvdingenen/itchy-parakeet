@@ -2,7 +2,7 @@
 include "initialize.php";
 include "functions.php";
 
-if( strtotime('now') > strtotime('2016-06-03 00:00') ) {
+if( strtotime('now') > strtotime('2016-06-28 00:00') ) {
     header('Location: deelnemen');
 }
 
@@ -15,8 +15,8 @@ try {
 
 //$methods = ['', 'ideal', 'creditcard'];
 //$method_names = ["", "IDeal (+€0,29)", "CreditCard (+€3,61)"];
-$methods = ["",'ideal', 'mistercash', 'banktransfer'];
-$method_names = ["Betaalmethode Selecteren","IDeal (+€0,29)","BanContact/Mister Cash (+€2,05)", "Overboeking(+€0.25)"];
+$methods = ["",'ideal', 'mistercash'];
+$method_names = ["Betaalmethode Selecteren","IDeal (+€0,29)","BanContact/Mister Cash (+€2,05)"];
 $returnVal = "";
 $email = $code = $method = $street = $city = $postal = $terms4 = "";
 
@@ -192,7 +192,8 @@ function updatePaymentId($mysqli, $paymentid, $code) {
 }
 
 function checkCode($mysqli, $code, $email) {
-    $sqlresult = $mysqli->query(sprintf("SELECT code FROM raffle WHERE email = '%s'", $email));
+    $sqlresult = $mysqli->query(sprintf("SELECT code FROM raffle WHERE email = '%s' AND valid = 1", 
+        $mysqli->real_escape_string($email)));
     if( $sqlresult === FALSE) {
         //log error
         return FALSE;
@@ -211,7 +212,7 @@ function checkCode($mysqli, $code, $email) {
 function hasPaid($mysqli, $code) {
     global $mollie;
     $sqlresult = $mysqli->query(sprintf("SELECT * FROM buyer 
-        WHERE `code`='%s';",$code));
+        WHERE `code`='%s';",$mysqli->real_escape_string($code)));
     if($sqlresult === FALSE) {
         //log error
         return 0;
@@ -221,7 +222,7 @@ function hasPaid($mysqli, $code) {
         if( $mollie->payments->get($row['id'])->isPaid() ) {
             return 1;
         } else if( $mollie->payments->get($row['id'])->isOpen()) {
-            return 0;
+            return 2;
         }
     }
     return 0;
@@ -270,7 +271,7 @@ function addError($value) {
                 <h1>Code verzilveren</h1>
                 <p>Dit jaar kost deelname aan Familiar Forest 120 euro. Omdat niet alle betaalmethodes hetzelfde kosten hebben we ervoor gekozen de transactiekosten niet hierin te rekenen. Dat maakt het voor ons gemakkelijker om een betrouwbare begroting te maken. Kort geleden hebben we op onze Facebook een bericht geplaatst over <a href='https://www.facebook.com/events/591534081011159/permalink/601364646694769/?ref=1&amp;action_history=null'>de kosten</a></p>
                 <p>Daarnaast moeten we ook jullie adresgegevens opslaan zodat jullie ook officieel mee kunnen als vrijwilligers bij Familiar Forest.</p>
-                <p>Familiar Forest vindt plaats op 10 en 11 september 2016, dit formulier blijft toegankelijk tot 1 juni 2016.</p>
+                <p>Familiar Forest vindt plaats op 10 en 11 september 2016, dit formulier blijft toegankelijk tot en met 27 juni 2016.</p>
                 <p>Het kan altijd zo zijn dat je onverhoopt toch niet kunt op 10 en 11 september. We raden daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering</p>
                 <p>Ben je wel ingeloot maar je code vergeten? Ga dan naar <a href="codevergeten">deze pagina</a> om je code opnieuw op te vragen.</p>
             </div>

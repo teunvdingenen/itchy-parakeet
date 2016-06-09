@@ -59,19 +59,17 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 <p class="lead">
                     Hooggeachte avonturiers, vrienden en buitenlui,
                 </p>
-                <p>De voorbereidingen voor Familiar Forest 2016 zijn ondertussen in volle gang. Op dit moment kunnen deelnemers zich inschrijven voor de tweede ronde
-                    of als je een code hebt ontvangen deze verzilveren.</p>
-                <p>Je code verzilveren voor de eerste ronde kan tot en met 1 juni 2016<p>
-                <p>Inschrijven voor de tweede ronde kan tot en met 8 juni 2016</p>
+                <p>De voorbereidingen voor Familiar Forest 2016 zijn ondertussen in volle gang. Op dit moment kunnen deelnemers hun code verzilveren de tweede ronde.</p>
+                <p>Je code verzilveren voor de tweede ronde kan tot en met 27 juni 2016<p>
                 
                 <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
                 </div>
 
-                <?php if( strtotime('now') < strtotime('2016-06-02 00:00') ) {
+                <?php if( strtotime('now') < strtotime('2016-06-28 00:00') ) {
                     echo "<p><a class='btn btn-primary btn-lg' href='buyer' role='button'>Ik wil mijn code verzilveren <i class='glyphicon glyphicon-chevron-right'></i></a></p>";
                 }
                 ?>
-                
+                <!--
                 <p><a id="togglebutton" class="btn btn-info btn-lg" role="button" data-toggle="collapse" data-target="#signup-panel">Ik wil me inschrijven voor de tweede ronde <i class="glyphicon glyphicon-chevron-right"></i></a></p>
                 <div class="row">
                     <div id="signup-panel" class="collapse signup-panel">
@@ -101,6 +99,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
+            -->
             </div>
 
         </div><!-- /.container -->
