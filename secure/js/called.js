@@ -3,7 +3,7 @@ function called(code) {
 }
 
 function notAnswered(code) {
-	setCalledVariable(code, 4);
+	setCalledVariable(code, 1);
 }
 
 function setCalledVariable(code, value) {

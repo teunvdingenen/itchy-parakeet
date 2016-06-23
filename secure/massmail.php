@@ -56,6 +56,16 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $query = "SELECT p.firstname, p.lastname, r.email, r.code FROM person p join raffle r on r.email = p.email WHERE 1";
     } else if( $mailto == 'buyer') {
         $query = "SELECT p.firstname, p.lastname, p.email, b.code, b.id FROM person p join buyer b on p.email = b.email WHERE 1";
+    } else if( $mailto == 'secondraffle' ) {
+        if( substr_count($content, $instransaction) > 0 ) {
+            addError("Je hebt loting geselecteerd en probeert transactie ids te versturen, dat kan niet..");
+        }
+        $query = "SELECT p.firstname, p.lastname, r.email, r.code FROM person p join raffle r on r.email = p.email WHERE r.valid = 1 AND NOT EXISTS (SELECT 1 FROM buyer b WHERE b.email = r.email)";
+    } else if( $mailto == 'noticket') {
+        if( substr_count($content, $insraffle, $instransaction) > 0 ) {
+            addError("Je hebt inschrijvingen geselecteerd en probeert transactie ids of codes te versturen, dat kan niet..");
+        }
+        $query = "SELECT p.firstname, p.lastname, p.email FROM person p WHERE NOT EXISTS (SELECT 1 FROM buyer b WHERE b.email = p.email and b.complete = 1) AND NOT EXISTS (SELECT 1 from raffle r WHERE r.email = p.email and r.valid = 1)";
     }
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
@@ -171,8 +181,20 @@ function addError($value) {
                             </div>
                             <div class="radio">
                                 <label>
+                                    <input type="radio" name="mailto" id="noticket" value="noticket" <?php if($mailto == "noticket") echo( "checked"); ?> >
+                                    Inschrijvingen zonder ticket of loting
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
                                     <input type="radio" name="mailto" id="raffle" value="raffle" <?php if($mailto == "raffle") echo( "checked"); ?> >
                                     Loting
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="mailto" id="secondraffle" value="secondraffle" <?php if($mailto == "secondraffle") echo( "checked"); ?> >
+                                    Tweede Loting
                                 </label>
                             </div>
                             <div class="radio">

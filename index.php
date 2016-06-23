@@ -65,36 +65,20 @@
         <div class="container">
             <hr class="">
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="">Participatie</h3>
-                            </div>
-                            <div class="panel-body">Stichting Familiar Forest organiseert evenementen waarbij iedereen zijn steentje bij kan dragen. Co-creatie staat voorop en iedereen is deelnemer! Dit vertaalt zich niet alleen in kunstenaars, artiesten en muzikanten want er is voor iedereen plaats. Bijvoorbeeld op het gebied van gastvrijheid, koken, chaufferen, afwassen, opbouwen of afbouwen.</div>
-                            <div class="panel-footer text-right">
-                            </div>
-                        </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-3">
+                        <h3 class="">Participatie</h3>
+                        <div>Stichting Familiar Forest organiseert evenementen waarbij iedereen zijn steentje bij kan dragen. Co-creatie staat voorop en iedereen is deelnemer! Dit vertaalt zich niet alleen in kunstenaars, artiesten en muzikanten want er is voor iedereen plaats. Bijvoorbeeld op het gebied van gastvrijheid, koken, chaufferen, afwassen, opbouwen of afbouwen.</div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="">Veiligheid</h3>
-                            </div>
-                            <div class="panel-body">Familiar Forest probeert een plaats neer te zetten waar je helemaal jezelf kan zijn. Los van conventies en met een eigen beeldtaal. Iedereen is welkom op een manier die je zelf kiest. Niets is te gek en alles is normaal.</div>
-                            <div class="panel-footer text-right">
-                            </div>
-                        </div>
+                    <div class="col-md-3">
+                        <h3 class="">Veiligheid</h3>
+                        <div>Familiar Forest probeert een plaats neer te zetten waar je helemaal jezelf kan zijn. Los van conventies en met een eigen beeldtaal. Iedereen is welkom op een manier die je zelf kiest. Niets is te gek en alles is normaal.</div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="">Samen op reis</h3>
-                            </div>
-                            <div class="panel-body">Familiar Forest is een reis. Iedereen vertrekt op hetzelfde moment per bus naar onze geheime locatie en vertrekt een dag later weer terug naar huis. Op deze manier kun je samen, op gelijke voet, het bos ontdekken.</div>
-                            <div class="panel-footer text-right">
-                            </div>
-                        </div>
+                    <div class="col-md-3">
+                        <h3 class="">Samen op reis</h3>
+                        <div>Familiar Forest is een reis. Iedereen vertrekt op hetzelfde moment per bus naar onze geheime locatie en vertrekt een dag later weer terug naar huis. Op deze manier kun je samen, op gelijke voet, het bos ontdekken.</div>
                     </div>
+                    <div class="col-md-1"></div>
                 </div>
             <!--/row-->
             <hr class="">

@@ -28,6 +28,7 @@ $resultHTML.="<th>Email</th>";
 $resultHTML.="<th>Telefoon</th>";
 $resultHTML.="<th>Code</th>";
 $resultHTML.="<th>Status</th>";
+$resultHTML.="<th>Motivatie</th>";
 $resultHTML.="</th></thead>";
 
 //Statistics
@@ -76,7 +77,7 @@ foreach($filtersql as $filter) {
 }
 
 $sqlresult = "";
-$query = "SELECT p.firstname, p.lastname, r.email, p.phone, r.code, r.called FROM person p join raffle r on r.email = p.email join buyer b on b.email = p.email WHERE r.valid = 1 AND ".$filterstr;
+$query = "SELECT p.firstname, p.lastname, r.email, p.phone, r.code, r.called, p.motivation FROM person p join raffle r on r.email = p.email WHERE r.valid = 1 AND ".$filterstr;
 
 if( $mysqli->connect_errno ) {
     return false;
@@ -96,7 +97,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     $resultHTML.="</td>";
     $resultHTML.="<td>";
     if( $row[5] != 1 ) {
-        $resultHTML.="<button class='btn btn-sm btn-info btn-block' id='noanswer' onclick=notAnswered('".$code."');>Geen antwoord </button>";
+        $resultHTML.="<button class='btn btn-sm btn-info btn-block' id='noanswer' onclick=called('".$code."');>Geen antwoord </button>";
     }
     $resultHTML.="</td>";
     foreach($row as $key=>$value) {
