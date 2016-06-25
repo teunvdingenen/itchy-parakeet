@@ -15,8 +15,8 @@ try {
 
 //$methods = ['', 'ideal', 'creditcard'];
 //$method_names = ["", "IDeal (+€0,29)", "CreditCard (+€3,61)"];
-$methods = ["",'ideal', 'mistercash'];
-$method_names = ["Betaalmethode Selecteren","IDeal (+€0,29)","BanContact/Mister Cash (+€2,05)"];
+$methods = ["",'ideal', 'mistercash', 'creditcard'];
+$method_names = ["Betaalmethode Selecteren","IDeal (+€0,29)","BanContact/Mister Cash (+€2,05)", "CreditCard (+€3,61)"];
 $returnVal = "";
 $email = $code = $method = $street = $city = $postal = $terms4 = "";
 
