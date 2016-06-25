@@ -99,6 +99,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $permission_code |= PERMISSION_ACTS;
         } else if( $permission_str == "volunteers") {
             $permission_code |= PERMISSION_VOLUNTEERS;
+        } else if( $permission_str == 'buyers') {
+            $permission_code |= PERMISSION_BUYERS;
         }
     }
     if( $repeat != $password ) {
@@ -256,6 +258,11 @@ function addError($value) {
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" name="permissions[]" id="acts" value="acts" <?php if(in_array("acts", $permissions)) echo( "checked"); ?> > Acts
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="permissions[]" id="buyers" value="buyers" <?php if(in_array("buyers", $permissions)) echo( "checked"); ?> > Verkochte tickets
                                 </label>
                             </div>
                         </div>

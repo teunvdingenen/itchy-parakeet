@@ -65,6 +65,11 @@ function get_menu_html() {
         $menu_html .= "<li><a class='menulink' id ='rejectedacts' href='rejectedacts'>Afgewezen Acts</a></li>";
         $menu_html .= "</ul>";
     }
+    if( $user_info_permissions & PERMISSION_BUYERS ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' href='deelnemers'>Deelnemers</a></li>";
+        $menu_html .= "</ul>";
+    }
     return $menu_html;
 }
 
