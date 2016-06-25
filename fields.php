@@ -24,8 +24,8 @@ if( !defined('PERMISSION_VOLUNTEERS')) {
 if( !defined('PERMISSION_ACTS')) {
 	define('PERMISSION_ACTS', 128);
 }
-if( !defined('PERMISSION_BUYERS')) {
-	define('PERMISSION_BUYERS', 256);
+if( !defined('PERMISSION_BAR')) {
+	define('PERMISSION_BAR', 256);
 }
 
 $db_table_person    = "person";

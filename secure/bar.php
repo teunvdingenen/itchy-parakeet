@@ -11,8 +11,14 @@ $user_info = get_user_info($_SESSION['loginuser']);
 $user_info_name = $user_info[$db_user_name];
 $user_info_permissions = $user_info[$db_user_permissions];
 
-if( $user_info_permissions & PERMISSION_VOLUNTEERS != PERMISSION_VOLUNTEERS ) {
+if( $user_info_permissions & PERMISSION_BAR != PERMISSION_BAR ) {
     return false;
+}
+
+$baronly = false;
+
+if( !empty($_GET['baronly'])) {
+    $baronly=$_GET['baronly']==1;
 }
 
 $menu_html = get_menu_html();
@@ -29,11 +35,13 @@ $resultHTML.="<th>Benodigdheden</th>";
 $resultHTML.="<th>Keuze</th>";
 $resultHTML.="<th>Omschrijving</th>";
 $resultHTML.="<th>Benodigdheden</th>";
-$resultHTML.="<th>Nummer</th>";
-$resultHTML.="<th>Indelen</th>";
 $resultHTML.="</th></thead>";
 
-$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = 'bar' AND b.complete = 1 ORDER BY b.number";
+$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.complete = 1 ORDER BY b.number";
+
+if( $baronly ) {
+    $query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE c0.type = 'bar' AND b.complete = 1 ORDER BY b.number";
+}
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
@@ -57,18 +65,9 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
             $resultHTML.= "<td><div class='table-cell ".$key."'>" . $value . "</div></td>";
         }
     }
-    $resultHTML.="<td><div class='table-cell'><select class='form-control'>
-                                <option value=''>Reserve</option>
-                                <option value='keuken'>Keuken</option>
-                                <option value='bar' selected>Bar</option>
-                                <option value='other'>Anders</option>
-                                <option value='interiour'>Interieur</option>
-                                <option value='thee'>Theetent</option>
-                                <option value='camping'>Campingwinkel</option>
-                                <option value='act'>Naar Acts..</option>
-                            </select></div></td>";
     $resultHTML.="</tr>";
 }
+
 ?>
 
 <!doctype html>
@@ -128,11 +127,19 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                 </div>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <?php if( $baronly ) {
+                    echo "
+                        <a class='btn btn-primary btn-lg btn-block' id='save' href='?baronly=0'>Alles 
+                            <i class='glyphicon glyphicon-asterisk'></i>
+                        </a>";
+                    } else {
+                        echo "<a class='btn btn-primary btn-lg btn-block' id='save' href='?baronly=1'>Alleen bar 
+                            <i class='glyphicon glyphicon-glass'></i>
+                        </a>";
+                    }
+                    ?>
                 <div style='margin: 5px;'>
                     <?php echo $resultHTML ?>
-                </div>
-                <div class='btn btn-primary btn-lg btn-block' id='save' onclick="saveVolunteerChanges();">Opslaan 
-                    <i class='glyphicon glyphicon-floppy-disk'></i>
                 </div>
             </div>
         </div>
