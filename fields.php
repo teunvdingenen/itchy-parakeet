@@ -74,6 +74,9 @@ $db_buyer_email     = "email";
 $db_buyer_raffle    = "code";
 $db_buyer_id        = "id";
 $db_buyer_complete  = "complete";
+$db_buyer_task		= "task";
+$db_buyer_number	= "number";
+$db_buyer_note		= "note";
 
 $db_user_username  		= "username";
 $db_user_password		= "password";

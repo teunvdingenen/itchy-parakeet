@@ -23,6 +23,9 @@ if( !isset($_POST['numbers'])) {
 if( !isset($_POST['tasks'])) {
     return;
 }
+if( !isset($_POST['notes'])) {
+    return;
+}
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
     return false;
@@ -31,14 +34,19 @@ if( $mysqli->connect_errno ) {
 $emails = $_POST['emails'];
 $numbers = $_POST['numbers'];
 $tasks = $_POST['tasks'];
+$notes = $_POST['notes'];
 if ( count($emails) == count($numbers) && count($emails) == count($tasks) ) {
     for ($i = 0; $i < count($emails); $i++) {
         $email = $mysqli->real_escape_string($emails[$i]);
         $number = $mysqli->real_escape_string(intval($numbers[$i]));
         $task = $mysqli->real_escape_string($tasks[$i]);
+        $note = $mysqli->real_escape_string($notes[$i]);
+        if( strlen($note) >= 1024 ) {
+            continue;
+        }
 
-        $sqlquery = sprintf("UPDATE buyer b SET b.number = %s, b.task = '%s' WHERE b.email = '%s'",
-            $number, $task, $email);
+        $sqlquery = sprintf("UPDATE buyer b SET b.number = %s, b.task = '%s', b.note = '%s' WHERE b.email = '%s'",
+            $number, $task, $note, $email);
         $result = $mysqli->query($sqlquery);
         if( !$result ) {
             echo $mysqli->error;

@@ -33,7 +33,7 @@ $resultHTML.="<th>Nummer</th>";
 $resultHTML.="</th></thead>";
 
 $query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, 
-c1.needs, b.number FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task != 'act' AND b.complete = 1 AND c0.type in ('workshop','game','lecture','schmink','other','perform','install') ORDER BY b.number";
+c1.needs, b.number FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task NOT in ('workshop','game','lecture','schmink','other','perform','install') AND b.complete = 1 AND c0.type in ('workshop','game','lecture','schmink','other','perform','install') ORDER BY b.number";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {

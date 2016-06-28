@@ -65,7 +65,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
                 </div>
 
-                <?php if( strtotime('now') < strtotime('2016-06-28 00:00') ) {
+                <?php if( strtotime('now') < strtotime('2016-06-29 00:00') ) {
                     echo "<p><a class='btn btn-primary btn-lg' href='buyer' role='button'>Ik wil mijn code verzilveren <i class='glyphicon glyphicon-chevron-right'></i></a></p>";
                 }
                 ?>
