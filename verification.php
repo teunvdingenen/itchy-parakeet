@@ -68,8 +68,8 @@ function send_confirmation_refund($mysqli, $payment_id) {
     $fullname = $row['firstname']." ".$row['lastname'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>We hebben je verzoek voor een refund op je ticketgeld in goede orde ontvangen. Normaal gesproken ontvang je het geld na een werkdag terug op je rekening.</p>";
-    $content .= "<p>Uiteraard vinden we het erg jammer dat het niet gaat lukken om je dit jaar bij Familiar Forest te hebben. Hopelijk zien we volgend jaar!<p>";
+    $content .= "<p>Je verzoek voor een refund op je ticketgeld hebben we in goede orde ontvangen. Normaal gesproken ontvang je het geld na een werkdag terug op je rekening.</p>";
+    $content .= "<p>We vinden het erg jammer dat we je er niet bij hebben op Familiar Forest. Hopelijk zien we volgend jaar!<p>";
     $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen naar deze email.";
 
     $content .= get_email_footer();

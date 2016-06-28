@@ -1,6 +1,10 @@
 <?php
 include_once "functions.php";
 
+if( strtotime('now') > strtotime('2016-06-29 00:00') ) {
+    header('Location: index');
+}
+
 $previous = $email = $header = "";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -60,7 +64,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     Hooggeachte avonturiers, vrienden en buitenlui,
                 </p>
                 <p>De voorbereidingen voor Familiar Forest 2016 zijn ondertussen in volle gang. Op dit moment kunnen deelnemers hun code verzilveren de tweede ronde.</p>
-                <p>Je code verzilveren voor de tweede ronde kan tot en met 27 juni 2016<p>
+                <p>Je code verzilveren voor de tweede ronde kan tot en met 29 juni 2016<p>
                 
                 <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
                 </div>

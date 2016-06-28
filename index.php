@@ -48,14 +48,15 @@
                 </div>
             </div>
         </div>
-
-        <div id="signup-button" class="container">
+        <?php if( strtotime('now') < strtotime('2016-06-29 00:00') ) {
+        echo '<div id="signup-button" class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <button class='btn btn-lg btn-primary btn-block' onclick="location.href='deelnemen'">Deelnemen</button>
+                    <p><a class="btn btn-lg btn-primary btn-block" role="button" href="deelnemen">Deelnemen</a></p>
                 </div>
             </div>
-        </div>
+        </div>';
+        } ?>
 
         <!--parallax 1 -->
         <section class="bg-1">
