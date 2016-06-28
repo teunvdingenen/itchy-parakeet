@@ -13,27 +13,11 @@ $(document).ready(function() {
 				maxlength: 16,
 				required: true
 			},
-			city: {
+			transaction_id: {
 				minlength: 2,
 				maxlength: 255,
 				required: true
 			},
-			street: {
-				minlength: 2,
-				maxlength: 255,
-				required: true
-			},
-			postal: {
-				minlength: 2,
-				maxlength: 255,
-				required: true
-			},
-			terms4: {
-				required: true
-			}
-		},
-		messages: {
-			terms4: "Je bent verplicht deze voorwaarde te accepteren"
 		}
 	});
 

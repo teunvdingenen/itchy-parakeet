@@ -17,6 +17,11 @@ try
         if( !send_confirmation($mysqli, $payment_id) ) {
             email_error("Failed to send confirmation for payment: ".$payment_id);
         }
+    } if( $payment->isRefunded() ) {
+        database_setpayed($mysqli, $payment_id, 3);
+        if( !send_confirmation_refund($mysqli, $payment_id) ) {
+            email_error("Failed to send confimation refund for payment: ".$payment_id);
+        }
     } else { 
         database_setpayed($mysqli, $payment_id, 0);
     }
@@ -48,6 +53,28 @@ function send_confirmation($mysqli, $payment_id) {
     $content .= get_email_footer();
 
     send_mail($row['email'], $fullname, "Familiar Forest 2016 Deelname bevestiging", $content);
+    return true;
+}
+
+function send_confirmation_refund($mysqli, $payment_id) {
+    $query = sprintf("SELECT p.firstname, p.lastname, p.email
+        FROM person p join buyer b on b.email = p.email
+        WHERE b.id = '%s'", $mysqli->real_escape_string($payment_id));
+    $sqlresult = $mysqli->query($query);
+    if( $sqlresult->num_rows != 1 ) {
+        return FALSE;
+    }
+    $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+    $fullname = $row['firstname']." ".$row['lastname'];
+    $content = get_email_header();
+    $content .= "<p>Lieve ".$row['firstname'].",</p>";
+    $content .= "<p>We hebben je verzoek voor een refund op je ticketgeld in goede orde ontvangen. Normaal gesproken ontvang je het geld na een werkdag terug op je rekening.</p>";
+    $content .= "<p>Uiteraard vinden we het erg jammer dat het niet gaat lukken om je dit jaar bij Familiar Forest te hebben. Hopelijk zien we volgend jaar!<p>";
+    $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen naar deze email.";
+
+    $content .= get_email_footer();
+
+    send_mail($row['email'], $fullname, "Familiar Forest 2016 Refund bevestiging", $content);
     return true;
 }
 
