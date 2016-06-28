@@ -1,4 +1,10 @@
+function setErrorBorder(f) {
+	f.closest("div").addClass("has-error");
+}
 
+function unsetErrorBorder(f) {
+	f.closest("div").removeClass("has-error");
+}
 
 function saveActsChanges() {
 	var emails = [];
@@ -26,16 +32,32 @@ function saveVolunteerChanges() {
 	var emails = [];
 	var numbers = [];
 	var tasks = [];
+	var notes = [];
 	$('.table > tbody > tr').each(function() {
 		emails.push($(this).children().children('.email').text());
 		numbers.push($(this).closest('tr').find('[type=text]').val());
 		tasks.push($(this).closest('tr').find('select').val());
+		notes.push($(this).closest('tr').find('textarea').val());
 	});
 	console.log(emails);
 	console.log(numbers);
 	console.log(tasks);
-	$.post("storeVolunteerValues.php", {"emails":emails,"numbers":numbers,"tasks":tasks}, function(response){
+	console.log(notes);
+	$.post("storeVolunteerValues.php", {"emails":emails,"numbers":numbers,"tasks":tasks,"notes":notes}, function(response){
 		console.log(response);
 		location.reload();
 	});
 }
+
+$(document).ready(function() {
+	$("textarea").keyup(function() {
+		var chars = $(this).val().length;
+		if( chars == 0 ) {
+			unsetErrorBorder($(this));
+		} else if( chars >= 1024 ) {
+			setErrorBorder($(this));
+		} else {
+			unsetErrorBorder($(this));
+		}
+	});
+});

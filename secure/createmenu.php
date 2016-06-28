@@ -43,7 +43,7 @@ function get_menu_html() {
     if( $user_info_permissions & PERMISSION_VOLUNTEERS ) {
         $menu_html .= "<ul class='nav nav-sidebar'>";
         $menu_html .= "<li><a class='menulink' id ='volunteers' href='volunteers'>Vrijwilligers</a></li>";
-        $menu_html .= "<li><a class='menulink' id ='bar' href='bar'>Bar</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='volunteerbar' href='volunteerbar'>Bar</a></li>";
         $menu_html .= "<li><a class='menulink' id ='kitchen' href='kitchen'>Keuken</a></li>";
         $menu_html .= "<li><a class='menulink' id ='interiour' href='interiour'>Interieur</a></li>";
         $menu_html .= "<li><a class='menulink' id ='camping' href='campingwinkel'>Campingwinkel</a></li>";
@@ -54,7 +54,7 @@ function get_menu_html() {
     }
     if( $user_info_permissions & PERMISSION_ACTS ) {
         $menu_html .= "<ul class='nav nav-sidebar'>";
-        $menu_html .= "<li><a class='menulink' id ='acts' href='acts'>Acts</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='acts' href='acts'>Niet ingedeelde Acts</a></li>";
         $menu_html .= "<li><a class='menulink' href='workshops'>Workshops</a></li>";
         $menu_html .= "<li><a class='menulink' href='games'>Games</a></li>";
         $menu_html .= "<li><a class='menulink' href='lectures'>Lezingen</a></li>";
