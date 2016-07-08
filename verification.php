@@ -11,13 +11,23 @@ try
     $payment_id = $_POST["id"];
     $payment = $mollie->payments->get($payment_id);
     $code = $payment->metadata->raffle;
+    $sqlresult = $mysqli->query(sprintf("SELECT complete FROM buyer WHERE code = '%s'", 
+        $mysqli->real_escape_string($code)));
+    $complete = -1;
+    if( !$sqlresult || $sqlresult->num_rows != 1 ) {
+        email_error(sprintf("Failed to get complete for id: %s, code: %s. Error: %s",
+            $payment_id, $code, $mysqli->error));
+    } else {
+        $row = $sqlresult->fetch_array(MYSQL_ASSOC);
+        $complete = $row['complete'];
+    }
 
-    if ($payment->isPaid()) {
+    if ($payment->isPaid() && $complete != 2) {
         database_setpayed($mysqli, $payment_id, 1);
         if( !send_confirmation($mysqli, $payment_id) ) {
             email_error("Failed to send confirmation for payment: ".$payment_id);
         }
-    } if( $payment->isRefunded() ) {
+    } else if( $payment->isRefunded() ) {
         database_setpayed($mysqli, $payment_id, 3);
         if( !send_confirmation_refund($mysqli, $payment_id) ) {
             email_error("Failed to send confimation refund for payment: ".$payment_id);
