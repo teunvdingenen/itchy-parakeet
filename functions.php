@@ -208,4 +208,39 @@ function translate_gender($gender) {
     return "Onbekend";
   }
 }
+
+function translate_task($task) {
+  if( $task == "" ) {
+    return "Niet ingedeeld";
+  } else if( $task == "keuken") { 
+    return "Keuken";
+  } else if( $task == "bar" ) {
+    return "Bar";
+  } else if( $task == "other" ) {
+    return "Anders";
+  } else if ($task == "interiour" ) {
+    return "Interieur Verzorging";
+  } else if ( $task == "thee") {
+    return "Theetent";
+  } else if( $task == "camping") {
+    return "Campingwinkel";
+  } else if ($task == "afbouw" ) {
+    return "Afbouw";
+  } else if ($task == "act" ) {
+    return "Act, niet ingedeeld";
+  } else if ( $task == "game" ) {
+    return "Game";
+  } else if ( $task == "lecture" ) {
+    return "Lezing";
+  } else if ( $task == "schmink" ) {
+    return "Schmink";
+  } else if ( $task == "other_act" ) {
+    return "Act anders";
+  } else if ( $task == "perform" ) {
+    return "Performance";
+  } else if ( $task == "install" ) {
+    return "Installatie";
+  }
+  return "Onbekend (Error)";
+}
 ?>

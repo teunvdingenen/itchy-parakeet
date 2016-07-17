@@ -36,7 +36,7 @@ $resultHTML.="</tr></thead>";
 
 $email_adr = "";
 
-$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number, b.note FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = 'other' AND b.complete = 1 ORDER BY b.number";
+$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number, b.note FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = 'other_act' AND b.complete = 1 ORDER BY b.number";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
@@ -69,7 +69,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                                 <option value='game'>Game</option>
                                 <option value='lecture'>Lezing</option>
                                 <option value='schmink'>Schmink</option>
-                                <option value='other' selected>Anders</option>
+                                <option value='other_act' selected>Anders</option>
                                 <option value='perform'>Performance</option>
                                 <option value='install'>Installatie</option>
                                 <option value=''>Naar Vrijwilligers..</option>
