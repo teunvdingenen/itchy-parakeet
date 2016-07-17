@@ -32,7 +32,9 @@ $resultHTML.="<th>Benodigdheden</th>";
 $resultHTML.="<th>Nummer</th>";
 $resultHTML.="<th>Aantekening</th>";
 $resultHTML.="<th>Taak</th>";
-$resultHTML.="</th></thead>";
+$resultHTML.="</tr></thead>";
+
+$email_adr = "";
 
 $query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number, b.note FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = 'install' AND b.complete = 1 ORDER BY b.number";
 
@@ -50,6 +52,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     foreach($row as $key=>$value) {
         if( $key == 2) {
             $resultHTML.= "<td><div class='table-cell email'>" . $value . "</div></td>";
+            $email_adr .= $value . ", ";
         } else if( $key == 10) {
             $resultHTML.= "<td><div class='table-cell'><input class='form-control' type='text' id='number' value=".$value."></div></td>";
         } else if( $key == 4 || $key == 7 ) {
@@ -74,6 +77,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 
     $resultHTML.="</tr>";
 }
+$resultHTML .= "</table>";
 ?>
 
 <!doctype html>
@@ -133,12 +137,22 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                 </div>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div style='margin-top: 5px;'>
-                    <?php echo $resultHTML ?>
-                </div>
                 <div class="row">
                     <div class='btn btn-primary btn-lg btn-block' id='save' onclick="saveVolunteerChanges();">Opslaan 
                         <i class='glyphicon glyphicon-floppy-disk'></i>
+                    </div>
+                </div>
+                <div style='margin-top: 5px;'>
+                    <?php echo $resultHTML ?>
+                </div>
+                <a id="togglebutton_email" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#email-panel">Email adressen voor deze selectie <i class='glyphicon glyphicon-chevron-right'></i></a>
+                <div class="row">
+                    <div id="email-panel" class="collapse email-panel">
+                        <div class="panel panel-default">
+                            <div id="emailcontent" class="panel-body">
+                                <textarea cols='60' rows='4' readonly><?= $email_adr ?></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -155,5 +169,10 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
         <script src="../js/main.js"></script>
         <script src="js/secure.js"></script>
         <script src="js/volunteer.js"></script>
+        <script>
+        $('#togglebutton_email').on('click', function(){
+            $(this).children().closest('.glyphicon').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+        });
+        </script>
     </body>
 </html>

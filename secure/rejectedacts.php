@@ -30,7 +30,9 @@ $resultHTML.="<th>Keuze</th>";
 $resultHTML.="<th>Omschrijving</th>";
 $resultHTML.="<th>Benodigdheden</th>";
 $resultHTML.="<th>Nummer</th>";
-$resultHTML.="</th></thead>";
+$resultHTML.="</tr></thead>";
+
+$email_adr = "";
 
 $query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, 
 c1.needs, b.number FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task NOT in ('workshop','game','lecture','schmink','other','perform','install') AND b.complete = 1 AND c0.type in ('workshop','game','lecture','schmink','other','perform','install') ORDER BY b.number";
@@ -49,12 +51,14 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     foreach($row as $key=>$value) {
         if( $key == 2) {
             $resultHTML.= "<td><div class='table-cell email'>" . $value . "</div></td>";
+            $email_adr .= $value . ", ";
         } else {
             $resultHTML.= "<td><div class='table-cell ".$key."'>" . $value . "</div></td>";
         }
     }
     $resultHTML.="</tr>";
 }
+$resultHTML .= "</table>";
 ?>
 
 <!doctype html>
@@ -117,6 +121,16 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                 <div style='margin-top: 5px;'>
                     <?php echo $resultHTML ?>
                 </div>
+                <a id="togglebutton_email" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#email-panel">Email adressen voor deze selectie <i class='glyphicon glyphicon-chevron-right'></i></a>
+                <div class="row">
+                    <div id="email-panel" class="collapse email-panel">
+                        <div class="panel panel-default">
+                            <div id="emailcontent" class="panel-body">
+                                <textarea cols='60' rows='4' readonly><?= $email_adr ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -131,5 +145,10 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
         <script src="../js/main.js"></script>
         <script src="js/secure.js"></script>
         <script src="js/volunteer.js"></script>
+        <script>
+        $('#togglebutton_email').on('click', function(){
+            $(this).children().closest('.glyphicon').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+        });
+        </script>
     </body>
 </html>

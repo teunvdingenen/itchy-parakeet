@@ -32,10 +32,10 @@ $resultHTML.="<th>Benodigdheden</th>";
 $resultHTML.="<th>Nummer</th>";
 $resultHTML.="<th>Aantekening</th>";
 $resultHTML.="<th>Taak</th>";
-$resultHTML.="</th></thead>";
+$resultHTML.="</tr></thead>";
 
 $filtersql = array();
-$contrib = $gender = $contribnr = "";
+$contrib = $gender = $contribnr = $email_adr = "";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
@@ -91,6 +91,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     foreach($row as $key=>$value) {
         if( $key == 2) {
             $resultHTML.= "<td><div class='table-cell email'>" . $value . "</div></td>";
+            $email_adr .= $value . ", ";
         } else if( $key == 10) {
             $resultHTML.= "<td><div class='table-cell'><input class='form-control' type='text' id='number' value=".$value."></div></td>";
         } else if( $key == 4 || $key == 7 ) {
@@ -114,6 +115,8 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                             </select></div></td>";
     $resultHTML.="</tr>";
 }
+
+$resultHTML .= "</table>";
 
 ?>
 
@@ -175,70 +178,78 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <a id="togglebutton" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#filter-panel">Filteren <i class='glyphicon glyphicon-chevron-right'></i></a>
-                <div class="row">
-                    <div id="filter-panel" class="collapse filter-panel">
-                        <div class="panel panel-default">
-                            <div id="filtercontent" class="panel-body">
-                                <form method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
-                                    <div class="form-group row">
-                                        <label class="col-sm-2">Geslacht</label>
-                                        <div class="col-sm-10">
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="gender" id="both" value="both" <?php if($gender == "both") echo( "checked"); ?> >
-                                                    Beide
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
-                                                    Jongeman
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
-                                                    Jongedame
-                                                </label>
-                                            </div>
+                <div id="filter-panel" class="collapse filter-panel">
+                    <div class="panel panel-default">
+                        <div id="filtercontent" class="panel-body">
+                            <form method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+                                <div class="form-group row">
+                                    <label class="col-sm-2">Geslacht</label>
+                                    <div class="col-sm-10">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="gender" id="both" value="both" <?php if($gender == "both") echo( "checked"); ?> >
+                                                Beide
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
+                                                Jongeman
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
+                                                Jongedame
+                                            </label>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label for="contrib" class="col-sm-2 form-control-label">Bijdrage</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" name="contrib" id="contrib">
-                                                <option value="all" <?= $contrib == 'all' ? ' selected="selected"' : '';?>>Alles</option>
-                                                <option value="iv" <?= $contrib == 'iv' ? ' selected="selected"' : '';?>>Interieur verzorging</option>
-                                                <option value="bar" <?= $contrib == 'bar' ? ' selected="selected"' : '';?>>Bar</option>
-                                                <option value="keuken" <?= $contrib == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
-                                                <option value="act" <?= $contrib == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
-                                                <option value="afb" <?= $contrib == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
-                                            </select>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="contribnr" id="contrib0" value="contrib0" <?php if($contribnr == "contrib0") echo( "checked"); ?>>
-                                                    Eerste keus
-                                                </label>
-                                            </div>
-                                            <div class="radio">
-                                                <label>
-                                                    <input type="radio" name="contribnr" id="contrib1" value="contrib1" <?php if($contribnr == "contrib1") echo( "checked"); ?> >
-                                                    Tweede keus
-                                                </label>
-                                            </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="contrib" class="col-sm-2 form-control-label">Bijdrage</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" name="contrib" id="contrib">
+                                            <option value="all" <?= $contrib == 'all' ? ' selected="selected"' : '';?>>Alles</option>
+                                            <option value="iv" <?= $contrib == 'iv' ? ' selected="selected"' : '';?>>Interieur verzorging</option>
+                                            <option value="bar" <?= $contrib == 'bar' ? ' selected="selected"' : '';?>>Bar</option>
+                                            <option value="keuken" <?= $contrib == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
+                                            <option value="act" <?= $contrib == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
+                                            <option value="afb" <?= $contrib == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                        </select>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="contribnr" id="contrib0" value="contrib0" <?php if($contribnr == "contrib0") echo( "checked"); ?>>
+                                                Eerste keus
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="contribnr" id="contrib1" value="contrib1" <?php if($contribnr == "contrib1") echo( "checked"); ?> >
+                                                Tweede keus
+                                            </label>
                                         </div>
                                     </div>
-                                    <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
-                                </form>
-                            </div>
+                                </div>
+                                <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
+                            </form>
                         </div>
                     </div>
+                </div>
+                <div class='btn btn-primary btn-lg btn-block' id='save' onclick="saveVolunteerChanges();">Opslaan 
+                    <i class='glyphicon glyphicon-floppy-disk'></i>
                 </div>
                 <div style='margin: 5px;'>
                     <?php echo $resultHTML ?>
                 </div>
-                <div class='btn btn-primary btn-lg btn-block' id='save' onclick="saveVolunteerChanges();">Opslaan 
-                    <i class='glyphicon glyphicon-floppy-disk'></i>
+                <a id="togglebutton_email" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#email-panel">Email adressen voor deze selectie <i class='glyphicon glyphicon-chevron-right'></i></a>
+                <div class="row">
+                    <div id="email-panel" class="collapse email-panel">
+                        <div class="panel panel-default">
+                            <div id="emailcontent" class="panel-body">
+                                <textarea cols='60' rows='4' readonly><?= $email_adr ?></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -257,6 +268,9 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
         <script> 
         $(document).ready(function() {
             $('#togglebutton').on('click', function(){
+                $(this).children().closest('.glyphicon').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+            });
+            $('#togglebutton_email').on('click', function(){
                 $(this).children().closest('.glyphicon').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
             });
         });

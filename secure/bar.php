@@ -35,7 +35,7 @@ $resultHTML.="<th>Benodigdheden</th>";
 $resultHTML.="<th>Keuze</th>";
 $resultHTML.="<th>Omschrijving</th>";
 $resultHTML.="<th>Benodigdheden</th>";
-$resultHTML.="</th></thead>";
+$resultHTML.="</tr></thead>";
 
 $query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.complete = 1 ORDER BY b.number";
 
@@ -67,6 +67,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     }
     $resultHTML.="</tr>";
 }
+$resultHTML .= "</table>";
 
 ?>
 
