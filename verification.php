@@ -12,15 +12,15 @@ try
     $payment = $mollie->payments->get($payment_id);
     $code = $payment->metadata->raffle;
 
-    if ($payment->isPaid()) {
-        database_setpayed($mysqli, $payment_id, 1);
-        if( !send_confirmation($mysqli, $payment_id) ) {
-            email_error("Failed to send confirmation for payment: ".$payment_id);
-        }
-    } if( $payment->isRefunded() ) {
+    if( $payment->isRefunded() ) {
         database_setpayed($mysqli, $payment_id, 3);
         if( !send_confirmation_refund($mysqli, $payment_id) ) {
             email_error("Failed to send confimation refund for payment: ".$payment_id);
+        }
+    } else if ($payment->isPaid()) {
+        database_setpayed($mysqli, $payment_id, 1);
+        if( !send_confirmation($mysqli, $payment_id) ) {
+            email_error("Failed to send confirmation for payment: ".$payment_id);
         }
     } else { 
         database_setpayed($mysqli, $payment_id, 0);
