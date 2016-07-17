@@ -1,6 +1,10 @@
 <?php
 include_once "functions.php";
 
+if( strtotime('now') > strtotime('2016-06-29 00:00') ) {
+    header('Location: index');
+}
+
 $email = "";
 $returnVal = "";
 

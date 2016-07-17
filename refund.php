@@ -119,7 +119,7 @@ function addError($value) {
         <meta name="author" content="Teun van Dingenen">
         <link rel="icon" href="favicon.ico">
 
-        <title>Code verzilveren</title>
+        <title>Refund</title>
 
         <!-- Bootstrap core CSS -->
         <link href="css/bootstrap.min.css" rel="stylesheet">

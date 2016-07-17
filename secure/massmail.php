@@ -55,7 +55,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $query = "SELECT p.firstname, p.lastname, r.email, r.code FROM person p join raffle r on r.email = p.email WHERE 1";
     } else if( $mailto == 'buyer') {
-        $query = "SELECT p.firstname, p.lastname, p.email, b.code, b.id FROM person p join buyer b on p.email = b.email WHERE 1";
+        $query = "SELECT p.firstname, p.lastname, p.email, b.code, b.id FROM person p join buyer b on p.email = b.email WHERE b.complete = 1";
     } else if( $mailto == 'secondraffle' ) {
         if( substr_count($content, $instransaction) > 0 ) {
             addError("Je hebt loting geselecteerd en probeert transactie ids te versturen, dat kan niet..");

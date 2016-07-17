@@ -34,7 +34,7 @@ $resultHTML.="<th>Aantekening</th>";
 $resultHTML.="<th>Taak</th>";
 $resultHTML.="</th></thead>";
 
-$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number, b.note FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = 'keuken' AND b.complete = 1 ORDER BY b.number";
+$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number, b.note FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = 'afbouw' AND b.complete = 1 ORDER BY b.number";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
@@ -62,13 +62,13 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
     }
     $resultHTML.="<td><div class='table-cell'><select class='form-control'>
                                 <option value=''>Reserve</option>
-                                <option value='keuken' selected>Keuken</option>
+                                <option value='keuken'>Keuken</option>
                                 <option value='bar'>Bar</option>
                                 <option value='other'>Anders</option>
                                 <option value='interiour'>Interieur</option>
                                 <option value='thee'>Theetent</option>
                                 <option value='camping'>Campingwinkel</option>
-                                <option value='afbouw'>Afbouw</option>
+                                <option value='afbouw' selected>Afbouw</option>
                                 <option value='act'>Naar Acts..</option>
                             </select></div></td>";
     $resultHTML.="</tr>";

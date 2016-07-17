@@ -48,6 +48,7 @@ function get_menu_html() {
         $menu_html .= "<li><a class='menulink' id ='interiour' href='interiour'>Interieur</a></li>";
         $menu_html .= "<li><a class='menulink' id ='camping' href='campingwinkel'>Campingwinkel</a></li>";
         $menu_html .= "<li><a class='menulink' id ='theetent' href='theetent'>Theetent</a></li>";
+        $menu_html .= "<li><a class='menulink' id ='break' href='break'>Afbouw</a></li>";
         $menu_html .= "<li><a class='menulink' id ='other' href='other'>Anders</a></li>";
         $menu_html .= "</ul>";
 
