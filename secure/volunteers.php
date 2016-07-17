@@ -34,9 +34,50 @@ $resultHTML.="<th>Aantekening</th>";
 $resultHTML.="<th>Taak</th>";
 $resultHTML.="</th></thead>";
 
-$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number, b.note FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = '' AND b.complete = 1 ORDER BY b.number";
+$filtersql = array();
+$contrib = $gender = $contribnr = "";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
+if( $_SERVER["REQUEST_METHOD"] == "POST") {
+    if( !empty($_POST["gender"]) ) {
+        if( $_POST["gender"] == 'male') {
+            $filtersql[] = "p.gender = 'male'";    
+        } else if( $_POST["gender"] == 'female') {
+            $filtersql[] = "p.gender = 'female'";
+        }
+        $gender = $_POST["gender"];
+    }
+    if( !empty($_POST["contrib"]) ) {
+        $contrib = $_POST["contrib"];
+        $contribselector = "c0";
+        if( !empty($_POST["contribnr"])) {
+            $contribnr = $_POST["contribnr"];
+            if( $contribnr == 'contrib0') {
+                $contribselector = 'c0';
+            } else if ( $contribnr == 'contrib1') {
+                $contribselector = 'c1';
+            }
+        }
+        if( $contrib == '' || $contrib == 'all') {
+            //nothing
+        } else if( $contrib == 'act') {
+            $filtersql[] = $contribselector.".type IN ('workshop', 'game', 'lecture', 'schmink', 'other', 'perform', 'install')";    
+        } else {
+            $filtersql[] = $contribselector.".type = '" . $mysqli->real_escape_string($contrib)."'";
+        }
+    }
+}
+
+$filterstr = "1";
+foreach($filtersql as $filter) {
+    $filterstr .= " AND " . $filter;
+}
+
+$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number, b.note 
+    FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 
+    WHERE b.task = '' AND b.complete = 1 AND " . $filterstr . " ORDER BY b.number";
+
 if( $mysqli->connect_errno ) {
     return false;
 } else {
@@ -133,6 +174,66 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                 </div>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <a id="togglebutton" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#filter-panel">Filteren <i class='glyphicon glyphicon-chevron-right'></i></a>
+                <div class="row">
+                    <div id="filter-panel" class="collapse filter-panel">
+                        <div class="panel panel-default">
+                            <div id="filtercontent" class="panel-body">
+                                <form method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2">Geslacht</label>
+                                        <div class="col-sm-10">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="gender" id="both" value="both" <?php if($gender == "both") echo( "checked"); ?> >
+                                                    Beide
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
+                                                    Jongeman
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
+                                                    Jongedame
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="contrib" class="col-sm-2 form-control-label">Bijdrage</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="contrib" id="contrib">
+                                                <option value="all" <?= $contrib == 'all' ? ' selected="selected"' : '';?>>Alles</option>
+                                                <option value="iv" <?= $contrib == 'iv' ? ' selected="selected"' : '';?>>Interieur verzorging</option>
+                                                <option value="bar" <?= $contrib == 'bar' ? ' selected="selected"' : '';?>>Bar</option>
+                                                <option value="keuken" <?= $contrib == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
+                                                <option value="act" <?= $contrib == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
+                                                <option value="afb" <?= $contrib == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                            </select>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="contribnr" id="contrib0" value="contrib0" <?php if($contribnr == "contrib0") echo( "checked"); ?>>
+                                                    Eerste keus
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="contribnr" id="contrib1" value="contrib1" <?php if($contribnr == "contrib1") echo( "checked"); ?> >
+                                                    Tweede keus
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div style='margin: 5px;'>
                     <?php echo $resultHTML ?>
                 </div>
@@ -153,5 +254,12 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
         <script src="../js/main.js"></script>
         <script src="js/secure.js"></script>
         <script src="js/volunteer.js"></script>
+        <script> 
+        $(document).ready(function() {
+            $('#togglebutton').on('click', function(){
+                $(this).children().closest('.glyphicon').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');
+            });
+        });
+        </script>
     </body>
 </html>
