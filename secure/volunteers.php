@@ -103,7 +103,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
         }
     }
     $resultHTML.="<td><div class='table-cell'><select class='form-control'>
-                                <option value='' selected>Reserve</option>
+                                <option value='' selected>Naar vrijwilligers</option>
                                 <option value='keuken'>Keuken</option>
                                 <option value='bar'>Bar</option>
                                 <option value='other'>Anders</option>
