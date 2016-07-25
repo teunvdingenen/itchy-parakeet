@@ -43,9 +43,10 @@ if( $mysqli->connect_errno ) {
     $sqlresult = $mysqli->query($query);
 }
 $mysqli->close();
-
+$count=0;
 while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 {
+    $count+=1;
     $resultHTML.="<tr>";
     foreach($row as $key=>$value) {
         if( $key == 2) {
@@ -137,6 +138,7 @@ $resultHTML .= "</table>";
                 <div class='btn btn-primary btn-lg btn-block' id='save' onclick="saveVolunteerChanges();">Opslaan 
                     <i class='glyphicon glyphicon-floppy-disk'></i>
                 </div>
+                <div class='alert alert-info'><span class='glyphicon glyphicon-user' aria-hidden='true'></span> <?=$count?> theedrinkers</div>
                 <div style='margin: 5px;'>
                     <?php echo $resultHTML ?>
                 </div>
