@@ -56,6 +56,7 @@ function get_menu_html() {
     }
     if( $user_info_permissions & PERMISSION_ACTS ) {
         $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' id ='search' href='volunteersearch'>Zoeken</a></li>";
         $menu_html .= "<li><a class='menulink' id ='acts' href='acts'>Niet ingedeelde Acts</a></li>";
         $menu_html .= "<li><a class='menulink' href='workshops'>Workshops</a></li>";
         $menu_html .= "<li><a class='menulink' href='games'>Games</a></li>";
