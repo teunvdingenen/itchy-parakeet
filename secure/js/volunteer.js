@@ -34,10 +34,13 @@ function saveVolunteerChanges() {
 	var tasks = [];
 	var notes = [];
 	$('.table > tbody > tr').each(function() {
-		emails.push($(this).children().children('.email').text());
-		numbers.push($(this).closest('tr').find('[type=text]').val());
-		tasks.push($(this).closest('tr').find('select').val());
-		notes.push($(this).closest('tr').find('textarea').val());
+		var changed = $(this).closest('tr').find('.changed').html();
+		if( changed == 1 ) {
+			emails.push($(this).children().children('.email').text());
+			numbers.push($(this).closest('tr').find('[type=text]').val());
+			tasks.push($(this).closest('tr').find('select').val());
+			notes.push($(this).closest('tr').find('textarea').val());
+		}
 	});
 	console.log(emails);
 	console.log(numbers);
@@ -59,5 +62,12 @@ $(document).ready(function() {
 		} else {
 			unsetErrorBorder($(this));
 		}
+		$(this).closest('tr').find('.changed').html('1');
+	});
+	$("select").change(function() {
+		$(this).closest('tr').find('.changed').html('1');
+	});
+	$("[type=text]").keyup(function() {
+		$(this).closest('tr').find('.changed').html('1');
 	});
 });

@@ -75,6 +75,7 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
                                 <option value='afbouw'>Afbouw</option>
                                 <option value='act'>Naar Acts..</option>
                             </select></div></td>";
+    $resultHTML.="<td class='changed' style='display:none;'>0</div>";
     $resultHTML.="</tr>";
 }
 $resultHTML .= "</table>";

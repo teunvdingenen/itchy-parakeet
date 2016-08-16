@@ -49,7 +49,7 @@ if ( count($emails) == count($numbers) && count($emails) == count($tasks) ) {
             $number, $task, $note, $email);
         $result = $mysqli->query($sqlquery);
         if( !$result ) {
-            echo $mysqli->error;
+            email_error("Bij slaan vrijwilligers: ".$mysqli->error);
             echo 1;
         }
     }

@@ -47,7 +47,7 @@ $debug = "";
 $cell_keys = ['lastname', 'firstname', 'birthdate', 'gender', 'city', 'email', 'phone', 'motivation', 'familiar', 'editions', 'partner', 'contrib0','type0','needs0', 'contrib1','type1','needs1', 'visits', 'preparations'];
 $email = $firstname = $lastname = $gender = $contrib = $contribnr = $requestedage = $agetype = $visits = $visitstype = "";
 
-$round = 1; //TODO get current round
+$round = -1; //TODO get current round
 $limit = 50;
 $page = 0;
 
