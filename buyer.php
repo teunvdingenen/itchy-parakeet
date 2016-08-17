@@ -111,6 +111,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SERVER['PHP_SELF']);
 
                 $amount = 120;
+                if( isHalfTicket($mysqli, $code) ) {
+                    $amount = 60;
+                }
+                
                 $raffle = $code;
 
                 if( $method == 'ideal' ) {
@@ -226,6 +230,20 @@ function hasPaid($mysqli, $code) {
         }
     }
     return 0;
+}
+
+function isHalfTicket($mysqli, $code) {
+    $sqlresult = $mysqli->query(sprintf("SELECT * FROM halfticket WHERE code = '%s'", 
+        $mysqli->real_escape_string($code)));
+    if( $sqlresult === FALSE) {
+        //log error
+        return FALSE;
+    }
+    if( $sqlresult->num_rows != 1 ) {
+        //log error
+        return false;
+    }
+    return true;
 }
 
 function addError($value) {

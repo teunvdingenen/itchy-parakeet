@@ -13,9 +13,13 @@ try
     $code = $payment->metadata->raffle;
 
     if( $payment->isRefunded() ) {
-        database_setpayed($mysqli, $payment_id, 3);
-        if( !send_confirmation_refund($mysqli, $payment_id) ) {
-            email_error("Failed to send confimation refund for payment: ".$payment_id);
+        if( isHalfTicket($mysqli, $code) ) {
+            send_confirmation_refund_half($mysqli, $payment_id);
+        } else {
+            database_setpayed($mysqli, $payment_id, 3);
+            if( !send_confirmation_refund($mysqli, $payment_id) ) {
+                email_error("Failed to send confimation refund for payment: ".$payment_id);
+            }
         }
     } else if ($payment->isPaid()) {
         database_setpayed($mysqli, $payment_id, 1);
@@ -75,6 +79,42 @@ function send_confirmation_refund($mysqli, $payment_id) {
     $content .= get_email_footer();
 
     send_mail($row['email'], $fullname, "Familiar Forest 2016 Refund bevestiging", $content);
+    return true;
+}
+
+function send_confirmation_refund_half($mysqli, $payment_id) {
+    $query = sprintf("SELECT p.firstname, p.lastname, p.email
+        FROM person p join buyer b on b.email = p.email
+        WHERE b.id = '%s'", $mysqli->real_escape_string($payment_id));
+    $sqlresult = $mysqli->query($query);
+    if( $sqlresult->num_rows != 1 ) {
+        return FALSE;
+    }
+    $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+    $fullname = $row['firstname']." ".$row['lastname'];
+    $content = get_email_header();
+    $content .= "<p>Lieve ".$row['firstname'].",</p>";
+    $content .= "<p>We hebben gezien dat jij dit jaar (weer) komt opbouwen, afbouwen of iets anders fantastisch doet bij Familiar Forest. Alvast super bedankt daarvoor! Naast lieve woorden ontvang je ook nog eens een half ticket!</p>";
+    $content .= "<p>We hebben opgemerkt dat je al een ticket had gekocht en hebben daarom 60EUR naar je terug overgemaakt. Normaal gesproken wordt dat na een werkdag verwerkt.<p>";
+    $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen naar deze email. Tot snel!";
+
+    $content .= get_email_footer();
+
+    send_mail($row['email'], $fullname, "Familiar Forest 2016 Half ticket", $content);
+    return true;
+}
+
+function isHalfTicket($mysqli, $code) {
+    $sqlresult = $mysqli->query(sprintf("SELECT * FROM halfticket WHERE code = '%s'", 
+        $mysqli->real_escape_string($code)));
+    if( $sqlresult === FALSE) {
+        //log error
+        return FALSE;
+    }
+    if( $sqlresult->num_rows != 1 ) {
+        //log error
+        return false;
+    }
     return true;
 }
 
