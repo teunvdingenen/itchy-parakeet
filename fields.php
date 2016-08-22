@@ -27,6 +27,9 @@ if( !defined('PERMISSION_ACTS')) {
 if( !defined('PERMISSION_BAR')) {
 	define('PERMISSION_BAR', 256);
 }
+if( !defined('PERMISSION_NACHT')) {
+	define('PERMISSION_NACHT', 512);
+}
 
 $db_table_person    = "person";
 $db_table_contrib   = "contribution";

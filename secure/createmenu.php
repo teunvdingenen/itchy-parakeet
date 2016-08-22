@@ -15,6 +15,7 @@ function get_menu_html() {
         $menu_html .= "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting</a></li>";
         $menu_html .= "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets</a></li>";
         $menu_html .= "<li><a class='menulink' id='displaytransactions' href='verifypayments'>Transacties</a></li>";
+        $menu_html .= "<li><a class='menulink' id='preparations' href='preparations'>Voorbereidingen</a></li>";
         $menu_html .= "</ul>";
     }
     if( $user_info_permissions & PERMISSION_RAFFLE ) {
@@ -71,6 +72,11 @@ function get_menu_html() {
     if( $user_info_permissions & PERMISSION_BAR ) {
         $menu_html .= "<ul class='nav nav-sidebar'>";
         $menu_html .= "<li><a class='menulink' href='bar'>Bar</a></li>";
+        $menu_html .= "</ul>";
+    }
+    if( $user_info_permissions & PERMISSION_NACHT ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        $menu_html .= "<li><a class='menulink' href='nachtprogramma'>Nachtprogramma</a></li>";
         $menu_html .= "</ul>";
     }
     return $menu_html;
