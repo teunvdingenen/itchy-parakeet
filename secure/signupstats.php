@@ -26,6 +26,8 @@ $sqlresult = 0;
 
 $result = "";
 
+$tickets_half = 0;
+
 $displayname = "";
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $statistic_type == 'signup') {
@@ -45,9 +47,12 @@ if( $statistic_type == 'signup') {
     if( $mysqli->connect_errno ) {
         return false;
     } else {
+    	$query = "SELECT COUNT(*) from raffle r where exists (Select 1 from halfticket h where h.code = r.code) and r.valid = 1";
+    	$result = $mysqli->query($query);
+    	$tickets_half = mysqli_fetch_array($result,MYSQLI_NUM)[0];
         $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type, p.signupdate
             FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
-            WHERE EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email) ";
+            WHERE EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email and r.valid = 1)";
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
             echo $mysqli->error;
@@ -58,6 +63,9 @@ if( $statistic_type == 'signup') {
     if( $mysqli->connect_errno ) {
         return false;
     } else {
+    	$query = "SELECT COUNT(*) from buyer b where exists (Select 1 from halfticket h where h.code = b.code) and b.complete = 1";
+    	$result = $mysqli->query($query);
+    	$tickets_half = mysqli_fetch_array($result,MYSQLI_NUM)[0];
         $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type, p.signupdate
             FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
             WHERE EXISTS (SELECT 1 FROM buyer as b WHERE p.email = b.email AND b.complete = 1) ";
@@ -71,6 +79,9 @@ if( $statistic_type == 'signup') {
     if( $mysqli->connect_errno ) {
         return false;
     } else {
+    	$query = "SELECT COUNT(*) from raffle r where exists (Select 1 from halfticket h where h.code = r.code) and r.valid = 1";
+    	$result = $mysqli->query($query);
+    	$tickets_half = mysqli_fetch_array($result,MYSQLI_NUM)[0];
         $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type, p.signupdate
             FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
             WHERE EXISTS (SELECT 1 FROM $db_table_raffle as r WHERE  p.email = r.email and r.valid = 1) OR EXISTS (SELECT 1 FROM buyer as b WHERE p.email = b.email AND b.complete = 1) ";
@@ -165,6 +176,12 @@ $resultHTML.="<tr>";
 $resultHTML.="<th>Totaal " . $displayname . "</th>";
 $resultHTML.="<td>".$total."</td>";
 $resultHTML.="</tr>";
+if( $statistic_type == 'buyer' || $statistic_type == 'raffle' || $statistic_type == 'secondraffle') {
+	$resultHTML.="<tr>";
+	$resultHTML.="<th>Totaal Half Tickets</th>";
+	$resultHTML.="<td>".$tickets_half."</td>";
+	$resultHTML.="</tr>";
+}
 
 $resultHTML.="<tr>";
 $resultHTML.="<th>Leeftijd</th>";
