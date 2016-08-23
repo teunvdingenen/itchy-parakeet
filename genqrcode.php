@@ -1,8 +1,12 @@
 <?php 
 
     include('phpqrcode/qrlib.php');
+
+    if( !isset($_GET['hash'])) {
+    	return false;
+    }
      
     // outputs image directly into browser, as PNG stream 
-    QRcode::png('code=AA11BB22&id=tr_kdjlfjkl',FALSE,3);
+    QRcode::png($_GET['hash'],FALSE,3);
 
 ?>

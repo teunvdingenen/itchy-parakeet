@@ -1,6 +1,7 @@
 <?php
 include "initialize.php";
 include "functions.php";
+include "createhashes.php";
 
 try
 {
@@ -25,6 +26,9 @@ try
         database_setpayed($mysqli, $payment_id, 1);
         if( !send_confirmation($mysqli, $payment_id) ) {
             email_error("Failed to send confirmation for payment: ".$payment_id);
+        }
+        if( create_hashes($mysqli) < 1 ) {
+            email_error("Expected hash creation for id: ".$payment_id);
         }
     } else { 
         database_setpayed($mysqli, $payment_id, 0);
