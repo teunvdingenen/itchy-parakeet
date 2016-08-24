@@ -51,11 +51,14 @@ $query = sprintf("SELECT p.firstname, p.lastname, p.street, p.postal, p.city, p.
 $result = $mysqli->query($query);
 
 if( !$result ) {
-    $email_error("Kon geen info vinden voor hash: " . $hash);
+    $email_error("Fout bij zoeken naar: " . $hash." ".$mysqli->error);
+    header('Location: index');
+} else if ($result->num_rows != 1) {
     header('Location: index');
 }
 
-$QRURL = 'http://macintosh.local/inschrijf/genqrcode.php?hash=';
+$QRURL = 'http://stichtingfamiliarforest.nl/genqrcode.php?hash=';
+//$QRURL = 'http://macintosh.local/inschrijf/genqrcode.php?hash=';
 $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
 $firstname = $row['firstname'];
 $lastname = $row['lastname'];
@@ -74,7 +77,7 @@ $pdf->addPage("P", "A4");
 $pdf->SetFont('Arial','',12);
 $pdf->Image($url,100,25,90,0,'PNG');
 $pdf->Cell(30,30);
-$pdf->Cell(80,10,$firstname.' '.$lastname,0,1);
+$pdf->Cell(80,10,htmlspecialchars_decode($firstname).' '.htmlspecialchars_decode($lastname),0,1);
 $pdf->Cell(30);
 $pdf->Cell(80,10,$street,0,1);
 $pdf->Cell(30);
@@ -88,14 +91,13 @@ $pdf->Ln();
 $pdf->Ln();
 $pdf->Ln();
 $pdf->Cell(30);
-$pdf->SetFont('times','I',12);
-$pdf->MultiCell(130,6,$motivation.'  - "'.$firstname.' '.$lastname.'"',0,1);
-$pdf->Ln();
+$pdf->SetFont('times','I',10);
+$pdf->MultiCell(130,6,'"'.htmlspecialchars_decode($motivation).'"  - '.htmlspecialchars_decode($firstname).' '.htmlspecialchars_decode($lastname),0,1);
 $pdf->Ln();
 $pdf->Ln();
 $pdf->SetFont('Arial','',12);
 $pdf->Cell(30);
-$pdf->MultiCell(130,6,'Lieve '.$firstname.',',0,'C');
+$pdf->MultiCell(130,6,'Lieve '.htmlspecialchars_decode($firstname).',',0,'C');
 $pdf->Cell(30);
 $pdf->MultiCell(130,6,'Met dit ticket in de hand ben jij helemaal klaar om naar Familiar Forest 2016 te gaan. Denk er dus wel even aan het uit te printen.',0,'C');
 $pdf->Ln();

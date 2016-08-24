@@ -24,11 +24,11 @@ try
         }
     } else if ($payment->isPaid()) {
         database_setpayed($mysqli, $payment_id, 1);
+        if( !set_hash($mysqli, $payment_id, $code) ) {
+            email_error("Unable to create ticket for payment: ".$payment_id);
+        }
         if( !send_confirmation($mysqli, $payment_id) ) {
             email_error("Failed to send confirmation for payment: ".$payment_id);
-        }
-        if( create_hashes($mysqli) < 1 ) {
-            email_error("Expected hash creation for id: ".$payment_id);
         }
     } else { 
         database_setpayed($mysqli, $payment_id, 0);
@@ -41,7 +41,7 @@ catch (Mollie_API_Exception $e) {
 }
 
 function send_confirmation($mysqli, $payment_id) {
-    $query = sprintf("SELECT p.firstname, p.lastname, p.email, r.code
+    $query = sprintf("SELECT p.firstname, p.lastname, p.email, r.code, b.ticket
         FROM person p join raffle r on r.email = p.email join buyer b on b.email = p.email
         WHERE b.id = '%s'", $mysqli->real_escape_string($payment_id));
     $sqlresult = $mysqli->query($query);
@@ -50,6 +50,7 @@ function send_confirmation($mysqli, $payment_id) {
     }
     $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
     $fullname = $row['firstname']." ".$row['lastname'];
+    $ticketurl = "http://stichtingfamiliarforest.nl/ticket.php?ticket=".$row['ticket'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
     $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen naar Familiar Forest 2016 kunnen!</p>";
@@ -57,6 +58,7 @@ function send_confirmation($mysqli, $payment_id) {
     $content .= "<p>Het is goed om de volgende informatie nog even goed te bewaren:</p>";
     $content .= "<p>Je deelname code is: " . $row['code'] . "</p>";
     $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";
+    $content .= "<p>Je kunt je ticket downloaden en printen door op deze link te klikken <a href='".$ticketurl."'>".$ticketurl."</a></p>";
 
     $content .= get_email_footer();
 

@@ -20,6 +20,7 @@ $inslast = "%LASTNAME%";
 $insraffle = "%RAFFLECODE%";
 $instransaction = "%TRANSACTIECODE%";
 $inssignature = "%SIGNATURE%";
+$insticketurl = "%TICKETURL%";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["mailto"]) ) {
@@ -42,27 +43,27 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $query = "";
     if( $mailto == 'signup') {
-        if( substr_count($content, $insraffle) > 0 ) {
+        if( substr_count($content, $insraffle,$insticketurl) > 0 ) {
             addError("Je hebt inschrijvingen geselecteerd en probeert loting codes te versturen, dat kan niet..");
         }
-        if( substr_count($content, $instransaction) > 0 ) {
+        if( substr_count($content, $instransaction,$insticketurl) > 0 ) {
             addError("Je hebt inschrijvingen geselecteerd en probeert transactie ids te versturen, dat kan niet..");
         }
         $query = "SELECT p.email, p.firtname, p.lastname FROM person p WHERE 1";
     } else if( $mailto == 'raffle') {
-        if( substr_count($content, $instransaction) > 0 ) {
+        if( substr_count($content, $instransaction,$insticketurl) > 0 ) {
             addError("Je hebt loting geselecteerd en probeert transactie ids te versturen, dat kan niet..");
         }
         $query = "SELECT p.firstname, p.lastname, r.email, r.code FROM person p join raffle r on r.email = p.email WHERE 1";
     } else if( $mailto == 'buyer') {
-        $query = "SELECT p.firstname, p.lastname, p.email, b.code, b.id FROM person p join buyer b on p.email = b.email WHERE b.complete = 1";
+        $query = "SELECT p.firstname, p.lastname, p.email, b.code, b.id, b.ticket FROM person p join buyer b on p.email = b.email WHERE b.complete = 1";
     } else if( $mailto == 'secondraffle' ) {
-        if( substr_count($content, $instransaction) > 0 ) {
+        if( substr_count($content, $instransaction,$insticketurl) > 0 ) {
             addError("Je hebt loting geselecteerd en probeert transactie ids te versturen, dat kan niet..");
         }
         $query = "SELECT p.firstname, p.lastname, r.email, r.code FROM person p join raffle r on r.email = p.email WHERE r.valid = 1 AND NOT EXISTS (SELECT 1 FROM buyer b WHERE b.email = r.email)";
     } else if( $mailto == 'noticket') {
-        if( substr_count($content, $insraffle, $instransaction) > 0 ) {
+        if( substr_count($content, $insraffle, $instransaction,$insticketurl) > 0 ) {
             addError("Je hebt inschrijvingen geselecteerd en probeert transactie ids of codes te versturen, dat kan niet..");
         }
         $query = "SELECT p.firstname, p.lastname, p.email FROM person p WHERE NOT EXISTS (SELECT 1 FROM buyer b WHERE b.email = p.email and b.complete = 1) AND NOT EXISTS (SELECT 1 from raffle r WHERE r.email = p.email and r.valid = 1)";
@@ -95,7 +96,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 if( substr_count($mailcontent, $instransaction)) {
                     $mailcontent = str_replace($instransaction, $row['id'], $mailcontent);
                 }
-
+                if( substr_count($mailcontent, $insticketurl)) {
+                    $url = "http://stichtingfamiliarforest.nl/ticket.php?ticket=".$row['ticket'];
+                    $htmltag = "<a href='".$url."'>".$url."</a>";
+                    $mailcontent = str_replace($insticketurl, $htmltag, $mailcontent);
+                }
                 $mailcontent = get_email_header() . $mailcontent . get_email_footer();
                 send_mail($email, $fullname, $subject, $mailcontent);
             }
@@ -226,6 +231,9 @@ function addError($value) {
                             </div>
                             <div class="col-sm-2">
                                 <div class="btn btn-sm btn-info btn-block" onclick=<?php echo "insertValue('".$instransaction."');";?>>Transactie ID</div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="btn btn-sm btn-info btn-block" onclick=<?php echo "insertValue('".$insticketurl."');";?>>Ticket URL</div>
                             </div>
                         </div>
                     </div>
