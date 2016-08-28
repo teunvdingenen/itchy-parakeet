@@ -59,6 +59,7 @@ function send_confirmation($mysqli, $payment_id) {
     $content .= "<p>Je deelname code is: " . $row['code'] . "</p>";
     $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";
     $content .= "<p>Je kunt je ticket downloaden en printen door op deze link te klikken <a href='".$ticketurl."'>".$ticketurl."</a></p>";
+    $content .= "<p>Een allerlaatst hebben we wat <a href='http://stichtingfamiliarforest.nl/info.html'>informatie</a> voor je klaar gezet</p>";
 
     $content .= get_email_footer();
 
