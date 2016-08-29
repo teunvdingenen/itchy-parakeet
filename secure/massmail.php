@@ -67,8 +67,32 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             addError("Je hebt inschrijvingen geselecteerd en probeert transactie ids of codes te versturen, dat kan niet..");
         }
         $query = "SELECT p.firstname, p.lastname, p.email FROM person p WHERE NOT EXISTS (SELECT 1 FROM buyer b WHERE b.email = p.email and b.complete = 1) AND NOT EXISTS (SELECT 1 from raffle r WHERE r.email = p.email and r.valid = 1)";
+    } else if( $mailto == 'test' ) {
+        addError("Testmail send");
+        $mailcontent = nl2br($content);
+        $email = 'info@stichtingfamiliarforest.nl';
+        $fullname = "Voornaam Achternaam";
+        if( substr_count($mailcontent, $insfirst)) {
+            $mailcontent = str_replace($insfirst, 'Voornaam', $mailcontent);
+        }
+        if( substr_count($mailcontent, $inslast)) {
+            $mailcontent = str_replace($inslast, 'Achternaam', $mailcontent);
+        }
+        if( substr_count($mailcontent, $insraffle)) {
+            $mailcontent = str_replace($insraffle, 'AA00BB01', $mailcontent);
+        }
+        if( substr_count($mailcontent, $instransaction)) {
+            $mailcontent = str_replace($instransaction, "tr_abcdefg", $mailcontent);
+        }
+        if( substr_count($mailcontent, $insticketurl)) {
+            $url = "http://stichtingfamiliarforest.nl/ticket.php?ticket=123456789abcdefg";
+            $htmltag = "<a href='".$url."'>".$url."</a>";
+            $mailcontent = str_replace($insticketurl, $htmltag, $mailcontent);
+        }
+        $mailcontent = get_email_header() . $mailcontent . get_email_footer();
+        send_mail($email, $fullname, $subject, $mailcontent);
     }
-    if( $returnVal == "" ) {
+    if( $returnVal == "" && $mailto != 'test' ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
         if( $mysqli->connect_errno ) {
             addError("Connectie met Database is kapot, zoek hulp!");
@@ -79,7 +103,6 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         if( $result === FALSE ) {
             addError("Er iets mis gegaan met het zoeken van mensen in de database, zoek hulp!");
         } else {
-
             while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
                 $mailcontent = nl2br($content);
                 $email = $row['email'];
@@ -105,6 +128,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 send_mail($email, $fullname, $subject, $mailcontent);
             }
         }
+        $mysqli->close();
     }
 }
 
@@ -206,6 +230,12 @@ function addError($value) {
                                 <label>
                                     <input type="radio" name="mailto" id="buyer" value="buyer" <?php if($mailto == "buyer") echo( "checked"); ?> >
                                     Verkochte tickets
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="mailto" id="test" value="test" <?php if($mailto == "test") echo( "checked"); ?> >
+                                    Testmail naar info@..
                                 </label>
                             </div>
                         </div>
