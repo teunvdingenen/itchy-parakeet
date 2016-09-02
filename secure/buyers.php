@@ -26,6 +26,7 @@ $resultHTML.="<th>Email</th>";
 $resultHTML.="<th>Telefoon</th>";
 $resultHTML.="<th>Code</th>";
 $resultHTML.="<th>Transactie ID</th>";
+$resultHTML.="<th>Ticketlink</th>";
 $resultHTML.="</th></thead>";
 
 $limit = 50;
@@ -95,7 +96,7 @@ if( $page >= $pages ) {
 $offset = $page * $limit;
 
 $sqlresult = "";
-$query = sprintf("SELECT p.firstname, p.lastname, p.email, p.phone, b.code, b.id FROM person p join buyer b on p.email = b.email WHERE " . $filterstr. " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
+$query = sprintf("SELECT p.firstname, p.lastname, p.email, p.phone, b.code, b.id, b.ticket FROM person p join buyer b on p.email = b.email WHERE " . $filterstr. " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
         $sqlresult = $mysqli->query($query);
 
 if( $mysqli->connect_errno ) {
@@ -114,7 +115,12 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_ASSOC))
 {
     $resultHTML.="<tr>";
     foreach($row as $key=>$value) {
-        $resultHTML.= "<td><div id='".$key."' class='table-cell'>" . $value . "</div></td>";
+        if( $key == 'ticket' ) {
+            $resultHTML.= "<td><div id='".$key."' class='table-cell'><a href=http://stichtingfamiliarforest.nl/ticket.php?ticket=" . $value . ">link</a></div></td>";
+        } else {
+            $resultHTML.= "<td><div id='".$key."' class='table-cell'>" . $value . "</div></td>";
+        }
+
     }
     $resultHTML.= "</tr>";
 }

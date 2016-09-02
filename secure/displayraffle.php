@@ -20,13 +20,18 @@ $menu_html = get_menu_html();
 $statistic_string = "";
 $resultHTML="<table class='table table-striped table-bordered table-hover table-condensed'>";
 $resultHTML.="<thead><tr class='header-row'>";
-$resultHTML.="<th>Uitloten</th>";
+if( $user_info_permissions & PERMISSION_RAFFLE ) {
+    $resultHTML.="<th>Uitloten</th>";
+}
 $resultHTML.="<th>Voornaam</th>";
 $resultHTML.="<th>Achternaam</th>";
 $resultHTML.="<th>Email</th>";
 $resultHTML.="<th>Telefoon</th>";
 $resultHTML.="<th>Code</th>";
 $resultHTML.="<th>Status</th>";
+if( $user_info_permissions & PERMISSION_RAFFLE ) {
+    $resultHTML.="<th>Gratis Ticket</th>";
+}
 $resultHTML.="</th></thead>";
 
 $limit = 50;
@@ -111,11 +116,11 @@ $mysqli->close();
 while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
 {
     $resultHTML.="<tr>";
-    $resultHTML.="<td>";
     if( $user_info_permissions & PERMISSION_RAFFLE ) {
+        $resultHTML.="<td>";
         $resultHTML.="<button class='btn btn-sm unraffle' type='button'>Uitloten</button>";
+        $resultHTML.="</td>";
     }
-    $resultHTML.="</td>";
     foreach($row as $key=>$value) {
         if( $key == 2 ) {
             $resultHTML.= "<td><div id='email' class='table-cell'>" . $value . "</div></td>";
@@ -131,6 +136,12 @@ while($row = mysqli_fetch_array($sqlresult,MYSQLI_NUM))
         } else {
             $resultHTML.= "<td><div class='table-cell'>" . $value . "</div></td>";
         }
+    }
+    if( $user_info_permissions & PERMISSION_RAFFLE ) {
+        $resultHTML.="<td>";
+        $resultHTML.="<button class='btn btn-sm btn-warning fullticket' type='button'>Vol Ticket</button>";
+        $resultHTML.="</td>";
+        
     }
     $resultHTML.= "</tr>";
 }

@@ -14,7 +14,12 @@ function get_hash($code,$id) {
 }
 
 function set_hash($mysqli, $id, $code) {
-	if( !hasPaid($mysqli, $id, $code)) {
+	$result = $mysqli->query(sprintf("SELECT share from buyer where code = '%s'",$mysqli->real_escape_string($code)));
+	if( $result->num_rows != 1 ) {
+		return false;
+	}
+	$share = mysqli_fetch_array($sqlresult,MYSQLI_ASSOC)['share'];
+	if( !hasPaid($mysqli, $id, $code) && $share != 0 ) {
 	    $email_error("Er gaat iets fout met hasPaid voor code: " . $code);
 	    return false;
 	} else {
