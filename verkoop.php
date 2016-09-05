@@ -2,7 +2,7 @@
 include "initialize.php";
 include "functions.php";
 
-if( strtotime('now') > strtotime('2016-09-05 00:00') ) {
+if( strtotime('now') > strtotime('2016-09-09 00:00') ) {
     header('Location: deelnemen');
 }
 

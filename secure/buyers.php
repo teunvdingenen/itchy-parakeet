@@ -22,6 +22,7 @@ $resultHTML="<table class='table table-striped table-bordered table-hover table-
 $resultHTML.="<thead><tr class='header-row'>";
 $resultHTML.="<th>Voornaam</th>";
 $resultHTML.="<th>Achternaam</th>";
+$resultHTML.="<th>Motivatie</th>";
 $resultHTML.="<th>Email</th>";
 $resultHTML.="<th>Telefoon</th>";
 $resultHTML.="<th>Code</th>";
@@ -96,7 +97,7 @@ if( $page >= $pages ) {
 $offset = $page * $limit;
 
 $sqlresult = "";
-$query = sprintf("SELECT p.firstname, p.lastname, p.email, p.phone, b.code, b.id, b.ticket FROM person p join buyer b on p.email = b.email WHERE " . $filterstr. " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
+$query = sprintf("SELECT p.firstname, p.lastname, p.motivation, p.email, p.phone, b.code, b.id, b.ticket FROM person p join buyer b on p.email = b.email WHERE " . $filterstr. " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
         $sqlresult = $mysqli->query($query);
 
 if( $mysqli->connect_errno ) {

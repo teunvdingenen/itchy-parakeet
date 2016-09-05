@@ -33,6 +33,30 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Familiar Forest is in volle gang!</h4>
+              </div>
+              <div class="modal-body">
+                Vanaf 5 september worden de eerste ontdekkingen gedaan in Nieuw Babylon. Het kan zijn dat we minder goed bereikbaar zijn dan je van ons gewend bent. We zullen tot 10 september onze mail blijven lezen op <a href="mailto:info@stichtingfamiliarforest.nl">info@stichtingfamiliarforest.nl</a>. <br>
+                <?php if( strtotime('now') > strtotime('2016-09-09 00:00') ) { 
+                    echo "Voor noodgevallen zijn we te bereiken op het telefoonnummer: +32 476 627 294.";
+                } else {
+                    echo "Vanaf 10 september zal hier een telefoonnummer beschikbaar zijn voor noodgevallen.";
+                }
+                ?>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Afsluiten</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <div id="header" class="text-center">
             <div class="container">
                 <div class="row">
@@ -147,5 +171,13 @@
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+        <script>
+        $(document).ready(function() {
+            setTimeout(
+                function() {
+                  $('#myModal').modal('toggle');
+                }, 3000);
+        });
+        </script>
     </body>
 </html>

@@ -26,7 +26,7 @@ $sqlresult = 0;
 
 $result = "";
 
-$tickets_half = 0;
+$tickets_half = $tickets_free = 0;
 
 $displayname = "";
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
@@ -66,6 +66,8 @@ if( $statistic_type == 'signup') {
     	$query = "SELECT COUNT(*) from buyer b where exists (Select 1 from halfticket h where h.code = b.code) and b.complete = 1";
     	$result = $mysqli->query($query);
     	$tickets_half = mysqli_fetch_array($result,MYSQLI_NUM)[0];
+    	$result = $mysqli->query("SELECT COUNT(*) FROM buyer b where b.code = b.id");
+    	$tickets_free = mysqli_fetch_array($result,MYSQLI_NUM)[0];
         $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type, p.signupdate
             FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
             WHERE EXISTS (SELECT 1 FROM buyer as b WHERE p.email = b.email AND b.complete = 1) ";
@@ -174,12 +176,23 @@ $resultHTML="<table class='table table-sm table-bordered table-hover table-conde
 
 $resultHTML.="<tr>";
 $resultHTML.="<th>Totaal " . $displayname . "</th>";
-$resultHTML.="<td>".$total."</td>";
+if( $statistic_type == 'buyer') {
+	$totalbought = $total-$tickets_free-($tickets_half/2);
+	$resultHTML .= "<td>".$total."(".$totalbought.")</td>";
+} else {
+	$resultHTML.="<td>".$total."</td>";
+}
 $resultHTML.="</tr>";
 if( $statistic_type == 'buyer' || $statistic_type == 'raffle' || $statistic_type == 'secondraffle') {
 	$resultHTML.="<tr>";
 	$resultHTML.="<th>Totaal Half Tickets</th>";
 	$resultHTML.="<td>".$tickets_half."</td>";
+	$resultHTML.="</tr>";
+}
+if( $statistic_type == 'buyer' ) {
+	$resultHTML.="<tr>";
+	$resultHTML.="<th>Totaal Hele Tickets</th>";
+	$resultHTML.="<td>".$tickets_free."</td>";
 	$resultHTML.="</tr>";
 }
 
