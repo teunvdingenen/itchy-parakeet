@@ -2,7 +2,7 @@
 include "initialize.php";
 include "functions.php";
 
-if( strtotime('now') > strtotime('2016-09-09 00:00') ) {
+if( strtotime('now') > strtotime('2016-09-10 00:00') ) {
     header('Location: deelnemen');
 }
 
@@ -338,10 +338,6 @@ function addError($value) {
                 <div class="form-group row">
                     <label for="method" class="col-sm-2 form-control-label">Selecteer betalingsmethode:</label>
                     <div class="col-sm-10">
-                        <div class="alert alert-info" role="alert">
-                            Op dit moment kun je betalen met iDeal, Bancontact/Mister Cash en doormiddel van een overboeking. We vermoeden dat we hiermee het grootste deel van de bezoekers van dienst kunnen zijn.
-                    We hopen ook binnenkort creditcard betalingen te kunnen ontvangen maar weten nog niet wanneer we hiermee kunnen beginnen. Mocht je niet gebruik kunnen maken van de beschikbare betaalmethodes mail dan naar: <?=$mailtolink?>
-                        </div>
                         <select class="form-control" name="method">
                             <?php
                                 $i = 0;

@@ -1,4 +1,10 @@
-
+function setArrived(ticket) {
+	console.log(ticket);
+	$.post("../verifyticket.php", {"ticket":ticket}, function(response){
+		console.log(response);
+	});
+	location.reload();
+}
 
 function getInfo() {
 	$.get("getarrivedinfo.php", "", function(response){
@@ -30,8 +36,8 @@ function getInfo() {
 				html += "<h4 class='modal-title' id='"+attendee.id+"'>"+name+"</h4>";
 				html += "</div>";
 				html += "<div class='modal-body'>";
-				html += "Ticket code: " + attendee.code + "<br> Transactie: " + attendee.id;
-				html += "</div><div class='modal-footer'></div>";
+				html += "<span id='ticket' style='display: none'>"+attendee.ticket+"</span>Ticket code: " + attendee.code + "<br> Transactie: " + attendee.id;
+				html += "</div><div class='modal-footer'><a class='btn btn-lg btn-primary btn-block btn-sm' role='button' onClick='setArrived(\""+attendee.ticket+"\")' href='#'>Aanwezig</a></div>";
 				html += "</div></div></div>";
 				i++;
 			}
@@ -44,8 +50,5 @@ function getInfo() {
 
 $(document).ready(function() {
 	getInfo();
-	setInterval(function(){ 
-    getInfo();
-}, 5000);
 });
     
