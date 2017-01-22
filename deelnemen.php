@@ -1,10 +1,6 @@
 <?php
 include_once "functions.php";
 
-if( strtotime('now') > strtotime('2016-06-29 00:00') ) {
-    header('Location: index');
-}
-
 $previous = $email = $header = "";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -36,7 +32,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="author" content="Teun van Dingenen">
     <link rel="icon" href="favicon.ico">
 
-    <title>Familiar Forest 2016</title>
+    <title>Familiar Voorjaar 2017</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -61,10 +57,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="default-text">
                 <h1>Familiar Forest 2016</h1>
                 <p class="lead">
-                    Hooggeachte avonturiers, vrienden en buitenlui,
+                   Lieve lenteliefhebbers,
                 </p>
-                <p>De voorbereidingen voor Familiar Forest 2016 zijn ondertussen in volle gang. Op dit moment kunnen deelnemers hun code verzilveren de tweede ronde.</p>
-                <p>Je code verzilveren voor de tweede ronde kan tot en met 29 juni 2016<p>
                 
                 <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
                 </div>

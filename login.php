@@ -27,7 +27,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         if( $mysqli->connect_errno ) {
             $returnVal = "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error. " ";
         } else {
-            $result = $mysqli->query("SELECT * FROM $db_table_users WHERE 
+            $result = $mysqli->query("SELECT * FROM `users` WHERE 
                 (`username` = '$username')");
             if( $result->num_rows == 1 ) {
                 $row = $result->fetch_array(MYSQLI_ASSOC);
@@ -83,7 +83,9 @@ if($error) {
                 <input type="text" id="username" class="form-control" placeholder="Gebruikersnaam" name="username" required autofocus>
                 <label for="password" class="sr-only">Paswoord</label>
                 <input type="password" id="password" class="form-control" placeholder="Paswoord" name="password" required>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Inloggen</button>
+                <a href="create">Ik heb nog geen account</a><br>
+                <a href="password">Ik ben mijn wachtwoord vergeten</a>
             </form>
         </div> <!-- /container -->
 

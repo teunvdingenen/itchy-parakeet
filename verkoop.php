@@ -89,7 +89,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         if( $returnVal == "" ) {
-            $query = sprintf("UPDATE person SET street = '%s', city = '%s', postal = '%s', terms4 = '%s' WHERE email = '%s'",
+            $query = sprintf("UPDATE person p join $current_table s on p.email = s.email SET p.street = '%s', p.city = '%s', p.postal = '%s', s.terms4 = '%s' WHERE p.email = '%s'",
                 $mysqli->real_escape_string($street),
                 $mysqli->real_escape_string($city),
                 $mysqli->real_escape_string($postal),
@@ -131,7 +131,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $payment = $mollie->payments->create(array(
                       "amount" => $amount,
                       "method" => $method,
-                      "description" => "FFF 2016 " . $code,
+                      "description" => "FV 2017 " . $code,
                       "redirectUrl" => "{$protocol}://{$hostname}{$path}/redirect.php?raffle={$raffle}",
                       "metadata" => array("raffle" => $raffle,)
                     ));
@@ -161,7 +161,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 } //End POST
 
 function isInBuyers($mysqli, $code) {
-    $sqlresult = $mysqli->query(sprintf("SELECT b.id FROM buyer b WHERE b.code = '%s'",
+    $sqlresult = $mysqli->query(sprintf("SELECT s.transactionid FROM `$current_table` s WHERE s.code = '%s'",
         $mysqli->real_escape_string($code)));
     if( $sqlresult->num_rows == 1 ) {
         return TRUE;
@@ -171,7 +171,7 @@ function isInBuyers($mysqli, $code) {
 }
 
 function storePaymentId($mysqli, $paymentid, $code, $email) {
-    $sqlresult = $mysqli->query(sprintf("INSERT INTO `buyer` (`id`, `code`, `email`) VALUES ('%s','%s','%s')",
+    $sqlresult = $mysqli->query(sprintf("UPDATE `$current_table` (`transactionid`, `rafflecode`, `email`) VALUES ('%s','%s','%s')",
         $mysqli->real_escape_string($paymentid),
         $mysqli->real_escape_string($code),
         $mysqli->real_escape_string($email)));
@@ -184,7 +184,7 @@ function storePaymentId($mysqli, $paymentid, $code, $email) {
 }
 
 function updatePaymentId($mysqli, $paymentid, $code) {
-    $sqlresult = $mysqli->query(sprintf("UPDATE buyer SET id = '%s' WHERE code = '%s'",
+    $sqlresult = $mysqli->query(sprintf("UPDATE `$current_table` SET transactionid = '%s' WHERE rafflecode = '%s'",
         $mysqli->real_escape_string($paymentid),
         $mysqli->real_escape_string($code)));
     if( $sqlresult === FALSE) {
@@ -196,7 +196,7 @@ function updatePaymentId($mysqli, $paymentid, $code) {
 }
 
 function checkCode($mysqli, $code, $email) {
-    $sqlresult = $mysqli->query(sprintf("SELECT code FROM raffle WHERE email = '%s' AND valid = 1", 
+    $sqlresult = $mysqli->query(sprintf("SELECT rafflecode FROM `$current_table` WHERE email = '%s' AND valid = 1", 
         $mysqli->real_escape_string($email)));
     if( $sqlresult === FALSE) {
         //log error
@@ -215,8 +215,8 @@ function checkCode($mysqli, $code, $email) {
 
 function hasPaid($mysqli, $code) {
     global $mollie;
-    $sqlresult = $mysqli->query(sprintf("SELECT * FROM buyer 
-        WHERE `code`='%s';",$mysqli->real_escape_string($code)));
+    $sqlresult = $mysqli->query(sprintf("SELECT * FROM `$current_table` 
+        WHERE `rafflecode`='%s';",$mysqli->real_escape_string($code)));
     if($sqlresult === FALSE) {
         //log error
         return 0;
@@ -233,7 +233,7 @@ function hasPaid($mysqli, $code) {
 }
 
 function isHalfTicket($mysqli, $code) {
-    $sqlresult = $mysqli->query(sprintf("SELECT * FROM halfticket WHERE code = '%s'", 
+    $sqlresult = $mysqli->query(sprintf("SELECT share FROM $current_table WHERE rafflecode = '%s'", 
         $mysqli->real_escape_string($code)));
     if( $sqlresult === FALSE) {
         //log error
@@ -243,7 +243,8 @@ function isHalfTicket($mysqli, $code) {
         //log error
         return false;
     }
-    return true;
+    $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+    return $row['share'] == "HALF");
 }
 
 function addError($value) {
@@ -287,10 +288,10 @@ function addError($value) {
         <div class="container">
             <div class="form-intro-text">
                 <h1>Code verzilveren</h1>
-                <p>Dit jaar kost deelname aan Familiar Forest 120 euro. Omdat niet alle betaalmethodes hetzelfde kosten hebben we ervoor gekozen de transactiekosten niet hierin te rekenen. Dat maakt het voor ons gemakkelijker om een betrouwbare begroting te maken. Kort geleden hebben we op onze Facebook een bericht geplaatst over <a href='https://www.facebook.com/events/591534081011159/permalink/601364646694769/?ref=1&amp;action_history=null'>de kosten</a></p>
-                <p>Daarnaast moeten we ook jullie adresgegevens opslaan zodat jullie ook officieel mee kunnen als vrijwilligers bij Familiar Forest.</p>
-                <p>Familiar Forest vindt plaats op 10 en 11 september 2016, dit formulier blijft toegankelijk tot en met 27 juni 2016.</p>
-                <p>Het kan altijd zo zijn dat je onverhoopt toch niet kunt op 10 en 11 september. We raden daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering</p>
+                <p>Dit jaar kost deelname aan Familiar Voorjaar 120 euro. Omdat niet alle betaalmethodes hetzelfde kosten hebben we ervoor gekozen de transactiekosten niet hierin te rekenen. Dat maakt het voor ons gemakkelijker om een betrouwbare begroting te maken.</p>
+                <p>Daarnaast moeten we ook jullie adresgegevens opslaan zodat jullie ook officieel mee kunnen als vrijwilligers bij Familiar Voorjaar.</p>
+                <p>Familiar Voorjaar vindt plaats op 5 tot en met 7 mei 2017, dit formulier blijft toegankelijk tot en met 27 juni 2016.</p>
+                <p>Het kan altijd zo zijn dat je onverhoopt toch niet kunt in het weekend van 5 mei 2017. We raden daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering</p>
                 <p>Ben je wel ingeloot maar je code vergeten? Ga dan naar <a href="codevergeten">deze pagina</a> om je code opnieuw op te vragen.</p>
             </div>
             <?php
@@ -353,7 +354,7 @@ function addError($value) {
                     <label class="col-sm-2 form-control-label" for="terms4">Vrijwilliger</label>
                     
                     <div class="col-sm-10">
-                        <div class="alert alert-warning">Deelname aan Familiar Forest betekent dat je jezelf aanmeldt als vrijwilliger bij Stichting Familiar Forest. Tijdens het weekend zul je nader te bepalen werkzaamheden verrichten en zal er een werkbegeleider en aanspreekpunt vanuit de organisatie worden aangewezen.</div>
+                        <div class="alert alert-warning">Deelname aan Familiar Voorjaar betekent dat je jezelf aanmeldt als vrijwilliger bij Stichting Familiar Forest. Tijdens het weekend zul je nader te bepalen werkzaamheden verrichten en zal er een werkbegeleider en aanspreekpunt vanuit de organisatie worden aangewezen.</div>
                         <div class="checkbox">
                             <label>
                                 <input class="checkbox" type="checkbox" id="terms4" name="terms4" value="J">

@@ -26,7 +26,7 @@ if( $mysqli->connect_errno ) {
 
 $fullname = $firstname = $lastname = $contrib0 = $motivation = $phone = $code = $familiar = "";
 $headertext = "Bellen maar!";
-$query = "SELECT p.firstname, p.lastname, c.type, p.familiar, p.motivation, r.email, p.phone, r.code, r.called FROM person p join raffle r on r.email = p.email join contribution c on p.contrib0 = c.id WHERE r.called = 0 AND r.valid = 1 ORDER BY RAND() LIMIT 1";
+$query = "SELECT p.firstname, p.lastname, s.contrib0_type, s.familiar, s.motivation, p.email, p.phone, s.rafflecode, s.called FROM person p join $current_table s on s.email = p.email WHERE s.called = 0 AND s.valid = 1 ORDER BY RAND() LIMIT 1";
 $result = $mysqli->query($query);
 if( $result === FALSE ) {
     //error

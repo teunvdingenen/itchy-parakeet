@@ -15,7 +15,7 @@ class PDF extends FPDF
         // Move to the right
         $this->Cell(80);
         // Title
-        $this->Cell(30,10,'Familiar Forest 2016 - Nieuw Babylon',0,0,'C');
+        $this->Cell(30,10,'Familiar Voorjaar 2017',0,0,'C');
         // Line break
         $this->Ln(20);
     }
@@ -46,8 +46,8 @@ if( isset($_GET['ticket'])) {
     header('Location: index');
 }
 
-$query = sprintf("SELECT p.firstname, p.lastname, p.street, p.postal, p.city, p.motivation, b.code, b.id from person p join
-    buyer b on p.email = b.email where b.ticket = '%s'",$hash);
+$query = sprintf("SELECT p.firstname, p.lastname, p.street, p.postal, p.city, s.motivation, s.code, s.id from person p join
+    $current_table s on p.email = s.email where s.ticket = '%s'",$hash);
 $result = $mysqli->query($query);
 
 if( !$result ) {
@@ -98,7 +98,7 @@ $pdf->SetFont('Arial','',12);
 $pdf->Cell(30);
 $pdf->MultiCell(130,6,'Lieve '.htmlspecialchars_decode($firstname).',',0,'C');
 $pdf->Cell(30);
-$pdf->MultiCell(130,6,'Met dit ticket in de hand ben jij helemaal klaar om naar Familiar Forest 2016 te gaan. Denk er dus wel even aan het uit te printen.',0,'C');
+$pdf->MultiCell(130,6,'Met dit ticket in de hand ben jij helemaal klaar om naar Familiar Voorjaar 2017 te gaan. Denk er dus wel even aan het uit te printen.',0,'C');
 $pdf->Ln();
 $pdf->Cell(30);
 $pdf->MultiCell(130,6,'Daarnaast willen we je ook eraan herinneren dat je dit ticket niet kan doorverkopen en het alleen door jou gebruikt kan worden samen met een geldig legitimatiebewijs.',0,'C');

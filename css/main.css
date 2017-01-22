@@ -1,5 +1,5 @@
 body {
-	padding-top: 40px;
+	/* padding-top: 40px; */
 	padding-bottom: 40px;
 	background: #eee;
 }
@@ -133,16 +133,21 @@ body {
 */
 
 #header {
-    height:110px;
+    /*height:110px; */
     color:#fff;
     background-color:#585858;
     margin-bottom:20px;
     padding-bottom:10px;
-    padding-top:20px;
 }
 
 #header a {
   color:#efefef;
+  text-align: right;
+  vertical-align: middle;
+}
+
+.login-button {
+  
 }
 
 #signup-button {

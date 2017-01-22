@@ -36,8 +36,8 @@ function email_error($message) {
 }
 
 function get_name($mysqli, $code) {
-    $sqlquery = sprintf("SELECT p.firstname FROM person p join buyer b on b.email = p.email
-        WHERE  b.code = '%s'", $mysqli->real_escape_string($code));
+    $sqlquery = sprintf("SELECT p.firstname FROM person p join $current_table s on p.email = s.email
+        WHERE  s.rafflecode = '%s'", $mysqli->real_escape_string($code));
     $sqlresult = $mysqli->query($sqlquery);
     if( $sqlresult === FALSE) {
         return FALSE;
@@ -52,7 +52,7 @@ function get_name($mysqli, $code) {
 
 function get_paid($mysqli, $code) {
     global $mollie;
-    $sqlquery = sprintf("SELECT b.id FROM buyer b WHERE b.code = '%s'",
+    $sqlquery = sprintf("SELECT s.transactionid FROM $current_table s WHERE s.rafflecode = '%s'",
         $mysqli->real_escape_string($code));
     $sqlresult = $mysqli->query($sqlquery);
     if( $sqlresult === FALSE) {

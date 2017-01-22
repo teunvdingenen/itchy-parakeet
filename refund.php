@@ -61,11 +61,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             } catch (Mollie_API_Exception $e) {
                 addError("Er is iets fout gegaan met het ophalen van je betaling. Stuur voor meer infomatie een email naar: ".$mailtolink);
             }
-            $sqlresult = $mysqli->query(sprintf("UPDATE buyer set complete = 2 where email = '%s'",$email));
+            $sqlresult = $mysqli->query(sprintf("UPDATE $current_table set complete = 2 where email = '%s'",$email));
             if( !$sqlresult ) {
                 email_error("Buyer.complete niet geupdate naar 2 voor email: ".$email." sqlerror: ".$mysqli->error);
             }
-
         } 
         $mysqli->close();
     }
@@ -78,7 +77,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 } //End POST
 
 function checkCode($mollie, $mysqli, $code, $transaction_id, $email) {
-    $sqlresult = $mysqli->query(sprintf("SELECT * FROM buyer WHERE email = '%s'", 
+    $sqlresult = $mysqli->query(sprintf("SELECT * FROM $current_table WHERE email = '%s'", 
         $mysqli->real_escape_string($email)));
     if( $sqlresult === FALSE) {
         //log error
@@ -89,9 +88,9 @@ function checkCode($mollie, $mysqli, $code, $transaction_id, $email) {
         return false;
     }
     $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
-    if( $row['code'] != $code ) {
+    if( $row['rafflecode'] != $code ) {
         return false;
-    } else if( $row['id'] != $transaction_id) { 
+    } else if( $row['transactionid'] != $transaction_id) { 
         return false;
     } else if( $row['complete'] != 1 ) {
         return false;

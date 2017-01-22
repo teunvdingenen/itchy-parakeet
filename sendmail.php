@@ -7,7 +7,7 @@ include 'initialize.php';
 function get_email_header() {
 	return "<head>
 
-    <title>Familiar Forest Festival 2016</title>
+    <title>Familiar Voorjaar 2017</title>
 
     <!-- Custom styles for this template -->
     <style>

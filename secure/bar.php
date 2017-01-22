@@ -37,10 +37,10 @@ $resultHTML.="<th>Omschrijving</th>";
 $resultHTML.="<th>Benodigdheden</th>";
 $resultHTML.="</tr></thead>";
 
-$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.complete = 1 ORDER BY b.number";
+$query = "SELECT p.firstname, p.lastname, p.email, p.phone, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need FROM person p join $current_table s p.email = s.email WHERE s.complete = 1 ORDER BY b.number";
 
 if( $baronly ) {
-    $query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE c0.type = 'bar' AND b.complete = 1 ORDER BY b.number";
+    $query = "SELECT p.firstname, p.lastname, p.email, p.phone, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need FROM person p join $current_table s p.email = s.email WHERE s.task = 'bar' AND s.complete = 1 ORDER BY b.number";
 }
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);

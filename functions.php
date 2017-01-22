@@ -20,9 +20,9 @@ function test_input($data) {
  	$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
  	$row = array();
  	if( $mysqli->connect_errno ) {
-  		return false;
-    } else {
-    	$query = "SELECT * FROM `$db_table_users` WHERE (`$db_user_username` = '$username')";
+  	return false;
+  } else {
+  	$query = "SELECT * FROM `users` WHERE (`username` = '$username')";
 	 	$result = $mysqli->query($query);
 	 	$mysqli->close();
 	 	if( $result === FALSE ) {
@@ -32,7 +32,7 @@ function test_input($data) {
 	 	} else {
 	 		return false;
 	 	}
-	}
+  }
  	return $row;
 }
 
@@ -44,8 +44,8 @@ function get_signups() {
 	if( $mysqli->connect_errno ) {
   		return false;
   	} else {
-  		$query = "SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.motivation, p.familiar, p.editions, p.partner, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, p.preparations, p.visits
-            FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id";
+  		$query = "SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, s.motivation, s.familiar, p.editions, s.partner, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations, p.visits
+            FROM person p join $current_table s on p.email = s.email";
   		$result = $mysqli->query($query);
   		if( $result === FALSE ) {
   			 //error
@@ -63,7 +63,7 @@ function get_signup_statistics() {
   if( $mysqli->connect_errno ) {
       return false;
     } else {
-        $query = "SELECT p.birthdate, p.gender, p.city, p.visits, p.partner, c0.type, c1.type FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id";
+        $query = "SELECT p.birthdate, p.gender, p.city, p.visits, s.partner, s.contrib0_type, s.contrib1_type FROM person p join $current_table s on p.email = s.email";
         $result = $mysqli->query($query);
         if( $result === FALSE ) {
             //echo $mysqli->error;
@@ -81,15 +81,14 @@ function get_buyers() {
 	if( $mysqli->connect_errno ) {
   		return false;
   	} else {
-  		$result = $mysqli->query("SELECT * FROM `$db_table_buyer` WHERE 1");
+  		$result = $mysqli->query("SELECT * FROM $current_table WHERE complete = 1");
   	}
   $mysqli->close();
   return $result;
 }
 
-function get_signup($email) {
+function get_person($email) {
   global $db_host, $db_user, $db_pass, $db_name;
-  global $db_table_person, $db_table_contrib;
   $result = "";
   $row = array();
   $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
@@ -111,16 +110,15 @@ function get_signup($email) {
   return $row;
 }
 
-function get_contrib($id) {
+function get_signup($email) {
   global $db_host, $db_user, $db_pass, $db_name;
-  global $db_table_person, $db_table_contrib;
   $result = "";
   $row = array();
   $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
   if( $mysqli->connect_errno) {
     return false;
   } else {
-    $query = sprintf("SELECT * FROM contribution WHERE id = '%s'", $mysqli->real_escape_string($id));
+    $query = sprintf("SELECT * FROM $current_table WHERE email = '%s'", $mysqli->real_escape_string($email));
     $result = $mysqli->query($query);
     $mysqli->close();
     if( $result === FALSE ) {

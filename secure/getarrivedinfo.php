@@ -17,7 +17,7 @@ if( $user_info_permissions & PERMISSION_DISPLAY != PERMISSION_DISPLAY ) {
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-$sqlresult = $mysqli->query("SELECT p.firstname, p.lastname, b.code, b.id, b.attending, b.ticket FROM buyer b join person p on p.email = b.email WHERE complete = 1");
+$sqlresult = $mysqli->query("SELECT p.firstname, p.lastname, b.code, b.id, b.attending, b.ticket FROM buyer b join person p on p.email = b.email WHERE complete = 1 ORDER BY p.firstname");
 
 if( !$sqlresult ) {
 	echo $mysqli->error;

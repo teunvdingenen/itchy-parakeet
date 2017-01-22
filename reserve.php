@@ -18,17 +18,17 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("SELECT 1 from buyer where email = '%s' and complete = 1", $mysqli->real_escape_string($email));
+        $query = sprintf("SELECT 1 from $current_table where email = '%s' and complete = 1", $mysqli->real_escape_string($email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult->num_rows > 0 ) {
             addError("Het lijkt erop dat je al een ticket hebt. Stuur voor meer informatie een email naar".$mailtolink);
         }
         if( $returnVal == "" ) {
-            $sqlresult = $mysqli->query(sprintf("SELECT 1 from person where email = '%s'",$mysqli->real_escape_string($email)));
+            $sqlresult = $mysqli->query(sprintf("SELECT 1 from $current_table where email = '%s'",$mysqli->real_escape_string($email)));
             if( $sqlresult->num_rows < 1 ) {
                 addError("We hebben geen aanmelding van jou ontvangen dus kunnen we je helaas niet inschrijven voor de reservelijst");
             } else {
-                $query = sprintf("UPDATE person SET round = 2 WHERE email = '%s'",$mysqli->real_escape_string($email));
+                $query = sprintf("UPDATE $current_table SET round = 2 WHERE email = '%s'",$mysqli->real_escape_string($email));
                 if( !$mysqli->query($query) ) {
                     addError("Er is iets fout gegaan met het opslaan van je verzoek. Stuur voor meer infomatie een email naar:".$mailtolink);
                 }
@@ -83,9 +83,9 @@ function addError($value) {
 
         <div class="container">
             <div class="default-text">
-                <h1>Familiar Forest 2016</h1>
+                <h1>Familiar Voorjaar 2017</h1>
                 <p class="lead">
-                    Hooggeachte avonturiers, vrienden en buitenlui,
+                    Lieve Lenteliefhebbers,
                 </p>
                 <p>De ervaring leert dat het nog wel eens voorkomt dat een deelnemer onverhoopt toch niet mee kan naar Familiar Forest. Wanneer iemand ervoor kiest zijn ticket terug te
                     willen verkopen zullen we proberen deze opnieuw te verkopen aan iemand die daar interesse in heeft en deze alsnog de mogelijkheid geven om deel te nemen aan Familiar Forest 2016</p>

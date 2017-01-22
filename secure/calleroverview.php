@@ -60,7 +60,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["rafflecode"]) ) {
         $rafflecode = test_input($_POST["rafflecode"]);
         if( $rafflecode != "" ) {
-            $filtersql[] = "r.code = '" . $mysqli->real_escape_string($rafflecode)."'";
+            $filtersql[] = "s.rafflecode = '" . $mysqli->real_escape_string($rafflecode)."'";
         }
     }
     if( !empty($_POST["notcontacted"]) ) {
@@ -77,7 +77,7 @@ foreach($filtersql as $filter) {
 }
 
 $sqlresult = "";
-$query = "SELECT p.firstname, p.lastname, r.email, p.phone, r.code, r.called, p.motivation FROM person p join raffle r on r.email = p.email WHERE r.valid = 1 AND ".$filterstr;
+$query = "SELECT p.firstname, p.lastname, p.email, p.phone, s.rafflecode, s.called, s.motivation FROM person p join $current_table s on s.email = p.email WHERE r.valid = 1 AND ".$filterstr;
 
 if( $mysqli->connect_errno ) {
     return false;

@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
 
-    <title>Familiar Forest 2016</title>
+    <title>Familiar Forest 2017</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -32,14 +32,14 @@
     <div class="container">
 
       <div class="default-text">
-        <h1>Familiar Forest 2016</h1>
+        <h1>Familiar Voorjaar 2017</h1>
         <p>
-            Lieve Avonturiers,
+            Lieve Lente liefhebbers,
         </p>
         <p>
             Helaas is het inschrijvingstermijn voor de eerste ronde verlopen. Komende week zal de loting plaatsvinden en in die tijd kun je niet gebruik maken van ons inschrijfformulier. </p>
         <p>
-            Maar niet getreurd! Vanaf 18 mei kun je jezelf weer inschrijven voor de tweede ronde! Je hebt dus nog wel een kans om deel te nemen aan Familiar Forest 2016.
+            Maar niet getreurd! Vanaf 18 mei kun je jezelf weer inschrijven voor de tweede ronde! Je hebt dus nog wel een kans om deel te nemen aan Familiar Voorjaar 2017.
         </p>
         <p>
             <div class='alert alert-info'>

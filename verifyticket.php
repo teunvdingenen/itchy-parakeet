@@ -9,8 +9,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 		return;
 	}
 	$ticketId = $mysqli->real_escape_string($_POST['ticket']);
-	$sqlresult = $mysqli->query(sprintf("SELECT p.firstname, p.lastname, p.birthdate, b.task, b.id, b.code, b.attending
-		FROM buyer b join person p on p.email = b.email where b.ticket = '%s' and b.complete = 1",$ticketId));
+	$sqlresult = $mysqli->query(sprintf("SELECT p.firstname, p.lastname, p.birthdate, s.task, s.transactionid, s.rafflecode, s.attending
+		FROM $current_table s join person p on p.email = s.email where s.ticket = '%s' and s.complete = 1",$ticketId));
 	if( $sqlresult === FALSE ) {
 		$array = array('message' => $mysqli->error);
 		$array['status'] = 'ERR';
@@ -23,7 +23,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 		$row = $sqlresult->fetch_array(MYSQL_ASSOC);
 		$row['task'] = translate_task($row['task']);
 		if( $row['attending'] == 0 ) {
-			$updateresult = $mysqli->query("UPDATE buyer set attending = 1 where ticket = '$ticketId'");
+			$updateresult = $mysqli->query("UPDATE $current_table set attending = 1 where ticket = '$ticketId'");
 			if( $updateresult === FALSE ) {
 				$row['status'] = 'ERR';
 				$row['message'] = $mysqli->error;

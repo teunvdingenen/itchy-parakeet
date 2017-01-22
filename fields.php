@@ -1,97 +1,39 @@
 <?php
 
+if( !defined('PERMISSION_PARTICIPANT')){
+	define('PERMISSION_PARTICIPANT', 1);
+}
 if( !defined('PERMISSION_DISPLAY')){
-	define('PERMISSION_DISPLAY', 1);
+	define('PERMISSION_DISPLAY', 2);
 }
 if( !defined('PERMISSION_RAFFLE')){
-    define('PERMISSION_RAFFLE',2);
+    define('PERMISSION_RAFFLE',4);
 }
 if( !defined('PERMISSION_EDIT')){
-   define( 'PERMISSION_EDIT',4);
+   define( 'PERMISSION_EDIT',8);
 }
 if( !defined('PERMISSION_REMOVE')) {
-    define('PERMISSION_REMOVE', 8);
+    define('PERMISSION_REMOVE', 16);
 }
 if( !defined('PERMISSION_USER')) {
-    define('PERMISSION_USER', 16);
+    define('PERMISSION_USER', 32);
 }
 if( !defined('PERMISSION_CALLER')) {
-	define('PERMISSION_CALLER', 32);
+	define('PERMISSION_CALLER', 64);
 }
 if( !defined('PERMISSION_VOLUNTEERS')) {
-	define('PERMISSION_VOLUNTEERS', 64);
+	define('PERMISSION_VOLUNTEERS', 128);
 }
 if( !defined('PERMISSION_ACTS')) {
-	define('PERMISSION_ACTS', 128);
+	define('PERMISSION_ACTS', 256);
 }
 if( !defined('PERMISSION_BAR')) {
-	define('PERMISSION_BAR', 256);
+	define('PERMISSION_BAR', 512);
 }
 if( !defined('PERMISSION_NACHT')) {
-	define('PERMISSION_NACHT', 512);
+	define('PERMISSION_NACHT', 1024);
 }
 
-$db_table_person    = "person";
-$db_table_contrib   = "contribution";
-$db_table_raffle    = "raffle";
-$db_table_buyer     = "buyer";
-$db_table_users		= "users";
-
-$db_person_first    = "firstname";
-$db_person_last     = "lastname";
-$db_person_birth    = "birthdate";
-$db_person_email    = "email";
-$db_person_street	= "street";
-$db_person_postal	= "postal";
-$db_person_city     = "city";
-$db_person_gender   = "gender";
-$db_person_phone    = "phone";
-$db_person_visits    = "visits";
-$db_person_editions = "editions";
-$db_person_partner  = "partner";
-$db_person_motivation = "motivation";
-$db_person_familiar = "familiar";
-$db_person_round    = "round";
-$db_person_date		= "signupdate";
-
-$db_person_contrib0 = "contrib0";
-$db_person_contrib1 = "contrib1";
-$db_person_preparations = "preparations";
-$db_person_terms0   = "terms0";
-$db_person_terms1   = "terms1";
-$db_person_terms2   = "terms2";
-$db_person_terms3   = "terms3";
-$db_person_terms4   = "terms4";
-
-$db_contrib_id      = "id";
-$db_contrib_type    = "type";
-$db_contrib_desc    = "description";
-$db_contrib_needs   = "needs";
-
-$db_raffle_code     = "code";
-$db_raffle_email    = "email";
-$db_raffle_called   = "called";
-$db_raffle_valid	= "valid";
-
-$db_buyer_email     = "email";
-$db_buyer_raffle    = "code";
-$db_buyer_id        = "id";
-$db_buyer_complete  = "complete";
-$db_buyer_task		= "task";
-$db_buyer_number	= "number";
-$db_buyer_note		= "note";
-
-$db_user_username  		= "username";
-$db_user_password		= "password";
-$db_user_name 			= "name";
-$db_user_permissions	= "permissions";
-
-$db_fk_person_contrib0 = "fk_percontrib0";
-$db_fk_person_contrib1 = "fk_percontrib1";
-
-$db_fk_raffle_person = "fk_rafper";
-
-$db_fk_buyer_person = "fk_buyper";
-$db_fk_buyer_raffle = "fk_buyraf";
+$current_table = 'fv2017';
 
 ?>

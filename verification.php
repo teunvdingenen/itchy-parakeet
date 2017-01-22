@@ -41,9 +41,9 @@ catch (Mollie_API_Exception $e) {
 }
 
 function send_confirmation($mysqli, $payment_id) {
-    $query = sprintf("SELECT p.firstname, p.lastname, p.email, r.code, b.ticket
-        FROM person p join raffle r on r.email = p.email join buyer b on b.email = p.email
-        WHERE b.id = '%s'", $mysqli->real_escape_string($payment_id));
+    $query = sprintf("SELECT p.firstname, p.lastname, p.email, s.rafflecode, s.ticket
+        FROM person p join $current_table s on s.email = p.email
+        WHERE s.transactionid = '%s'", $mysqli->real_escape_string($payment_id));
     $sqlresult = $mysqli->query($query);
     if( $sqlresult->num_rows != 1 ) {
         return FALSE;
@@ -53,24 +53,24 @@ function send_confirmation($mysqli, $payment_id) {
     $ticketurl = "http://stichtingfamiliarforest.nl/ticket.php?ticket=".$row['ticket'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen naar Familiar Forest 2016 kunnen!</p>";
-    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar het is goed om alvast 10 en 11 september 2016 vrij te maken in je agenda. Houd onze <a href'https://www.facebook.com/events/591534081011159/'>Facebook</a> in de gaten voor meer nieuws.</p>";
+    $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen naar Familiar Voorjaar 2017 kunnen!</p>";
+    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar het is goed om alvast 5 tot en met 7 mei 2017 vrij te maken in je agenda. Houd onze <a href'https://www.facebook.com/events/1428059363879439/'>Facebook</a> in de gaten voor meer nieuws.</p>";
     $content .= "<p>Het is goed om de volgende informatie nog even goed te bewaren:</p>";
-    $content .= "<p>Je deelname code is: " . $row['code'] . "</p>";
+    $content .= "<p>Je deelname code is: " . $row['rafflecode'] . "</p>";
     $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";
     $content .= "<p>Je kunt je ticket downloaden en printen door op deze link te klikken <a href='".$ticketurl."'>".$ticketurl."</a></p>";
-    $content .= "<p>Een allerlaatst hebben we wat <a href='http://stichtingfamiliarforest.nl/info.html'>informatie</a> voor je klaar gezet</p>";
+    //$content .= "<p>Een allerlaatst hebben we wat <a href='http://stichtingfamiliarforest.nl/info.html'>informatie</a> voor je klaar gezet</p>";
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Forest 2016 Deelname bevestiging", $content);
+    send_mail($row['email'], $fullname, "Familiar Voorjaar 2017 Deelname bevestiging", $content);
     return true;
 }
 
 function send_confirmation_refund($mysqli, $payment_id) {
     $query = sprintf("SELECT p.firstname, p.lastname, p.email
-        FROM person p join buyer b on b.email = p.email
-        WHERE b.id = '%s'", $mysqli->real_escape_string($payment_id));
+        FROM person p join $current_table s on s.email = p.email
+        WHERE s.transactionid = '%s'", $mysqli->real_escape_string($payment_id));
     $sqlresult = $mysqli->query($query);
     if( $sqlresult->num_rows != 1 ) {
         return FALSE;
@@ -80,19 +80,19 @@ function send_confirmation_refund($mysqli, $payment_id) {
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
     $content .= "<p>Je verzoek voor een refund op je ticketgeld hebben we in goede orde ontvangen. Normaal gesproken ontvang je het geld na een werkdag terug op je rekening.</p>";
-    $content .= "<p>We vinden het erg jammer dat we je er niet bij hebben op Familiar Forest. Hopelijk zien we volgend jaar!<p>";
+    $content .= "<p>We vinden het erg jammer dat we je er niet bij hebben op Familiar Forest. Hopelijk zien we je bij de volgende editie!<p>";
     $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen naar deze email.";
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Forest 2016 Refund bevestiging", $content);
+    send_mail($row['email'], $fullname, "Familiar Voorjaar 2017 Refund bevestiging", $content);
     return true;
 }
 
 function send_confirmation_refund_half($mysqli, $payment_id) {
     $query = sprintf("SELECT p.firstname, p.lastname, p.email
-        FROM person p join buyer b on b.email = p.email
-        WHERE b.id = '%s'", $mysqli->real_escape_string($payment_id));
+        FROM person p join $current_table s on s.email = p.email
+        WHERE s.transactionid = '%s'", $mysqli->real_escape_string($payment_id));
     $sqlresult = $mysqli->query($query);
     if( $sqlresult->num_rows != 1 ) {
         return FALSE;
@@ -107,12 +107,12 @@ function send_confirmation_refund_half($mysqli, $payment_id) {
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Forest 2016 Half ticket", $content);
+    send_mail($row['email'], $fullname, "Familiar Voorjaar 2017 Half ticket", $content);
     return true;
 }
 
 function isHalfTicket($mysqli, $code) {
-    $sqlresult = $mysqli->query(sprintf("SELECT * FROM halfticket WHERE code = '%s'", 
+    $sqlresult = $mysqli->query(sprintf("SELECT share FROM $current_table WHERE rafflecode = '%s'", 
         $mysqli->real_escape_string($code)));
     if( $sqlresult === FALSE) {
         //log error
@@ -122,11 +122,12 @@ function isHalfTicket($mysqli, $code) {
         //log error
         return false;
     }
-    return true;
+    $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+    return $row['share'] == "HALF");
 }
 
 function database_setpayed($mysqli, $payment_id, $payed) {
-    $sqlquery = sprintf("UPDATE buyer set complete=$payed WHERE id = '%s';",
+    $sqlquery = sprintf("UPDATE $current_table set complete=$payed WHERE transactionid = '%s';",
         $mysqli->real_escape_string($payment_id));
     $sqlresult = $mysqli->query($sqlquery);
     if( $sqlresult === FALSE ) {

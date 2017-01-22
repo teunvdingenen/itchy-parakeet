@@ -33,54 +33,30 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Familiar Forest is in volle gang!</h4>
-              </div>
-              <div class="modal-body">
-                Vanaf 5 september worden de eerste ontdekkingen gedaan in Nieuw Babylon. Het kan zijn dat we minder goed bereikbaar zijn dan je van ons gewend bent. We zullen tot 10 september onze mail blijven lezen op <a href="mailto:info@stichtingfamiliarforest.nl">info@stichtingfamiliarforest.nl</a>. <br>
-                <?php if( strtotime('now') > strtotime('2016-09-10 00:00') ) { 
-                    echo "Voor noodgevallen zijn we te bereiken op het telefoonnummer: +316 46 37 30 69.";
-                } else {
-                    echo "Vanaf 10 september zal hier een telefoonnummer beschikbaar zijn voor noodgevallen.";
-                }
-                ?>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Afsluiten</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
         <div id="header" class="text-center">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-xs-3">
 
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-xs-6">
                         <h1 class="">Stichting Familiar Forest</h1>
                     </div>
-                    <div class="col-md-3">
-
+                    <div class="col-xs-3">
+                        <a class='login-button' href="login">Inloggen</a>
                     </div>
                 </div>
             </div>
         </div>
-        <?php if( strtotime('now') < strtotime('2016-06-29 00:00') ) {
-        echo '<div id="signup-button" class="container">
+        <!--
+        <div id="signup-button" class="container">
             <div class="row">
                 <div class="col-md-12">
                     <p><a class="btn btn-lg btn-primary btn-block" role="button" href="deelnemen">Deelnemen</a></p>
                 </div>
             </div>
-        </div>';
-        } ?>
+        </div>
+        -->
 
         <!--parallax 1 -->
         <section class="bg-1">

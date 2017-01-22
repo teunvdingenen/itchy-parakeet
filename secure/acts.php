@@ -36,7 +36,7 @@ $resultHTML.="</tr></thead>";
 
 $email_adr = "";
 
-$query = "SELECT p.firstname, p.lastname, p.email, p.phone, c0.type, c0.description, c0.needs, c1.type, c1.description, c1.needs, b.number, b.note FROM buyer b join person p on p.email = b.email join contribution c0 on c0.id = p.contrib0 join contribution c1 on c1.id = p.contrib1 WHERE b.task = 'act' AND b.complete = 1 ORDER BY b.number";
+$query = "SELECT p.firstname, p.lastname, p.email, p.phone, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.number, s.note FROM person p join $current_table s p.email = s.email WHERE s.task = 'act' AND s.complete = 1 ORDER BY b.number";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {

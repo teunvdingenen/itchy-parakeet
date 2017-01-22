@@ -20,7 +20,7 @@ $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
     return false;
 } else {
-    $query = sprintf("UPDATE raffle set called=1 WHERE email = '%s';", $email);
+    $query = sprintf("UPDATE $current_table set called=1 WHERE email = '%s';", $email);
     echo $query;
     $sqlresult = $mysqli->query($query);
     echo $sqlresult;

@@ -22,8 +22,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         if( $mysqli->connect_errno ) {
             email_error("Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error. " ");
         } else {
-            $result = $mysqli->query("SELECT p.firstname, p.lastname, r.code, r.email FROM raffle r join person p on p.email = r.email WHERE 
-                (r.email = '$email') AND r.valid = 1");
+            $result = $mysqli->query("SELECT p.firstname, p.lastname, s.code, s.email FROM $current_table s join person p on p.email = s.email WHERE 
+                (s.email = '$email') AND s.valid = 1");
             if( $result->num_rows == 1 ) {
                 $rafflestatus = 1;
                 $row = $result->fetch_array(MYSQLI_ASSOC);

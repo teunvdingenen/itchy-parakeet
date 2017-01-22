@@ -9,49 +9,40 @@ if( !empty($_SESSION["success_email"]) ){
     $email = $_SESSION["success_email"];
 }
 
+$person = get_person($email);
 $signup = get_signup($email);
 if( $signup === FALSE ) {
     $weberror = "Er is helaas iets fout gegaan met het verwerken van je inschrijving. Probeer het nogmaals of stuur een mailtje naar ".$mailtolink.".";
 } else {
-    $contrib0 = get_contrib($signup["contrib0"]);
-    $contrib1 = get_contrib($signup["contrib1"]);
+    $firstname = $person["firstname"];
 
-    $firstname = $signup["firstname"];
-
-    $fullname = $signup["firstname"] ." ". $signup["lastname"];
-    $subject = "Inschrijving Familiar Forest 2016";
+    $fullname = $person["firstname"] ." ". $person["lastname"];
+    $subject = "Inschrijving Familiar Voorjaar 2017";
 
     $content = "<html>".get_email_header();
     $content .= "<p>Lieve ".$firstname.",</p>";
     $content .= "<p>Bedankt voor je inschrijving voor Familiar Forest 2016! Hieronder vind je de informatie die we van jou ontvangen hebben. Zie je iets vreemds? Reply op deze mail en dan kunnen we er samen even naar kijken.</p>";
     $content .= "<table>";
     $content .= "<tr><td>Voornaam</td><td>".$firstname."</td></tr>";
-    $content .= "<tr><td>Achternaam</td><td>".$signup["lastname"]."</td></tr>";
-    $content .= "<tr><td>Woonplaats</td><td>".$signup["city"]."</td></tr>";
-    $content .= "<tr><td>Geboortedatum</td><td>".$signup["birthdate"]."</td></tr>";
-    $content .= "<tr><td>Geslacht</td><td>".translate_gender($signup["gender"])."</td></tr>";
-    $content .= "<tr><td>Email</td><td>".$signup["email"]."</td></tr>";
-    $content .= "<tr><td>Telefoonnummer</td><td>".$signup["phone"]."</td></tr>";
+    $content .= "<tr><td>Achternaam</td><td>".$person["lastname"]."</td></tr>";
+    $content .= "<tr><td>Woonplaats</td><td>".$person["city"]."</td></tr>";
+    $content .= "<tr><td>Geboortedatum</td><td>".$person["birthdate"]."</td></tr>";
+    $content .= "<tr><td>Geslacht</td><td>".translate_gender($person["gender"])."</td></tr>";
+    $content .= "<tr><td>Email</td><td>".$person["email"]."</td></tr>";
+    $content .= "<tr><td>Telefoonnummer</td><td>".$person["phone"]."</td></tr>";
     $content .= "<tr><td>Lieveling</td><td>".$signup["partner"]."</td></tr>";
     $content .= "<tr><td>Motivatie</td><td>".$signup["motivation"]."</td></tr>";
     $content .= "<tr><td>Hoe ken je Familiar?</td><td>".$signup["familiar"]."</td></tr>";
 
-    $content .= "<tr><td>Voorgaande edities</td><td>";
-    $editions = explode(",", $signup["editions"]);
-    foreach($editions as $edition) {
-        $content .= translate_edition($edition) . "<br>";
+    $content .= "<tr><td>Eerste Keus</td><td>".translate_contrib($signup["contrib0_type"])."</td></tr>";
+    $content .= "<tr><td></td><td>".$signup["contrib0_desc"]."</td></tr>";
+    if( $signup["conrib0_need"] != "" ) {
+        $content .= "<tr><td></td><td>".$signup["conrib0_need"]."</td></tr>";
     }
-    $content .= "</td></tr>";
-
-    $content .= "<tr><td>Eerste Keus</td><td>".translate_contrib($contrib0["type"])."</td></tr>";
-    $content .= "<tr><td></td><td>".$contrib0["description"]."</td></tr>";
-    if( $contrib0["needs"] != "" ) {
-        $content .= "<tr><td></td><td>".$contrib0["needs"]."</td></tr>";
-    }
-    $content .= "<tr><td>Tweede Keus</td><td>".translate_contrib($contrib1["type"])."</td></tr>";
-    $content .= "<tr><td></td><td>".$contrib1["description"]."</td></tr>";
-    if( $contrib1["needs"] != "" ) {
-        $content .= "<tr><td></td><td>".$contrib1["needs"]."</td></tr>";
+    $content .= "<tr><td>Tweede Keus</td><td>".translate_contrib($signup["contrib1_type"])."</td></tr>";
+    $content .= "<tr><td></td><td>".$signup["contrib1_desc"]."</td></tr>";
+    if( $signup["contrib1_need"] != "" ) {
+        $content .= "<tr><td></td><td>".$signup["contrib1_need"]."</td></tr>";
     }
     $content .= "<tr><td>Voorbereidingen</td><td>".$signup["preparations"]."</td></tr>";
     $content .= "<tr><td>Datum inschrijving</td><td>".$signup["signupdate"]."</td></tr>";
@@ -74,7 +65,7 @@ if( $signup === FALSE ) {
     <meta name="author" content="">
     <link rel="icon" href="favicon.ico">
 
-    <title>Familiar Forest 2016</title>
+    <title>Familiar Voorjaar 2017</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -104,7 +95,7 @@ if( $signup === FALSE ) {
                     <div>
                     <p>Lieve ".$firstname.",</p>
                     <p>
-                        Bedankt voor je inschrijving! We hebben al je gegevens in goede orde ontvangen en je ontvangt ook nog een email ter bevestiging. 11 juni 2016 zal de loting plaatsvinden en word je gebeld als jouw naam hieruit rolt. Je kunt onze <a href='https://www.facebook.com/events/591534081011159/'>Facebook</a> pagina in de gaten houden voor het laatste nieuws!
+                        Bedankt voor je inschrijving! We hebben al je gegevens in goede orde ontvangen en je ontvangt ook nog een email ter bevestiging. 11 juni 2016 zal de loting plaatsvinden en word je gebeld als jouw naam hieruit rolt. Je kunt onze <a href='https://www.facebook.com/events/1428059363879439/'>Facebook</a> pagina in de gaten houden voor het laatste nieuws!
                     </p>
                     <p>
                         Als je zorgen, vragen of iets anders kwijt wilt, kan je mailen naar ".$mailtolink.".
