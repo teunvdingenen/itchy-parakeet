@@ -3,6 +3,39 @@ include_once "initialize.php";
 include_once "fields.php";
 include_once "sendmail.php";
 
+function generateRandomToken($length = 250) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+function setRememberMe($user) {
+    $token = generateRandomToken(); // generate a token, should be 128 - 256 bit
+    store_user_token($user, $token);
+    $cookie = $user . ':' . $token;
+    $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
+    $cookie .= ':' . $mac;
+    setcookie('ff_rememberme', $cookie);
+}
+
+function rememberMe() {
+    $cookie = isset($_COOKIE['ff_rememberme']) ? $_COOKIE['ff_rememberme'] : '';
+    if ($cookie) {
+        list ($user, $token, $mac) = explode(':', $cookie);
+        if (!hash_equals(hash_hmac('sha256', $user . ':' . $token, SECRET_KEY), $mac)) {
+            return false;
+        }
+        $usertoken = get_user_token($user);
+        if (hash_equals($usertoken, $token)) {
+            $_SESSION['loginuser'] = $user;
+        }
+    }
+}
+
 function email_error($message) {
     send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);  
 }
@@ -12,17 +45,57 @@ function test_input($data) {
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
- }
+}
 
- function get_user_info($username) {
+function store_user_token($username, $token) {
+  global $db_host, $db_user, $db_pass, $db_name;
+  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+  if( $mysqli->connect_errno ) {
+    return false;
+  } else {
+    $query = sprintf("UPDATE `users` u SET u.token = '%s' WHERE u.username = '%s'", 
+      $mysqli->real_escape_string($token),
+      $mysqli->real_escape_string($username));
+    $result = $mysqli->query($query);
+    $mysqli->close();
+    if( $result === FALSE ) {
+      return FALSE;
+    }
+  }
+  return true;
+}
+
+function get_user_token($username) {
+  global $db_host, $db_user, $db_pass, $db_name;
+  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+  if( $mysqli->connect_errno ) {
+    return "false";
+  } else {
+    $query = sprintf("SELECT u.token FROM `users` WHERE (`username` = '%s')",
+        $mysqli->real_escape_string($username));
+    $result = $mysqli->query($query);
+    $mysqli->close();
+    if( $result === FALSE ) {
+      return "FALSE";
+    } elseif( $result->num_rows == 1 ) {
+      $row = $result->fetch_array(MYSQLI_ASSOC);
+      return $row['token'];
+    } else {
+      return "false";
+    }
+  }
+  return "false";
+}
+
+function get_user_info($username) {
  	global $db_host, $db_user, $db_pass, $db_name;
- 	global $db_table_users, $db_user_username, $db_user_name;
  	$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
  	$row = array();
  	if( $mysqli->connect_errno ) {
   	return false;
   } else {
-  	$query = "SELECT * FROM `users` WHERE (`username` = '$username')";
+  	$query = sprintf("SELECT * FROM `users` WHERE (`username` = '%s')",
+      $mysqli->real_escape_string($username));
 	 	$result = $mysqli->query($query);
 	 	$mysqli->close();
 	 	if( $result === FALSE ) {
@@ -36,9 +109,30 @@ function test_input($data) {
  	return $row;
 }
 
+function get_firstname($username) {
+  global $db_host, $db_user, $db_pass, $db_name;
+  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+  if( $mysqli->connect_errno ) {
+    return false;
+  } else {
+    $query = sprintf("SELECT * FROM `person` WHERE (`email` = '%s')",
+      $mysqli->real_escape_string($username));
+    $result = $mysqli->query($query);
+    $mysqli->close();
+    if( $result === FALSE ) {
+      return FALSE;
+    } elseif( $result->num_rows == 1 ) {
+      $row = $result->fetch_array(MYSQLI_ASSOC);
+      return $row['firstname'];
+    } else {
+      return false;
+    }
+  }
+  return false;
+}
+
 function get_signups() {
 	global $db_host, $db_user, $db_pass, $db_name;
-	global $db_table_person, $db_table_contrib;
 	$result = "";
 	$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 	if( $mysqli->connect_errno ) {
@@ -57,7 +151,6 @@ function get_signups() {
 
 function get_signup_statistics() {
   global $db_host, $db_user, $db_pass, $db_name;
-  global $db_table_person, $db_table_contrib;
   $result = "";
   $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
   if( $mysqli->connect_errno ) {
@@ -75,7 +168,6 @@ function get_signup_statistics() {
 
 function get_buyers() {
 	global $db_host, $db_user, $db_pass, $db_name;
-	global $db_table_buyer;
 	$result = "";
 	$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 	if( $mysqli->connect_errno ) {

@@ -1,146 +1,34 @@
-<?php session_start();
+<?php session_start(); 
+include "functions.php";
 
-include_once "dbstore.php";
-include_once "functions.php";
+if(!isset($_SESSION['loginuser'])) {
+    rememberMe();
+    if(!isset($_SESSION['loginuser'])) {
+        header('Location: login');
+    }
+}
+$user_info = get_user_info($_SESSION['loginuser']);
+$email = $user_info_name = $user_info['username'];
+$user_info_permissions = $user_info['permissions'];
+
+if( $user_info_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
+    header('Location: login');
+}
 
 date_default_timezone_set('Europe/Amsterdam');
 
-if( strtotime('now') > strtotime('2016-06-08 16:00') ) {
+if( strtotime('now') > strtotime('2017-02-16 10:00') ) {
     header('Location: verlopen');
 }
 
-$signupround = 1;
+$signupround = 0;
 
 $returnVal = "";
-$firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $familiar = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = "";
+$contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $familiar = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = "";
 $preparationsbox = false;
 $editions = array();
 
-if( $_SERVER["REQUEST_METHOD"] == "GET") {
-    if(!empty($_GET["email"]) ) {
-        $email = test_input($_GET["email"]);
-        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.phone, p.motivation, p.familiar, 
-                    p.editions, p.partner, c0.type as `c0type`, c0.description as `c0desc`, c0.needs as `c0needs`, c1.type as `c1type`, c1.description as `c1desc`, c1.needs as `c1needs`, p.preparations, 
-                    p.visits
-            FROM person p join contribution c0 on p.contrib0 = c0.id join contribution c1 on p.contrib1 = c1.id
-            WHERE p.email = '%s'", $mysqli->real_escape_string($email));
-        $sqlresult = $mysqli->query($query);
-        if($sqlresult === FALSE ) {
-            addError("We konden helaas niet je gegevens ophalen uit de database.".$mysqli->error);
-        } else if( $sqlresult->num_rows == 0 ) {
-            addError("We hebben geen inschrijving kunnen vinden onder het opgegeven email adres.");
-        } else {
-            $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
-            $firstname = htmlspecialchars_decode($row['firstname']);
-            $lastname = htmlspecialchars_decode($row['lastname']);
-            $birthdate = htmlspecialchars_decode($row['birthdate']);
-            $birthdate = DateTime::createFromFormat('Y-m-d', $birthdate);
-            $birthdate = $birthdate->format('d/m/Y');
-            $gender = htmlspecialchars_decode($row['gender']);
-            $city = htmlspecialchars_decode($row['city']);
-            $phone = htmlspecialchars_decode($row['phone']);
-            $motivation = htmlspecialchars_decode($row['motivation']);
-            $familiar = htmlspecialchars_decode($row['familiar']);
-            $editions_str = htmlspecialchars_decode($row['editions']);
-            $editions = explode(",", $editions_str);
-            $nr_editions = htmlspecialchars_decode($row['visits']);
-            $partner = htmlspecialchars_decode($row['partner']);
-            $preparations = htmlspecialchars_decode($row['preparations']);
-            if( $preparations != "N") {
-                $preparationsbox = true;
-            } else {
-                $preparations = "";
-            }
-
-            $contrib0 = htmlspecialchars_decode($row['c0type']);
-            if( in_array($contrib0, ['iv','bar','keuken','afb'])) {
-                $contrib0desc = htmlspecialchars_decode($row['c0desc']);    
-            } else {
-                $act0type = $contrib0;
-                $contrib0 = 'act';
-                $act0desc = htmlspecialchars_decode($row['c0desc']);
-                $act0need = htmlspecialchars_decode($row['c0needs']);    
-            }
-        
-            $contrib1 = htmlspecialchars_decode($row['c1type']);
-            if( in_array($contrib1, ['iv','bar','keuken','afb'])) {
-                $contrib1desc = htmlspecialchars_decode($row['c1desc']);    
-            } else {
-                $act1type = $contrib1;
-                $contrib1 = 'act';
-                $act1desc = htmlspecialchars_decode($row['c1desc']);
-                $act1need = htmlspecialchars_decode($row['c1needs']);
-            }
-        }
-        $mysqli->close();
-    }
-}
-
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST["firstname"]) ) {
-        $firstname = test_input($_POST["firstname"]);
-    } else {
-        $firstname = "";
-        addError("Je hebt je voornaam niet opgegeven.");
-    }
-    if( !empty($_POST["lastname"]) ) {
-        $lastname = test_input($_POST["lastname"]);
-    } else {
-        $lastname = "";
-        addError("Je hebt je achternaam niet opgegeven.");
-    }
-    if( !empty($_POST["city"]) ) {
-        $city = test_input($_POST["city"]);
-    } else {
-        $city = "";
-        addError("Je hebt je woonplaats niet opgegeven.");
-    }
-    if( !empty($_POST["birthdate"]) ) {
-        $birthdate = test_input($_POST["birthdate"]);
-        $date = DateTime::createFromFormat('d/m/Y', $birthdate);
-        if( $date == FALSE ) {
-            if( ($timestamp = strtotime($birthdate)) == FALSE ) {
-                addError("De opgegeven geboortedatum klopt niet.");
-            } else {
-                $birthdate = date( 'Y-m-d H:i:s', $timestamp );
-            }
-        } else {
-            $birthdate = $date->format('Y-m-d H:i:s');
-        }
-    } else {
-        addError("Je hebt je geboortedatum niet opgegeven");
-    }
-
-    if( !empty($_POST["gender"]) ) {
-        $gender = test_input($_POST["gender"]);
-    } else {
-        $gender = "";
-        addError("Je hebt je geslacht niet opgegeven.");
-    }
-    if( !empty($_POST["email"]) ) {
-        $email = test_input($_POST["email"]);
-        if( !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            addError("Het email adres wat je hebt opgegeven lijkt niet te kloppen.");
-        }
-    } else {
-        $email = "";
-        addError("Je hebt geen email adres opgegeven");
-    }
-    if( !empty($_POST["phone"]) ) {
-        $phone = test_input($_POST["phone"]);
-    } else {
-        $phone = "";
-        addError("Je hebt geen telefoonnummer opgegeven");
-    }
-
-    $nr_editions = 0;
-    $editions = isset($_POST['editions']) ? $_POST['editions'] : array();
-    foreach($editions as $edition) {
-        $editions_str .= test_input($edition) . ",";
-        $nr_editions += 1;
-    }
-
     if( !empty($_POST["contrib0"])) {
         $contrib0 = test_input($_POST["contrib0"]);
     } else {
@@ -281,7 +169,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("SELECT * FROM buyer WHERE email = '%s' and complete = 1",
+        $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and complete = 1",
             $mysqli->real_escape_string($email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
@@ -290,16 +178,16 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         } else if( $sqlresult->num_rows != 0 ) {
             addError("Zo te zien heb je al een ticket en daarom kun je op dit moment niet jezelf inschrijven. Voor meer informatie kun je mailen naar: ".$mailtolink);
         } else {
-            $query = sprintf("SELECT * FROM person WHERE email = '%s'",
+            $query = sprintf("SELECT * FROM $current_table WHERE email = '%s'",
                 $mysqli->real_escape_string($email));
             $sqlresult = $mysqli->query($query);
             if( $sqlresult === FALSE ) {
                 addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
                 email_error("Error getting user to determine update: ".$mysqli->error);
             } else if( $sqlresult->num_rows == 0 ) {
-                $db_error = storeSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3, $signupround);
+                //TODO store signup
             } else {
-                $db_error = updateSignup($email, $firstname, $lastname, $birthdate, $city, $gender, $phone, $nr_editions, $editions_str, $partner, $motivation, $familiar, $db_contrib0, $db_contrib1, $db_contrib0_desc, $db_contrib1_desc, $db_contrib0_need, $db_contrib1_need, $preparations, $terms0, $terms1, $terms2, $terms3, $signupround);
+                //TODO update signup
             }
             if( $db_error != "" ) {
                 addError($db_error);
@@ -310,7 +198,6 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         //try again..
     }
     if( $returnVal == "") {
-        $_SESSION['success_email'] = $email;
         header('Location: success');
     } else {
     }
@@ -326,7 +213,7 @@ function addError($value) {
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Familiar Forest Inschrijfformulier</title>
+        <title>Familiar Voorjaar Inschrijfformulier</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -363,15 +250,12 @@ function addError($value) {
         <!-- Add your site or application content here -->
         <div class="container">
             <div class="form-intro-text">
-                <h1>Inschrijven Familiar Forest 2016: Nieuw Babylon</h1>
+                <h1>Inschrijven Familiar Voorjaar 2017</h1>
                 <p class="lead">
-                    10 en 11 september 2016
+                    5, 6 en 7 mei.
                 </p>
                 <p>
-                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat. Het inschrijfformulier blijft tot 8 Juni 2016 beschikbaar. Heb je hulp nodig? Of wil je meer informatie over het inschrijven dan kun je mailen naar: <?php echo $mailtolink ?>
-                </p>
-                <p>
-                    Velden gemarkeerd met een * zijn verplicht.
+                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat. Het inschrijfformulier blijft tot en met 15 februari 2017 beschikbaar. Heb je hulp nodig? Of wil je meer informatie over het inschrijven dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
             </div>
             <?php echo $returnVal; ?>

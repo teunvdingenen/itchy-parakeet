@@ -1,9 +1,11 @@
 <?php session_start(); 
-$username=$password=$returnVal="";
+$username=$password=$rememberme=$returnVal="";
 $error = FALSE;
 include "initialize.php";
 include "functions.php";
 include "fields.php";
+
+rememberMe();
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -21,6 +23,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $error = TRUE;
     }
 
+    if( !empty($_POST["rememberme"]) ) {
+        $rememberme = test_input($_POST["rememberme"]);
+    } else {
+        $rememberme = "";
+        $error = TRUE;
+    }
+
     if(!$error) { //SO FAR SO GOOD
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
         $username = $mysqli->real_escape_string($username);
@@ -33,6 +42,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $row = $result->fetch_array(MYSQLI_ASSOC);
                 $db_hash = $row["password"];
                 if( password_verify($password, $db_hash)) {
+                    if( $rememberme == "rememberme" ) {
+                        setRememberMe($username);
+                    }
                     $_SESSION['loginuser'] = $username;
                     header('Location: secure/');
                 } else {
@@ -83,6 +95,12 @@ if($error) {
                 <input type="text" id="username" class="form-control" placeholder="Gebruikersnaam" name="username" required autofocus>
                 <label for="password" class="sr-only">Paswoord</label>
                 <input type="password" id="password" class="form-control" placeholder="Paswoord" name="password" required>
+                <div class="checkbox">
+                <label for="rememberme">
+                    <input type="checkbox" class="form-control" name="rememberme" id="rememberme" value="rememberme">
+                        Onthoud mij
+                </label>
+                </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Inloggen</button>
                 <a href="create">Ik heb nog geen account</a><br>
                 <a href="password">Ik ben mijn wachtwoord vergeten</a>

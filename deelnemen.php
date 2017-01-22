@@ -1,23 +1,12 @@
-<?php
+<?php session_start();
 include_once "functions.php";
 
-$previous = $email = $header = "";
-
-if( $_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST["previous"]) ) {
-        if( $_POST["previous"] == "true" ) {
-            $previous = true;
-            if( !empty($_POST["email"]) ) {
-                $email = $_POST["email"];
-            }
-            $header = "Location: signupform.php?email=".$email;
-        } else {
-            $previous = false;
-            $header = "Location: signupform";
-        }
-    }
-    header($header);
+if(!isset($_SESSION['loginuser'])) {
+    header('Location: login');
 }
+$user_info = get_user_info($_SESSION['loginuser']);
+$user_info_name = $user_info['username'];
+$user_info_permissions = $user_info['permissions'];
 
 ?>
 
@@ -32,7 +21,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="author" content="Teun van Dingenen">
     <link rel="icon" href="favicon.ico">
 
-    <title>Familiar Voorjaar 2017</title>
+    <title>Familiar Forest</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -57,14 +46,16 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="default-text">
                 <h1>Familiar Forest 2016</h1>
                 <p class="lead">
-                   Lieve lenteliefhebbers,
+                   Lieve <?=get_firstname($user_info_name)?>,
                 </p>
-                
-                <p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
+                <p>
+                    Hieronder vindt je de mogelijkheden die je op dit moment hebt tot deelnemen aan de geplande Familiar Forest edities.
+                </p>
+                <p> De high fives zijn gratis, de knuffels oprecht en de liefde oneindig.<br>Familiar Forest</p>
                 </div>
 
-                <?php if( strtotime('now') < strtotime('2016-06-29 00:00') ) {
-                    echo "<p><a class='btn btn-primary btn-lg' href='buyer' role='button'>Ik wil mijn code verzilveren <i class='glyphicon glyphicon-chevron-right'></i></a></p>";
+                <?php if( strtotime('now') < strtotime('2017-02-16 00:00') ) {
+                    echo "<p><a class='btn btn-primary btn-lg' href='signup' role='button'>Inschrijven voor Familiar Voorjaar 2017</a></p>";
                 }
                 ?>
                 <!--
