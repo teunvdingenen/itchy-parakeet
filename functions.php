@@ -282,6 +282,8 @@ function translate_edition($edition) {
     return "Familiar Winter Festival 2015";
   } else if( $edition == "fff2015" ) {
     return "Familiar Forest Festival 2015";
+  } else if( $edition == "fff2016" ) {
+    return "Familiar Forest Festival 2016";
   } else if( $edition == "" ) {
     return "";
   } else {
