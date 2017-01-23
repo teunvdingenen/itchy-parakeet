@@ -27,7 +27,6 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $rememberme = test_input($_POST["rememberme"]);
     } else {
         $rememberme = "";
-        $error = TRUE;
     }
 
     if(!$error) { //SO FAR SO GOOD
@@ -45,8 +44,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     if( $rememberme == "rememberme" ) {
                         setRememberMe($username);
                     }
-                    $_SESSION['loginuser'] = $username;
-                    header('Location: secure/');
+                    $_SESSION['username'] = $username;
+                    header('Location: postlogin');
                 } else {
                     $error = TRUE;
                 }

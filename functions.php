@@ -3,7 +3,7 @@ include_once "initialize.php";
 include_once "fields.php";
 include_once "sendmail.php";
 
-function generateRandomToken($length = 250) {
+function generateRandomToken($length = 10) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -14,7 +14,7 @@ function generateRandomToken($length = 250) {
 }
 
 function setRememberMe($user) {
-    $token = generateRandomToken(); // generate a token, should be 128 - 256 bit
+    $token = password_hash(generateRandomToken(),PASSWORD_DEFAULT); // generate a token, should be 128 - 256 bit
     store_user_token($user, $token);
     $cookie = $user . ':' . $token;
     $mac = hash_hmac('sha256', $cookie, SECRET_KEY);

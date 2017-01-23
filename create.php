@@ -2,40 +2,10 @@
 include_once "functions.php";
 date_default_timezone_set('Europe/Amsterdam');
 $returnVal = "";
-$firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions; 
+$firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = ""; 
 $editions = array();
 $is_update = false;
-if( $_SERVER["REQUEST_METHOD"] == "GET") {
-    if(!empty($_GET["email"]) ) {
-        $email = test_input($_GET["email"]);
-        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.phone, 
-                    p.editions, p.visits
-            FROM person p
-            WHERE p.email = '%s'", $mysqli->real_escape_string($email));
-        $sqlresult = $mysqli->query($query);
-        if($sqlresult === FALSE ) {
-            addError("We konden helaas niet je gegevens ophalen uit de database.".$mysqli->error);
-        } else if( $sqlresult->num_rows == 0 ) {
-            addError("We hebben geen inschrijving kunnen vinden onder het opgegeven email adres.");
-        } else {
-            $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
-            $firstname = htmlspecialchars_decode($row['firstname']);
-            $lastname = htmlspecialchars_decode($row['lastname']);
-            $birthdate = htmlspecialchars_decode($row['birthdate']);
-            $birthdate = DateTime::createFromFormat('Y-m-d', $birthdate);
-            $birthdate = $birthdate->format('d/m/Y');
-            $gender = htmlspecialchars_decode($row['gender']);
-            $city = htmlspecialchars_decode($row['city']);
-            $phone = htmlspecialchars_decode($row['phone']);
-            $editions_str = htmlspecialchars_decode($row['editions']);
-            $editions = explode(",", $editions_str);
-            $nr_editions = htmlspecialchars_decode($row['visits']);
-            $is_update = TRUE;
-        }
-        $mysqli->close();
-    }
-}
+
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["firstname"]) ) {
         $firstname = test_input($_POST["firstname"]);
@@ -189,7 +159,9 @@ function addError($value) {
         <div class="container">
             <div class="form-intro-text">
                 <h1>Aanmaken Familiar Forest account</h1>
+                <a class='btn btn-lg btn-primary' href='activate' role='button'><i class="glyphicon glyphicon-check"></i> Ik heb mezelf ingeschreven voor Familiar Forest 2016</a>
             </div>
+                
             <?php echo $returnVal; ?>
             <form id="create-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                 <div class="form-group row">
@@ -199,15 +171,15 @@ function addError($value) {
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="password" class="col-sm-2 form-control-label">Paswoord</label>
+                    <label for="password" class="col-sm-2 form-control-label">Wachtwoord</label>
                     <div class="col-sm-10">
                         <input type="password" id="password" class="form-control" placeholder="Paswoord"         name="password">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="passwordrepeat" class="col-sm-2 form-control-label">Password Herhaling</label>
+                    <label for="passwordrepeat" class="col-sm-2 form-control-label">Wachtwoord Herhalen</label>
                     <div class="col-sm-10">
-                        <input type="password" id="repeat" class="form-control" placeholder="Paswoord Herhaling" name="repeat">
+                        <input type="password" id="repeat" class="form-control" placeholder="Paswoord Herhalen" name="repeat">
                     </div>
                 </div>
 

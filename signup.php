@@ -292,7 +292,6 @@ function addError($value) {
                             </div>
                         </div>
                     </div>
-
                 </fieldset>
                         
                 <fieldset>
