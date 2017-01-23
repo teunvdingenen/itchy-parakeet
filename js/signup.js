@@ -56,6 +56,14 @@ $(document).ready(function() {
 		} else {
 			hideAct0Input();
 		}
+        $("#contrib1 option[value=" + $("#contrib0 option:selected").val() + "]").attr('disabled','disabled')
+            .siblings().removeAttr('disabled');
+        if( $("#contrib1").val() == null ) {
+            $('#contrib1 option:selected').next().attr('selected', 'selected');
+            if( $("#contrib1").val() == null ) {
+                $("#contrib1").val($("#contrib1 option:first").val());
+            }
+        }
 	});
 
 	$("#contrib1").change(function() {
@@ -92,37 +100,6 @@ $(document).ready(function() {
 	$('#signup-form').validate({
 		ignore: ".ignore",
 		rules: {
-			firstname: {
-				minlength: 2,
-				maxlength: 255,
-				required: true
-			},
-			lastname: {
-				minlength: 2,
-				maxlength: 255,
-				required: true
-			},
-			email: {
-				maxlength: 255,
-				required: true,
-				email: true
-			},
-			city: {
-				minlength: 2,
-				maxlength: 255,
-				required: true
-			},
-			birthdate: {
-				required: true
-			},
-			gender: {
-				required: true
-			},
-			phone: {
-				minlength: 2,
-				maxlength: 32,
-				required: true
-			},
 			partner: {
 				maxlength: 255,
 				email: true

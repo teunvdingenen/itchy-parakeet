@@ -1,19 +1,19 @@
-<?php session_start(); 
+<?php //session_start(); 
 include "functions.php";
 
-if(!isset($_SESSION['loginuser'])) {
-    rememberMe();
-    if(!isset($_SESSION['loginuser'])) {
-        header('Location: login');
-    }
-}
-$user_info = get_user_info($_SESSION['loginuser']);
-$email = $user_info_name = $user_info['username'];
-$user_info_permissions = $user_info['permissions'];
+//if(!isset($_SESSION['loginuser'])) {
+//    rememberMe();
+//    if(!isset($_SESSION['loginuser'])) {
+//        header('Location: login');
+//    }
+//}
+//$user_info = get_user_info($_SESSION['loginuser']);
+//$email = $user_info_name = $user_info['username'];
+//$user_info_permissions = $user_info['permissions'];
 
-if( $user_info_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
-    header('Location: login');
-}
+//if( $user_info_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
+//    header('Location: login');
+//}
 
 date_default_timezone_set('Europe/Amsterdam');
 
@@ -250,7 +250,7 @@ function addError($value) {
         <!-- Add your site or application content here -->
         <div class="container">
             <div class="form-intro-text">
-                <h1>Inschrijven Familiar Voorjaar 2017</h1>
+                <h1>Inschrijven Familiar Voorjaar</h1>
                 <p class="lead">
                     5, 6 en 7 mei.
                 </p>
@@ -261,88 +261,9 @@ function addError($value) {
             <?php echo $returnVal; ?>
 
             <form id="signup-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
-                <div class="form-group row">
-                    <label for="firstname" class="col-sm-2 form-control-label">Voornaam*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="lastname" class="col-sm-2 form-control-label">Achternaam*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="city" class="col-sm-2 form-control-label">Woonplaats*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="city" placeholder="Woonplaats" value="<?php echo $city;?>" name="city">
-                    </div>
-                </div>
-            
-                <div class="form-group row">
-                    <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum*<br>(dd/mm/yyyy)</label>
-                    <div class="col-sm-10">
-                        <input class="form-control ignore datepicker" type="text" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate">
-                        <div><label for="birthdate" class="error" style="display:none;"></label></div>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-2">Geslacht*</label>
-                    <div class="col-sm-10">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
-                                Jongeman
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
-                                Jongedame
-                            </label>
-                        </div>
-                        <label for="gender" class="error" style="display:none;"></label>
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="email" class="col-sm-2 form-control-label">Email*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="phone" class="col-sm-2 form-control-label">Telefoonnummer*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $phone;?>" name="phone">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-2" for="partner">Lieveling<br>Email</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
-                        <div class="alert alert-success">
-                            Vanaf dit jaar kun je voor het eerst je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar 
-                            Familiar Forest wilt! Het is belangrijk dat jij zijn of haar email adres correct invult en andersom! 
-                            <strong>Communiceer dit dus samen goed naar elkaar! En let op: Als jullie van deze optie gebruik maken worden 
-                                jullie samen ingeloot <i>of beide uitgeloot</i></strong>
-                        </div>
-                        <div class="alert alert-info">
-                            Het kan zijn dat je bij de eerste inschrijving een typfout gemaakt hebt in het emailadres van je lieveling of 
-                            je was je vergeten in te schrijven en jullie daardoor niet samen zijn ingeloot. We doen ons best om in deze gevallen 
-                            alsnog lievelingen te koppelen maar helaas kunnen we niet garanderen dat je alsnog wordt ingeloot bij je lieveling.
-                        </div>
-                    </div>
-                </div>
-
+                
                 <fieldset>
-                    <legend>Waarom wil jij naar Familiar Forest 2016?</legend>
+                    <legend>Waarom wil jij naar Familiar Voorjaar?</legend>
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="motivation">Motivatie</label>
                         <div class="col-sm-10">
@@ -359,95 +280,23 @@ function addError($value) {
                         </div>
                     </div>
                 </fieldset>
-                <fieldset>
-                    <legend>Bij welke edities was je aanwezig?</legend>
-                    <div class="form-group row">
-                        <label class="col-sm-2 form-control-label">Voorgaande edities</label>
+                <div class="form-group row">
+                        <label class="col-sm-2" for="partner">Lieveling<br>Email</label>
                         <div class="col-sm-10">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fff2010" value="fff2010" <?php if(in_array("fff2010", $editions)) echo( "checked"); ?> >
-                                    Familiar Forest 2010
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fff2011" value="fff2011" <?php if(in_array("fff2011", $editions)) echo( "checked"); ?>>
-                                    Familiar Forest 2011
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="ffcastle" value="ffcastle" <?php if(in_array("ffcastle", $editions)) echo( "checked"); ?>>
-                                    Familiar Castle                                
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fwf2012" value="fwf2012" <?php if(in_array("fwf2012", $editions)) echo( "checked"); ?>>
-                                    Familiar Winter 2012
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fh2012" value="fh2012" <?php if(in_array("fh2012", $editions)) echo( "checked"); ?>>
-                                    Familiar Hemelvaartsnacht 2012
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fff2012" value="fff2012" <?php if(in_array("fff2012", $editions)) echo( "checked"); ?>>
-                                    Familiar Forest 2012
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fh2013" value="fh2013" <?php if(in_array("fh2013", $editions)) echo( "checked"); ?>>
-                                    Familiar Hemelvaartsnacht 2013
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fwf2013" value="fwf2013" <?php if(in_array("fwf2013", $editions)) echo( "checked"); ?>>
-                                    Familiar Winter 2013
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fff2013" value="fff2013" <?php if(in_array("fff2013", $editions)) echo( "checked"); ?>>
-                                    Familiar Forest 2013
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fwf2014" value="fwf2014" <?php if(in_array("fwf2014", $editions)) echo( "checked"); ?>>
-                                    Familiar Winter 2014
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fff2014" value="fff2014" <?php if(in_array("fff2014", $editions)) echo( "checked"); ?>>
-                                    Familiar Forest 2014
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fwf2015" value="fwf2015" <?php if(in_array("fwf2015", $editions)) echo( "checked"); ?>>
-                                    Familiar Winter 2015
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="editions[]" id="fff2015" value="fff2015" <?php if(in_array("fff2015", $editions)) echo( "checked"); ?>>
-                                    Familiar Forest 2015
-                                </label>
+                            <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
+                            <div class="alert alert-success">
+                                Je kunt voor Familiar Voorjaar wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar 
+                                Familiar Forest wilt! 
+                                <strong>Communiceer dit dus samen goed naar elkaar! En let op: Als jullie van deze optie gebruik maken worden 
+                                    jullie samen ingeloot <i>of beide uitgeloot</i></strong>
                             </div>
                         </div>
                     </div>
+
                 </fieldset>
                         
                 <fieldset>
-                    <legend>Jouw bijdrage aan het Familiar Forest 2016</legend>
+                    <legend>Hoe wil jij bijdragen aan het Familiar Voorjaar?</legend>
                     <div class="form-group row">
                         <label for="contrib0" class="col-sm-2 form-control-label">Eerste keus</label>
                         <div class="col-sm-10">
@@ -570,7 +419,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms3">Telefoon en Foto's</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Familiar Forest zorgt voor een professionele fotograaf. Om de sfeer te verhogen en het contact tussen deelnemers te verbeteren is het niet toegestaan een telefoon of camera mee te nemen op het terrein van Familiar Forest 2016.</div>
+                            <div class="alert alert-warning">Familiar Forest zorgt voor een professionele fotograaf. Om de sfeer te verhogen en het contact tussen deelnemers te verbeteren is het niet toegestaan een telefoon of camera mee te nemen op het terrein van Familiar Voorjaar.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms0" name="terms0" value="J">
@@ -585,7 +434,7 @@ function addError($value) {
                         
                         <label class="col-sm-2 form-control-label" for="terms1">Verzekering</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Familiar Forest 2016 is een reis. De locatie verplicht de deelnemer om zich te kunnen identificeren en minimaal WA verzekerd te zijn.</div>
+                            <div class="alert alert-warning">Familiar Voorjaar is een reis. De locatie verplicht de deelnemer om zich te kunnen identificeren en minimaal WA verzekerd te zijn.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms1" name="terms1" value="J">
@@ -599,7 +448,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms2">Gezondheid</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Tijdens Familiar Forest 2016 is de deelnemer voor zijn eigen gezondheid verantwoordelijk. Als deelnemer is het niet mogelijk Familiar Forest aansprakelijk te stellen voor materiële en immateriële schade. <i>Je kunt deze verzekeren door een reisverzekering af te sluiten</i></div>
+                            <div class="alert alert-warning">Tijdens Familiar Voorjaar is de deelnemer voor zijn eigen gezondheid verantwoordelijk. Als deelnemer is het niet mogelijk Familiar Forest aansprakelijk te stellen voor materiële en immateriële schade. <i>Je kunt deze verzekeren door een reisverzekering af te sluiten</i></div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms2" name="terms2" value="J">
@@ -611,10 +460,9 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="terms0">Kaart verkoop</label>
-                        
+                        <label class="col-sm-2 form-control-label" for="terms3">Kaart verkoop</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Aanmeldingen en toegangsbewijzen zijn persoonlijk en mogen niet zelf door de deelnemer worden doorverkocht. Het is wel mogelijk om tussen 7 juli 2016 en 5 augustus 2016 het toegangsbewijs terug te verkopen aan stichting Familiar Forest.</div>
+                            <div class="alert alert-warning">Aanmeldingen en toegangsbewijzen zijn persoonlijk en mogen niet zelf door de deelnemer worden doorverkocht.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms3" name="terms3" value="J">
