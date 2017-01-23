@@ -1,7 +1,17 @@
+@font-face{
+    font-family: "lovelo";
+    src: url('../fonts/lovelo/lovelo_black.otf'),
+    url('../fonts/lovelo/lovelo_black.otf'); /* IE */
+}
+
 body {
 	/* padding-top: 40px; */
 	padding-bottom: 40px;
 	background: #eee;
+}
+
+h1, h2, h3 {
+  font-family: "lovelo";
 }
 
 .error {

@@ -42,9 +42,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 "INSERT INTO `pwreset` (`email`, `hash`, `expire`) VALUES ('%s', '%s', '%s')",
                 $mysqli->real_escape_string($email),
                 $mysqli->real_escape_string($token),
-                $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s');
+                $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s')
             );
-            $link = "https://stichtingfamiliarforest.nl/reset?=".$token;
+            $link = "https://stichtingfamiliarforest.nl/reset?t=".$token;
             if( $mysqli->query($pw_reset_query) ) {
                 $subject = "Familiar Forest wachtwoord";
                 $content = "<html>".get_email_header();

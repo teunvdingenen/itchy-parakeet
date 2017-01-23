@@ -44,14 +44,14 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 "INSERT INTO `pwreset` (`email`, `hash`, `expire`) VALUES ('%s', '%s', '%s')",
                 $mysqli->real_escape_string($username),
                 $mysqli->real_escape_string($token),
-                $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s');
+                $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s')
             );
             $user_add_query = sprintf(
                 "INSERT INTO `users` (`username`, `permissions`) VALUES ('%s', '%s')",
                 $mysqli->real_escape_string($username),
                 $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
             );
-            $link = "https://stichtingfamiliarforest.nl/reset?=".$token;
+            $link = "https://stichtingfamiliarforest.nl/reset?t=".$token;
             if( $mysqli->query($user_add_query) ) {
                 if( $mysqli->query($pw_reset_query) ) {
                     $subject = "Familiar Forest wachtwoord";
