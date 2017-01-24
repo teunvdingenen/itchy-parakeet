@@ -2,8 +2,6 @@
 include "../functions.php";
 include "createmenu.php";
 
-$user_email = $user_firstname = $user_permissions = "";
-
 if(!isset($_SESSION['email'])) {
     header('Location: ../login');
 } else {
@@ -17,10 +15,17 @@ if(!isset($_SESSION['firstname'])) {
 if(!isset($_SESSION['permissions'])) {
     header('Location: ../login');
 } else {
-    $user_permissions = $_SESSION['permissions'];
+    $user_permisions = $_SESSION['permissions'];
+}
+
+if( $user_permisions & PERMISSION_DISPLAY != PERMISSION_DISPLAY ) {
+    echo "503";
+    return 0;
 }
 
 $menu_html = get_menu_html();
+
+
 
 ?>
 
@@ -30,16 +35,24 @@ $menu_html = get_menu_html();
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Familiar Forest</title>
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="">
-
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <meta name="author" content="Teun van Dingenen">
         <link rel="icon" href="../favicon.ico">
-        <!-- Place favicon.ico in the root directory -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" type="text/css" media="all"
-            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>        
+
+        <title>Familiar Forest Dashboard</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="../css/main.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -72,8 +85,9 @@ $menu_html = get_menu_html();
                   <?php echo $menu_html ?>
                 </div>
             </div>
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div id="content" class="row">
+                </div>
             </div>
         </div>
 
@@ -87,5 +101,6 @@ $menu_html = get_menu_html();
         <script src="../js/plugins.js"></script>
         <script src="../js/main.js"></script>
         <script src="js/secure.js"></script>
+        <script src="js/arrived.js"></script>
     </body>
 </html>

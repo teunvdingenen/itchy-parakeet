@@ -3,6 +3,37 @@ include_once "initialize.php";
 include_once "fields.php";
 include_once "sendmail.php";
 
+function login($username) {
+    global $db_host, $db_user, $db_pass, $db_name;
+    $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+    if( $mysqli->connect_errno ) {
+      return false;
+    }
+    $query = sprintf("SELECT `permissions` FROM users WHERE `username` = '%s'", 
+      $mysqli->real_escape_string($username));
+    $result = $mysqli->query($query);
+    if( $result === FALSE ) {
+      return FALSE;
+    } else if( $result->num_rows != 1 ) {
+      return FALSE;
+    }
+    $permissions = $result->fetch_array(MYSQLI_ASSOC)['permissions'];
+    $query = sprintf("SELECT `firstname` FROM person WHERE `email` = '%s'", 
+      $mysqli->real_escape_string($username));
+    $result = $mysqli->query($query);
+    if( $result === FALSE ) {
+      return FALSE;
+    } else if( $result->num_rows != 1 ) {
+      return FALSE;
+    }
+    $firstname = $result->fetch_array(MYSQLI_ASSOC)['firstname'];
+    $mysqli->close();
+    $_SESSION['email'] = $username;
+    $_SESSION['permissions'] = $permissions;
+    $_SESSION['firstname'] = $firstname;
+    return true;
+}
+
 function generateRandomToken($length = 10) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -31,7 +62,7 @@ function rememberMe() {
         }
         $usertoken = get_user_token($user);
         if (hash_equals($usertoken, $token)) {
-            $_SESSION['loginuser'] = $user;
+            return login($user);
         }
     }
 }

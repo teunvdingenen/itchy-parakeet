@@ -75,7 +75,7 @@ function addError($value) {
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Familiar Forest Account Activeren</title>
+        <title>Familiar Forest wachtwoord vergeten</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -86,21 +86,7 @@ function addError($value) {
         <link rel="stylesheet" href="css/bootstrap-datepicker3.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" media="all"
-            href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>
-
-        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
-        <scirpt src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_nl.js"></script>
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-        <script src="js/vendor/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-        <script src="js/create.js"></script>
+            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -108,6 +94,21 @@ function addError($value) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
+        <div id="header" class="text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-3">
+
+                    </div>
+                    <div class="col-xs-6">
+                        <h1 class="">Stichting Familiar Forest</h1>
+                    </div>
+                    <div class="col-xs-3">
+                        <a class='login-button' href="login">Inloggen</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
             <div class="form-intro-text">
                 <h1>Familiar Forest wachtwoord vergeten</h1>
@@ -126,5 +127,17 @@ function addError($value) {
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Versturen</button>
             </form>
         </div>
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
+        <scirpt src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_nl.js"></script>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
     </body>
 </html>

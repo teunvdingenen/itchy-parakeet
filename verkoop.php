@@ -2,6 +2,8 @@
 include "initialize.php";
 include "functions.php";
 
+//TODO login stuff
+
 if( strtotime('now') > strtotime('2016-09-10 00:00') ) {
     header('Location: deelnemen');
 }
@@ -259,24 +261,16 @@ function addError($value) {
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Familiar Forest Account Activeren</title>
         <meta name="description" content="">
-        <meta name="author" content="Teun van Dingenen">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
         <link rel="icon" href="favicon.ico">
-
-        <title>Code verzilveren</title>
-
-        <!-- Bootstrap core CSS -->
+        <!-- Place favicon.ico in the root directory -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Custom styles for this template -->
-        <link href="css/main.css" rel="stylesheet">
-
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" type="text/css" media="all"
+            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>        
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -373,8 +367,8 @@ function addError($value) {
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
         <script src="js/vendor/bootstrap.min.js"></script>
-        <script src="http://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
-        <scirpt src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_nl.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.js"></script>
+        <scirpt src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_nl.js"></script>
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>

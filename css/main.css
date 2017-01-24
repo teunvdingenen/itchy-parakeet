@@ -222,3 +222,7 @@ section {
 #togglebutton {
   padding: 5px;
 }
+
+.familie-foto .img-responsive {
+    margin: 0 auto;
+}

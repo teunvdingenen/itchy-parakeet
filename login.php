@@ -44,8 +44,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     if( $rememberme == "rememberme" ) {
                         setRememberMe($username);
                     }
-                    $_SESSION['username'] = $username;
-                    header('Location: postlogin');
+                    if( login($username) ) {
+                        header('Location: postlogin');
+                    }
                 } else {
                     $error = TRUE;
                 }
@@ -66,17 +67,18 @@ if($error) {
 <html class="no-js" lang="">
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
-        <meta name="description" content="">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Familiar Forest Account Activeren</title>
+        <meta name="description" content="">
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="icon" href="favicon.ico">
         <!-- Place favicon.ico in the root directory -->
-
         <link href="css/bootstrap.min.css" rel="stylesheet">
-
-        <link href="css/main.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" type="text/css" media="all"
+            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>        
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -84,6 +86,21 @@ if($error) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
+        <div id="header" class="text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-3">
+
+                    </div>
+                    <div class="col-xs-6">
+                        <h1 class="">Stichting Familiar Forest</h1>
+                    </div>
+                    <div class="col-xs-3">
+                        <a class='login-button' href="login">Inloggen</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
             <?php if($returnVal != "") {
                 echo '<div class="alert alert-danger" role="alert">'.$returnVal.'</div>';
@@ -110,15 +127,5 @@ if($error) {
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
     </body>
 </html>
