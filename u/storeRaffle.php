@@ -20,7 +20,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_RAFFLE != PERMISSION_RAFFLE ) {
-    return;
+    header('Location: oops.php');
 }
 
 function get_key($i) {

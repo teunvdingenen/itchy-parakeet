@@ -20,8 +20,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_CALLER != PERMISSION_CALLER ) {
-    echo "503";
-    return 503;
+    header('Location: oops.php');
 }
 $onlyprogress = false;
 

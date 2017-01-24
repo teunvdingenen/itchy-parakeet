@@ -21,8 +21,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_DISPLAY != PERMISSION_DISPLAY ) {
-    echo "503";
-    return 0;
+    header('Location: oops.php');
 }
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);

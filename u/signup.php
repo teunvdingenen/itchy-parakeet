@@ -1,19 +1,27 @@
 <?php //session_start(); 
 include "functions.php";
 
-//if(!isset($_SESSION['loginuser'])) {
-//    rememberMe();
-//    if(!isset($_SESSION['loginuser'])) {
-//        header('Location: login');
-//    }
-//}
-//$user_info = get_user_info($_SESSION['loginuser']);
-//$email = $user_info_name = $user_info['username'];
-//$user_info_permissions = $user_info['permissions'];
+$user_email = $user_firstname = $user_permissions = "";
 
-//if( $user_info_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
-//    header('Location: login');
-//}
+if(!isset($_SESSION['email'])) {
+    header('Location: ../login');
+} else {
+    $user_email = $_SESSION['email'];
+}
+if(!isset($_SESSION['firstname'])) {
+    header('Location: ../login');
+} else {
+    $user_firstname = $_SESSION['firstname'];
+}
+if(!isset($_SESSION['permissions'])) {
+    header('Location: ../login');
+} else {
+    $user_permissions = $_SESSION['permissions'];
+}
+
+if( $user_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
+    header('Location: oops.php');
+}
 
 date_default_timezone_set('Europe/Amsterdam');
 

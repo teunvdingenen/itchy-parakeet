@@ -21,8 +21,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_CALLER != PERMISSION_CALLER ) {
-    echo "503";
-    return 0;
+    header('Location: oops.php');
 }
 
 $menu_html = get_menu_html();

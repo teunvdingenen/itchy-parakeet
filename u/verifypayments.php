@@ -21,8 +21,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_DISPLAY != PERMISSION_DISPLAY ) {
-    addError("No permission to display!");
-    _exit();
+    header('Location: oops.php');
 }
 
 $menu_html = get_menu_html();

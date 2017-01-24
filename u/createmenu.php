@@ -21,9 +21,16 @@ function get_menu_html() {
         $user_permissions = $_SESSION['permissions'];
     }
 
+    if( $user_permissions & PERMISSION_PARTICIPANT ) {
+        $menu_html .= "<ul class='nav nav-sidebar'>";
+        //$menu_html .= "<li><a class='menulink' id ='main' href='index'>Main</a></li>";
+        $menu_html .= "<li><a class='menulink' id='ik' href='ik'>Mijn gegevens</a></li>";
+        $menu_html .= "<li><a class='menulink' id='voorjaar' href='voorjaar'>Familiar Voorjaar 2017</a></li>";
+        $menu_html .= "</ul>";
+    }
+
     if( $user_permissions & PERMISSION_DISPLAY ) {
         $menu_html .= "<ul class='nav nav-sidebar'>";
-        $menu_html .= "<li><a class='menulink' id ='main' href='index'>Main</a></li>";
         $menu_html .= "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen</a></li>";
         $menu_html .= "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting</a></li>";
         $menu_html .= "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets</a></li>";

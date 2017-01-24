@@ -20,7 +20,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_DISPLAY) ) {
-	return;
+	header('Location: oops.php');
 }
 
 $statistic_type = $_POST["type"];

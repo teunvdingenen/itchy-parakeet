@@ -21,7 +21,7 @@ if(!isset($_SESSION['permissions'])) {
 
 if( $user_permissions & PERMISSION_ACTS != PERMISSION_ACTS || 
         $user_permissions & PERMISSION_VOLUNTEERS != PERMISSION_VOLUNTEERS) {
-    return;
+    header('Location: oops.php');
 }
 
 if( !isset($_POST['emails'])) {

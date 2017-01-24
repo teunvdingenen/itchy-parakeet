@@ -21,7 +21,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_DISPLAY != PERMISSION_DISPLAY ) {
-    return false;
+    header('Location: oops.php');
 }
 
 // Assemble menu:

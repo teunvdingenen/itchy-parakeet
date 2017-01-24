@@ -21,7 +21,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_VOLUNTEERS != PERMISSION_VOLUNTEERS ) {
-    return false;
+    header('Location: oops.php');
 }
 
 $menu_html = get_menu_html();

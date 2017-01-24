@@ -1,6 +1,28 @@
 <?php
 include_once "functions.php";
 
+$user_email = $user_firstname = $user_permissions = "";
+
+if(!isset($_SESSION['email'])) {
+    header('Location: ../login');
+} else {
+    $user_email = $_SESSION['email'];
+}
+if(!isset($_SESSION['firstname'])) {
+    header('Location: ../login');
+} else {
+    $user_firstname = $_SESSION['firstname'];
+}
+if(!isset($_SESSION['permissions'])) {
+    header('Location: ../login');
+} else {
+    $user_permissions = $_SESSION['permissions'];
+}
+
+if( $user_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
+    header('Location: oops.php');
+}
+
 if( strtotime('now') > strtotime('2016-06-29 00:00') ) {
     header('Location: index');
 }

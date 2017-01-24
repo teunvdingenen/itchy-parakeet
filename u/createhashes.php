@@ -21,7 +21,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_EDIT  != PERMISSION_EDIT ) {
-    return false;
+    header('Location: oops.php');
 }
 
 try

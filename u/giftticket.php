@@ -21,8 +21,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_RAFFLE != PERMISSION_RAFFLE ) {
-    echo "503";
-    return 0;
+    header('Location: oops.php');
 }
 
 if( !isset($_POST['gift'])) {

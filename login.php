@@ -45,7 +45,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         setRememberMe($username);
                     }
                     if( login($username) ) {
-                        header('Location: postlogin');
+                        header('Location: u/index');
                     }
                 } else {
                     $error = TRUE;

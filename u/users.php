@@ -22,7 +22,7 @@ if(!isset($_SESSION['permissions'])) {
 }
 
 if( $user_permissions & PERMISSION_USER != PERMISSION_USER ) {
-    return false;
+    header('Location: oops.php');
 }
 
 $menu_html = get_menu_html();
