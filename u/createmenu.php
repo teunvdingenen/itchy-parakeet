@@ -99,6 +99,9 @@ function get_menu_html() {
         $menu_html .= "<li><a class='menulink' href='nachtprogramma'>Nachtprogramma</a></li>";
         $menu_html .= "</ul>";
     }
+    $menu_html .= "<ul class='nav nav-sidebar'>";
+    $menu_html .= "<li><a class='menulink' id='logout' href='logout'>Uitloggen</a></li>";
+    $menu_html .= "</ul>";
     return $menu_html;
 }
 
