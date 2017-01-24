@@ -120,7 +120,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p class="text-muted">
-                            Stichting Familiar Forest <br> Sint Antoniesbreestraat 108 <br> 1011HB Amsterdam <br>
+                            Stichting Familiar Forest <br> Wielingenstraat 30P <br> 1078KL Amsterdam <br>
                             Tel: +316 46 37 30 69<br>
                             KVK: 608 735 66 <br>
                             BTW: NL 854 097 739 B01 <br>
