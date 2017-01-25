@@ -40,6 +40,10 @@ $(document).ready(function() {
 				maxlength: 255,
 				required: true
 			},
+			familiar: {
+				maxlength: 1024,
+				required: false
+			}
 			birthdate: {
 				required: true
 			},

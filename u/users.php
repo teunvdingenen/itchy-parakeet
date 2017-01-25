@@ -155,11 +155,12 @@ function addError($value) {
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <?php include("header.php"); ?>
-
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                <div class="col-xs-12 col-sm-9"> 
                 <?php echo $usertable ?>
                 <?php echo $returnVal ?>
                 <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
@@ -241,6 +242,8 @@ function addError($value) {
                 </form>
             </div>
         </div>
+    </div>
+</div>
 
     	<?php include("default-js.html"); ?>
         <script>

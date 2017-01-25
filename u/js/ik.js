@@ -7,7 +7,7 @@ function unsetErrorBorder(f) {
 }
 
 $(document).ready(function() {
-	$('#create-form').validate({
+	$('#edit-form').validate({
 		ignore: ".ignore",
 		rules: {
 			email: {

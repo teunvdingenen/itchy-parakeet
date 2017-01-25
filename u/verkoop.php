@@ -283,12 +283,12 @@ function addError($value) {
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <?php include("header.php"); ?>
-
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                <div class="col-xs-12 col-sm-9"> 
             <div class="form-intro-text">
                 <h1>Code verzilveren</h1>
                 <p>Dit jaar kost deelname aan Familiar Voorjaar 120 euro. Omdat niet alle betaalmethodes hetzelfde kosten hebben we ervoor gekozen de transactiekosten niet hierin te rekenen. Dat maakt het voor ons gemakkelijker om een betrouwbare begroting te maken.</p>
@@ -371,6 +371,8 @@ function addError($value) {
             </form>
         </div>
 	</div>
+</div>
+</div>
         <?php include("form-js.html"); ?>
         <script src="js/buyer.js"></script>
         </body>

@@ -1,5 +1,5 @@
-<?php //session_start(); 
-include "functions.php";
+<?php session_start(); 
+include "../functions.php";
 
 $user_email = $user_firstname = $user_permissions = "";
 
@@ -26,7 +26,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
 date_default_timezone_set('Europe/Amsterdam');
 
 if( strtotime('now') > strtotime('2017-02-16 10:00') ) {
-    header('Location: verlopen');
+    header('Location: voorjaar');
 }
 
 $signupround = 0;
@@ -189,13 +189,56 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $query = sprintf("SELECT * FROM $current_table WHERE email = '%s'",
                 $mysqli->real_escape_string($email));
             $sqlresult = $mysqli->query($query);
+            $query = "";
+            $signupdate = strtotime('now')->format('Y-m-d H:i:s');
             if( $sqlresult === FALSE ) {
                 addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
                 email_error("Error getting user to determine update: ".$mysqli->error);
             } else if( $sqlresult->num_rows == 0 ) {
-                //TODO store signup
+                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `familiar`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s',);",
+                    $mysqli->real_escape_string($email),
+                    $mysqli->real_escape_string($partner),
+                    $mysqli->real_escape_string($motivation),
+                    $mysqli->real_escape_string($familiar),
+                    $mysqli->real_escape_string($db_contrib0),
+                    $mysqli->real_escape_string($db_contrib0_desc),
+                    $mysqli->real_escape_string($db_contrib0_need),
+                    $mysqli->real_escape_string($db_contrib1),
+                    $mysqli->real_escape_string($db_contrib1_desc),
+                    $mysqli->real_escape_string($db_contrib1_need),
+                    $mysqli->real_escape_string($preparations),
+                    $mysqli->real_escape_string($signupround),
+                    $mysqli->real_escape_string($signupdate),
+                    $mysqli->real_escape_string($terms0),
+                    $mysqli->real_escape_string($terms1),
+                    $mysqli->real_escape_string($terms2),
+                    $mysqli->real_escape_string($terms3));
             } else {
-                //TODO update signup
+                $query = sprintf("UPDATE `$current_table` SET `partner` = '%s', `motivation` = '%s', `familiar` = '%s', `contrib0_type` = '%s', `contrib0_desc` = '%s', `contrib0_need` = '%s', `contrib1_type` = '%s', `contrib1_desc` = '%s', `contrib1_need` = '%s', `preparations` = '%s', `round` = %s, `signupdate` = '%s', `terms0` = '%s', `terms1` = '%s', `terms2` = '%s', `terms3` = '%s' WHERE `email` = '%s'",
+                    $mysqli->real_escape_string($partner),
+                    $mysqli->real_escape_string($motivation),
+                    $mysqli->real_escape_string($familiar),
+                    $mysqli->real_escape_string($db_contrib0),
+                    $mysqli->real_escape_string($db_contrib0_desc),
+                    $mysqli->real_escape_string($db_contrib0_need),
+                    $mysqli->real_escape_string($db_contrib1),
+                    $mysqli->real_escape_string($db_contrib1_desc),
+                    $mysqli->real_escape_string($db_contrib1_need),
+                    $mysqli->real_escape_string($preparations),
+                    $mysqli->real_escape_string($signupround),
+                    $mysqli->real_escape_string($signupdate),
+                    $mysqli->real_escape_string($terms0),
+                    $mysqli->real_escape_string($terms1),
+                    $mysqli->real_escape_string($terms2),
+                    $mysqli->real_escape_string($terms3),
+                    $mysqli->real_escape_string($email));
+            }
+            $result = $mysqli->query($query);
+            if( !$result ) {
+                addError("We hebben niet je gegevens kunnen opslaan. Probeer het later nog eens of mail naar: ".$mailtolink);
+                email_error("Error bij inschrijven: ".$mysqli->error."<br>".$query);
+            } else {
+                $returnVal = '<div class="alert alert-success" role="alert"><i class="glyphicon glyphicon-ok"></i></span> We hebben je inschrijving in goede orde ontvangen.</div>';
             }
             if( $db_error != "" ) {
                 addError($db_error);
@@ -224,12 +267,13 @@ function addError($value) {
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <?php include("header.php"); ?>
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <div class="form-intro-text">
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                <div class="col-xs-12 col-sm-9"> 
+                <div class="form-intro-text">
                 <h1>Inschrijven Familiar Voorjaar</h1>
                 <p class="lead">
                     5, 6 en 7 mei.
@@ -253,7 +297,7 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="familiar">Hoe ken je Familiar Forest?</label>
+                        <label class="col-sm-2 form-control-label" for="familiar">Wat verwacht je van Familiar Voorjaar?</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="familiar" id="familiar" cols="60" rows="4"><?php echo $familiar; ?></textarea>
                             <label for="familiar">Max 1024 karakters</label>
@@ -267,7 +311,7 @@ function addError($value) {
                             <div class="alert alert-success">
                                 Je kunt voor Familiar Voorjaar wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar 
                                 Familiar Forest wilt! 
-                                <strong>Communiceer dit dus samen goed naar elkaar! En let op: Als jullie van deze optie gebruik maken worden 
+                                <strong>Jullie moeten je beide inschrijven! En let op: Als jullie van deze optie gebruik maken worden 
                                     jullie samen ingeloot <i>of beide uitgeloot</i></strong>
                             </div>
                         </div>
@@ -455,6 +499,8 @@ function addError($value) {
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Versturen</button>
             </form>
         </div>
+    </div>
+</div>
 	</div>
         <?php include("form-js.html"); ?>
         <script src="js/signup.js"></script>

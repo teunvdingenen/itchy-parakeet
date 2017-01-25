@@ -70,10 +70,12 @@ if( $result === FALSE ) {
         <![endif]-->
 
         <?php include("header.php"); ?>
-
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                <div class="col-xs-12 col-sm-9"> 
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="text-center"><?=$headertext?></h1>
@@ -135,6 +137,7 @@ if( $result === FALSE ) {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         <div id="code" style="display:none"><?=$code?></div>
     	<?php include("default-js.html"); ?>

@@ -138,12 +138,12 @@ function addError($value) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
-	<?php include("header.php"); ?>
-
-        <div class="container-fluid">
-	<?php include("navigation.php"); ?>
-            
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+	<div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                <div class="col-xs-12 col-sm-9"> 
             <div class="form-intro-text">
                 <h1>Refund</h1>
                 <p>Voorgaande jaren is het niet mogelijk geweest voor deelnemers om van hun ticket af te komen. Toch merken we dat daar wel veel vraag naar is en willen dit jaar dus die mogelijkheid aanbieden. Als je een ticket gekocht hebt heb je tot en met 5 augustus de mogelijk om je ticket terug te verkopen aan ons. We zullen dan proberen deze weer te verkopen aan iemand die daar interesse in heeft.</p>
@@ -188,10 +188,11 @@ function addError($value) {
                         </div>
                     </div>
                 </div>
-                
             </form>
         </div>
         </div>
+    </div>
+</div>
 
         <?php include("form-js.html"); ?>
         <script src="js/refund.js"></script>

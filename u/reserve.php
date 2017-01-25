@@ -80,10 +80,12 @@ function addError($value) {
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <?php include("header.php"); ?>
-        <div class="container-fluid">
-	<?php include("navigation.php"); ?>
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                <div class="col-xs-12 col-sm-9"> 
                 <h1>Familiar Voorjaar 2017</h1>
                 <p class="lead">
                     Lieve Lenteliefhebbers,
@@ -107,7 +109,8 @@ function addError($value) {
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Aanmelden <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
             </form>
-
+        </div>
+    </div>
         </div><!-- /.container -->
 
 

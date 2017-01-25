@@ -122,17 +122,20 @@ function addOK($value) {
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <?php include("header.php"); ?>
-
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                <div class="col-xs-12 col-sm-9"> 
                 <?=$returnVal?>
                 <div class='alert alert-success'><span class='glyphicon glyphicon-exclamation-ok' aria-hidden='true'></span> Totaal: <?=$nr_paid?> successvolle transacties (€ <?=$complete_amount?>) </div>
                 <?=$infoBlock?>
                 <?=$tableHTML?>
             </div>
         </div>
+    </div>
+</div>
 
     	<?php include("default-js.html"); ?>
     </body>

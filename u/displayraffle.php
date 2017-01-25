@@ -165,98 +165,101 @@ $resultHTML.="</table>";
         <![endif]-->
 
         <?php include("header.php"); ?>
-
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <a id="togglebutton" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#stat-panel"><span class='glyphicon glyphicon-refresh spinning'></span></a>
-                <div class="row">
-                    <div id="stat-panel" class="collapse stat-panel">
-                        <div class="panel panel-default">
-                            <div id="statcontent" class="panel-body">
-                                
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                    <div class="col-xs-12 col-sm-9"> 
+                    <a id="togglebutton" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#stat-panel"><span class='glyphicon glyphicon-refresh spinning'></span></a>
+                    <div class="row">
+                        <div id="stat-panel" class="collapse stat-panel">
+                            <div class="panel panel-default">
+                                <div id="statcontent" class="panel-body">
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
-                    <div class="form-group row">
-                        <label for="email" class="col-sm-2 form-control-label">Email</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="firstname" class="col-sm-2 form-control-label">Voornaam</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="lastname" class="col-sm-2 form-control-label">Achternaam</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="rafflecode" class="col-sm-2 form-control-label">Loting Code</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" id="rafflecode" placeholder="Loting Code" value="<?php echo $rafflecode;?>" name="rafflecode">
-                        </div>
-                    </div>
-                    <div class = "form-group row">
-                        <label for = "notcontacted" class="col-sm-2 form-control-label">Gecontact?</label>
-                        <div class="col-sm-10">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="notcontacted" id="notcontacted" value="Y" <?php if($notcontacted == 'Y') echo( "checked"); ?> >
-                                    Nog niet bereikt
-                                </label>
+                    <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+                        <div class="form-group row">
+                            <label for="email" class="col-sm-2 form-control-label">Email</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email">
                             </div>
                         </div>
-                    <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
-                </form>
-                <nav>
-                    <ul class="pagination">
-                        <li>
-                            <a href=<?php echo "?p=".($page-1) ?> aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <?php 
-                            for($i = 0; $i < $pages; $i++ ) {
-                                printf("<li><a href='?p=%s''>%s</a></li>",$i,$i+1);
-                            }
-                        ?>
-                        <li>
-                            <a href=<?php echo "?p=".($page+1) ?> aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <div style='margin-top: 5px;'>
-                    <?php echo $resultHTML ?>
+                        <div class="form-group row">
+                            <label for="firstname" class="col-sm-2 form-control-label">Voornaam</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lastname" class="col-sm-2 form-control-label">Achternaam</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="rafflecode" class="col-sm-2 form-control-label">Loting Code</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" id="rafflecode" placeholder="Loting Code" value="<?php echo $rafflecode;?>" name="rafflecode">
+                            </div>
+                        </div>
+                        <div class = "form-group row">
+                            <label for = "notcontacted" class="col-sm-2 form-control-label">Gecontact?</label>
+                            <div class="col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="notcontacted" id="notcontacted" value="Y" <?php if($notcontacted == 'Y') echo( "checked"); ?> >
+                                        Nog niet bereikt
+                                    </label>
+                                </div>
+                            </div>
+                        <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
+                    </form>
+                    <nav>
+                        <ul class="pagination">
+                            <li>
+                                <a href=<?php echo "?p=".($page-1) ?> aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <?php 
+                                for($i = 0; $i < $pages; $i++ ) {
+                                    printf("<li><a href='?p=%s''>%s</a></li>",$i,$i+1);
+                                }
+                            ?>
+                            <li>
+                                <a href=<?php echo "?p=".($page+1) ?> aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div style='margin-top: 5px;'>
+                        <?php echo $resultHTML ?>
+                    </div>
+                    <nav>
+                        <ul class="pagination">
+                            <li>
+                                <a href=<?php echo "?p=".($page-1) ?> aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <?php 
+                                for($i = 0; $i < $pages; $i++ ) {
+                                    printf("<li><a href='?p=%s''>%s</a></li>",$i,$i+1);
+                                }
+                            ?>
+                            <li>
+                                <a href=<?php echo "?p=".($page+1) ?> aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
-                <nav>
-                    <ul class="pagination">
-                        <li>
-                            <a href=<?php echo "?p=".($page-1) ?> aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <?php 
-                            for($i = 0; $i < $pages; $i++ ) {
-                                printf("<li><a href='?p=%s''>%s</a></li>",$i,$i+1);
-                            }
-                        ?>
-                        <li>
-                            <a href=<?php echo "?p=".($page+1) ?> aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
         </div>
 

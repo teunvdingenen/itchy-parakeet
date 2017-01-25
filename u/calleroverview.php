@@ -139,9 +139,15 @@ $resultHTML.="</table>";
         <![endif]-->
 
         <?php include("header.php"); ?>
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+
+                <?php include("navigation.php");?>
+
+                <div class="col-xs-12 col-sm-9"> 
                 <div id='statcontent' class="container-fluid">
 
                 </div>
@@ -182,8 +188,8 @@ $resultHTML.="</table>";
                         </div>
                     <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
                 </form>
-
                 <div><?php echo $resultHTML ?></div>
+            </div>
             </div>
         </div>
 

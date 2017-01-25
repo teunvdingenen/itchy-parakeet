@@ -29,13 +29,14 @@ if(!isset($_SESSION['permissions'])) {
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+        <div class="page-container">
         <?php include("header.php"); ?>
-        
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                    <?php include("navigation.php");?>
+                    <div class="col-xs-12 col-sm-9"> 
+                    </div>
+                </div>
             </div>
         </div>
 

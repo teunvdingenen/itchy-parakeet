@@ -71,18 +71,23 @@ $resultHTML .= "</table>";
 
         <?php include("header.php"); ?>
 
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div style='margin: 5px;'>
-                    <?php echo $resultHTML ?>
-                </div>
-                <a id="togglebutton_email" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#email-panel">Email adressen voor deze selectie <i class='glyphicon glyphicon-chevron-right'></i></a>
-                <div class="row">
-                    <div id="email-panel" class="collapse email-panel">
-                        <div class="panel panel-default">
-                            <div id="emailcontent" class="panel-body">
-                                <textarea cols='60' rows='4' readonly><?= $email_adr ?></textarea>
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                    <div class="col-xs-12 col-sm-9"> 
+                        <div style='margin: 5px;'>
+                            <?php echo $resultHTML ?>
+                        </div>
+                        <a id="togglebutton_email" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#email-panel">Email adressen voor deze selectie <i class='glyphicon glyphicon-chevron-right'></i></a>
+                        <div class="row">
+                            <div id="email-panel" class="collapse email-panel">
+                                <div class="panel panel-default">
+                                    <div id="emailcontent" class="panel-body">
+                                        <textarea cols='60' rows='4' readonly><?= $email_adr ?></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

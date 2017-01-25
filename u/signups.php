@@ -212,11 +212,12 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <?php include("header.php"); ?>
-
-        <div class="container-fluid">
-            <?php include("navigation.php"); ?>
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="page-container">
+            <?php include("header.php"); ?>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                <?php include("navigation.php");?>
+                <div class="col-xs-12 col-sm-9"> 
                 <a id="togglebutton" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#stat-panel"><span class='glyphicon glyphicon-refresh spinning'></span></a>
                 <div class="row">
                     <div id="stat-panel" class="collapse stat-panel">
@@ -391,6 +392,8 @@ if( $user_info_permissions & PERMISSION_DISPLAY ) {
                 </nav>
             </div>
         </div>
+    </div>
+</div>
 
 	<?php include("default-js.html"); ?>
         <script> 

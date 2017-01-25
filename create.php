@@ -68,6 +68,12 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $nr_editions += 1;
     }
 
+    if( !empty($_POST["familiar"])) {
+        $familiar = test_input($_POST["familiar"]);
+    } else {
+        $familiar = "";
+    }
+
     if( !empty($_POST["password"]) ) {
         $password = test_input($_POST["password"]);
     } else {
@@ -99,6 +105,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $mysqli->real_escape_string($pw_hash),
             $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
         );
+        $result = $mysqli->query($user_add_query);
+        if( !$result ) {
+            addError("Het is niet gelukt om een account voor je aan te maken. Als het probleem aanhoud kun je het beste even mail naar: ".$mailtolink);
+            email_error("Error bij insert into users: ".$mysqli->error);
+        }
         if( $db_error != "" ) {
             addError($db_error);
         }
@@ -107,8 +118,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         //try again..
     }
     if( $returnVal == "") {
-        $_SESSION['success_email'] = $email;
-        header('Location: success');
+        $returnVal .= '<div class="alert alert-suceess" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ' . $value . '</div>';
     } else {
     }
 } //End POST
@@ -238,6 +248,13 @@ function addError($value) {
                         <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $phone;?>" name="phone">
                     </div>
                 </div>
+                <div class="form-group row">
+                        <label class="col-sm-2 form-control-label" for="familiar">Hoe ken je Familiar Forest?</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" name="familiar" id="familiar" cols="60" rows="4"><?php echo $familiar; ?></textarea>
+                            <label for="familiar">Max 1024 karakters</label>
+                        </div>
+                    </div>
                 </fieldset>
                 <fieldset>
                     <legend>Bij welke edities was je aanwezig?</legend>

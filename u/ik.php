@@ -151,99 +151,100 @@ function addError($value) {
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <!-- Add your site or application content here -->
+        <div class="page-container">
         <?php include("header.php"); ?>
-        
-        <div class="container-fluid">
-
-            <?php include("navigation.php");?>
-
-            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div class="form-intro-text">
-                <h2>Gegevens aanpassen</h2>
-            </div>
-                
-            <?php echo $returnVal; ?>
-            <form id="create-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
-                <div class="form-group row">
-                    <label for="email" class="col-sm-2 form-control-label">Email*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email" disabled>
-                    </div>
-                </div>
-                <fieldset>
-                <div class="form-group row">
-                    <label for="firstname" class="col-sm-2 form-control-label">Voornaam*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="lastname" class="col-sm-2 form-control-label">Achternaam*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="street" class="col-sm-2 form-control-label">Straatnaam & Huisnummer</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="street" placeholder="Straatnaam & Huisnummer" value="<?php echo $street;?>" name="street">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="postal" class="col-sm-2 form-control-label">Postcode</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="postal" placeholder="Postcode" value="<?php echo $postal;?>" name="postal">
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="city" class="col-sm-2 form-control-label">Woonplaats*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="city" placeholder="Woonplaats" value="<?php echo $city;?>" name="city">
-                    </div>
-                </div>
             
-                <div class="form-group row">
-                    <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum*<br>(dd/mm/yyyy)</label>
-                    <div class="col-sm-10">
-                        <input class="form-control ignore datepicker" type="text" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate" placeholder="dd/mm/yyyy">
-                        <div>
-                            <label for="birthdate" class="error" style="display:none;"></label>
-                        </div>
-                    </div>
-                </div>
+            <div class="container">
+                <div class="row row-offcanvas row-offcanvas-left">
+                    <?php include("navigation.php");?>
+                    <div class="col-xs-12 col-sm-9"> 
+                        <div class="form-intro-text">
 
-                <div class="form-group row">
-                    <label class="col-sm-2">Geslacht*</label>
-                    <div class="col-sm-10">
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
-                                Jongeman
-                            </label>
                         </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
-                                Jongedame
-                            </label>
-                        </div>
-                        <label for="gender" class="error" style="display:none;"></label>
+                       
+                        <?php echo $returnVal; ?>
+                        <form id="edit-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+                            <div class="form-group row">
+                                <label for="email" class="col-sm-2 form-control-label">Email*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email" disabled>
+                                </div>
+                            </div>
+                            <fieldset>
+                            <div class="form-group row">
+                                <label for="firstname" class="col-sm-2 form-control-label">Voornaam*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastname" class="col-sm-2 form-control-label">Achternaam*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="street" class="col-sm-2 form-control-label">Straatnaam & Huisnummer</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="street" placeholder="Straatnaam & Huisnummer" value="<?php echo $street;?>" name="street">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="postal" class="col-sm-2 form-control-label">Postcode</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="postal" placeholder="Postcode" value="<?php echo $postal;?>" name="postal">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="city" class="col-sm-2 form-control-label">Woonplaats*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="city" placeholder="Woonplaats" value="<?php echo $city;?>" name="city">
+                                </div>
+                            </div>
+                        
+                            <div class="form-group row">
+                                <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum*<br>(dd/mm/yyyy)</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control ignore datepicker" type="text" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate" placeholder="dd/mm/yyyy">
+                                    <div>
+                                        <label for="birthdate" class="error" style="display:none;"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2">Geslacht*</label>
+                                <div class="col-sm-10">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
+                                            Jongeman
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
+                                            Jongedame
+                                        </label>
+                                    </div>
+                                    <label for="gender" class="error" style="display:none;"></label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="phone" class="col-sm-2 form-control-label">Telefoonnummer*</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $phone;?>" name="phone">
+                                </div>
+                            </div>
+                            </fieldset>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Opslaan</button>
+                        </form>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="phone" class="col-sm-2 form-control-label">Telefoonnummer*</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $phone;?>" name="phone">
-                    </div>
-                </div>
-                </fieldset>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Opslaan</button>
-            </form>
             </div>
         </div>
 
