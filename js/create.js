@@ -15,16 +15,6 @@ $(document).ready(function() {
 				email: true,
 				required: true
 			},
-            password: {
-                minlength: 6,
-				maxlength: 255,
-				required: true
-			},
-            repeat: {
-                minlength: 6,
-				maxlength: 255,
-				required: true
-            },
 			firstname: {
 				minlength: 2,
 				maxlength: 255,
@@ -43,7 +33,7 @@ $(document).ready(function() {
 			familiar: {
 				maxlength: 1024,
 				required: false
-			}
+			},
 			birthdate: {
 				required: true
 			},

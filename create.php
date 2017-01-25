@@ -2,9 +2,8 @@
 include_once "functions.php";
 date_default_timezone_set('Europe/Amsterdam');
 $returnVal = "";
-$firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $editions_str = $nr_editions = ""; 
+$firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = ""; 
 $editions = array();
-$is_update = false;
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["firstname"]) ) {
@@ -73,52 +72,86 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $familiar = "";
     }
-
-    if( !empty($_POST["password"]) ) {
-        $password = test_input($_POST["password"]);
-    } else {
-        $password = "";
-        addError("Je hebt je wachtwoord niet opgegeven.");
-    }
-    if( !empty($_POST["repeat"]) ) {
-        $repeat = test_input($_POST["repeat"]);
-    } else {
-        $repeat = "";
-        addError("Je hebt je herhaling niet opgegeven.");
-    }
-
-    if( $repeat != $password ) {
-        addError( "De opgegeven wachtwoorden komen niet overeen");
-    }
-
+$firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = ""; 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        if( $is_update ) {
-            //TODO update person
+        $query = sprintf("INSERT INTO `person` (`email`, `firstname`, `lastname`, `birthdate`, `gender`, `phone`, `city`, `familiar`, `editions`, `visits`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+            $mysqli->real_escape_string($email),
+            $mysqli->real_escape_string($firstname),
+            $mysqli->real_escape_string($lastname),
+            $mysqli->real_escape_string($birthdate),
+            $mysqli->real_escape_string($gender),
+            $mysqli->real_escape_string($phone),
+            $mysqli->real_escape_string($city),
+            $mysqli->real_escape_string($familiar),
+            $mysqli->real_escape_string($editions),
+            $mysqli->real_escape_string($visits)
+            );
+        if( !$mysqli->query($query) ) {
+            addError("We konden helaas niet je gegevens opslaan. Als het probleem aanhoud kun je het beste even mailen naar: ".$mailtolink);
+            email_error("Error insert into person: ".$mysqli->error);
         } else {
-            //TODO insert person
-        }
-        $pw_hash = password_hash($password, PASSWORD_DEFAULT);
-        $user_add_query = sprintf(
-            "INSERT INTO `users` (`username`, `password`, `permissions`) VALUES ('%s', '%s','%s','%s')",
-            $mysqli->real_escape_string($username),
-            $mysqli->real_escape_string($pw_hash),
-            $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
-        );
-        $result = $mysqli->query($user_add_query);
-        if( !$result ) {
-            addError("Het is niet gelukt om een account voor je aan te maken. Als het probleem aanhoud kun je het beste even mail naar: ".$mailtolink);
-            email_error("Error bij insert into users: ".$mysqli->error);
-        }
-        if( $db_error != "" ) {
-            addError($db_error);
+
+            $user_add_query = sprintf(
+                "INSERT INTO `users` (`username`, `permissions`) VALUES ('%s', '%s')",
+                $mysqli->real_escape_string($username),
+                $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
+            );
+            $result = $mysqli->query($user_add_query);
+            if( !$result ) {
+                addError("Het is niet gelukt om een account voor je aan te maken. Als het probleem aanhoud kun je het beste even mail naar: ".$mailtolink);
+                email_error("Error insert into users: ".$mysqli->error);
+            } else {
+                $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+                $query = sprintf("DELETE FROM `pwreset` WHERE `email` = '%s'",
+                $mysqli->real_escape_string($email));
+                if( !$mysqli->query($query) ) {
+                    //email_error("Error removing from pwreset ".$mysqli->error);
+                }
+                $query = sprintf("SELECT * FROM `person` WHERE `email` = '%s'",
+                    $mysqli->real_escape_string($email));
+                $sqlresult = $mysqli->query($query);
+                if( $sqlresult === FALSE ) {
+                    addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
+                    email_error("Error looking for person: ".$mysqli->error);
+                } else {
+                    $row = $result->fetch_array(MYSQLI_ASSOC);
+                    $fullname = $row['firstname']." ".$row['lastname'];
+                    $token = generateRandomToken(128);
+                    $now = new DateTime();
+                    $pw_reset_query = sprintf(
+                        "INSERT INTO `pwreset` (`email`, `hash`, `expire`) VALUES ('%s', '%s', '%s')",
+                        $mysqli->real_escape_string($email),
+                        $mysqli->real_escape_string($token),
+                        $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s')
+                    );
+                    $link = "https://stichtingfamiliarforest.nl/pw?t=".$token;
+                    if( $mysqli->query($pw_reset_query) ) {
+                        $subject = "Familiar Forest wachtwoord";
+                        $content = "<html>".get_email_header();
+                        $content .= "<p>Lieve ".$row['firstname'].",</p>";
+                        $content .= "<p>Je kunt een wachtwoord instellen door op de onderstaande link te klikken, of deze in de adresbalk van je browser te plakken:</p>";
+                        $content .= "<p><a href='".$link."'>".$link."</a>";
+                        $content .= "<p>De link blijft een week geldig.</p>";
+                        $content .= "<p>Je ontvangt deze email omdat je een account hebt aangemaakt bij Familiar Forest. Weet je hier niets van? Stuur dan even een reply op deze email.</p>";
+                        $content .= get_email_footer();
+                        $content .= "</html>";
+                        send_mail($email, $fullname, $subject, $content);
+                        $returnVal .= '<div class="alert alert-success" role="alert">We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
+                    } else {
+                        addError("Helaas konden we op dit moment niet een wachtwoord voor je instellen.Probeer het later nog eens of mail naar: ".$mailtolink);
+                        email_error("Error resetting password on create: ".$mysqli->error);
+                    }
+                }
+                $mysqli->close();
+            }
         }
         $mysqli->close();
     } else {
         //try again..
     }
     if( $returnVal == "") {
-        $returnVal .= '<div class="alert alert-suceess" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ' . $value . '</div>';
+        $returnVal .= '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ' . $value . '</div>';
     } else {
     }
 } //End POST
@@ -172,27 +205,14 @@ function addError($value) {
                 
             <?php echo $returnVal; ?>
             <form id="create-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+                <fieldset>
+                <legend>Jouw gegevens</legend>
                 <div class="form-group row">
                     <label for="email" class="col-sm-2 form-control-label">Email*</label>
                     <div class="col-sm-10">
                         <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="password" class="col-sm-2 form-control-label">Wachtwoord</label>
-                    <div class="col-sm-10">
-                        <input type="password" id="password" class="form-control" placeholder="Paswoord"         name="password">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="passwordrepeat" class="col-sm-2 form-control-label">Wachtwoord Herhalen</label>
-                    <div class="col-sm-10">
-                        <input type="password" id="repeat" class="form-control" placeholder="Paswoord Herhalen" name="repeat">
-                    </div>
-                </div>
-
-                <fieldset>
-                <legend>Jouw gegevens</legend>
                 <div class="form-group row">
                     <label for="firstname" class="col-sm-2 form-control-label">Voornaam*</label>
                     <div class="col-sm-10">

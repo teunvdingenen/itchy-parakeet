@@ -20,7 +20,7 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
         if( new Datetime() < $expire ) {
             $email = $row['email'];
         } else {
-            addError("Je reset link is verlopen. Ga naar <a href='wachtwoordvergeten'>wachtwoord vergeten</a> om het nogmaals te proberen");
+            addError("Je link is verlopen. Ga naar <a href='wachtwoordvergeten'>wachtwoord vergeten</a> om het nogmaals te proberen");
         }
         $mysqli->close();
     } else {
@@ -71,7 +71,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         } else if ( $mysqli->affected_rows == 0 ) {
             addError("Er is iets fout gegaan met het opslaan van je wachtwoord. Stuur een email naar ".$mailtolink." voor hulp.");
         } else {
-            $resultVal = '<div class="alert alert-success" role="alert">Je wachtwoord is gewijzigd. Ga naar de <a href="login">login</a> pagina om verder te gaan.</div>';
+            $resultVal = '<div class="alert alert-success" role="alert">Je wachtwoord is ingesteld. Ga naar de <a href="login">login</a> pagina om verder te gaan.</div>';
         }
         $mysqli->close();
     } else {
@@ -88,7 +88,7 @@ function addError($value) {
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Familiar Forest wachtwoord reset</title>
+        <title>Familiar Forest wachtwoord</title>
         <meta name="description" content="">
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">

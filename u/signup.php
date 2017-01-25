@@ -297,7 +297,7 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="familiar">Wat verwacht je van Familiar Voorjaar?</label>
+                        <label class="col-sm-2 form-control-label" for="familiar">Welke vraag heb je altijd al in een inschrijfformulier willen zien?</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="familiar" id="familiar" cols="60" rows="4"><?php echo $familiar; ?></textarea>
                             <label for="familiar">Max 1024 karakters</label>

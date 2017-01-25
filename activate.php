@@ -15,20 +15,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $email = "";
         addError("Je hebt geen email adres opgegeven");
     }
-    $password = generateRandomToken(8);
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("SELECT 1 FROM `pwreset` WHERE `email` = '%s'",
+        $query = sprintf("DELETE FROM `pwreset` WHERE `email` = '%s'",
             $mysqli->real_escape_string($email));
-        $sqlresult = $mysqli->query($query);
-        if( $sqlresult === FALSE ) {
-            email_error("Error looking for pwreset: ".$mysqli->error);
-        } else if( $sqlresult->num_rows != 0 ) {
-            $query = sprintf("DELETE FROM `pwreset` WHERE `email` = '%s'",
-                $mysqli->real_escape_string($email));
-            $mysqli->query($query);
+        if( !$mysqli->query($query) ) {
+            //email_error("Error removing from pwreset ".$mysqli->error);
         }
-
         $query = sprintf("SELECT * FROM `person` WHERE email = '%s'",
             $mysqli->real_escape_string($email));
         $sqlresult = $mysqli->query($query);
@@ -38,7 +31,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $fullname = $row['firstname']." ".$row['lastname'];
-            $token = password_hash($password, PASSWORD_DEFAULT);
+            $token = generateRandomToken(128);
             $now = new DateTime();
             $pw_reset_query = sprintf(
                 "INSERT INTO `pwreset` (`email`, `hash`, `expire`) VALUES ('%s', '%s', '%s')",
@@ -51,7 +44,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $mysqli->real_escape_string($username),
                 $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
             );
-            $link = "https://stichtingfamiliarforest.nl/reset?t=".$token;
+            $link = "https://stichtingfamiliarforest.nl/pw?t=".$token;
             if( $mysqli->query($user_add_query) ) {
                 if( $mysqli->query($pw_reset_query) ) {
                     $subject = "Familiar Forest wachtwoord";
@@ -59,13 +52,14 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $content .= "<p>Lieve ".$row['firstname'].",</p>";
                     $content .= "<p>Bedankt voor je aanmelding bij Familiar Forest. Je kunt een wachtwoord instellen door op de onderstaande link te klikken, of deze in de adresbalk van je browser te plakken:</p>";
                     $content .= "<p><a href='".$link."'>".$link."</a>";
-                    $content .= "<p>Deze link blijft een week geldig, mocht het niet lukken voor die tijd kun je het opnieuw proberen via de <a href='https://stichtingfamiliarforest.nl/wachtwoordvergeten'>wachtwoord vergeten</a> pagina.</p>";
+                    $content .= "<p>De link blijft een week geldig, mocht het niet lukken voor die tijd kun je het opnieuw proberen via de <a href='https://stichtingfamiliarforest.nl/wachtwoordvergeten'>wachtwoord vergeten</a> pagina.</p>";
                     $content .= get_email_footer();
                     $content .= "</html>";
                     send_mail($email, $fullname, $subject, $content);
                     $returnVal .= '<div class="alert alert-success" role="alert">We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
                 } else {
                     addError("Helaas konden we op dit moment geen account voor je aanmaken, probeer het later nog eens of mail naar: ".$mailtolink);
+                    email_error("Error resetting password on activate: ".$mysqli->error);
                 }
             } else {
                 addError("Helaas konden we op dit moment geen account voor je aanmaken, probeer het later nog eens of mail naar: ".$mailtolink);
