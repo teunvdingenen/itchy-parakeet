@@ -74,25 +74,16 @@ function addError($value) {
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Familiar Forest Reserve aanmelden</title>
-        <meta name="description" content="">
-
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <link rel="icon" href="favicon.ico">
-        <!-- Place favicon.ico in the root directory -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" type="text/css" media="all"
-            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>        
-    </head>
-
+  <?php include("head.html"); ?>
   <body>
-        <div class="container">
-            <div class="default-text">
+	<!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <?php include("header.php"); ?>
+        <div class="container-fluid">
+	<?php include("navigation.php"); ?>
+            <div id="content" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1>Familiar Voorjaar 2017</h1>
                 <p class="lead">
                     Lieve Lenteliefhebbers,
@@ -120,12 +111,7 @@ function addError($value) {
         </div><!-- /.container -->
 
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-    <script src="js/vendor/bootstrap.min.js"></script>
+    <?php include("default-js.html"); ?>
     <script>
     $('#togglebutton').on('click', function(){
         $(this).children().closest('.glyphicon').toggleClass('glyphicon-chevron-right glyphicon-chevron-down');

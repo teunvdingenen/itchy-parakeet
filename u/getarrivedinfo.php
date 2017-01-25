@@ -1,6 +1,5 @@
 <?php session_start();
 include "../functions.php";
-include "createmenu.php";
 
 $user_email = $user_firstname = $user_permissions = "";
 
