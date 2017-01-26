@@ -69,7 +69,7 @@ if($error) {
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Familiar Forest Account Activeren</title>
+        <title>Familiar Forest</title>
         <meta name="description" content="">
 
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -85,22 +85,7 @@ if($error) {
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <!-- Add your site or application content here -->
-        <div id="header" class="text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-3">
-
-                    </div>
-                    <div class="col-xs-6">
-                        <h1 class="">Stichting Familiar Forest</h1>
-                    </div>
-                    <div class="col-xs-3">
-                        <a class='login-button' href="login">Inloggen</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php include("header.php"); ?>
         <div class="container">
             <?php if($returnVal != "") {
                 echo '<div class="alert alert-danger" role="alert">'.$returnVal.'</div>';
@@ -109,17 +94,14 @@ if($error) {
                 <h2 class="form-small-heading">Inloggen</h2>
                 <label for="username" class="sr-only">Gebruikersnaam</label>
                 <input type="text" id="username" class="form-control" placeholder="Gebruikersnaam" name="username" required autofocus>
-                <label for="password" class="sr-only">Paswoord</label>
-                <input type="password" id="password" class="form-control" placeholder="Paswoord" name="password" required>
+                <label for="password" class="sr-only">Wachtwoord</label>
+                <input type="password" id="password" class="form-control" placeholder="Wachtwoord" name="password" required>
                 <div class="checkbox">
-                <label for="rememberme">
-                    <input type="checkbox" class="form-control" name="rememberme" id="rememberme" value="rememberme">
-                        Onthoud mij
-                </label>
+                    <label><input type="checkbox" name="rememberme" value="rememberme">Ingelogd blijven</label>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Inloggen</button>
                 <a href="create">Ik heb nog geen account</a><br>
-                <a href="password">Ik ben mijn wachtwoord vergeten</a>
+                <a href="wachtwoordvergeten">Ik ben mijn wachtwoord vergeten</a>
             </form>
         </div> <!-- /container -->
 
