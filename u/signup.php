@@ -304,10 +304,10 @@ function addError($value) {
                 <div class="form-intro-text">
                 <h1>Inschrijven Familiar Voorjaar</h1>
                 <p class="lead">
-                    5, 6 en 7 mei.
+                    5, 6 en 7 mei 2017.
                 </p>
                 <p>
-                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 15 februari 2017 je antwoorden wijzigen. Pas op 15 februari 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
+                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot 15 februari 2017 je antwoorden wijzigen. Pas op 15 februari 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
             </div>
             <?php echo $returnVal; ?>
@@ -336,8 +336,8 @@ function addError($value) {
                         <div class="col-sm-10">
                             <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
                             <div class="alert alert-success">
-                                Je kunt voor Familiar Voorjaar wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! 
-                                <strong>Jullie moeten je beide inschrijven, en elkaar als lieveling opgeven! En let op: Als jullie van deze optie gebruik maken worden 
+                                Je kunt voor Familiar Voorjaar wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! <br>
+                                Je lieveling moet het email adres invullen waarmee jij je registreert hebt en jij het emailadres waarmee jouw lieveling zich inschrijft. Als deze niet overeen komen, kunnen wij jullie niet aan elkaar linken. <strong>Let op: Als jullie van deze optie gebruik maken worden 
                                     jullie samen ingeloot <i>of beide uitgeloot</i></strong>
                             </div>
                         </div>
