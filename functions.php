@@ -17,12 +17,14 @@ function store_user_token($username, $token) {
   global $db_host, $db_user, $db_pass, $db_name;
   $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
   if( $mysqli->connect_errno ) {
+    $mysqli->close();
     return false;
   } else {
     $now = new DateTime();
-    $query = sprintf("UPDATE `users` u SET u.token = '%s', u.expire = '%s' WHERE u.email = '%s'", 
+    $query = sprintf("UPDATE `users` u SET u.token = '%s', u.expire = '%s', u.lastlogin = '%s' WHERE u.email = '%s'", 
       $mysqli->real_escape_string($token),
       $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s'),
+      $now->format('Y-m-d H:i:s'),
       $mysqli->real_escape_string($username));
     $result = $mysqli->query($query);
     $mysqli->close();
@@ -60,14 +62,17 @@ function login($username) {
     global $db_host, $db_user, $db_pass, $db_name;
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
     if( $mysqli->connect_errno ) {
+      $mysqli->close();
       return false;
     }
     $query = sprintf("SELECT `permissions` FROM users WHERE `email` = '%s'", 
       $mysqli->real_escape_string($username));
     $result = $mysqli->query($query);
     if( $result === FALSE ) {
+      $mysqli->close();
       return FALSE;
     } else if( $result->num_rows != 1 ) {
+      $mysqli->close();
       return FALSE;
     }
     $permissions = $result->fetch_array(MYSQLI_ASSOC)['permissions'];
@@ -75,8 +80,10 @@ function login($username) {
       $mysqli->real_escape_string($username));
     $result = $mysqli->query($query);
     if( $result === FALSE ) {
+      $mysqli->close();
       return FALSE;
     } else if( $result->num_rows != 1 ) {
+      $mysqli->close();
       return FALSE;
     }
     $firstname = $result->fetch_array(MYSQLI_ASSOC)['firstname'];
@@ -86,6 +93,26 @@ function login($username) {
     $_SESSION['firstname'] = $firstname;
     store_user_token($username, generateRandomToken(128));
     return true;
+}
+
+function logout($user) {
+  global $db_host, $db_user, $db_pass, $db_name;
+  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+  if( $mysqli->connect_errno ) {
+    $mysqli->close();
+    return false;
+  } else {
+    $now = new DateTime();
+    $query = sprintf("UPDATE `users` u SET u.expire = '%s' WHERE u.email = '%s'", 
+      $now->format('Y-m-d H:i:s'),
+      $mysqli->real_escape_string($user));
+    $result = $mysqli->query($query);
+    $mysqli->close();
+    if( $result === FALSE ) {
+      email_error("Error bij store user token: ".$mysqli->error);
+      return FALSE;
+    }
+  }
 }
 
 function setRememberMe($user) {

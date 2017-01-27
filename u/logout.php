@@ -1,5 +1,9 @@
 <?php session_start();
+
+include_once("../functions.php");
+
 if( isset($_SESSION['email'])) {
+	logout($_SESSION['email']);
     unset($_SESSION['email']);
 }
 if( isset($_SESSION['firstname'])) {

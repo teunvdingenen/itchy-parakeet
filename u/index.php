@@ -42,7 +42,7 @@ include("checklogin.php");
                                 <img class="img-responsive" src="../img/familie2012.jpg" alt="Familie Foto 2012">
                             </div>
                             <div class="col-md-6" style='vertical-align: middle;'>
-                                <img class="img-responsive center-block" src="../img/logo_small.png" alt="Familiar">
+                                
                             </div>
                         </div>
                     </div>

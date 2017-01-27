@@ -36,7 +36,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $returnVal = "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error. " ";
         } else {
             $result = $mysqli->query("SELECT * FROM `users` WHERE 
-                (`username` = '$username')");
+                (`email` = '$username')");
             if( $result && $result->num_rows == 1 ) {
                 $row = $result->fetch_array(MYSQLI_ASSOC);
                 $db_hash = $row["password"];
@@ -79,6 +79,8 @@ if($error) {
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" media="all"
             href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>        
+        <link href="css/bootstrap-social.css" rel="stylesheet">
+        <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -102,6 +104,9 @@ if($error) {
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Inloggen</button>
                 <a href="create">Ik heb nog geen account</a><br>
                 <a href="wachtwoordvergeten">Ik ben mijn wachtwoord vergeten</a>
+                <br>
+                <br>
+                <a href="https://www.facebook.com/FamiliarForest/posts/1308244099219461" target="_blank">Waarom moet it? <span class="fa fa-facebook"></span></a>
             </form>
         </div> <!-- /container -->
 

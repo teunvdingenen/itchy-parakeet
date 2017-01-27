@@ -29,19 +29,19 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             addError("Helaas konden we je gegevens niet ophalen, probeer het later nog eens of mail naar: ".$mailtolink);
             email_error("Error looking for person: ".$mysqli->error);
         } else {
-            $row = $result->fetch_array(MYSQLI_ASSOC);
+            $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
             $fullname = $row['firstname']." ".$row['lastname'];
             $token = generateRandomToken(128);
             $now = new DateTime();
             $pw_reset_query = sprintf(
-                "INSERT INTO `pwreset` (`email`, `hash`, `expire`) VALUES ('%s', '%s', '%s')",
-                $mysqli->real_escape_string($username),
+                "INSERT INTO `pwreset` (`email`, `token`, `expire`) VALUES ('%s', '%s', '%s')",
+                $mysqli->real_escape_string($email),
                 $mysqli->real_escape_string($token),
                 $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s')
             );
             $user_add_query = sprintf(
-                "INSERT INTO `users` (`username`, `permissions`) VALUES ('%s', '%s')",
-                $mysqli->real_escape_string($username),
+                "INSERT INTO `users` (`email`, `permissions`) VALUES ('%s', '%s')",
+                $mysqli->real_escape_string($email),
                 $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
             );
             $link = "https://stichtingfamiliarforest.nl/pw?t=".$token;

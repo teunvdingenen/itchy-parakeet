@@ -6,7 +6,7 @@
          <span class="icon-bar"></span>
          <span class="icon-bar"></span>
        </button>
-       <a class="navbar-brand" href="#">Stichting Familiar Forest</a>
+       <a class="navbar-brand" href="index">Stichting Familiar Forest</a>
     </div>
    </div>
 </div>

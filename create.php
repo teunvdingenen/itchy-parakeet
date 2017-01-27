@@ -72,32 +72,54 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $familiar = "";
     }
-$firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = ""; 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("INSERT INTO `person` (`email`, `firstname`, `lastname`, `birthdate`, `gender`, `phone`, `city`, `familiar`, `editions`, `visits`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-            $mysqli->real_escape_string($email),
-            $mysqli->real_escape_string($firstname),
-            $mysqli->real_escape_string($lastname),
-            $mysqli->real_escape_string($birthdate),
-            $mysqli->real_escape_string($gender),
-            $mysqli->real_escape_string($phone),
-            $mysqli->real_escape_string($city),
-            $mysqli->real_escape_string($familiar),
-            $mysqli->real_escape_string($editions),
-            $mysqli->real_escape_string($visits)
+        $query = sprintf("SELECT 1 FROM `person` WHERE `email` = '%s'",
+            $mysqli->real_escape_string($email));
+        $result = $mysqli->query($query);
+        if( $result && $result->num_rows == 1 ) {
+            $query = sprintf("UPDATE `person` SET `firstname` = '%s', `lastname` = '%s', `birthdate` = '%s', `gender` = '%s', `phone` = '%s', `city` = '%s', `familiar` = '%s', `editions` = '%s', `visits` = %s WHERE `email` = '%s'",
+                $mysqli->real_escape_string($firstname),
+                $mysqli->real_escape_string($lastname),
+                $mysqli->real_escape_string($birthdate),
+                $mysqli->real_escape_string($gender),
+                $mysqli->real_escape_string($phone),
+                $mysqli->real_escape_string($city),
+                $mysqli->real_escape_string($familiar),
+                $mysqli->real_escape_string($editions_str),
+                $mysqli->real_escape_string($nr_editions),
+                $mysqli->real_escape_string($email)
             );
-        if( !$mysqli->query($query) ) {
-            addError("We konden helaas niet je gegevens opslaan. Als het probleem aanhoud kun je het beste even mailen naar: ".$mailtolink);
-            email_error("Error insert into person: ".$mysqli->error);
         } else {
-
-            $user_add_query = sprintf(
-                "INSERT INTO `users` (`username`, `permissions`) VALUES ('%s', '%s')",
-                $mysqli->real_escape_string($username),
-                $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
+            $query = sprintf("INSERT INTO `person` (`email`, `firstname`, `lastname`, `birthdate`, `gender`, `phone`, `city`, `familiar`, `editions`, `visits`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s',%s)",
+                $mysqli->real_escape_string($email),
+                $mysqli->real_escape_string($firstname),
+                $mysqli->real_escape_string($lastname),
+                $mysqli->real_escape_string($birthdate),
+                $mysqli->real_escape_string($gender),
+                $mysqli->real_escape_string($phone),
+                $mysqli->real_escape_string($city),
+                $mysqli->real_escape_string($familiar),
+                $mysqli->real_escape_string($editions_str),
+                $mysqli->real_escape_string($nr_editions)
             );
-            $result = $mysqli->query($user_add_query);
+        }
+        if( !$mysqli->query($query) ) {
+            addError("We konden helaas je gegevens niet opslaan. Als het probleem aanhoud kun je het beste even mailen naar: ".$mailtolink);
+            email_error("Error insert into person: ".$mysqli->error."<br>".$query);
+        } else {
+            $result = $mysqli->query(sprintf("SELECT 1 FROM `users` WHERE `email` = '%s'",
+                $mysqli->real_escape_string($email)));
+            if( $result && $result->num_rows == 1 ) {
+                //already has account
+            } else {
+                $user_add_query = sprintf(
+                    "INSERT INTO `users` (`email`, `permissions`) VALUES ('%s', '%s')",
+                    $mysqli->real_escape_string($email),
+                    $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
+                );
+                $result = $mysqli->query($user_add_query);
+            }
             if( !$result ) {
                 addError("Het is niet gelukt om een account voor je aan te maken. Als het probleem aanhoud kun je het beste even mail naar: ".$mailtolink);
                 email_error("Error insert into users: ".$mysqli->error);
@@ -120,7 +142,7 @@ $firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $famil
                     $token = generateRandomToken(128);
                     $now = new DateTime();
                     $pw_reset_query = sprintf(
-                        "INSERT INTO `pwreset` (`email`, `hash`, `expire`) VALUES ('%s', '%s', '%s')",
+                        "INSERT INTO `pwreset` (`email`, `token`, `expire`) VALUES ('%s', '%s', '%s')",
                         $mysqli->real_escape_string($email),
                         $mysqli->real_escape_string($token),
                         $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s')
@@ -137,7 +159,7 @@ $firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $famil
                         $content .= get_email_footer();
                         $content .= "</html>";
                         send_mail($email, $fullname, $subject, $content);
-                        $returnVal .= '<div class="alert alert-success" role="alert">We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
+                        $returnVal .= '<div class="alert alert-success" role="alert">Gelukt! We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
                     } else {
                         addError("Helaas konden we op dit moment niet een wachtwoord voor je instellen.Probeer het later nog eens of mail naar: ".$mailtolink);
                         email_error("Error resetting password on create: ".$mysqli->error);
@@ -149,10 +171,6 @@ $firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $famil
         $mysqli->close();
     } else {
         //try again..
-    }
-    if( $returnVal == "") {
-        $returnVal .= '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ' . $value . '</div>';
-    } else {
     }
 } //End POST
 function addError($value) {

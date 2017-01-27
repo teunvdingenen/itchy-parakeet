@@ -29,12 +29,12 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             addError("Helaas konden we je gegevens niet ophalen, probeer het later nog eens of mail naar: ".$mailtolink);
             email_error("Error looking for person: ".$mysqli->error);
         } else {
-            $row = $result->fetch_array(MYSQLI_ASSOC);
+            $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
             $fullname = $row['firstname']." ".$row['lastname'];
             $token = generateRandomToken(128);
             $now = new DateTime();
             $pw_reset_query = sprintf(
-                "INSERT INTO `pwreset` (`email`, `hash`, `expire`) VALUES ('%s', '%s', '%s')",
+                "INSERT INTO `pwreset` (`email`, `token`, `expire`) VALUES ('%s', '%s', '%s')",
                 $mysqli->real_escape_string($email),
                 $mysqli->real_escape_string($token),
                 $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s')
@@ -93,12 +93,12 @@ function addError($value) {
         <?php include("header.php"); ?>
         <div class="container">
             <div class="form-intro-text">
+                <?php echo $returnVal; ?>
                 <h1>Familiar Forest wachtwoord vergeten</h1>
                 <p>
-                    Voer hier je email adres in om je wachtwoord te resetten. Je ontvangt dan een email waarmee je opnieuw je wachtwoord kunt instellen.
+                    Voer hier je email adres, je ontvangt dan een email waarmee je opnieuw je wachtwoord kunt instellen.
                 </p>
             </div>
-            <?php echo $returnVal; ?>
             <form class='form-small' id="create-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                 <div class="form-group row">
                     <label for="email" class="col-sm-2 form-control-label">Email*</label>

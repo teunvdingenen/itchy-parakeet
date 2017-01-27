@@ -225,7 +225,7 @@ function addError($value) {
                                 </div>
                             </div>
                             </fieldset>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">Opslaan</button>
+                            <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="glyphicon glyphicon-floppy-disk"></i> Opslaan</button>
                         </form>
                     </div>
                 </div>

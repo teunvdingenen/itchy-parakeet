@@ -11,14 +11,14 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
         $query = sprintf("SELECT * FROM `pwreset` WHERE `token` = '%s'",
             $mysqli->real_escape_string($token));
         $sqlresult = $mysqli->query($query);
-        if( $sqlresult->num_rows < 1 ) {
+        if( !$sqlresult || $sqlresult->num_rows < 1 ) {
             $mysqli->close();
             header('Location: index'); 
         }
-        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
         $expire = new DateTime($row['expire']);
         if( new Datetime() < $expire ) {
-            $email = $row['email'];
+            $_SESSION['tmp_email'] = $row['email'];
         } else {
             addError("Je link is verlopen. Ga naar <a href='wachtwoordvergeten'>wachtwoord vergeten</a> om het nogmaals te proberen");
         }
@@ -45,33 +45,34 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( $repeat != $password ) {
         addError( "De opgegeven wachtwoorden komen niet overeen");
     }
-    
+    if( isset($_SESSION['tmp_email'])) {
+        $email = $_SESSION['tmp_email'];
+    } else {
+        addError("We weten niet wie je bent! Als je zeker weet dat je niets fout doet kun je even mail naar: ".$mailtolink);
+    }
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("SELECT 1 FROM `pwreset` WHERE `email` = '%s'",
+        $query = sprintf("DELETE FROM `pwreset` WHERE `email` = '%s'",
             $mysqli->real_escape_string($email));
-        $sqlresult = $mysqli->query($query);
-        if( $sqlresult === FALSE ) {
-            email_error("Error looking for pwreset: ".$mysqli->error);
-        } else if( $sqlresult->num_rows != 0 ) {
-            $query = sprintf("DELETE FROM `pwreset` WHERE `email` = '%s'",
-                $mysqli->real_escape_string($email));
-            $mysqli->query($query);
+        if( !$mysqli->query($query) ) {
+            email_error("Error removing from pwreset ".$mysqli->error);
         }
 
         $pw_hash = password_hash($password, PASSWORD_DEFAULT);
         $query = sprintf(
-            "UPDATE `users` set `password` = '%s' WHERE `username` = '%s'",
+            "UPDATE `users` SET `password` = '%s' WHERE `email` = '%s'",
             $mysqli->real_escape_string($pw_hash),
             $mysqli->real_escape_string($email)
         );
         $mysqli->query($query);
         if( $mysqli->affected_rows > 1 ) {
+            addError("Er is iets fout gegaan met het opslaan van je wachtwoord. Stuur een email naar ".$mailtolink." voor hulp.");
             email_error("Multiple effected rows (".$mysqli->affected_rows.") for password update on email: ".$email);
         } else if ( $mysqli->affected_rows == 0 ) {
             addError("Er is iets fout gegaan met het opslaan van je wachtwoord. Stuur een email naar ".$mailtolink." voor hulp.");
+            email_error("error storing password: ".$mysqli->error."<br>".$query);
         } else {
-            $resultVal = '<div class="alert alert-success" role="alert">Je wachtwoord is ingesteld. Ga naar de <a href="login">login</a> pagina om verder te gaan.</div>';
+            $returnVal = '<div class="alert alert-success" role="alert">Je wachtwoord is ingesteld. Ga naar de <a href="login">login</a> pagina om verder te gaan.</div>';
         }
         $mysqli->close();
     } else {
@@ -123,12 +124,10 @@ function addError($value) {
         <div class="container">
             <div class="form-intro-text">
                 <h1>Familiar Forest wachtwoord instellen</h1>
-                <p>
-                    Je kunt hier je wachtwoord opnieuw instellen:
-                </p>
+                <?php echo $returnVal; ?>
             </div>
-            <?php echo $returnVal; ?>
-            <form class='form-small' id="reset-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+            
+            <form id="reset-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                 <div class="form-group row">
                     <label for="password" class="col-sm-2 form-control-label">Wachtwoord</label>
                     <div class="col-sm-10">

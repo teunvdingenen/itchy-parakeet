@@ -176,7 +176,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $query = "";
             $signupdate = date( 'Y-m-d H:i:s');
             if( $sqlresult->num_rows == 0 ) {
-                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `familiar`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s',);",
+                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `familiar`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s');",
                     $mysqli->real_escape_string($user_email),
                     $mysqli->real_escape_string($partner),
                     $mysqli->real_escape_string($motivation),
@@ -271,7 +271,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $preparationsbox = FALSE;
             $preparations = "";
         } else {
-            $preparations = TRUE;
+            $preparationsbox = TRUE;
         }
     } else {
         //this is ok
@@ -520,7 +520,7 @@ function addError($value) {
                         </div>
                     </div>
                 </fieldset>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Versturen</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="fa fa-paper-plane"></i> Versturen</button>
             </form>
         </div>
     </div>
