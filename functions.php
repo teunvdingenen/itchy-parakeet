@@ -290,7 +290,7 @@ function get_signup($email) {
 
 function translate_contrib($type) {
   if( $type == "iv") {
-    return "Interieur verzorging";
+    return "Interieurverzorging";
   } else if( $type == "bar" ) {
     return "Bar";
   } else if( $type == "keuken" ) {

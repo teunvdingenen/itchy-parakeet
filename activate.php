@@ -22,7 +22,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         if( !$mysqli->query($query) ) {
             //email_error("Error removing from pwreset ".$mysqli->error);
         }
-        $query = sprintf("SELECT * FROM `person` WHERE email = '%s'",
+        $query = sprintf("SELECT * FROM `person` WHERE `email` = '%s'",
             $mysqli->real_escape_string($email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {

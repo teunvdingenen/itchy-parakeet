@@ -21,6 +21,7 @@ $preparationsbox = false;
 $editions = array();
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
+    $returnVal = "";
     if( !empty($_POST["contrib0"])) {
         $contrib0 = test_input($_POST["contrib0"]);
     } else {
@@ -273,6 +274,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $preparationsbox = TRUE;
         }
+        $returnVal = '<div class="alert alert-success" role="alert">We hebben al een inschrijving van je ontvangen. Als je wilt kun je die hier aanpassen.</div>';
     } else {
         //this is ok
     }
@@ -303,7 +305,7 @@ function addError($value) {
                     5, 6 en 7 mei.
                 </p>
                 <p>
-                    Vul het zo volledig mogelijk in, als je wat langer wilt nadenken over bepaalde velden kan dat. Het inschrijfformulier blijft tot en met 15 februari 2017 beschikbaar. Heb je hulp nodig? Of wil je meer informatie over het inschrijven dan kun je mailen naar: <?php echo $mailtolink ?>
+                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 15 februari 2017 je antwoorden wijzigen. Pas op 15 februari 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
             </div>
             <?php echo $returnVal; ?>
@@ -311,7 +313,6 @@ function addError($value) {
             <form id="signup-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
                 
                 <fieldset>
-                    <legend>Waarom wil jij naar Familiar Voorjaar?</legend>
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="motivation">Motivatie</label>
                         <div class="col-sm-10">
@@ -333,9 +334,8 @@ function addError($value) {
                         <div class="col-sm-10">
                             <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
                             <div class="alert alert-success">
-                                Je kunt voor Familiar Voorjaar wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar 
-                                Familiar Forest wilt! 
-                                <strong>Jullie moeten je beide inschrijven! En let op: Als jullie van deze optie gebruik maken worden 
+                                Je kunt voor Familiar Voorjaar wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! 
+                                <strong>Jullie moeten je beide inschrijven, en elkaar als lieveling opgeven! En let op: Als jullie van deze optie gebruik maken worden 
                                     jullie samen ingeloot <i>of beide uitgeloot</i></strong>
                             </div>
                         </div>
@@ -348,7 +348,7 @@ function addError($value) {
                         <label for="contrib0" class="col-sm-2 form-control-label">Eerste keus</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="contrib0" id="contrib0">
-                                <option value="iv" <?= $contrib0 == 'iv' ? ' selected="selected"' : '';?>>Interieur verzorging</option>
+                                <option value="iv" <?= $contrib0 == 'iv' ? ' selected="selected"' : '';?>>Interieurverzorging</option>
                                 <option value="bar" <?= $contrib0 == 'bar' ? ' selected="selected"' : '';?>>Bar</option>
                                 <option value="keuken" <?= $contrib0 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib0 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
@@ -398,7 +398,7 @@ function addError($value) {
                         <label for="contrib0" class="col-sm-2 form-control-label">Tweede keus</label>
                         <div class="col-sm-10">
                             <select class="form-control" name="contrib1" id="contrib1">
-                                <option value="iv" <?= $contrib1 == 'iv' ? ' selected="selected"' : '';?>>Interieur verzorging</option>
+                                <option value="iv" <?= $contrib1 == 'iv' ? ' selected="selected"' : '';?>>Interieurverzorging</option>
                                 <option value="bar" <?= $contrib1 == 'bar' ? ' selected="selected"' : '';?>>Bar</option>
                                 <option value="keuken" <?= $contrib1 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib1 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
@@ -466,7 +466,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms3">Telefoon en Foto's</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Familiar Forest zorgt voor een professionele fotograaf. Om de sfeer te verhogen en het contact tussen deelnemers te verbeteren is het niet toegestaan een telefoon of camera mee te nemen op het terrein van Familiar Voorjaar.</div>
+                            <div class="alert alert-warning">Familiar Forest zorgt voor een professionele fotograaf. Om de sfeer te verhogen en het contact tussen deelnemers te stimuleren is het niet toegestaan een telefoon of camera mee te nemen op het terrein van Familiar Voorjaar.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms0" name="terms0" value="J">
@@ -495,7 +495,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms2">Gezondheid</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Tijdens Familiar Voorjaar is de deelnemer voor zijn eigen gezondheid verantwoordelijk. Als deelnemer is het niet mogelijk Familiar Forest aansprakelijk te stellen voor materiële en immateriële schade. <i>Je kunt deze verzekeren door een reisverzekering af te sluiten</i></div>
+                            <div class="alert alert-warning">Tijdens Familiar Voorjaar is de deelnemer verantwoordelijk voor zijn eigen gezondheid. Als deelnemer is het niet mogelijk Familiar Forest aansprakelijk te stellen voor materiële en immateriële schade. <i>Je kunt deze verzekeren door een reisverzekering af te sluiten</i></div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms2" name="terms2" value="J">

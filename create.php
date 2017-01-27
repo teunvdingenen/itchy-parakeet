@@ -110,8 +110,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $result = $mysqli->query(sprintf("SELECT 1 FROM `users` WHERE `email` = '%s'",
                 $mysqli->real_escape_string($email)));
-            if( $result && $result->num_rows == 1 ) {
-                //already has account
+            if( !$result ) {
+                addError("Het is niet gelukt om een account voor je aan te maken. Als het probleem aanhoud kun je het beste even mail naar: ".$mailtolink);
+                email_error("Error insert into users: ".$mysqli->error);
+            } else if( $result->num_rows == 1 ) {
+                addError("Volgens onze gegevens heb je al een account. Je kunt inloggen op onze <a href='login'>loginpagina</a>.");
             } else {
                 $user_add_query = sprintf(
                     "INSERT INTO `users` (`email`, `permissions`) VALUES ('%s', '%s')",
@@ -119,12 +122,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
                 );
                 $result = $mysqli->query($user_add_query);
-            }
-            if( !$result ) {
-                addError("Het is niet gelukt om een account voor je aan te maken. Als het probleem aanhoud kun je het beste even mail naar: ".$mailtolink);
-                email_error("Error insert into users: ".$mysqli->error);
-            } else {
-                $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
                 $query = sprintf("DELETE FROM `pwreset` WHERE `email` = '%s'",
                 $mysqli->real_escape_string($email));
                 if( !$mysqli->query($query) ) {
@@ -137,7 +135,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
                     email_error("Error looking for person: ".$mysqli->error);
                 } else {
-                    $row = $result->fetch_array(MYSQLI_ASSOC);
+                    $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
                     $fullname = $row['firstname']." ".$row['lastname'];
                     $token = generateRandomToken(128);
                     $now = new DateTime();
@@ -161,7 +159,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         send_mail($email, $fullname, $subject, $content);
                         $returnVal .= '<div class="alert alert-success" role="alert">Gelukt! We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
                     } else {
-                        addError("Helaas konden we op dit moment niet een wachtwoord voor je instellen.Probeer het later nog eens of mail naar: ".$mailtolink);
+                        addError("Helaas konden we op dit moment niet een wachtwoord voor je instellen. Probeer het later nog eens of mail naar: ".$mailtolink);
                         email_error("Error resetting password on create: ".$mysqli->error);
                     }
                 }
