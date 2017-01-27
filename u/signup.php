@@ -16,6 +16,7 @@ if( strtotime('now') > strtotime('2017-02-16 10:00') ) {
 $signupround = 0;
 
 $returnVal = "";
+$is_save = FALSE;
 $contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $familiar = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = "";
 $preparationsbox = false;
 $editions = array();
@@ -275,6 +276,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $preparationsbox = TRUE;
         }
         $returnVal = '<div class="alert alert-success" role="alert">We hebben al een inschrijving van je ontvangen. Als je wilt kun je die hier aanpassen.</div>';
+        $is_save = TRUE;
     } else {
         //this is ok
     }
@@ -520,7 +522,14 @@ function addError($value) {
                         </div>
                     </div>
                 </fieldset>
-                <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="fa fa-paper-plane"></i> Versturen</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                    <?php if( !$is_save ) { 
+                        echo '<i class="fa fa-paper-plane"></i> Versturen';
+                    } else {
+                        echo '<i class="glyphicon glyphicon-floppy-disk"></i> Opslaan';
+                    }
+                    ?>
+                </button>
             </form>
         </div>
     </div>

@@ -106,7 +106,7 @@ if($error) {
                 <a href="wachtwoordvergeten">Ik ben mijn wachtwoord vergeten</a>
                 <br>
                 <br>
-                <a href="https://www.facebook.com/FamiliarForest/posts/1308244099219461" target="_blank">Waarom moet it? <span class="fa fa-facebook"></span></a>
+                <a href="https://www.facebook.com/FamiliarForest/posts/1308244099219461" target="_blank">Waarom moet dit? <span class="fa fa-facebook"></span></a>
             </form>
         </div> <!-- /container -->
 
