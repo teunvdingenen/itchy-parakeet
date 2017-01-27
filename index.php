@@ -33,31 +33,7 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div id="header" class="text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-3">
-
-                    </div>
-                    <div class="col-xs-6">
-                        <h1 class="">Stichting Familiar Forest</h1>
-                    </div>
-                    <div class="col-xs-3">
-                        <a class='login-button' href="login">Inloggen</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--
-        <div id="signup-button" class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <p><a class="btn btn-lg btn-primary btn-block" role="button" href="deelnemen">Deelnemen</a></p>
-                </div>
-            </div>
-        </div>
-        -->
-
+        <?php include("header.php"); ?>
         <!--parallax 1 -->
         <section class="bg-1">
             <!--<p class="lead"></p>-->
