@@ -1,32 +1,18 @@
 <?php
 include_once "../functions.php";
 
-$user_email = $user_firstname = $user_permissions = "";
-
-if(!isset($_SESSION['email'])) {
-    return "";
-} else {
-    $user_email = $_SESSION['email'];
-}
-if(!isset($_SESSION['firstname'])) {
-    return "";
-} else {
-    $user_firstname = $_SESSION['firstname'];
-}
-if(!isset($_SESSION['permissions'])) {
-    return "";
-} else {
-    $user_permissions = $_SESSION['permissions'];
-}
-
 ?>
 <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
 <?php
 if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
     echo "<li><a class='' id='ik' href='ik'>Mijn gegevens</a></li>";
+    //echo "<li role='separator' class='divider'></li>";
     echo "<li><a class='menulink' id='voorjaar' href='voorjaar'>Familiar Voorjaar 2017</a></li>";
     echo "<li><a class='menulink' id='signup' href='signup'>Inschrijven Familiar Voorjaar</a></li>";
+    //echo "<li role='separator' class='divider'></li>";
+    //echo "<li><a class='menulink' id='forest' href='forest'>Familiar Forest 2017</a></li>";
+    echo "<li role='separator' class='divider'></li>";
     echo "<li><a class='menulink' id='logout' href='logout'>Uitloggen</a></li>";
     echo "</ul>";
 }

@@ -37,7 +37,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $result = $mysqli->query("SELECT * FROM `users` WHERE 
                 (`username` = '$username')");
-            if( $result->num_rows == 1 ) {
+            if( $result && $result->num_rows == 1 ) {
                 $row = $result->fetch_array(MYSQLI_ASSOC);
                 $db_hash = $row["password"];
                 if( password_verify($password, $db_hash)) {

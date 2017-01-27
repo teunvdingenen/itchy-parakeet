@@ -1,23 +1,7 @@
-<?php session_start(); 
+<?php
 include "../functions.php";
 
-$user_email = $user_firstname = $user_permissions = "";
-
-if(!isset($_SESSION['email'])) {
-    header('Location: ../login');
-} else {
-    $user_email = $_SESSION['email'];
-}
-if(!isset($_SESSION['firstname'])) {
-    header('Location: ../login');
-} else {
-    $user_firstname = $_SESSION['firstname'];
-}
-if(!isset($_SESSION['permissions'])) {
-    header('Location: ../login');
-} else {
-    $user_permissions = $_SESSION['permissions'];
-}
+include("checklogin.php");
 
 if( $user_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
     header('Location: oops.php');
@@ -178,7 +162,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
         $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and complete = 1",
-            $mysqli->real_escape_string($email));
+            $mysqli->real_escape_string($user_email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
             addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
@@ -187,16 +171,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             addError("Zo te zien heb je al een ticket en daarom kun je op dit moment niet jezelf inschrijven. Voor meer informatie kun je mailen naar: ".$mailtolink);
         } else {
             $query = sprintf("SELECT * FROM $current_table WHERE email = '%s'",
-                $mysqli->real_escape_string($email));
+                $mysqli->real_escape_string($user_email));
             $sqlresult = $mysqli->query($query);
             $query = "";
-            $signupdate = strtotime('now')->format('Y-m-d H:i:s');
-            if( $sqlresult === FALSE ) {
-                addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
-                email_error("Error getting user to determine update: ".$mysqli->error);
-            } else if( $sqlresult->num_rows == 0 ) {
+            $signupdate = date( 'Y-m-d H:i:s');
+            if( $sqlresult->num_rows == 0 ) {
                 $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `familiar`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s',);",
-                    $mysqli->real_escape_string($email),
+                    $mysqli->real_escape_string($user_email),
                     $mysqli->real_escape_string($partner),
                     $mysqli->real_escape_string($motivation),
                     $mysqli->real_escape_string($familiar),
@@ -231,7 +212,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $mysqli->real_escape_string($terms1),
                     $mysqli->real_escape_string($terms2),
                     $mysqli->real_escape_string($terms3),
-                    $mysqli->real_escape_string($email));
+                    $mysqli->real_escape_string($user_email));
             }
             $result = $mysqli->query($query);
             if( !$result ) {
@@ -252,7 +233,50 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         header('Location: success');
     } else {
     }
-} //End POST
+} else { //End POST
+    $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+    $query = sprintf("SELECT * FROM `$current_table` WHERE `email` = '%s'",
+        $mysqli->real_escape_string($user_email)
+        );
+    $result = $mysqli->query($query);
+    if( $result && $result->num_rows == 1 ) {
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $act_types = array('workshop', 'game', 'lecture', 'schmink', 'other','perform','install');
+
+        if( in_array($row['contrib0_type'], $act_types) ) {
+            $contrib0 = 'act';
+            $act0type = htmlspecialchars_decode($row['contrib0_type']);
+            $act0desc = htmlspecialchars_decode($row['contrib0_desc']);
+            $act0need = htmlspecialchars_decode($row['contrib0_need']);
+        } else {
+            $contrib0 = htmlspecialchars_decode($row['contrib0_type']);
+            $contrib0desc = htmlspecialchars_decode($row['contrib0_desc']);
+        }
+
+        if( in_array($row['contrib1_type'], $act_types) ) {
+            $contrib1 = 'act';
+            $act1type = htmlspecialchars_decode($row['contrib1_type']);
+            $act1desc = htmlspecialchars_decode($row['contrib1_desc']);
+            $act1need = htmlspecialchars_decode($row['contrib1_need']);
+        } else {
+            $contrib1 = htmlspecialchars_decode($row['contrib1_type']);
+            $contrib1desc = htmlspecialchars_decode($row['contrib1_desc']);
+        }
+
+        $partner = htmlspecialchars_decode($row['partner']);
+        $motivation = htmlspecialchars_decode($row['motivation']);
+        $familiar = htmlspecialchars_decode($row['familiar']);
+        $preparations = htmlspecialchars_decode($row['preparations']);
+        if( $preparations == "N" ) {
+            $preparationsbox = FALSE;
+            $preparations = "";
+        } else {
+            $preparations = TRUE;
+        }
+    } else {
+        //this is ok
+    }
+} 
 
 function addError($value) {
     global $returnVal;

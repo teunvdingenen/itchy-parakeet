@@ -3,13 +3,66 @@ include_once "initialize.php";
 include_once "fields.php";
 include_once "sendmail.php";
 
+function generateRandomToken($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
+function store_user_token($username, $token) {
+  global $db_host, $db_user, $db_pass, $db_name;
+  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+  if( $mysqli->connect_errno ) {
+    return false;
+  } else {
+    $now = new DateTime();
+    $query = sprintf("UPDATE `users` u SET u.token = '%s', u.expire = '%s' WHERE u.email = '%s'", 
+      $mysqli->real_escape_string($token),
+      $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s'),
+      $mysqli->real_escape_string($username));
+    $result = $mysqli->query($query);
+    $mysqli->close();
+    if( $result === FALSE ) {
+      email_error("Error bij store user token: ".$mysqli->error);
+      return FALSE;
+    }
+  }
+  return true;
+}
+
+function get_user_token($username) {
+  global $db_host, $db_user, $db_pass, $db_name;
+  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+  if( $mysqli->connect_errno ) {
+    return "false";
+  } else {
+    $query = sprintf("SELECT u.token FROM `users` WHERE (`email` = '%s')",
+        $mysqli->real_escape_string($username));
+    $result = $mysqli->query($query);
+    $mysqli->close();
+    if( $result === FALSE ) {
+      return "FALSE";
+    } elseif( $result->num_rows == 1 ) {
+      $row = $result->fetch_array(MYSQLI_ASSOC);
+      return $row['token'];
+    } else {
+      return "false";
+    }
+  }
+  return "false";
+}
+
 function login($username) {
     global $db_host, $db_user, $db_pass, $db_name;
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
     if( $mysqli->connect_errno ) {
       return false;
     }
-    $query = sprintf("SELECT `permissions` FROM users WHERE `username` = '%s'", 
+    $query = sprintf("SELECT `permissions` FROM users WHERE `email` = '%s'", 
       $mysqli->real_escape_string($username));
     $result = $mysqli->query($query);
     if( $result === FALSE ) {
@@ -31,21 +84,12 @@ function login($username) {
     $_SESSION['email'] = $username;
     $_SESSION['permissions'] = $permissions;
     $_SESSION['firstname'] = $firstname;
+    store_user_token($username, generateRandomToken(128));
     return true;
 }
 
-function generateRandomToken($length = 10) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-    return $randomString;
-}
-
 function setRememberMe($user) {
-    $token = password_hash(generateRandomToken(),PASSWORD_DEFAULT); // generate a token, should be 128 - 256 bit
+    $token = generateRandomToken(128); // generate a token, should be 128 - 256 bit
     store_user_token($user, $token);
     $cookie = $user . ':' . $token;
     $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
@@ -62,7 +106,8 @@ function rememberMe() {
         }
         $usertoken = get_user_token($user);
         if (hash_equals($usertoken, $token)) {
-            return login($user);
+            login($user);
+            setRememberMe();
         }
     }
 }
@@ -78,46 +123,6 @@ function test_input($data) {
     return $data;
 }
 
-function store_user_token($username, $token) {
-  global $db_host, $db_user, $db_pass, $db_name;
-  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-  if( $mysqli->connect_errno ) {
-    return false;
-  } else {
-    $query = sprintf("UPDATE `users` u SET u.token = '%s' WHERE u.username = '%s'", 
-      $mysqli->real_escape_string($token),
-      $mysqli->real_escape_string($username));
-    $result = $mysqli->query($query);
-    $mysqli->close();
-    if( $result === FALSE ) {
-      return FALSE;
-    }
-  }
-  return true;
-}
-
-function get_user_token($username) {
-  global $db_host, $db_user, $db_pass, $db_name;
-  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-  if( $mysqli->connect_errno ) {
-    return "false";
-  } else {
-    $query = sprintf("SELECT u.token FROM `users` WHERE (`username` = '%s')",
-        $mysqli->real_escape_string($username));
-    $result = $mysqli->query($query);
-    $mysqli->close();
-    if( $result === FALSE ) {
-      return "FALSE";
-    } elseif( $result->num_rows == 1 ) {
-      $row = $result->fetch_array(MYSQLI_ASSOC);
-      return $row['token'];
-    } else {
-      return "false";
-    }
-  }
-  return "false";
-}
-
 function get_user_info($username) {
  	global $db_host, $db_user, $db_pass, $db_name;
  	$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
@@ -125,7 +130,7 @@ function get_user_info($username) {
  	if( $mysqli->connect_errno ) {
   	return false;
   } else {
-  	$query = sprintf("SELECT * FROM `users` WHERE (`username` = '%s')",
+  	$query = sprintf("SELECT * FROM `users` WHERE (`email` = '%s')",
       $mysqli->real_escape_string($username));
 	 	$result = $mysqli->query($query);
 	 	$mysqli->close();

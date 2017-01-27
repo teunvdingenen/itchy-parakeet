@@ -19,6 +19,10 @@ include("checklogin.php");
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
                     <div class="col-xs-12 col-sm-9"> 
+                        <div class="jumbotron">
+                            <h2>Oops!</h2>
+                            <p>Hier gaat iets fout. Het lijkt erop alsof je een pagina probeert te bezoeken die niet voor jou bedoelt is. Weet je zeker dat je niets fout doet en het aan ons ligt? Stuur dan even een mailtje naar: <?php echo $mailtolink?>.</p>
+                        </div>
                     </div>
                 </div>
             </div>

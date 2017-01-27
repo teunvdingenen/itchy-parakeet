@@ -3,6 +3,10 @@ include "../functions.php";
 
 include("checklogin.php");
 
+if( $user_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
+    header('Location: oops.php');
+}
+
 ?>
 
 <!doctype html>
@@ -18,7 +22,11 @@ include("checklogin.php");
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-12 col-sm-9"> 
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="jumbotron">
+                            <h2>Soon..</h2>
+                            
+                        </div>
                     </div>
                 </div>
             </div>

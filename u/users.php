@@ -1,24 +1,8 @@
-<?php session_start();
+<?php
 include "../functions.php";
 include "../fields.php";
 
-$user_email = $user_firstname = $user_permissions = "";
-
-if(!isset($_SESSION['email'])) {
-    header('Location: ../login');
-} else {
-    $user_email = $_SESSION['email'];
-}
-if(!isset($_SESSION['firstname'])) {
-    header('Location: ../login');
-} else {
-    $user_firstname = $_SESSION['firstname'];
-}
-if(!isset($_SESSION['permissions'])) {
-    header('Location: ../login');
-} else {
-    $user_permissions = $_SESSION['permissions'];
-}
+include("checklogin.php");
 
 if( $user_permissions & PERMISSION_USER != PERMISSION_USER ) {
     header('Location: oops.php');
