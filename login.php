@@ -94,8 +94,8 @@ if($error) {
             } ?>
             <form class="form-small" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>">
                 <h2 class="form-small-heading">Inloggen</h2>
-                <label for="username" class="sr-only">Gebruikersnaam</label>
-                <input type="text" id="username" class="form-control" placeholder="Gebruikersnaam" name="username" required autofocus>
+                <label for="username" class="sr-only">Emailadres</label>
+                <input type="text" id="username" class="form-control" placeholder="Emailadres" name="username" required autofocus>
                 <label for="password" class="sr-only">Wachtwoord</label>
                 <input type="password" id="password" class="form-control" placeholder="Wachtwoord" name="password" required>
                 <div class="checkbox">
