@@ -4,7 +4,7 @@ include_once "../sendmail.php";
 
 include("checklogin.php");
 
-if( $user_permissions & PERMISSION_USER != PERMISSION_USER ) {
+if( ($user_permissions & PERMISSION_USER) != PERMISSION_USER ) {
     header('Location: oops.php');
 }
 
