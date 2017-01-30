@@ -223,9 +223,6 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $returnVal = '<div class="alert alert-success" role="alert"><i class="glyphicon glyphicon-ok"></i></span> We hebben je inschrijving in goede orde ontvangen.</div>';
             }
-            if( $db_error != "" ) {
-                addError($db_error);
-            }
         }
         $mysqli->close();
     } else {

@@ -20,6 +20,13 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
 if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen</a></li>";
+    echo "</ul>";
+}
+
+/*
+if( $user_permissions & PERMISSION_DISPLAY ) {
+    echo "<ul class='nav'>";
+    echo "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen</a></li>";
     echo "<li><a class='menulink' id='displayraffle' href='displayraffle'>Loting</a></li>";
     echo "<li><a class='menulink' id='displaybuyers' href='buyers'>Verkochte tickets</a></li>";
     echo "<li><a class='menulink' id='displaytransactions' href='verifypayments'>Transacties</a></li>";
@@ -87,5 +94,6 @@ if( $user_permissions & PERMISSION_NACHT ) {
     echo "<li><a class='menulink' href='nachtprogramma'>Nachtprogramma</a></li>";
     echo "</ul>";
 }
+*/
 ?>
 </div>
