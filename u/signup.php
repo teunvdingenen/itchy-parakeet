@@ -3,7 +3,7 @@ include "../functions.php";
 
 include("checklogin.php");
 
-if( $user_permissions & PERMISSION_PARTICIPANT != PERMISSION_PARTICIPANT ) {
+if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
     header('Location: oops.php');
 }
 
@@ -83,12 +83,20 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( !empty($_POST["motivation"])) {
         $motivation = test_input($_POST["motivation"]);
+        $motivation = mysql_real_escape_string($motivation);
+        if( strlen($motivation) >= 1024 ) {
+            $motivation = substr($motivation, 0, 1024);
+        }
     } else {
         $motivation = "";
     }
 
     if( !empty($_POST["familiar"])) {
         $familiar = test_input($_POST["familiar"]);
+        $familiar = mysql_real_escape_string($familiar);
+        if( strlen($familiar) >= 1024 ) {
+            $familiar = substr($familiar, 0, 1024);
+        }
     } else {
         $familiar = "";
     }
@@ -223,9 +231,6 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $returnVal = '<div class="alert alert-success" role="alert"><i class="glyphicon glyphicon-ok"></i></span> We hebben je inschrijving in goede orde ontvangen.</div>';
             }
-            if( $db_error != "" ) {
-                addError($db_error);
-            }
         }
         $mysqli->close();
     } else {
@@ -355,6 +360,7 @@ function addError($value) {
                                 <option value="keuken" <?= $contrib0 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib0 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                                 <option value="afb" <?= $contrib0 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                <option value="opb" <?= $contrib0 == 'opb' ? ' selected="selected"' : '';?>>Opbouw</option>
                             </select>
                         </div>
                     </div>
@@ -405,6 +411,7 @@ function addError($value) {
                                 <option value="keuken" <?= $contrib1 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib1 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                                 <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                <option value="opb" <?= $contrib0 == 'opb' ? ' selected="selected"' : '';?>>Opbouw</option>
                             </select>
                         </div>
                     </div>
