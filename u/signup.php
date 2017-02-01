@@ -352,6 +352,7 @@ function addError($value) {
                                 <option value="keuken" <?= $contrib0 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib0 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                                 <option value="afb" <?= $contrib0 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                <option value="opb" <?= $contrib0 == 'opb' ? ' selected="selected"' : '';?>>Opbouw</option>
                             </select>
                         </div>
                     </div>
@@ -402,6 +403,7 @@ function addError($value) {
                                 <option value="keuken" <?= $contrib1 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib1 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                                 <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
+                                <option value="opb" <?= $contrib0 == 'opb' ? ' selected="selected"' : '';?>>Opbouw</option>
                             </select>
                         </div>
                     </div>

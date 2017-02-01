@@ -71,7 +71,7 @@ if( $user_permissions & PERMISSION_DISPLAY ) {
     $offset = $page * $limit;
     
     $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, s.motivation, s.familiar, p.editions, s.partner, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations, p.visits
-        FROM person p join $current_table s on p.email = s.email LIMIT %s OFFSET %s", 
+        FROM person p join $current_table s on p.email = s.email ORDER BY s.signupdate DESC LIMIT %s OFFSET %s", 
         $mysqli->real_escape_string($limit), 
         $mysqli->real_escape_string($offset));
     $sqlresult = $mysqli->query($query);

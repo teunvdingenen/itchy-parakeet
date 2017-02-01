@@ -309,6 +309,8 @@ function translate_contrib($type) {
     return "Installatie of Beeldend";
   } else if( $type == "afb" ) {
     return "Afbouw";
+  } else if( $type == "opb" ) {
+    return "Opbouw";
   } else if( $type == "ontw" ) {
     return "Ontwerpen en/of bouw decoraties, podia etc.";
   } else if( $type == "" ) {
