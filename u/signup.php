@@ -83,20 +83,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( !empty($_POST["motivation"])) {
         $motivation = test_input($_POST["motivation"]);
-        $motivation = mysql_real_escape_string($motivation);
-        if( strlen($motivation) >= 1024 ) {
-            $motivation = substr($motivation, 0, 1024);
-        }
     } else {
         $motivation = "";
     }
 
     if( !empty($_POST["familiar"])) {
         $familiar = test_input($_POST["familiar"]);
-        $familiar = mysql_real_escape_string($familiar);
-        if( strlen($familiar) >= 1024 ) {
-            $familiar = substr($familiar, 0, 1024);
-        }
+        
     } else {
         $familiar = "";
     }
@@ -171,6 +164,16 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
+        $motivation = $mysqli->real_escape_string($motivation);
+        if( strlen($motivation) >= 1024 ) {
+            $motivation = substr($motivation, 0, 1024);
+        }
+        $familiar = $mysqli->real_escape_string($familiar);
+        if( strlen($familiar) >= 1024 ) {
+            $familiar = substr($familiar, 0, 1024);
+        }
+
         $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and complete = 1",
             $mysqli->real_escape_string($user_email));
         $sqlresult = $mysqli->query($query);
@@ -189,8 +192,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `familiar`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s');",
                     $mysqli->real_escape_string($user_email),
                     $mysqli->real_escape_string($partner),
-                    $mysqli->real_escape_string($motivation),
-                    $mysqli->real_escape_string($familiar),
+                    $motivation,
+                    $familiar,
                     $mysqli->real_escape_string($db_contrib0),
                     $mysqli->real_escape_string($db_contrib0_desc),
                     $mysqli->real_escape_string($db_contrib0_need),
@@ -207,8 +210,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $query = sprintf("UPDATE `$current_table` SET `partner` = '%s', `motivation` = '%s', `familiar` = '%s', `contrib0_type` = '%s', `contrib0_desc` = '%s', `contrib0_need` = '%s', `contrib1_type` = '%s', `contrib1_desc` = '%s', `contrib1_need` = '%s', `preparations` = '%s', `round` = %s, `signupdate` = '%s', `terms0` = '%s', `terms1` = '%s', `terms2` = '%s', `terms3` = '%s' WHERE `email` = '%s'",
                     $mysqli->real_escape_string($partner),
-                    $mysqli->real_escape_string($motivation),
-                    $mysqli->real_escape_string($familiar),
+                    $motivation,
+                    $familiar,
                     $mysqli->real_escape_string($db_contrib0),
                     $mysqli->real_escape_string($db_contrib0_desc),
                     $mysqli->real_escape_string($db_contrib0_need),
