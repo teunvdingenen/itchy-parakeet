@@ -85,7 +85,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $mysqli->real_escape_string($gender),
                 $mysqli->real_escape_string($phone),
                 $mysqli->real_escape_string($city),
-                $mysqli->real_escape_string($familiar),
+                substr($mysqli->real_escape_string($familiar),0,1024),
                 $mysqli->real_escape_string($editions_str),
                 $mysqli->real_escape_string($nr_editions),
                 $mysqli->real_escape_string($email)
@@ -99,7 +99,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $mysqli->real_escape_string($gender),
                 $mysqli->real_escape_string($phone),
                 $mysqli->real_escape_string($city),
-                $mysqli->real_escape_string($familiar),
+                substr($mysqli->real_escape_string($familiar),0,1024),
                 $mysqli->real_escape_string($editions_str),
                 $mysqli->real_escape_string($nr_editions)
             );
