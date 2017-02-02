@@ -24,12 +24,16 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $query = sprintf("SELECT * FROM `person` WHERE `email` = '%s'",
             $mysqli->real_escape_string($email));
-        $sqlresult = $mysqli->query($query);
-        if( $sqlresult === FALSE ) {
+        $personresult = $mysqli->query($query);
+        $userresult = $mysqli->query(sprintf("SELECT 1 FROM `users` WHERE `email` = '%s'",
+            $mysqli->real_escape_string($email)));
+        if( $personresult === FALSE ) {
             addError("Helaas konden we je gegevens niet ophalen, probeer het later nog eens of mail naar: ".$mailtolink);
             email_error("Error looking for person: ".$mysqli->error);
+        } else if ($userresult->num_rows != 1) {
+            addError("Het lijkt erop dat je nog geen account hebt. <a href='create'>Klik hier</a> om deze aan te maken");
         } else {
-            $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+            $row = $personresult->fetch_array(MYSQLI_ASSOC);
             $fullname = $row['firstname']." ".$row['lastname'];
             $token = generateRandomToken(128);
             $now = new DateTime();
@@ -54,7 +58,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $returnVal .= '<div class="alert alert-success" role="alert">We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
             } else {
                 addError("Helaas konden we op dit moment niet je wachtwoord resetten, probeer het later nog eens of mail naar: ".$mailtolink);
-                email_error("Error resetting password on create: ".$mysqli->error);
+                email_error("Error resetting password on forgot: ".$mysqli->error);
             }
         }
         $mysqli->close();
