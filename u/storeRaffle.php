@@ -3,7 +3,7 @@ include "../functions.php";
 
 include("checklogin.php");
 
-if( $user_permissions & PERMISSION_RAFFLE != PERMISSION_RAFFLE ) {
+if( ($user_permissions & PERMISSION_RAFFLE) != PERMISSION_RAFFLE ) {
     header('Location: oops.php');
 }
 

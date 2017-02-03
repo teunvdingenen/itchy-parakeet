@@ -3,7 +3,7 @@ include "../functions.php";
 
 include("checklogin.php");
 
-if( $user_permissions & PERMISSION_CALLER != PERMISSION_CALLER ) {
+if( ($user_permissions & PERMISSION_CALLER) != PERMISSION_CALLER ) {
     header('Location: oops.php');
 }
 $onlyprogress = false;

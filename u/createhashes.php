@@ -4,7 +4,7 @@ include "../functions.php";
 
 include("checklogin.php");
 
-if( $user_permissions & PERMISSION_EDIT  != PERMISSION_EDIT ) {
+if( ($user_permissions & PERMISSION_EDIT) != PERMISSION_EDIT ) {
     header('Location: oops.php');
 }
 
