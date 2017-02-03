@@ -46,7 +46,6 @@ $(document).ready(function() {
   	$.ajax({
        url: 'checklogin.php',
        cache: false,
-       complete: function () {refreshSn();}
     });
   }, 600000);
 });
