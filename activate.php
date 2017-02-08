@@ -62,7 +62,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     email_error("Error resetting password on activate: ".$mysqli->error);
                 }
             } else {
-                addError("Helaas konden we op dit moment geen account voor je aanmaken, probeer het later nog eens of mail naar: ".$mailtolink);
+                addError("Helaas konden we geen account voor je aanmaken. Een veel voorkomend probleem is dat je afgelopen jaar een ander email adres hebt gebruikt. Voor hulp en informatie kun je mailen naar: ".$mailtolink);
             }
         }
         $mysqli->close();
