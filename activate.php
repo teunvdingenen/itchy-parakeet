@@ -15,8 +15,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $email = "";
         addError("Je hebt geen email adres opgegeven");
     }
+    $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+    $sqlresult = $mysqli->query(sprintf("SELECT 1 FROM `users` WHERE `email` = '%s'",
+        $mysqli->real_escape_string($email)));
+    if( $sqlresult->num_rows != 0 ) {
+        addError("Je hebt al een account aangemaakt. In je email staat een email waarmee je een wachtwoord kunt instellen. Is die verlopen of hebt je die niet ontvangen? Dan kun je doen alsof je je <a href='wachtwoordvergeten'>wachtwoord vergeten</a> bent. Mocht het dan nog niet lukken kun je mailen naar: ".$mailtolink);
+    }
     if( $returnVal == "" ) {
-        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
         $query = sprintf("DELETE FROM `pwreset` WHERE `email` = '%s'",
             $mysqli->real_escape_string($email));
         if( !$mysqli->query($query) ) {
@@ -25,9 +30,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $query = sprintf("SELECT * FROM `person` WHERE `email` = '%s'",
             $mysqli->real_escape_string($email));
         $sqlresult = $mysqli->query($query);
-        if( $sqlresult === FALSE ) {
-            addError("Helaas konden we je gegevens niet ophalen, probeer het later nog eens of mail naar: ".$mailtolink);
-            email_error("Error looking for person: ".$mysqli->error);
+        if( $sqlresult === FALSE || $sqlresult->num_rows != 1 ) {
+            addError("Het lijkt erop dat je niet jezelf had ingeschreven voor Familiar Forest 2016. Je kunt een account aanmaken op <a href='create'> deze pagina</a>. Mocht het dan nog niet lukken kun je mailen naar: ".$mailtolink);
         } else {
             $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
             $fullname = $row['firstname']." ".$row['lastname'];
@@ -65,10 +69,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 addError("Helaas konden we geen account voor je aanmaken. Een veel voorkomend probleem is dat je afgelopen jaar een ander email adres hebt gebruikt. Voor hulp en informatie kun je mailen naar: ".$mailtolink);
             }
         }
-        $mysqli->close();
     } else {
         //try again..
     }
+    $mysqli->close();
 } //End POST
 function addError($value) {
     global $returnVal;

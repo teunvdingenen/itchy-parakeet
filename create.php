@@ -158,12 +158,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         $content .= "</html>";
                         send_mail($email, $fullname, $subject, $content);
                         $returnVal .= '<div class="alert alert-success" role="alert">Gelukt! We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
+                        $firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = "";
+                        $editions = array(); 
                     } else {
                         addError("Helaas konden we op dit moment niet een wachtwoord voor je instellen. Probeer het later nog eens of mail naar: ".$mailtolink);
                         email_error("Error resetting password on create: ".$mysqli->error);
                     }
                 }
-                $mysqli->close();
             }
         }
         $mysqli->close();
@@ -200,8 +201,15 @@ function addError($value) {
         <?php include("header.php"); ?>
         <div class="container">
             <div class="form-intro-text">
-                <h2>Aanmaken Familiar Forest account</h2>
-                <a class='btn btn-lg btn-primary' href='activate' role='button'><i class="glyphicon glyphicon-check"></i> Ik heb mezelf ingeschreven voor Familiar Forest 2016</a>
+                <div>
+                    <h2>Aanmaken Familiar Forest account</h2>
+                    <p>Om in te toekomst het inschrijf- en deelname proces te vergemakkelijken willen we graag dat je een account aanmaakt. Zodra je een account hebt kun je jezelf inschrijven voor de aankomende editie. Meer informatie over het inloggen vind je <a href="https://www.facebook.com/FamiliarForest/posts/1308244099219461" target="_blank">op onze Facebook pagina. <span class="fa fa-facebook"></span></a>
+                </div>
+                <div style="padding-top:10px">
+                    <h4>Ingeschreven voor Familiar Forest 2016?</h4>
+                    Als je jezelf hebt ingeschreven voor Familiar Forest 2016 kun je een deel van je gegevens hergebruiken. Het enige wat je dan hoeft te doen is je emailadres op te geven en wij doen de rest. 
+                    <div><a class='btn btn-sm btn-primary' href='activate' role='button'>Automatisch account aanmaken</a></div>
+                </div>
             </div>
                 
             <?php echo $returnVal; ?>
