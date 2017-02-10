@@ -73,6 +73,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             email_error("error storing password: ".$mysqli->error."<br>".$query);
         } else {
             $returnVal = '<div class="alert alert-success" role="alert">Je wachtwoord is ingesteld. Ga naar de <a href="login">login</a> pagina om verder te gaan.</div>';
+            $password = $passwordrepeat = "";
         }
         $mysqli->close();
     } else {
