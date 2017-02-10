@@ -2,7 +2,7 @@
 include_once "functions.php";
 date_default_timezone_set('Europe/Amsterdam');
 $returnVal = "";
-$firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = ""; 
+$firstname = $lastname = $birthdate = $inputdate = $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = ""; 
 $editions = array();
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,8 +24,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $city = "";
         addError("Je hebt je woonplaats niet opgegeven.");
     }
-    if( !empty($_POST["birthdate"]) ) {
-        $birthdate = test_input($_POST["birthdate"]);
+    if( !empty($_POST["inputdate"]) ) {
+        $birthdate = test_input($_POST["inputdate"]);
         $date = DateTime::createFromFormat('d/m/Y', $birthdate);
         if( $date == FALSE ) {
             if( ($timestamp = strtotime($birthdate)) == FALSE ) {
@@ -158,7 +158,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         $content .= "</html>";
                         send_mail($email, $fullname, $subject, $content);
                         $returnVal .= '<div class="alert alert-success" role="alert">Gelukt! We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
-                        $firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = "";
+                        $firstname = $lastname = $birthdate = $inputdate= $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = "";
                         $editions = array(); 
                     } else {
                         addError("Helaas konden we op dit moment niet een wachtwoord voor je instellen. Probeer het later nog eens of mail naar: ".$mailtolink);
@@ -244,11 +244,11 @@ function addError($value) {
                 </div>
             
                 <div class="form-group row">
-                    <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum*<br>(dd/mm/yyyy)</label>
+                    <label for="inputdate" class="col-sm-2 form-control-label">Geboortedatum*<br>(dd/mm/yyyy)</label>
                     <div class="col-sm-10">
-                        <input class="form-control ignore datepicker" type="text" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate" placeholder="dd/mm/yyyy">
+                        <input class="form-control ignore datepicker" type="text" id="inputdate" value="<?php echo $inputdate;?>" name="inputdate" placeholder="dd/mm/yyyy">
                         <div>
-                            <label for="birthdate" class="error" style="display:none;"></label>
+                            <label for="inputdate" class="error" style="display:none;"></label>
                         </div>
                     </div>
                 </div>

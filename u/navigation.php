@@ -7,10 +7,8 @@ include_once "../functions.php";
 if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
     echo "<li><a class='' id='ik' href='ik'>Mijn gegevens</a></li>";
-    //echo "<li role='separator' class='divider'></li>";
     echo "<li><a class='menulink' id='voorjaar' href='voorjaar'>Familiar Voorjaar 2017</a></li>";
     echo "<li><a class='menulink' id='signup' href='signup'>Inschrijven Familiar Voorjaar</a></li>";
-    //echo "<li role='separator' class='divider'></li>";
     //echo "<li><a class='menulink' id='forest' href='forest'>Familiar Forest 2017</a></li>";
     echo "<li role='separator' class='divider'></li>";
     echo "<li><a class='menulink' id='logout' href='logout'>Uitloggen</a></li>";
@@ -20,6 +18,13 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
 if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' id='displaysignup' href='signups'>Inschrijvingen Voorjaar</a></li>";
+    echo "</ul>";
+}
+
+if( $user_permissions & PERMISSION_RAFFLE ) {
+    echo "<ul class='nav'>";
+    echo "<li><a class='menulink' href='raffle'>Loten</a></li>";
+    echo "<li><a class='menulink' href='showraffle'>Voorjaar Loting</a></li>";
     echo "</ul>";
 }
 
@@ -33,11 +38,7 @@ if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "<li><a class='menulink' id='preparations' href='preparations'>Voorbereidingen</a></li>";
     echo "</ul>";
 }
-if( $user_permissions & PERMISSION_RAFFLE ) {
-    echo "<ul class='nav '>";
-    echo "<li><a class='menulink' id='raffle' href='raffle'>Loten</a></li>";
-    echo "</ul>";
-}
+
 if( $user_permissions & PERMISSION_CALLER) {
     echo "<ul class='nav '>";
     //echo "<li><a class='menulink' id='callerview' href='callerview''>Bellen</a></li>";

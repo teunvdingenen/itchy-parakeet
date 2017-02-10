@@ -14,18 +14,6 @@ $firstname = $lastname = $birthdate = $gender = $phone = $city = $phone = $posta
 $email = $user_email;
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST["firstname"]) ) {
-        $firstname = test_input($_POST["firstname"]);
-    } else {
-        $firstname = "";
-        addError("Je hebt je voornaam niet opgegeven.");
-    }
-    if( !empty($_POST["lastname"]) ) {
-        $lastname = test_input($_POST["lastname"]);
-    } else {
-        $lastname = "";
-        addError("Je hebt je achternaam niet opgegeven.");
-    }
     if( !empty($_POST["street"]) ) {
         $street = test_input($_POST["street"]);
     } else {
@@ -158,14 +146,14 @@ function addError($value) {
                             <div class="form-group row">
                                 <label for="firstname" class="col-sm-2 form-control-label">Voornaam*</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
+                                    <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="lastname" class="col-sm-2 form-control-label">Achternaam*</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
+                                    <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname" disabled>
                                 </div>
                             </div>
 

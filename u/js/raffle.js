@@ -1,22 +1,16 @@
-
-$('#selectall').change(function() {
-	var val = $(this).is(':checked');
-	console.log(val);
-	$('.table > tbody > tr').each(function() {
-		$(this).find('[type=checkbox]').prop('checked',val);
+$(document).ready(function() {
+	$(".inloten").click(function() {
+	    var item = $(this).closest("tr").find(".email").text();
+	    $.post("storeRaffle.php", {"email":item}, function(response){
+			console.log(response);
+		});
+	    $(this).attr("disabled", true);
 	});
-}) 
-
-function storeWinners() {
-	var winners = [];
-	$('.table > tbody > tr').each(function() {
-		if( $(this).closest('tr').find('[type=checkbox]').is(':checked')) {
-			winners.push($(this).children().children('#email').text())
-		}
+	$(".uitloten").click(function() {
+	    var item = $(this).closest("tr").find(".email").text();
+	    $.post("removeRaffle.php", {"email":item}, function(response){
+			console.log(response);
+		});
+	    $(this).attr("disabled", true);
 	});
-
-	$.post("storeRaffle.php", {"winners":winners}, function(response){
-		//var json = JSON.parse(response);
-		location.reload();
-	});
-}
+});

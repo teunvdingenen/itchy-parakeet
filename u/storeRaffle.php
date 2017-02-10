@@ -33,42 +33,30 @@ function randomChar() {
     return $alphabet[rand(0, strlen($alphabet)-1)];
 }
 
-if( !isset($_POST['winners'])) {
+if( !isset($_POST['email'])) {
     return;
 }
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
+    $mysqli->close();
     return false;
 }
 
-$result = $mysqli->query(sprintf("SELECT COUNT(*) FROM `%s` WHERE 1", $db_table_raffle));
+$result = $mysqli->query(sprintf("SELECT COUNT(*) FROM $current_table WHERE valid=1"));
 $raffle_num = mysqli_fetch_array($result,MYSQLI_NUM)[0];
 
-$winners = $_POST['winners'];
+$email = $_POST['email'];
 
-$added = 0;
-foreach ($winners as $key => $value) { //TODO double check if key is in use
-    $raffle_key = get_key($raffle_num + $added);
-    $added += 1;
+$raffle_key = get_key($raffle_num);
 
-    $sqlquery = sprintf("SELECT 1 FROM raffle r WHERE r.email = '%s'", $mysqli->real_escape_string($value));
-    $result = $mysqli->query($sqlquery);
-    if( $result->num_rows != 0 ) {
-        $sqlquery = sprintf("UPDATE raffle SET code = '%s', valid = 1 WHERE email = '%s'",
-            $mysqli->real_escape_string($raffle_key),
-            $mysqli->real_escape_string($value));
-    } else {
-        $sqlquery = sprintf("INSERT INTO `%s` (`%s`, `%s`, `%s`) VALUES ('%s', '%s', 1)",
-            $db_table_raffle,
-            $db_raffle_code,
-            $db_raffle_email,
-            $db_raffle_valid,
-            $mysqli->real_escape_string($raffle_key),
-            $mysqli->real_escape_string($value));
-    }
-    $result = $mysqli->query($sqlquery);
-    if( !$result ) {
-        email_error("Failed to add to raffle: email ".$value." code: ".$raffle_key);
-    }
+$sqlquery = sprintf("UPDATE $current_table SET rafflecode = '%s', valid = 1 WHERE email = '%s'",
+    $mysqli->real_escape_string($raffle_key),
+    $mysqli->real_escape_string($email));
+
+$result = $mysqli->query($sqlquery);
+if( !$result ) {
+    email_error("Failed to add to raffle: email ".$email." code: ".$raffle_key . "<br>".$mysqli->error);
 }
+$mysqli->close();
+
 ?>

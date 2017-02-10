@@ -17,7 +17,7 @@ $signupround = 0;
 
 $returnVal = "";
 $is_save = FALSE;
-$contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $familiar = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = "";
+$contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $question = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = "";
 $preparationsbox = false;
 $editions = array();
 
@@ -87,11 +87,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $motivation = "";
     }
 
-    if( !empty($_POST["familiar"])) {
-        $familiar = test_input($_POST["familiar"]);
+    if( !empty($_POST["question"])) {
+        $question = test_input($_POST["question"]);
         
     } else {
-        $familiar = "";
+        $question = "";
     }
 
     $db_contrib0 = $db_contrib0_desc = $db_contrib0_need = "";
@@ -180,11 +180,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $query = "";
             $signupdate = date( 'Y-m-d H:i:s');
             if( $sqlresult->num_rows == 0 ) {
-                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `familiar`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s');",
+                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `question`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s');",
                     $mysqli->real_escape_string($user_email),
                     $mysqli->real_escape_string($partner),
                     substr($mysqli->real_escape_string($motivation), 0, 1024),
-                    substr($mysqli->real_escape_string($familiar), 0, 1024),
+                    substr($mysqli->real_escape_string($question), 0, 1024),
                     $mysqli->real_escape_string($db_contrib0),
                     $mysqli->real_escape_string($db_contrib0_desc),
                     $mysqli->real_escape_string($db_contrib0_need),
@@ -199,10 +199,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $mysqli->real_escape_string($terms2),
                     $mysqli->real_escape_string($terms3));
             } else {
-                $query = sprintf("UPDATE `$current_table` SET `partner` = '%s', `motivation` = '%s', `familiar` = '%s', `contrib0_type` = '%s', `contrib0_desc` = '%s', `contrib0_need` = '%s', `contrib1_type` = '%s', `contrib1_desc` = '%s', `contrib1_need` = '%s', `preparations` = '%s', `round` = %s, `signupdate` = '%s', `terms0` = '%s', `terms1` = '%s', `terms2` = '%s', `terms3` = '%s' WHERE `email` = '%s'",
+                $query = sprintf("UPDATE `$current_table` SET `partner` = '%s', `motivation` = '%s', `question` = '%s', `contrib0_type` = '%s', `contrib0_desc` = '%s', `contrib0_need` = '%s', `contrib1_type` = '%s', `contrib1_desc` = '%s', `contrib1_need` = '%s', `preparations` = '%s', `round` = %s, `signupdate` = '%s', `terms0` = '%s', `terms1` = '%s', `terms2` = '%s', `terms3` = '%s' WHERE `email` = '%s'",
                     $mysqli->real_escape_string($partner),
                     substr($mysqli->real_escape_string($motivation), 0, 1024),
-                    substr($mysqli->real_escape_string($familiar), 0, 1024),
+                    substr($mysqli->real_escape_string($question), 0, 1024),
                     $mysqli->real_escape_string($db_contrib0),
                     $mysqli->real_escape_string($db_contrib0_desc),
                     $mysqli->real_escape_string($db_contrib0_need),
@@ -266,7 +266,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
         $partner = htmlspecialchars_decode($row['partner']);
         $motivation = htmlspecialchars_decode($row['motivation']);
-        $familiar = htmlspecialchars_decode($row['familiar']);
+        $question = htmlspecialchars_decode($row['question']);
         $preparations = htmlspecialchars_decode($row['preparations']);
         if( $preparations == "N" ) {
             $preparationsbox = FALSE;
@@ -323,10 +323,10 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="familiar">Welke vraag heb je altijd al in een inschrijfformulier willen zien?</label>
+                        <label class="col-sm-2 form-control-label" for="question">Welke vraag heb je altijd al in een inschrijfformulier willen zien?</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" name="familiar" id="familiar" cols="60" rows="4"><?php echo $familiar; ?></textarea>
-                            <label for="familiar">Max 1024 karakters</label>
+                            <textarea class="form-control" name="question" id="question" cols="60" rows="4"><?php echo $question; ?></textarea>
+                            <label for="question">Max 1024 karakters</label>
                         </div>
                     </div>
                 </fieldset>

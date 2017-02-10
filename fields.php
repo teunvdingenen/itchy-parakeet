@@ -33,6 +33,9 @@ if( !defined('PERMISSION_BAR')) {
 if( !defined('PERMISSION_NACHT')) {
 	define('PERMISSION_NACHT', 1024);
 }
+if( !defined('PERMISSION_ALL')) {
+	define('PERMISSION_ALL', 65535);
+}
 
 $current_table = 'fv2017';
 
