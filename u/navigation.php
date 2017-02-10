@@ -9,9 +9,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<li><a class='' id='ik' href='ik'>Mijn gegevens</a></li>";
     echo "<li><a class='menulink' id='voorjaar' href='voorjaar'>Familiar Voorjaar 2017</a></li>";
     echo "<li><a class='menulink' id='signup' href='signup'>Inschrijven Familiar Voorjaar</a></li>";
-    //echo "<li><a class='menulink' id='forest' href='forest'>Familiar Forest 2017</a></li>";
-    echo "<li role='separator' class='divider'></li>";
-    echo "<li><a class='menulink' id='logout' href='logout'>Uitloggen</a></li>";
+    //echo "<li><a class='menulink' id='forest' href='forest'>Familiar Forest 2017</a></li>";    
     echo "</ul>";
 }
 
@@ -28,6 +26,11 @@ if( $user_permissions & PERMISSION_RAFFLE ) {
     echo "</ul>";
 }
 
+if( $user_permissions & PERMISSION_PARTICIPANT ) {
+    echo "<ul class='nav'>";
+    echo "<li><a class='menulink' id='logout' href='logout'>Uitloggen</a></li>";
+    echo "</ul>";
+}
 /*
 if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "<ul class='nav'>";

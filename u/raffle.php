@@ -20,10 +20,28 @@ $request_for = 'raffle';
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
         <div class="page-container">
             <?php include("header.php"); ?>
             <div class="container">
+                <div id='rafflemodal' class="modal fade" tabindex="-1" role="dialog">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Lieveling inloten</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p id="raffle-modal-content"></p>
+                        <div id="emailA" class="hidden"></div>
+                        <div id="emailB" class="hidden"></div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuleren</button>
+                        <button id='lieveling-inloten' type="button" class="btn btn-primary">Inloten</button>
+                      </div>
+                    </div><!-- /.modal-content -->
+                  </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
                 <div class="row row-offcanvas row-offcanvas-left">
                 <?php include("navigation.php");?>
                 <div class="col-xs-12 col-sm-9"> 

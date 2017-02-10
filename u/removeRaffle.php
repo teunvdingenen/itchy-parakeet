@@ -16,11 +16,10 @@ if( $mysqli->connect_errno ) {
 }
 
 $email = $_POST['email'];
-echo $email;
+
 $result = $mysqli->query( sprintf("UPDATE $current_table set valid = 0 WHERE `email` = '%s';",
         $mysqli->real_escape_string($email)));
 if( $result === FALSE ) {
-	echo $mysqli->error;
 	$mysqli->close();
     return false;
 }
