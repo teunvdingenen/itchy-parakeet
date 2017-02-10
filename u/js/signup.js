@@ -63,6 +63,7 @@ $(document).ready(function() {
             if( $("#contrib1").val() == null ) {
                 $("#contrib1").val($("#contrib1 option:first").val());
             }
+            $("#contrib1").change();
         }
 	});
 
