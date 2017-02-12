@@ -3,6 +3,10 @@ include "../functions.php";
 
 include("checklogin.php");
 
+if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
+    header('Location: oops.php');
+}
+
 if( strtotime('now') > strtotime('2017-03-09 00:00') ) {
     header('Location: voorjaar');
 }
@@ -299,61 +303,105 @@ function addError($value) {
                                     <label for="terms4" class="error" style="display:none;"></label>
                                 </div>
                             </div>
-                            <div class="alert alert-success">
-                                De onderstaande bedragen zijn op basis voor onze begroting van Familiar Voorjaar. De kans bestaat dat uitgaven afwijken van de hieronder genoemde bedragen.
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label">Kosten</label> 
+                                <div class="col-sm-10">
+                                    <div class="alert alert-success">
+                                        De onderstaande bedragen zijn op basis van onze begroting voor Familiar Voorjaar. De kans bestaat dat uitgaven afwijken van de hieronder genoemde bedragen.
+                                    </div>
+                                    <table class="table table-condensed">
+                                        <tbody style='text-align:right'>
+                                            <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Hieronder vallen de kosten voor de locatie zoals het gebruik van een bed, de douches, wc's en afvalverwerking" rel="popover" data-placement="right" data-original-title="Locatie" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Locatie</th>
+                                                <td>30,00</td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Dit zijn de kosten voor ontbijt, lunch, avondeten en gezonde snacks zoals fruit tussendoor" rel="popover" data-placement="right" data-original-title="Eten" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Eten</th>
+                                                <td>21,50</td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Hiervan wordt naast de busreis ook de kosten betaald van alle andere spullen zoals decoraties en techniek." rel="popover" data-placement="right" data-original-title="Transport" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Transport</th>
+                                                <td>19,50</td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Dit wordt besteed aan beveiliging en EHBO." rel="popover" data-placement="right" data-original-title="Beveiliging" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Veiligheid</th>
+                                                <td>14,00</td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Van dit bedrag wordt het licht en geluid betaald in de verschillende zalen of buitenruimtes" rel="popover" data-placement="right" data-original-title="Techniek" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Techniek</th>
+                                                <td>13,00</td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Dit zijn doorlopende kosten. Denk daarbij aan verzekeringen, atelierhuur, keuringen en andere onverziene kosten" rel="popover" data-placement="right" data-original-title="Doorlopend" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Doorlopend</th>
+                                                <td>10,00</td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Voor dit bedrag zorgen we dat alles er leuk uitziet. Hiervan wordt bijvoorbeeld verf, stof, papier, hout, planten en nog veel meer gekocht." rel="popover" data-placement="right" data-original-title="Decoraties" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Decoraties</th>
+                                                <td>8,00</td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Van dit bedrag geven we DJ's en muziekanten een kleine onkoste vergoeding en/of reiskosten vergoeding" rel="popover" data-placement="right" data-original-title="Muziek" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Muziek</th>
+                                                <td>4,00</td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Dit geld gaat naar het bedrijf dat de betaling verwerkt en je bank of creditcard maatschappij" rel="popover" data-placement="right" data-original-title="Transactie kosten" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Transactie kosten</th>
+                                                <td class='transaction'></td>
+                                            </tr>
+                                            <?php
+                                                if( $share == "HALF" ) {
+                                                    echo "<tr>";
+                                                    echo '<th>
+                                                        <span class="btn data" href="#" data-content="Omdat je veel meer tijd investeert in Familiar dan de meeste anderen krijg je korting!" rel="popover" data-placement="right" data-original-title="Korting" data-trigger="hover">
+                                                            <i class="fa fa-info"></i>
+                                                        </span> Korting</th>';
+                                                    echo "<td>-60,00</td>";
+                                                    echo "</tr>";
+                                                }
+                                            ?>
+                                            <tr class='lead'>
+                                                <th>Totaal</th>
+                                                <td class='total'><?=$disp_amount ?></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <table class="table table-condensed">
-                                <tbody style='text-align:right'>
-                                    <tr>
-                                        <th>Locatie</th>
-                                        <td>30,00</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Eten &amp; Drinken</th>
-                                        <td>21,50</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Transport</th>
-                                        <td>19,50</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Veiligheid</th>
-                                        <td>14,00</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Techniek</th>
-                                        <td>13,00</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Doorlopend</th>
-                                        <td>10,00</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Decoraties</th>
-                                        <td>8,00</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Muziek</th>
-                                        <td>4,00</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Transactie kosten</th>
-                                        <td class='transaction'></td>
-                                    </tr>
-                                    <?php
-                                        if( $share == "HALF" ) {
-                                            echo "<tr>";
-                                            echo "<th>Vrijwilligers Korting</th>";
-                                            echo "<td>-60,00</td>";
-                                            echo "</tr>";
-                                        }
-                                    ?>
-                                    <tr class='lead'>
-                                        <th>Totaal</th>
-                                        <td class='total'><?=$disp_amount ?></td>
-                                    </tr>
-                                </tbody>
-                            </table>
                             <button class="btn btn-lg btn-primary btn-block" type="submit">Naar betalen</button>
                         </form>
                     </div>

@@ -73,4 +73,5 @@ $(document).ready(function() {
         min: jQuery.validator.format("Vul hier een waarde in groter dan of gelijk aan {0}.")
 	});
 	$('#transactionmethod').change();
+	$(".data").popover();
 });
