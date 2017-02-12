@@ -1,5 +1,21 @@
 
 $(document).ready(function() {
+	$('#transactionmethod').change(function() {
+		total = parseInt($('#hidden-total').text());
+		if( $(this).val() == "ideal") {
+			$('.transaction').text('0,29');
+			total += 0.29;
+		} else if( $(this).val() == "mistercash") {
+			$('.transaction').text('2,05');
+			total += 2.05;
+		} else if( $(this).val() == "creditcard") {
+			$('.transaction').text('3,61');
+			total += 3.61;
+		} else {
+			$('.transaction').text('0,00');
+		}
+		$('.total').text(total);
+	});
 	$('#buyer-form').validate({
 		ignore: ".ignore",
 		rules: {
@@ -56,5 +72,5 @@ $(document).ready(function() {
         max: jQuery.validator.format("Vul hier een waarde in kleiner dan of gelijk aan {0}."),
         min: jQuery.validator.format("Vul hier een waarde in groter dan of gelijk aan {0}.")
 	});
-
+	$('#transactionmethod').change();
 });

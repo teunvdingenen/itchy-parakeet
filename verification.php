@@ -41,6 +41,7 @@ catch (Mollie_API_Exception $e) {
 }
 
 function send_confirmation($mysqli, $payment_id) {
+    global $current_table;
     $query = sprintf("SELECT p.firstname, p.lastname, p.email, s.rafflecode, s.ticket
         FROM person p join $current_table s on s.email = p.email
         WHERE s.transactionid = '%s'", $mysqli->real_escape_string($payment_id));
@@ -68,6 +69,7 @@ function send_confirmation($mysqli, $payment_id) {
 }
 
 function send_confirmation_refund($mysqli, $payment_id) {
+    global $current_table;
     $query = sprintf("SELECT p.firstname, p.lastname, p.email
         FROM person p join $current_table s on s.email = p.email
         WHERE s.transactionid = '%s'", $mysqli->real_escape_string($payment_id));
@@ -90,6 +92,7 @@ function send_confirmation_refund($mysqli, $payment_id) {
 }
 
 function send_confirmation_refund_half($mysqli, $payment_id) {
+    global $current_table;
     $query = sprintf("SELECT p.firstname, p.lastname, p.email
         FROM person p join $current_table s on s.email = p.email
         WHERE s.transactionid = '%s'", $mysqli->real_escape_string($payment_id));
@@ -112,6 +115,7 @@ function send_confirmation_refund_half($mysqli, $payment_id) {
 }
 
 function isHalfTicket($mysqli, $code) {
+    global $current_table;
     $sqlresult = $mysqli->query(sprintf("SELECT share FROM $current_table WHERE rafflecode = '%s'", 
         $mysqli->real_escape_string($code)));
     if( $sqlresult === FALSE) {
@@ -127,6 +131,7 @@ function isHalfTicket($mysqli, $code) {
 }
 
 function database_setpayed($mysqli, $payment_id, $payed) {
+    global $current_table;
     $sqlquery = sprintf("UPDATE $current_table set complete=$payed WHERE transactionid = '%s';",
         $mysqli->real_escape_string($payment_id));
     $sqlresult = $mysqli->query($sqlquery);
