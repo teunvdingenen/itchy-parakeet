@@ -12,26 +12,17 @@ if( !defined('PERMISSION_RAFFLE')){
 if( !defined('PERMISSION_EDIT')){
    define( 'PERMISSION_EDIT',8);
 }
-if( !defined('PERMISSION_REMOVE')) {
-    define('PERMISSION_REMOVE', 16);
-}
-if( !defined('PERMISSION_USER')) {
-    define('PERMISSION_USER', 32);
-}
 if( !defined('PERMISSION_CALLER')) {
-	define('PERMISSION_CALLER', 64);
+	define('PERMISSION_CALLER', 16);
 }
 if( !defined('PERMISSION_VOLUNTEERS')) {
-	define('PERMISSION_VOLUNTEERS', 128);
+	define('PERMISSION_VOLUNTEERS', 32);
 }
 if( !defined('PERMISSION_ACTS')) {
-	define('PERMISSION_ACTS', 256);
+	define('PERMISSION_ACTS', 64);
 }
 if( !defined('PERMISSION_BAR')) {
-	define('PERMISSION_BAR', 512);
-}
-if( !defined('PERMISSION_NACHT')) {
-	define('PERMISSION_NACHT', 1024);
+	define('PERMISSION_BAR', 128);
 }
 if( !defined('PERMISSION_ALL')) {
 	define('PERMISSION_ALL', 65535);
