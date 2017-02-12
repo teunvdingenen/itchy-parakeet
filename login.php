@@ -45,7 +45,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         setRememberMe($username);
                     }
                     if( login($username) ) {
-                        header('Location: u/index');
+                        header('Location: u/signup');
                     }
                 } else {
                     $error = TRUE;
@@ -98,9 +98,10 @@ if($error) {
                 <input type="text" id="username" class="form-control" placeholder="Emailadres" name="username" required autofocus>
                 <label for="password" class="sr-only">Wachtwoord</label>
                 <input type="password" id="password" class="form-control" placeholder="Wachtwoord" name="password" required>
-                <div class="checkbox">
+                <!-- <div class="checkbox">
                     <label><input type="checkbox" name="rememberme" value="rememberme">Ingelogd blijven</label>
                 </div>
+            -->
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Inloggen</button>
                 <a href="create">Ik heb nog geen account</a><br>
                 <a href="wachtwoordvergeten">Ik ben mijn wachtwoord vergeten</a>

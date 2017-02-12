@@ -19,9 +19,6 @@ function saveActsChanges() {
 			tasks.push("act");
 		}
 	});
-	console.log(emails);
-	console.log(numbers);
-	console.log(tasks);
 	$.post("storeVolunteerValues.php", {"emails":emails,"numbers":numbers,"tasks":tasks}, function(response){
 		console.log(response);
 		location.reload();
@@ -42,10 +39,6 @@ function saveVolunteerChanges() {
 			notes.push($(this).closest('tr').find('textarea').val());
 		}
 	});
-	console.log(emails);
-	console.log(numbers);
-	console.log(tasks);
-	console.log(notes);
 	$.post("storeVolunteerValues.php", {"emails":emails,"numbers":numbers,"tasks":tasks,"notes":notes}, function(response){
 		console.log(response);
 		location.reload();

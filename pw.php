@@ -75,7 +75,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $returnVal = '<div class="alert alert-success" role="alert">Je wachtwoord is ingesteld. Ga naar de <a href="login">login</a> pagina om verder te gaan.</div>';
             $password = $passwordrepeat = "";
             if( login($email) ) {
-                header('Location: u/index');
+                header('Location: u/signup');
             }
         }
         $mysqli->close();
