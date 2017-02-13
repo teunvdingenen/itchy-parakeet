@@ -123,6 +123,12 @@ if( $request_for == 'raffle' ) {
     $restriction = '1';
 } else if( $request_for == 'showraffle' ) {
     $restriction = 's.valid = 1 AND s.complete != 1';
+} else if( $request_for == 'caller' ) {
+    $restriction = 's.valid = 1 AND s.complete != 1 AND s.called = 0';
+} else if( $request_for == 'called_done' ) {
+    $restriction = 's.valid = 1 AND s.complete != 1 AND s.called != 0';
+} else {
+    exit;
 }
 
 $query = "SELECT COUNT(*) FROM person p join $current_table s on p.email = s.email
@@ -147,7 +153,7 @@ $sqlresult = "";
 if( $mysqli->connect_errno ) {
     return false;
 } else {
-    $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations
+    $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations
         FROM person p join $current_table s on s.email = p.email
         WHERE $restriction" . $filterstr . " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
     $sqlresult = $mysqli->query($query);

@@ -4,36 +4,62 @@ function get_email(element) {
 
 $(document).ready(function() {
 	$(".note").change(function() {
-		$.post("savechange.php", {"email":get_email($(this)), "note":$(this).closest("tr").find(".note").val()}, function(response) {
-			//show saved
+		var p = $(this).closest("tr").find(".working");
+		p.html("<i class='glyphicon glyphicon-refresh spinning'></i>");
+		$.post("saveSignupChange.php", {"email":get_email($(this)), "note":$(this).closest("tr").find(".note").val()}, function(response) {
+			if( response == 0 ) {
+				p.html("<i class='glyphicon glyphicon-ok'></i>");
+			} else {
+				p.html("<i class='glyphicon glyphicon-remove'></i>");
+			}
 		});
 	});
 	$(".share").change(function() {
-		$.post("savechange.php", {"email":get_email($(this)), "share":$(this).closest("tr").find(".share").val()}, function(response) {
-			//show saved
+		var p = $(this).closest("tr").find(".working");
+		p.html("<i class='glyphicon glyphicon-refresh spinning'></i>");
+		$.post("saveSignupChange.php", {"email":get_email($(this)), "share":$(this).closest("tr").find(".share").val()}, function(response) {
+			if( response == 0 ) {
+				p.html("<i class='glyphicon glyphicon-ok'></i>");
+			} else {
+				p.html("<i class='glyphicon glyphicon-remove'></i>");
+			}
 		});
 	});
 	$(".permission").change(function() {
+		var p = $(this).closest("tr").find(".working");
+		p.html("<i class='glyphicon glyphicon-refresh spinning'></i>");
 		if( $(this).is(":checked") ) {
-			console.log("add: "+$(this).val());
-			$.post("savechange.php", {"email":get_email($(this)), "permission_add":$(this).val()}, function(response) {
-				//show saved
+			$.post("saveUserChange.php", {"email":get_email($(this)), "permission_add":$(this).val()}, function(response) {
+				if( response == 0 ) {
+					p.html("<i class='glyphicon glyphicon-ok'></i>");
+				} else {
+					p.html("<i class='glyphicon glyphicon-remove'></i>");
+				}
 			});
 		} else {
-			console.log("Remove: "+$(this).val());
-			$.post("savechange.php", {"email":get_email($(this)), "permission_remove":$(this).val()}, function(response) {
-				//show saved
+			$.post("saveUserChange.php", {"email":get_email($(this)), "permission_remove":$(this).val()}, function(response) {
+				if( response == 0 ) {
+					p.html("<i class='glyphicon glyphicon-ok'></i>");
+				} else {
+					p.html("<i class='glyphicon glyphicon-remove'></i>");
+				}
 			});
 		}
 	});
-	$(".removecrew").change(function() {
-		$.post("savechange.php", {"email":get_email($(this)), "task":""}, function(response) {
-			//show saved
+	$(".removecrew").click(function() {
+		$.post("saveSignupChange.php", {"email":get_email($(this)), "task":""}, function(response) {
+			$.post("saveUserChange.php", {"email":get_email($(this)), "permission_set":1}, function(response) {
+				if( response == 0 ) {
+					location.reload();
+				}
+			});
 		});
 	});
-	$(".addcrew").change(function() {
-		$.post("savechange.php", {"email":get_email($(this)), "task":"crew"}, function(response) {
-			//show saved
+	$(".addcrew").click(function() {
+		$.post("saveSignupChange.php", {"email":get_email($(this)), "task":"crew"}, function(response) {
+			if( response == 0 ) {
+				location.reload();
+			}
 		});
 	});
 });

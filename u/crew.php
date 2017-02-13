@@ -54,7 +54,7 @@ $mysqli->close();
                     <div class="col-xs-12 col-sm-9">
                         <table class='table table-striped table-bordered table-hover table-condensed'>
                             <thead>
-                                <tr class='header-row'><th>Voornaam</th><th>Achternaam</th><th>Email</th><th>Telefoon</th><th>Ticket</th><th>Opmerking</th>
+                                <tr class='header-row'><th>Status</th><th>Voornaam</th><th>Achternaam</th><th>Email</th><th>Telefoon</th><th>Ticket</th><th>Opmerking</th>
                                     <?php
                                     foreach ($permission_texts as $value) {
                                         echo "<th>".$value."</th>";
@@ -66,6 +66,7 @@ $mysqli->close();
                             while($row = mysqli_fetch_array($result,MYSQLI_ASSOC))
                             {
                                 echo "<tr>";
+                                echo "<td class='working'></td>";
                                 echo "<td>" . $row['firstname'] . "</td>";
                                 echo "<td>" . $row['lastname'] . "</td>";
                                 echo "<td class='email'>" . $row['email'] . "</td>";
@@ -104,7 +105,7 @@ $mysqli->close();
                                 echo "<tr>";
                                 echo "<td>" . $row['firstname'] . "</td>";
                                 echo "<td>" . $row['lastname'] . "</td>";
-                                echo "<td>" . $row['email'] . "</td>";
+                                echo "<td class='email'>" . $row['email'] . "</td>";
                                 echo "<td><a class='btn btn-info btn-sm btn-block addcrew'>Aan crew toevoegen</a>";
                                 echo "</tr>";
                             }
