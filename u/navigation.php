@@ -29,6 +29,18 @@ if( $user_permissions & PERMISSION_RAFFLE ) {
     echo "</ul>";
 }
 
+if( $user_permissions & PERMISSION_CALLER ) {
+    echo "<ul class='nav'>";
+    echo "<li><a class='menulink' href='bellen'>Bellijst</a></li>";
+    echo "</ul>";
+}
+
+if( $user_permissions & PERMISSION_EDIT ) {
+    echo "<ul class='nav'>";
+    echo "<li><a class='menulink' href='crew'>Crew</a></li>";
+    echo "</ul>";
+}
+
 if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' id='logout' href='logout'>Uitloggen</a></li>";
