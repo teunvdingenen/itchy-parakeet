@@ -8,7 +8,9 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
     echo "<li><a class='' href='ik'>Mijn gegevens</a></li>";
     echo "<li><a class='menulink' href='voorjaar'>Familiar Voorjaar 2017</a></li>";
-    echo "<li><a class='menulink' href='signup'>Inschrijven Familiar Voorjaar</a></li>";
+    if( strtotime('now') < strtotime('2017-02-16 10:00') ) {
+        echo "<li><a class='menulink' href='signup'>Inschrijven Familiar Voorjaar</a></li>";
+    }
     //echo "<li><a class='menulink' id='forest' href='forest'>Familiar Forest 2017</a></li>";
     if( add_buy($user_email) ) {
         echo "<li><a class='menulink' href='deelname'>Deelname Familiar Voorjaar</a></li>";

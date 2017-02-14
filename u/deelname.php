@@ -4,7 +4,7 @@ include "../functions.php";
 include("checklogin.php");
 
 if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
-    header('Location: oops.php');
+    header('Location: oops');
 }
 
 if( strtotime('now') > strtotime('2017-03-09 00:00') ) {
@@ -28,6 +28,20 @@ if( $mysqli->connect_errno ) {
     addError("Het lijkt erop dat de website kapot is, probeer het later nog eens!");
     $email_error("Database connectie is kapot: " . $mysqli->error);
 }
+
+$result = $mysqli->query(sprintf("SELECT rafflecode, valid FROM $current_table WHERE `email` = '%s'",
+        $mysqli->real_escape_string($user_email)));
+
+if( !$result ) {
+    addError("Het lijkt erop dat de website kapot is, probeer het later nog eens!");
+    $email_error("Broken query in deelname: " . $mysqli->error);
+} else {
+    $row = $result->fetch_array(MYSQLI_ASSOC);
+    if( $row['rafflecode'] == "" || $row['valid'] != 1 ) {
+        header("Location: oops");
+    }
+}
+
 $result = $mysqli->query(sprintf("SELECT city, street, postal, rafflecode, share from $current_table s join person p on s.email = p.email WHERE p.email = '%s'",
     $mysqli->real_escape_string($user_email)));
 if(!$result) {
@@ -43,6 +57,8 @@ if(!$result) {
 
 if( $share == "HALF" ) {
     $disp_amount = "60,00";
+} else if( $share == "FREE" ) {
+    $disp_amount = "0,00";
 } else {
     $disp_amount = "120,00";
 }
@@ -122,7 +138,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $path = dirname(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] :
                     $_SERVER['PHP_SELF']);
                 $amount = 120;
-                if( isHalfTicket($mysqli, $user_email) ) {
+                if( $share == "HALF" ) {
                     $amount = 60;
                 }
                 
@@ -195,19 +211,7 @@ function hasPaid($mysqli, $email) {
     }
     return 0;
 }
-function isHalfTicket($mysqli, $email) {
-    $sqlresult = $mysqli->query(sprintf("SELECT share FROM $current_table WHERE email = '%s'", 
-        $mysqli->real_escape_string($email)));
-    if( $sqlresult === FALSE) {
-        //log error
-        return FALSE;
-    }
-    $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
-    if( $row['share'] == "HALF") { 
-        return true;
-    }
-    return false;
-}
+
 function addError($value) {
     global $returnVal;
     $returnVal .= "<div class='alert alert-danger'>".$value."</div>";
@@ -392,6 +396,14 @@ function addError($value) {
                                                         </span> Korting</th>';
                                                     echo "<td>-60,00</td>";
                                                     echo "</tr>";
+                                                } else if( $share == "FREE" ) {
+                                                    echo "<tr>";
+                                                    echo '<th>
+                                                        <span class="btn data" href="#" data-content="Omdat je veel meer tijd investeert in Familiar dan de meeste anderen krijg je korting!" rel="popover" data-placement="right" data-original-title="Korting" data-trigger="hover">
+                                                            <i class="fa fa-info"></i>
+                                                        </span> Korting</th>';
+                                                    echo "<td>-120,00</td>";
+                                                    echo "</tr>";
                                                 }
                                             ?>
                                             <tr class='lead'>
@@ -402,7 +414,11 @@ function addError($value) {
                                     </table>
                                 </div>
                             </div>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">Naar betalen</button>
+                            <?php
+                                if( $share != "FREE" ) {
+                                    echo "<button class='btn btn-lg btn-primary btn-block' type='submit'>Naar betalen</button>";
+                                }
+                            ?>
                         </form>
                     </div>
                 </div>
