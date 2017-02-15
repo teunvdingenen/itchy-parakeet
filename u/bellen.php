@@ -38,7 +38,6 @@ if( $show_already_called ) {
                         <?php include("generic_filter.php"); ?>
                         <?php include("stats.php");
                             if( $show_already_called ) {
-
                                 echo "<a href='bellen' class='btn btn-default btn-block'>Nog te doen tonen</a>";
                             } else {
                                 echo "<a href='bellen?done=1' class='btn btn-default btn-block'>Gebeld/Geen Gehoor tonen</a>";

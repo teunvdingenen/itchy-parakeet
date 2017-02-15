@@ -60,9 +60,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("UPDATE person SET `firstname` = '%s', `lastname` = '%s', `city` = '%s', `gender` = '%s', `phone` = '%s', `birthdate` = '%s', `street` ='%s', `postal` = '%s' WHERE `email` = '%s'",
-            $mysqli->real_escape_string($firstname),
-            $mysqli->real_escape_string($lastname),
+        $query = sprintf("UPDATE person SET `city` = '%s', `gender` = '%s', `phone` = '%s', `birthdate` = '%s', `street` ='%s', `postal` = '%s' WHERE `email` = '%s'",
             $mysqli->real_escape_string($city),
             $mysqli->real_escape_string($gender),
             $mysqli->real_escape_string($phone),
@@ -85,30 +83,30 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $returnVal .= '<div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Je gegevens zijn opgeslagen</div>';
     } else {
     }
-} else { //End POST
-    $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-    $query = sprintf("SELECT * FROM person where `email` = '%s'",
-        $mysqli->real_escape_string($user_email));
-    $result = $mysqli->query($query);
-    if( $result === FALSE ) {
-        addError("We konden niet je gegevens ophalen. Je kunt het beste even contact opnemen met Familiar Forest op: ".$mailtolink);
-    } else if( $result->num_rows != 1 ) {
-        addError("We konden niet je huidige gevens ophalen. Je kunt het beste even contact opnemen met Familiar Forest op: ".$mailtolink);
-    } else {
-        $row = $result->fetch_array(MYSQLI_ASSOC);
-        $firstname = htmlspecialchars_decode($row['firstname']);
-        $lastname = htmlspecialchars_decode($row['lastname']);
-        $city = htmlspecialchars_decode($row['city']);
-        $gender = htmlspecialchars_decode($row['gender']);
-        $phone = htmlspecialchars_decode($row['phone']);
-        $postal = htmlspecialchars_decode($row['postal']);
-        $street = htmlspecialchars_decode($row['street']);
-        $birthdate = htmlspecialchars_decode($row['birthdate']);
-        $birthdate = DateTime::createFromFormat('Y-m-d', $birthdate);
-        $birthdate = $birthdate->format('d/m/Y');
-    }
-    $mysqli->close();
+} //End POST
+$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+$query = sprintf("SELECT * FROM person where `email` = '%s'",
+    $mysqli->real_escape_string($user_email));
+$result = $mysqli->query($query);
+if( $result === FALSE ) {
+    addError("We konden niet je gegevens ophalen. Je kunt het beste even contact opnemen met Familiar Forest op: ".$mailtolink);
+} else if( $result->num_rows != 1 ) {
+    addError("We konden niet je huidige gevens ophalen. Je kunt het beste even contact opnemen met Familiar Forest op: ".$mailtolink);
+} else {
+    $row = $result->fetch_array(MYSQLI_ASSOC);
+    $firstname = htmlspecialchars_decode($row['firstname']);
+    $lastname = htmlspecialchars_decode($row['lastname']);
+    $city = htmlspecialchars_decode($row['city']);
+    $gender = htmlspecialchars_decode($row['gender']);
+    $phone = htmlspecialchars_decode($row['phone']);
+    $postal = htmlspecialchars_decode($row['postal']);
+    $street = htmlspecialchars_decode($row['street']);
+    $birthdate = htmlspecialchars_decode($row['birthdate']);
+    $birthdate = DateTime::createFromFormat('Y-m-d', $birthdate);
+    $birthdate = $birthdate->format('d/m/Y');
 }
+$mysqli->close();
+
 function addError($value) {
     global $returnVal;
     $returnVal .= '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ' . $value . '</div>';
