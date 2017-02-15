@@ -8,4 +8,10 @@ $(document).ready(function() {
        cache: false,
     });
   }, 600000);
+  $(window).focus( function() {
+  	$.ajax({
+       url: 'checklogin.php',
+       cache: false,
+    });
+  })
 });
