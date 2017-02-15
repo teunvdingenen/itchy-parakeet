@@ -3,7 +3,7 @@
 $user_email = $user_firstname = $user_permissions = "";
 
 if( !isset($_SESSION['email'])) { 
-	rememberMe();
+//	rememberMe();
 }
 
 if(!isset($_SESSION['email'])) {
