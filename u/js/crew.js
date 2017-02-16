@@ -56,9 +56,12 @@ $(document).ready(function() {
 		});
 	});
 	$(".addcrew").click(function() {
-		$.post("saveSignupChange.php", {"email":get_email($(this)), "task":"crew"}, function(response) {
+		var email = get_email($(this));
+		$.post("saveSignupChange.php", {"email": email, "task":"crew"}, function(response) {
 			if( response == 0 ) {
-				location.reload();
+				$.post("storeRaffle.php", {"email":email}, function(response){
+					location.reload();
+				});
 			}
 		});
 	});

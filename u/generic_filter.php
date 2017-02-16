@@ -24,7 +24,7 @@ $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
     
 $filtersql = array();
 if( !empty($_GET['p'])) {
-    $page = $mysqli->real_escape_string($_GET['p']);
+    $page = $_GET['p'];
 }
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["email"]) ) {
@@ -153,9 +153,11 @@ $sqlresult = "";
 if( $mysqli->connect_errno ) {
     return false;
 } else {
-    $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations
-        FROM person p join $current_table s on s.email = p.email
-        WHERE $restriction" . $filterstr . " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
+    //$query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations
+    //    FROM person p join $current_table s on s.email = p.email
+    //    WHERE $restriction" . $filterstr . " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
+    $query = "SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations
+        FROM person p join $current_table s on s.email = p.email WHERE $restriction" . $filterstr;
     $sqlresult = $mysqli->query($query);
     if( $sqlresult === FALSE ) {
          echo $mysqli->error;
@@ -168,7 +170,14 @@ $mysqli->close();
 <div id="form-panel" class="collapse form-panel">
     <div class="panel panel-default">
         <div id="formcontent" class="panel-body">
-            <form id="user-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+            <form id="user-form" method="post" action=
+                <?php 
+                    $link = '"'.substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4).'?';
+                    $link .= !empty($_GET['p']) ? "p=".$_GET['p'] : "";
+                    $link .= !empty($_GET['show_names']) ? "show_names=".$_GET['show_names'] : '';
+                    echo $link.'"';
+                ?>
+                target="_top">
                 <div class="form-group row">
                     <label for="email" class="col-sm-2 form-control-label">Email</label>
                     <div class="col-sm-10">
@@ -289,6 +298,7 @@ $mysqli->close();
                 </div>
                 <button class="btn btn-sm btn-primary" type="submit">Filteren</button>
             </form>
+            <div><?=$entries ?> Resultaten</div>
         </div>
     </div>
 </div>

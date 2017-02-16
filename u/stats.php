@@ -28,8 +28,8 @@ $displayname = "";
 
 $statsrestriction = "1";
 if( $request_for == 'raffle' || $request_for == 'showraffle' ) {
-    $statsrestriction = 's.valid = 1 OR s.complete = 1';
-    $displayname = "ingelood & verkocht";
+    $statsrestriction = "s.valid = 1 AND s.task != 'crew'";
+    $displayname = "ingeloot & verkocht";
 } else if( $request_for == 'buyers' ) {
     $statsrestriction = 's.complete = 1';
     $displayname = "verkocht";
@@ -38,7 +38,7 @@ if( $request_for == 'raffle' || $request_for == 'showraffle' ) {
     $displayname = "ingeschreven";
 }
 
-$statsresult = $mysqli->query("SELECT p.birthdate, p.gender, p.city, p.visits, s.contrib0_type, s.contrib1_type
+$statsresult = $mysqli->query("SELECT p.birthdate, p.gender, p.city, p.visits, s.contrib0_type, s.contrib1_type, s.task 
         FROM person p join $current_table s on s.email = p.email
         WHERE $statsrestriction");
 $mysqli->close();

@@ -7,7 +7,7 @@ $(document).ready(function() {
        url: 'checklogin.php',
        cache: false,
     });
-  }, 600000);
+  }, 60000);
   $(window).focus( function() {
   	$.ajax({
        url: 'checklogin.php',
