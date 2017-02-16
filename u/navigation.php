@@ -13,7 +13,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     }
     //echo "<li><a class='menulink' id='forest' href='forest'>Familiar Forest 2017</a></li>";
     if( add_buy($user_email) ) {
-        echo "<li><a class='menulink' href='deelname'>Deelname Familiar Voorjaar</a></li>";
+        //echo "<li><a class='menulink' href='deelname'>Deelname Familiar Voorjaar</a></li>";
     }
     echo "</ul>";
 }
