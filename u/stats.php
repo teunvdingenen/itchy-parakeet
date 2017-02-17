@@ -29,13 +29,19 @@ $displayname = "";
 $statsrestriction = "1";
 if( $request_for == 'raffle' || $request_for == 'showraffle' ) {
     $statsrestriction = "s.valid = 1 AND s.task != 'crew'";
-    $displayname = "ingeloot & verkocht";
+    $displayname = "ingelood & verkocht";
 } else if( $request_for == 'buyers' ) {
     $statsrestriction = 's.complete = 1';
     $displayname = "verkocht";
 } else if( $request_for == 'signups' ) {
     $statsrestriction = '1';
     $displayname = "ingeschreven";
+} else if( $request_for == 'caller' ) {
+    $statsrestriction = "s.valid = 1 AND s.called = 0 AND s.task != 'crew'";
+} else if( $request_for == 'called_done' ) {
+    $statsrestriction = 's.valid = 1 AND s.called != 0';
+} else {
+	exit;
 }
 
 $statsresult = $mysqli->query("SELECT p.birthdate, p.gender, p.city, p.visits, s.contrib0_type, s.contrib1_type, s.task 

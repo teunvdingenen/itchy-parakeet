@@ -53,9 +53,9 @@ if( isset($_GET['show_names'])) {
                 <?php include("generic_filter.php"); ?>
                 <?php include("stats.php");
                     if( $show_names ) {
-                        echo "<a href='raffle?show_names=0' class='btn btn-default btn-block'><i class='glyphicon glyphicon-ok'></i> Namen verbergen</a>";
+                        echo "<a href='".$url.($first ? "?" : "&") ."p=".$page."&show_names=0' class='btn btn-default btn-block'><i class='glyphicon glyphicon-ok'></i> Namen verbergen</a>";
                     } else {
-                        echo "<a href='raffle?show_names=1' class='btn btn-default btn-block'><i class='glyphicon glyphicon-alert'></i> Namen tonen</a>";
+                        echo "<a href='".$url.($first ? "?" : "&")."p=".$page."&show_names=1' class='btn btn-default btn-block'><i class='glyphicon glyphicon-alert'></i> Namen tonen</a>";
                     }
                 ?>
                 <?php include("pagination.php"); ?>
