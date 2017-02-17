@@ -235,9 +235,9 @@ function addError($value) {
                     <div class="col-xs-12 col-sm-9"> 
                         <div class="form-intro-text">
                             <h1>Deelnemen Familiar voorjaar</h1>
-                            <p>Deelname aan Familiar Voorjaar kost 120 euro. Omdat niet alle betaalmethodes hetzelfde kosten hebben we ervoor gekozen de transactiekosten niet hierin te rekenen. Dat maakt het voor ons gemakkelijker om een betrouwbare begroting te maken.</p>
-                            <p>Familiar Voorjaar vindt plaats op 5, 6 en 7 mei 2017, dit formulier blijft toegankelijk tot en met 9 maart 2017.</p>
-                            <p>Het kan altijd zo zijn dat je onverhoopt toch niet kunt op 5 tot en met 7 mei. We raden daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering</p>
+                            <p>Familiar Voorjaar vindt plaats op 5, 6 en 7 mei 2017. Je kan via dit formulier een kaartje kopen tot en met 9 maart 2017.</p>
+                            <p>Deelname aan Familiar Voorjaar kost 120 euro. We hebben ervoor gekozen om de transactiekosten niet hierin te verwerken, omdat niet alle betaalmethodes dezelfde kosten hebben. Hierdoor is het voor ons makkelijker om een betrouwbare begroting te maken.</p>
+                            <p>Het kan altijd zo zijn dat je onverhoopt toch niet meer naar Familiar Voorjaar kan komen. We raden je daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering.</p>
                         </div>
                         <?php
                             if( $returnVal != "" ) {
@@ -297,7 +297,7 @@ function addError($value) {
                                 <label class="col-sm-2 form-control-label" for="terms4">Vrijwilliger</label>
                                 
                                 <div class="col-sm-10">
-                                    <div class="alert alert-warning">Deelname aan Familiar Voorjaar betekent dat je jezelf aanmeldt als vrijwilliger bij Stichting Familiar Forest. Tijdens het weekend zul je nader te bepalen werkzaamheden verrichten en zal er een werkbegeleider en aanspreekpunt vanuit de organisatie worden aangewezen.</div>
+                                    <div class="alert alert-warning">Deelname aan Familiar Voorjaar betekent dat je jezelf aanmeldt als vrijwilliger bij Stichting Familiar Forest. Tijdens het weekend zal je nader te bepalen werkzaamheden uit gaan voeren, een vrijwilligersshift. Vanuit de organisatie wordt een werkbegeleider en aanspreekpunt aangewezen.</div>
                                     <div class="checkbox">
                                         <label>
                                             <input class="checkbox" type="checkbox" id="terms4" name="terms4" value="J">
@@ -333,7 +333,7 @@ function addError($value) {
                                             </tr>
                                             <tr>
                                                 <th>
-                                                    <span class="btn data" href="#" data-content="Hiervan wordt naast de busreis ook de kosten betaald van alle andere spullen zoals decoraties en techniek." rel="popover" data-placement="right" data-original-title="Transport" data-trigger="hover">
+                                                    <span class="btn data" href="#" data-content="Hiermee wordt naast de busreis, ook al het transport betaald van bijvoorbeeld decoratie of techniek." rel="popover" data-placement="right" data-original-title="Transport" data-trigger="hover">
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Transport</th>
@@ -373,7 +373,7 @@ function addError($value) {
                                             </tr>
                                             <tr>
                                                 <th>
-                                                    <span class="btn data" href="#" data-content="Van dit bedrag geven we DJ's en muziekanten een kleine onkoste vergoeding en/of reiskosten vergoeding" rel="popover" data-placement="right" data-original-title="Muziek" data-trigger="hover">
+                                                    <span class="btn data" href="#" data-content="Van dit bedrag geven we DJ's en muzikanten een kleine onkoste vergoeding en/of reiskosten vergoeding" rel="popover" data-placement="right" data-original-title="Muziek" data-trigger="hover">
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Muziek</th>

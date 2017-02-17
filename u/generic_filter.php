@@ -23,41 +23,41 @@ $page = 0;
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
     
 $filtersql = array();
-if( !empty($_GET['p'])) {
-    $page = $_GET['p'];
-}
-if( $_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST["email"]) ) {
-        $email = test_input($_POST["email"]);
+if( $_SERVER["REQUEST_METHOD"] == "GET") {
+    if( !empty($_GET['p'])) {
+        $page = $_GET['p'];
+    }
+    if( !empty($_GET["email"]) ) {
+        $email = test_input($_GET["email"]);
         if( $email != "" ) {
             $filtersql[] = "p.email = '" . $mysqli->real_escape_string($email)."'";
         }
     }
-    if( !empty($_POST["firstname"]) ) {
-        $firstname = test_input($_POST["firstname"]);
+    if( !empty($_GET["firstname"]) ) {
+        $firstname = test_input($_GET["firstname"]);
         if( $firstname != "" ) {
             $filtersql[] = "p.firstname = '" . $mysqli->real_escape_string($firstname)."'";
         }
     }
-    if( !empty($_POST["lastname"]) ) {
-        $lastname = test_input($_POST["lastname"]);
+    if( !empty($_GET["lastname"]) ) {
+        $lastname = test_input($_GET["lastname"]);
         if( $lastname != "" ) {
             $filtersql[] = "p.lastname = '" . $mysqli->real_escape_string($lastname)."'";
         }
     }
-    if( !empty($_POST["gender"]) ) {
-        if( $_POST["gender"] == 'male') {
+    if( !empty($_GET["gender"]) ) {
+        if( $_GET["gender"] == 'male') {
             $filtersql[] = "p.gender = 'male'";    
-        } else if( $_POST["gender"] == 'female') {
+        } else if( $_GET["gender"] == 'female') {
             $filtersql[] = "p.gender = 'female'";
         }
-        $gender = $_POST["gender"];
+        $gender = $_GET["gender"];
     }
-    if( !empty($_POST["contrib"]) ) {
-        $contrib = $_POST["contrib"];
+    if( !empty($_GET["contrib"]) ) {
+        $contrib = $_GET["contrib"];
         $contribnr = "contrib0";
-        if( !empty($_POST["contribnr"])) {
-            $contribnr = $_POST["contribnr"];
+        if( !empty($_GET["contribnr"])) {
+            $contribnr = $_GET["contribnr"];
         }
         if( $contrib == '' || $contrib == 'all') {
             //nothing
@@ -67,9 +67,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $filtersql[] = "s.".$contribnr."_type = '" . $mysqli->real_escape_string($contrib)."'";
         }
     }
-    if( !empty($_POST["requestedage"]) && !empty($_POST["agetype"])) {
-        $requestedage = test_input($_POST["requestedage"]);
-        $agetype = test_input($_POST["agetype"]);
+    if( !empty($_GET["requestedage"]) && !empty($_GET["agetype"])) {
+        $requestedage = test_input($_GET["requestedage"]);
+        $agetype = test_input($_GET["agetype"]);
         $operator = "";
         if( $agetype == "min") { 
             $operator = ">=";
@@ -80,9 +80,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $filtersql[] = "FLOOR(DATEDIFF (NOW(), p.birthdate)/365) ".$operator." '".$mysqli->real_escape_string($requestedage)."'";
     }
-    if( !empty($_POST["visits"])) {
-        $visits = test_input($_POST["visits"]);
-        $visitstype = test_input($_POST["visitstype"]);
+    if( !empty($_GET["visits"])) {
+        $visits = test_input($_GET["visits"]);
+        $visitstype = test_input($_GET["visitstype"]);
         $operator = "";
         if( $visitstype == "min") { 
             $operator = ">=";
@@ -93,8 +93,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $filtersql[] = "p.visits ".$operator." '".$mysqli->real_escape_string($visits)."'";
     }
-    if( !empty($_POST["round"])) {
-        $roundstr = test_input($_POST["round"]);
+    if( !empty($_GET["round"])) {
+        $roundstr = test_input($_GET["round"]);
         if( $roundstr == "all") {
             $round = -1;
         } else if ($roundstr == "first") {
@@ -124,9 +124,9 @@ if( $request_for == 'raffle' ) {
 } else if( $request_for == 'showraffle' ) {
     $restriction = 's.valid = 1 AND s.complete != 1';
 } else if( $request_for == 'caller' ) {
-    $restriction = 's.valid = 1 AND s.complete != 1 AND s.called = 0';
+    $restriction = "s.valid = 1 AND s.called = 0 AND s.task != 'crew'";
 } else if( $request_for == 'called_done' ) {
-    $restriction = 's.valid = 1 AND s.complete != 1 AND s.called != 0';
+    $restriction = 's.valid = 1 AND s.called != 0';
 } else {
     exit;
 }
@@ -153,11 +153,9 @@ $sqlresult = "";
 if( $mysqli->connect_errno ) {
     return false;
 } else {
-    //$query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations
-    //    FROM person p join $current_table s on s.email = p.email
-    //    WHERE $restriction" . $filterstr . " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
-    $query = "SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations
-        FROM person p join $current_table s on s.email = p.email WHERE $restriction" . $filterstr;
+    $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations
+        FROM person p join $current_table s on s.email = p.email
+        WHERE $restriction" . $filterstr . " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
     $sqlresult = $mysqli->query($query);
     if( $sqlresult === FALSE ) {
          echo $mysqli->error;
@@ -165,12 +163,23 @@ if( $mysqli->connect_errno ) {
 }
 $mysqli->close();
 
+$url = substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);
+$first = true;
+if (!empty($_GET)) {
+    foreach ($_GET as $parameter => $value) {
+        if( $parameter != 'p' ) {
+            $url .= ($first ? "?" : "&") . $parameter . "=" . urlencode($value);
+            $first = false;
+        }
+    }
+}
+
 ?>
 <a id="formtoggle" class="btn btn-info btn-sm btn-block" role="button" data-toggle="collapse" data-target="#form-panel">Filteren <span class='glyphicon glyphicon-chevron-right'></span></a>
 <div id="form-panel" class="collapse form-panel">
     <div class="panel panel-default">
         <div id="formcontent" class="panel-body">
-            <form id="user-form" method="post" action=
+            <form id="user-form" method="get" action=
                 <?php 
                     $link = '"'.substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4).'?';
                     $link .= !empty($_GET['p']) ? "p=".$_GET['p'] : "";
