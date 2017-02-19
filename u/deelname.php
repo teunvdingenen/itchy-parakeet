@@ -107,7 +107,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         if( $returnVal == "" ) {
-            $query = sprintf("UPDATE person SET street = '%s', city = '%s', postal = '%s', terms4 = '%s' WHERE email = '%s'",
+            $query = sprintf("UPDATE person SET street = '%s', city = '%s', postal = '%s' WHERE email = '%s'",
                 $mysqli->real_escape_string($street),
                 $mysqli->real_escape_string($city),
                 $mysqli->real_escape_string($postal),
@@ -118,7 +118,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 addError("We hebben niet je gegevens kunnen aanpassen. Probeer het later nog eens of stuur een email naar: ".$mailtolink);
                 email_error("Error updating person: " . $mysqli->error);
             } else if( $mysqli->affected_rows != 1 ) {
-                email_error("More then one row effected updating person<br>".$query."<br>Affected rows: ".$mysqli->affected_rows);
+                //email_error("More then one row effected updating person<br>".$query."<br>Affected rows: ".$mysqli->affected_rows);
             }
             $query = sprintf("UPDATE $current_table SET terms4 = '%s' WHERE email = '%s'",
                 $mysqli->real_escape_string($terms4),
@@ -129,7 +129,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 addError("We hebben niet je gegevens kunnen aanpassen. Probeer het later nog eens of stuur een email naar: ".$mailtolink);
                 email_error("Error updating person: " . $mysqli->error);
             } else if( $mysqli->affected_rows != 1 ) {
-                email_error("More then one row effected updating person<br>".$query."<br>Affected rows: ".$mysqli->affected_rows);
+                //email_error("More then one row effected updating person<br>".$query."<br>Affected rows: ".$mysqli->affected_rows);
             }
             if( $returnVal == "" ) {
                 //all checks out!
@@ -157,7 +157,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                       "amount" => $amount,
                       "method" => $method,
                       "description" => "FV 2017 " . $code,
-                      "redirectUrl" => "{$protocol}://{$hostname}{$path}/u/redirect.php",
+                      "redirectUrl" => "{$protocol}://{$hostname}/redirect?raffle={$raffle}",
                       "metadata" => array("raffle" => $raffle,)
                     ));
                 } catch (Mollie_API_Exception $e) {
@@ -182,6 +182,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 $mysqli->close();
 
 function updatePaymentId($mysqli, $paymentid, $email) {
+    global $current_table;
     $sqlresult = $mysqli->query(sprintf("UPDATE $current_table SET transactionid = '%s' WHERE email = '%s'",
         $mysqli->real_escape_string($paymentid),
         $mysqli->real_escape_string($email)));
@@ -194,7 +195,7 @@ function updatePaymentId($mysqli, $paymentid, $email) {
 }
 
 function hasPaid($mysqli, $email) {
-    global $mollie;
+    global $mollie, $current_table;
     $sqlresult = $mysqli->query(sprintf("SELECT transactionid FROM $current_table 
         WHERE `email`='%s';",$mysqli->real_escape_string($email)));
     if($sqlresult === FALSE) {
@@ -203,9 +204,11 @@ function hasPaid($mysqli, $email) {
     }
     if( $sqlresult->num_rows > 0 ) {
         $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
-        if( $mollie->payments->get($row['id'])->isPaid() ) {
+        if( $row['transactionid'] == '' ) {
+            return 0;
+        } else if( $mollie->payments->get($row['transactionid'])->isPaid() ) {
             return 1;
-        } else if( $mollie->payments->get($row['id'])->isOpen()) {
+        } else if( $mollie->payments->get($row['transactionid'])->isOpen()) {
             return 2;
         }
     }

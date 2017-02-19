@@ -9,11 +9,11 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
 
 date_default_timezone_set('Europe/Amsterdam');
 
-if( strtotime('now') > strtotime('2017-02-16 10:00') ) {
+if( strtotime('now') > strtotime('2017-03-16 10:00') ) {
     header('Location: voorjaar');
 }
 
-$signupround = 0;
+$signupround = 1;
 
 $returnVal = "";
 $is_save = FALSE;
@@ -165,7 +165,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-        $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and complete = 1",
+        $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and valid = 1",
             $mysqli->real_escape_string($user_email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
@@ -274,8 +274,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $preparationsbox = TRUE;
         }
-        $returnVal = '<div class="alert alert-success" role="alert">We hebben al een inschrijving van je ontvangen. Als je wilt kun je die hier aanpassen.</div>';
-        $is_save = TRUE;
+        if( $row['round'] == $signupround ) {
+            $returnVal = '<div class="alert alert-success" role="alert">We hebben al een inschrijving van je ontvangen. Als je wilt kun je die hier aanpassen.</div>';
+            $is_save = TRUE;
+        }
     } else {
         //this is ok
     }
