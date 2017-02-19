@@ -1,11 +1,14 @@
 <?php
-include "initialize.php";
 include "functions.php";
 include "createhashes.php";
 
+if ( !isset( $_POST['id'] ) || empty( $_POST['id'] ) ) {
+    exit;
+}
+
 try
 {
-    include "mollie_api_init.php";
+    include "u/mollie_api_init.php";
 
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
@@ -55,11 +58,12 @@ function send_confirmation($mysqli, $payment_id) {
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
     $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen naar Familiar Voorjaar 2017 kunnen!</p>";
-    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar het is goed om alvast 5 tot en met 7 mei 2017 vrij te maken in je agenda. Houd onze <a href'https://www.facebook.com/events/1428059363879439/'>Facebook</a> in de gaten voor meer nieuws.</p>";
-    $content .= "<p>Het is goed om de volgende informatie nog even goed te bewaren:</p>";
+    $content .= "<p>Meer informatie over Familiar Voorjaar volgt nog maar houd alvast 5 tot en met 7 mei 2017 vrij te maken in je agenda. Houd onze <a href='https://www.facebook.com/events/1428059363879439/'>Facebook</a> in de gaten voor meer nieuws.</p>";
+    $content .= "<p>Bewaar ook de volgende informatie nog even goed:</p>";
     $content .= "<p>Je deelname code is: " . $row['rafflecode'] . "</p>";
     $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";
-    $content .= "<p>Je kunt je ticket downloaden en printen door op deze link te klikken <a href='".$ticketurl."'>".$ticketurl."</a></p>";
+    $content .= "<p>Binnenkort zal het mogelijk zijn om je ticket te downloaden van onze website. Zodra we die voor je klaar hebben ontvang je nog een email daarover.</p>";
+    //$content .= "<p>Je kunt je ticket downloaden en printen door op deze link te klikken <a href='".$ticketurl."'>".$ticketurl."</a></p>";
     //$content .= "<p>Een allerlaatst hebben we wat <a href='http://stichtingfamiliarforest.nl/info.html'>informatie</a> voor je klaar gezet</p>";
 
     $content .= get_email_footer();
@@ -127,7 +131,7 @@ function isHalfTicket($mysqli, $code) {
         return false;
     }
     $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
-    return $row['share'] == "HALF");
+    return ($row['share'] == "HALF");
 }
 
 function database_setpayed($mysqli, $payment_id, $payed) {

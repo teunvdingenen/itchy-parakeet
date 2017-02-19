@@ -7,6 +7,11 @@ include "fields.php";
 
 rememberMe();
 
+$user_permissions = $_SESSION['permissions'];
+if( ($user_permissions & PERMISSION_PARTICIPANT) == PERMISSION_PARTICIPANT ) {
+    header('Location: u/voorjaar');
+}
+
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( !empty($_POST["username"]) ) {
