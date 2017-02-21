@@ -27,7 +27,7 @@ $query = "UPDATE users SET ";
 if( isset($_POST['permission_add'])) {
 	$query .= sprintf("`permissions` = permissions | %s", $mysqli->real_escape_string($_POST['permission_add']));
 } else if( isset( $_POST['permission_remove'])) { 
-	$query .= sprintf("`permissions` = permissions ~ %s", $mysqli->real_escape_string($_POST['permission_remove']));
+	$query .= sprintf("`permissions` = permissions ^ %s", $mysqli->real_escape_string($_POST['permission_remove']));
 } else if( isset( $_POST['permission_set'])) {
 	$query .= sprintf("`permissions` = %s", $mysqli->real_escape_string($_POST['permission_set']));
 } else {
