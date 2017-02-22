@@ -30,7 +30,7 @@ $statsrestriction = "1";
 if( $request_for == 'raffle' || $request_for == 'showraffle' ) {
     $statsrestriction = "s.valid = 1 AND s.task != 'crew'";
     $displayname = "ingelood & verkocht";
-} else if( $request_for == 'buyers' ) {
+} else if( $request_for == 'buyer' ) {
     $statsrestriction = 's.complete = 1';
     $displayname = "verkocht";
 } else if( $request_for == 'signups' ) {

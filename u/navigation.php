@@ -21,6 +21,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
 if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' href='signups'>Inschrijvingen Voorjaar</a></li>";
+    echo "<li><a class='menulink' href='buyer'>Tickets Voorjaar</a></li>";
     echo "</ul>";
 }
 

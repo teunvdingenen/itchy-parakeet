@@ -117,7 +117,7 @@ foreach($filtersql as $filter) {
 $restriction = "1";
 if( $request_for == 'raffle' ) {
     $restriction = 's.valid != 1 AND s.complete != 1';
-} else if( $request_for == 'buyers' ) {
+} else if( $request_for == 'buyer' ) {
     $restriction = 's.complete = 1 ';
 } else if( $request_for == 'signups' ) {
     $restriction = '1';
