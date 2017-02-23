@@ -91,6 +91,8 @@ function login($username) {
     $_SESSION['email'] = $username;
     $_SESSION['permissions'] = $permissions;
     $_SESSION['firstname'] = $firstname;
+    $_SESSION['LAST_ACTIVITY'] = time();
+    $_SESSION['CREATED'] = time();
     store_user_token($username, generateRandomToken(128));
     return true;
 }
