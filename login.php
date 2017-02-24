@@ -50,7 +50,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         setRememberMe($username);
                     }
                     if( login($username) ) {
-                        header('Location: u/signup');
+                        header('Location: u/voorjaar');
                     }
                 } else {
                     $error = TRUE;
