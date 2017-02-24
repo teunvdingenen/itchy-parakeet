@@ -31,7 +31,7 @@ $request_for = 'signups';
                 <?php include("pagination.php"); ?>
                     <table class='table table-striped table-bordered table-hover table-condensed'>
                         <thead>
-                            <tr class='header-row'><th>Achternaam</th><th>Voornaam</th><th>Leeftijd</th><th>Woonplaats</th><th>Aantal ediites</th><th>Bekend door</th><th>Motivatie</th><th>Vraag</th><th>Eerste keus</th><th></th><th>Tweede keus</th><th></th><th>Voorgaande edities</th>
+                            <tr class='header-row'><th>Achternaam</th><th>Voornaam</th><th>Leeftijd</th><th>Woonplaats</th><th>Telefoon</th><th>Email</th><th>Aantal edities</th><th>Bekend door</th><th>Motivatie</th><th>Vraag</th><th>Eerste keus</th><th></th><th>Tweede keus</th><th></th><th>Voorgaande edities</th><th>Lieveling</th>
                         </thead>
                         <tbody>
                     <?php
@@ -43,6 +43,8 @@ $request_for = 'signups';
                         $age = (new DateTime($row['birthdate']))->diff(new DateTime('now'))->y;
                         echo "<td>" . $age . "</td>"; 
                         echo "<td>" . $row['city'] . "</td>";
+                        echo "<td>" . $row['phone'] . "</td>";
+                        echo "<td>" . $row['email'] . "</td>";
                         echo "<td>" . $row['visits'] . "</td>";
                         echo "<td>" . $row['familiar'] . "</td>";
                         echo "<td>" . $row['motivation'] . "</td>";
@@ -57,6 +59,7 @@ $request_for = 'signups';
                             $editions_str .= translate_edition($edition)."<br>";
                         }
                         echo "<td>" . $editions_str . "</td>";
+                        echo "<td>" . $row['partner'] . "</td>";
                         echo "</tr>";
                     }
                     ?>

@@ -161,25 +161,24 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                       "metadata" => array("raffle" => $raffle,)
                     ));
                 } catch (Mollie_API_Exception $e) {
-                    addError("Er is iets fout gegaan met het aanmaken van de betaling" . $e);
+                    addError("Er is iets fout gegaan met het aanmaken van de betaling");
                 }
                 if( !updatePaymentId($mysqli, $payment->id, $user_email)) {
+                    addError("Er is iets fout gegaan met het aanmaken van de betaling. Je kunt het nogmaals proberen of even mailen naar: ".$mailtolink);
                     email_error("Failed to update payment ID: ".$mysqli->error);
                 }
             }
         }
     }
+    $mysqli->close();
     if( $returnVal == "") {
         //sendoff to payment
-        $mysqli->close();
         header('Location: ' . $payment->getPaymentUrl());
     } else {
         //try again..
         $returnVal .= "</ul>";
     }
 } //End POST
-
-$mysqli->close();
 
 function updatePaymentId($mysqli, $paymentid, $email) {
     global $current_table;
@@ -188,9 +187,7 @@ function updatePaymentId($mysqli, $paymentid, $email) {
         $mysqli->real_escape_string($email)));
     if( $sqlresult === FALSE) {
         return FALSE;
-    } else {
-        
-    }
+    } 
     return TRUE;
 }
 

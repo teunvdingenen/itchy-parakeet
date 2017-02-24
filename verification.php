@@ -40,7 +40,7 @@ try
 }
 catch (Mollie_API_Exception $e) {
     //email error
-    email_error("API call failed: " . htmlspecialchars($e->getMessage()));
+    email_error("Transaction: ".$payment_id." "."API call failed: " . htmlspecialchars($e->getMessage()));
 }
 
 function send_confirmation($mysqli, $payment_id) {

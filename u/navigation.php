@@ -8,7 +8,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
     echo "<li><a class='' href='ik'>Mijn gegevens</a></li>";
     echo "<li><a class='menulink' href='voorjaar'>Familiar Voorjaar 2017</a></li>";
-    if( strtotime('now') < strtotime('2017-03-16 10:00') ) {
+    if( strtotime('now') < strtotime('2017-03-16 10:00') && !add_buy($user_email)) {
         echo "<li><a class='menulink' href='signup'>Inschrijven Familiar Voorjaar</a></li>";
     }
     //echo "<li><a class='menulink' id='forest' href='forest'>Familiar Forest 2017</a></li>";
@@ -21,6 +21,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
 if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' href='signups'>Inschrijvingen Voorjaar</a></li>";
+    echo "<li><a class='menulink' href='buyer'>Tickets Voorjaar</a></li>";
     echo "</ul>";
 }
 
@@ -69,5 +70,6 @@ function add_buy($email) {
     }
     return false;
 }
+
 ?>
 </div>
