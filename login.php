@@ -6,10 +6,8 @@ include "functions.php";
 include "fields.php";
 
 rememberMe();
-$user_permissions = "";
-if( isset($_SESSION['permissions'])) {
-    $user_permissions = $_SESSION['permissions'];
-}
+
+$user_permissions = $_SESSION['permissions'];
 if( ($user_permissions & PERMISSION_PARTICIPANT) == PERMISSION_PARTICIPANT ) {
     header('Location: u/voorjaar');
 }
