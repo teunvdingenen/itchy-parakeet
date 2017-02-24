@@ -394,7 +394,7 @@ function addError($value) {
                                                 if( $share == "HALF" ) {
                                                     echo "<tr>";
                                                     echo '<th>
-                                                        <span class="btn data" href="#" data-content="Omdat je veel meer tijd investeert in Familiar dan de meeste anderen krijg je korting!" rel="popover" data-placement="right" data-original-title="Korting" data-trigger="hover">
+                                                        <span class="btn data" href="#" data-content="Omdat je veel meer tijd investeert in Familiar dan anderen krijg je korting!" rel="popover" data-placement="right" data-original-title="Korting" data-trigger="hover">
                                                             <i class="fa fa-info"></i>
                                                         </span> Korting</th>';
                                                     echo "<td>-60,00</td>";
@@ -402,7 +402,7 @@ function addError($value) {
                                                 } else if( $share == "FREE" ) {
                                                     echo "<tr>";
                                                     echo '<th>
-                                                        <span class="btn data" href="#" data-content="Omdat je veel meer tijd investeert in Familiar dan de meeste anderen krijg je korting!" rel="popover" data-placement="right" data-original-title="Korting" data-trigger="hover">
+                                                        <span class="btn data" href="#" data-content="Omdat je veel meer tijd investeert in Familiar dan anderen krijg je korting!" rel="popover" data-placement="right" data-original-title="Korting" data-trigger="hover">
                                                             <i class="fa fa-info"></i>
                                                         </span> Korting</th>';
                                                     echo "<td>-120,00</td>";
