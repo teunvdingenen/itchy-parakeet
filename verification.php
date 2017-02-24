@@ -3,7 +3,7 @@ include "functions.php";
 include "createhashes.php";
 
 if ( !isset( $_POST['id'] ) || empty( $_POST['id'] ) ) {
-    exit;
+    header("Location: index");
 }
 
 try
