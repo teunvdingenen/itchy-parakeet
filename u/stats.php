@@ -44,7 +44,7 @@ if( $request_for == 'raffle' || $request_for == 'showraffle' ) {
 	exit;
 }
 
-$statsresult = $mysqli->query("SELECT p.birthdate, p.gender, p.city, p.visits, s.contrib0_type, s.contrib1_type, s.task 
+$statsresult = $mysqli->query("SELECT p.birthdate, p.gender, p.city, p.visits, s.contrib0_type, s.contrib1_type, s.task, s.share 
         FROM person p join $current_table s on s.email = p.email
         WHERE $statsrestriction");
 $mysqli->close();
@@ -57,6 +57,7 @@ if( $statsresult === FALSE ) {
 
 $total = 0;
 $age_total = 0;
+$total_crew = 0;
 
 while($row = mysqli_fetch_array($statsresult,MYSQLI_ASSOC))
 {
@@ -105,6 +106,10 @@ while($row = mysqli_fetch_array($statsresult,MYSQLI_ASSOC))
 		    } else {
 		        $contrib1[$storevalue] = 1;
 		    }
+		} elseif( $key == 'task' ) {
+			if( $value == 'crew' ) {
+				$total_crew += 1;
+			}
 		}
 	}
 }
@@ -126,6 +131,8 @@ echo "<table class='table table-sm table-bordered table-hover table-condensed'>"
 echo "<tr>";
 echo "<th>Totaal " . $displayname . "</th>";
 echo "<td>".$total."</td>";
+echo "<th>Waarvan crew: </th>";
+echo "<td>".$total_crew."</td>";
 
 echo "<tr>";
 echo "<th>Leeftijd</th>";

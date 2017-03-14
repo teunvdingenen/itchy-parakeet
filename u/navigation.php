@@ -51,8 +51,12 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
 }
 
 
+//TODO close mysqli
 function add_buy($email) {
     global $db_host, $db_user, $db_pass, $db_name, $current_table;
+    if( strtotime('now') > strtotime('2017-03-14 00:00') ) {
+        return false;
+    }
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
     if( $mysqli->connect_errno ) {
         return false;
