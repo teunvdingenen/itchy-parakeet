@@ -14,7 +14,7 @@ $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
     email_error("Database connectie is kapot: " . $mysqli->error);
 }
-$result = $mysqli->query(sprintf("SELECT p.firstname, p.lastname, p.email, p.phone, s.share, s.note, u.permissions
+$result = $mysqli->query(sprintf("SELECT p.firstname, p.lastname, p.email, p.phone, s.share, s.note, u.permissions, s.complete
     FROM person p join $current_table s on s.email = p.email join users u on u.email = p.email
     WHERE s.task = 'crew'"));
 if(!$result) {
@@ -54,7 +54,7 @@ $mysqli->close();
                     <div class="col-xs-12 col-sm-9">
                         <table class='table table-striped table-bordered table-hover table-condensed'>
                             <thead>
-                                <tr class='header-row'><th>Status</th><th>Voornaam</th><th>Achternaam</th><th>Email</th><th>Telefoon</th><th>Ticket</th><th>Opmerking</th>
+                                <tr class='header-row'><th>Status</th><th>Betaald</th><th>Voornaam</th><th>Achternaam</th><th>Email</th><th>Telefoon</th><th>Ticket</th><th>Opmerking</th>
                                     <?php
                                     foreach ($permission_texts as $value) {
                                         echo "<th>".$value."</th>";
@@ -67,6 +67,7 @@ $mysqli->close();
                             {
                                 echo "<tr>";
                                 echo "<td class='working'></td>";
+                                echo "<td>". (($row['complete'] == 1 || $row['share'] == "FREE" ) ? "<i class='glyphicon glyphicon-ok'></i>" : "<i class='glyphicon glyphicon-remove'></i>")."</td>"; 
                                 echo "<td>" . $row['firstname'] . "</td>";
                                 echo "<td>" . $row['lastname'] . "</td>";
                                 echo "<td class='email'>" . $row['email'] . "</td>";
