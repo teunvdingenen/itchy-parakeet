@@ -80,7 +80,7 @@ if( isset($_GET['show_names'])) {
                             echo "<td>" . $row['firstname'] . "</td>";
                         }
                         $age = (new DateTime($row['birthdate']))->diff(new DateTime('now'))->y;
-                        echo "<td>" . $age . "</td>"; //leeftidj berekenen
+                        echo "<td>" . $age . "</td>";
                         echo "<td>" . $row['city'] . "</td>";
                         echo "<td>" . $row['visits'] . "</td>";
                         echo "<td>" . $row['familiar'] . "</td>";

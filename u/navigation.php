@@ -54,7 +54,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
 //TODO close mysqli
 function add_buy($email) {
     global $db_host, $db_user, $db_pass, $db_name, $current_table;
-    if( strtotime('now') > strtotime('2017-03-14 00:00') ) {
+    if( strtotime('now') > strtotime('2017-04-07 00:00') ) {
         return false;
     }
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
@@ -68,7 +68,7 @@ function add_buy($email) {
         return false;
     } else {
         $row = $result->fetch_array(MYSQLI_ASSOC);
-        if( $row['rafflecode'] != "" && $row['valid'] == 1 ) {
+        if( $row['rafflecode'] != "" && $row['valid'] == 1 && $row['complete'] != 1 ) {
             return true;
         }
     }

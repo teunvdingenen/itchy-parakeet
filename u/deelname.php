@@ -7,7 +7,7 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
     header('Location: oops');
 }
 
-if( strtotime('now') > strtotime('2017-03-14 00:00') ) {
+if( strtotime('now') > strtotime('2017-04-07 00:00') ) {
     header('Location: voorjaar');
 }
 try {

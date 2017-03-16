@@ -16,7 +16,7 @@ if( ($user_permissions & $required_permissions) != $required_permissions ) {
 
 $email = $firstname = $lastname = $gender = $contrib = $contribnr = $requestedage = $agetype = $visits = $visitstype = "";
 
-$round = -1; //TODO get current round
+$round = 1; //TODO get current round
 $limit = 50;
 $page = 0;
 
@@ -122,11 +122,17 @@ if( $request_for == 'raffle' ) {
 } else if( $request_for == 'signups' ) {
     $restriction = '1';
 } else if( $request_for == 'showraffle' ) {
-    $restriction = 's.valid = 1 AND s.complete != 1';
+    $restriction = 's.valid = 1 AND s.complete != 1 AND s.share = "FULL"';
 } else if( $request_for == 'caller' ) {
     $restriction = "s.valid = 1 AND s.called = 0 AND s.task != 'crew'";
 } else if( $request_for == 'called_done' ) {
     $restriction = 's.valid = 1 AND s.called != 0';
+} else if( $request_for == 'volunteers' ) {
+    if(!isset($task) || $task = "" ) {
+        $restriction = 's.complete = 1';
+    } else {
+        $restriction = "s.complete = 1 and s.task = '".$mysqli->real_escape_string($task)."'";
+    }
 } else {
     exit;
 }
@@ -167,7 +173,7 @@ $url = substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);
 $first = true;
 if (!empty($_GET)) {
     foreach ($_GET as $parameter => $value) {
-        if( $parameter != 'p' ) {
+        if( $parameter != 'p' && $parameter != 'show_names' ) {
             $url .= ($first ? "?" : "&") . $parameter . "=" . urlencode($value);
             $first = false;
         }
@@ -276,6 +282,7 @@ if (!empty($_GET)) {
                         <input class="form-control" type="text" id="visits" placeholder="Bezoeken" value="<?php echo $visits;?>" name="visits">
                     </div>
                 </div>
+                <!-- TODO only add on raffle, signups -->
                 <div class="form-group row">
                     <label for="contrib" class="col-sm-2 form-control-label">Ronde</label>
                     <div class="col-sm-10">
