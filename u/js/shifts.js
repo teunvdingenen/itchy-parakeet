@@ -6,7 +6,7 @@ var enddate_set = false;
 
 function setName() {
 	if( $('#autoname').is(':checked') ) {
-		var name = task + startd + starth +"-"+ endh;
+		var name = task + startd + starth + endh;
 		$('#name').val(name);
 	}
 }
@@ -17,19 +17,17 @@ function get_name(element) {
 
 $(document).ready(function() {
 	$('#startdate').datetimepicker({
-		format: "dddd, DD/M/YYYY HH:mm",
-		locale: "nl"
+		format: "dddd, DD/MM/YYYY HH:mm",
 	});
     $('#enddate').datetimepicker({
         useCurrent: false, //Important! See issue #1075
-		format: "dddd, DD/M/YYYY HH:mm",
-		locale: "nl"
+		format: "dddd, DD/MM/YYYY HH:mm",
     });
     $("#startdate").on("dp.change", function (e) {
         $('#enddate').data("DateTimePicker").minDate(e.date);
         if( !enddate_set ) {
         	end = moment(e.date).add(2, 'hours');
-        	$('#enddate_input').val(end.format("dddd, DD/M/YYYY HH:mm"));
+        	$('#enddate_input').val(end.format("dddd, DD/MM/YYYY HH:mm"));
         	endh = end.format("HHmm");
         }
         starth = e.date.format("HHmm");

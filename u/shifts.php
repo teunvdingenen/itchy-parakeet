@@ -32,8 +32,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if( !empty($_POST["startdate"])) {
         $startdate = $_POST["startdate"];
-        $startdate_output = test_input($_POST["startdate"]);
-        $sdate = DateTime::createFromFormat('dddd, DD/M/YYYY HH:mm', $startdate_output);
+        $sdate = DateTime::createFromFormat('dddd, DD/MM/YYYY HH:mm', $startdate);
         if( $sdate === FALSE ) {
             if( ($timestamp = strtotime($startdate)) == FALSE ) {
                 addError("De opgegeven startdatum klopt niet.");
@@ -41,15 +40,14 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $startdate_output = date( 'Y-m-d H:i:s', $timestamp );
             }
         } else {
-            $startdate_output = $date->format('Y-m-d H:i:s');
+            $startdate_output = $sdate->format('Y-m-d H:i:s');
         }
     } else {
         addError("Geen startdatum/tijd opgegeven");
     }
     if( !empty($_POST["enddate"])) {
         $enddate = $_POST["enddate"];
-        $enddate_output = test_input($_POST["enddate"]);
-        $edate = DateTime::createFromFormat('dddd, DD/M/YYYY HH:mm', $enddate_output);
+        $edate = DateTime::createFromFormat('dddd, DD/MM/YYYY HH:mm', $enddate);
         if( $edate === FALSE ) {
             if( ($timestamp = strtotime($enddate)) == FALSE ) {
                 addError("De opgegeven einddatum klopt niet.");
@@ -57,7 +55,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $enddate_output = date( 'Y-m-d H:i:s', $timestamp );
             }
         } else {
-            $enddate_output = $date->format('Y-m-d H:i:s');
+            $enddate_output = $edate->format('Y-m-d H:i:s');
         }
     } else {
         addError("Geen einddatum/tijd opgegeven");

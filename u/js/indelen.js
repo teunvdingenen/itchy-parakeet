@@ -1,11 +1,13 @@
 var table_vol_shft = "<table class='table table-striped table-bordered table-hover table-condensed droppable_shft'>";
 var table_vol = "<table class='table table-striped table-bordered table-hover table-condensed droppable_vol'>";
-var table_shft = "<table class='table table-striped table-bordered table-hover table-condensed shift'>";
+var table_shft = "<table class='table table-striped table-bordered table-hover table-condensed'>";
 
 var tr_id = 1;
 
 function setVolunteerShift(task, email) {
 	$.post("saveVolunteerShift.php", {"name":task, "email":email}, function(response) {
+		console.log(task);
+		console.log(email);
 		if( response == 0 ) {
 			//console.log("OK");
 		} else {
@@ -37,9 +39,9 @@ function setShiftEvents() {
 	   if (event.type === 'drop') {
 			var data = event.originalEvent.dataTransfer.getData('Text',$(this).attr('id'));
 		    de=$('#'+data).detach();
-		    $(this).find('.open:first').remove();
-		    de.appendTo($(this));
-		    //setVolunteerShift($(this).closest('.shift').find('.shift_name').html(), de.children('.email').html());
+		    $(this).find('.open:first').replaceWith(de);
+		    //de.appendTo($(this));
+		    setVolunteerShift($(this).parent().attr('id'), de.children('.email').html());
 	   };
     });
 
@@ -47,7 +49,35 @@ function setShiftEvents() {
 	    var dt = event.originalEvent.dataTransfer;
 	    dt.setData('Text', $(this).attr('id'));
 	});
-	
+}
+
+function translateDay(day) {
+	if( day == 'Su') {
+		return "Zondag";
+	} else if( day == 'Mo' ) {
+		return "Maandag";
+	}else if( day == 'Tu' ) {
+		return "Dinsdag";
+	}else if( day == 'We' ) {
+		return "Woensdag";
+	}else if( day == 'Th' ) {
+		return "Donderdag";
+	}else if( day == 'Fr' ) {
+		return "Vrijdag";
+	}else if( day == 'Sa' ) {
+		return "Zaterdag";
+	}
+	return "Onbekend";
+}
+
+function decodeshift(shift) {
+	len = shift.length;
+	decoded = new Object();
+	decoded.end = shift.substring(len-4,len);
+	decoded.start = shift.substring(len-8,len-4);
+	decoded.day = translateDay(shift.substring(len-10,len-8));
+	decoded.task = shift.substring(0,len-10);
+	return decoded;
 }
 
 function createShiftsTable(shifts) {
@@ -55,18 +85,21 @@ function createShiftsTable(shifts) {
 	var html = "";
 	html += table_shft;
 	$.each(shifts, function(shift, val) {
-		html += "<tr>";
-		html += "<th class='shift_name'>"+shift+"</th>";
-		var num = val.num;
+		dShift = decodeshift(shift);
+		html += "<td><table class='shift'><tr>";
+		html += "<th class='hidden shift_name'>"+shift+"</th></tr>";
+		html += "<tr><th>"+dShift.day+"</th></tr>";
+		html += "<tr><th>"+dShift.start+" tot "+dShift.end+"</th></tr>";
+		html += "<tr><th>"+val.num+" personen</th></tr></table></td>";
 		var count = 0;
-		html += "<td>"+table_vol_shft;
+		html += "<td id="+shift+">"+table_vol_shft;
 		$.each(val.volunteers, function(i,volunteer) {
 			count += 1;
 			html += "<tr id='"+tr_id+"' draggable='true'><td class='email hidden'>"+volunteer.email+"</td>";
-			html+="<td class='name'>"+volunteer.firstname+ " " + volunteer.lastname+"</td></tr>";
+			html += "<td class='name'>"+volunteer.firstname+ " " + volunteer.lastname+"</td></tr>";
 			tr_id+=1;
 		});
-		while( count < num ) {
+		while( count < val.num ) {
 			html+="<tr class='open'><td></td></tr>";
 			count++;
 		}
