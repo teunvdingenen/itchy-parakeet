@@ -83,7 +83,7 @@ $mysqli->close();
                                     echo '<td><input class="permission" type="checkbox" name="'.$value.'" value='.$permission_values[$i]." ".($row['permissions'] & $permission_values[$i] ? "checked=checked" : "").' ></td>';
                                     $i++;
                                 }
-                                echo "<td><a class='btn btn-info btn-sm btn-block removecrew'>Verwijderen van crew</a>";
+                                echo "<td><a class='btn btn-info btn-sm btn-block removecrew'>Verwijderen van crew</a></td>";
                                 echo "</tr>";
                             }
                             ?>

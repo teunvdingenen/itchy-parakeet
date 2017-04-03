@@ -16,7 +16,7 @@ if( ($user_permissions & $required_permissions) != $required_permissions ) {
 
 $email = $firstname = $lastname = $gender = $contrib = $contribnr = $requestedage = $agetype = $visits = $visitstype = "";
 
-$round = 1; //TODO get current round
+$round = -1; //TODO get current round
 $limit = 50;
 $page = 0;
 

@@ -224,3 +224,11 @@ section {
 .familie-foto .img-responsive {
     margin: 0 auto;
 }
+
+.scrollable {
+  overflow-y: scroll;
+}
+
+.droppable td{
+  height: 2ex;
+}

@@ -399,6 +399,8 @@ function translate_task($task) {
     return "Performance";
   } else if ( $task == "install" ) {
     return "Installatie";
+  } else if( $task == "crew" ) {
+    return "Crew";
   }
   return "Onbekend (Error)";
 }

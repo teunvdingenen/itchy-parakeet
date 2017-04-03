@@ -140,6 +140,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $amount = 120;
                 if( $share == "HALF" ) {
                     $amount = 60;
+                } else if ( $share == "FREE" ) {
+                    $amount = 0;
                 }
                 
                 $raffle = $code;
@@ -415,7 +417,7 @@ function addError($value) {
                                 </div>
                             </div>
                             <?php
-                                if( $share != "FREE" ) {
+                                if( $share != "FREE" && $user_email != "merel@stichtingfamiliarforest.nl" ) {
                                     echo "<button class='btn btn-lg btn-primary btn-block' type='submit'>Naar betalen</button>";
                                 }
                             ?>

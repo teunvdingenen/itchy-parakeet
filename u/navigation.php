@@ -61,7 +61,7 @@ function add_buy($email) {
     if( $mysqli->connect_errno ) {
         return false;
     }
-    $result = $mysqli->query(sprintf("SELECT rafflecode, valid FROM $current_table WHERE `email` = '%s'",
+    $result = $mysqli->query(sprintf("SELECT rafflecode, valid, complete FROM $current_table WHERE `email` = '%s'",
         $mysqli->real_escape_string($email)));
     $mysqli->close();
     if( !$result ) {
