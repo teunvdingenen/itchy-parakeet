@@ -7,7 +7,7 @@ if( ($user_permissions & PERMISSION_VOLUNTEERS) != PERMISSION_VOLUNTEERS ) {
         header('Location: oops');
 }
 
-$tasks = array("", "keuken", "bar", "other", "interiour", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
+$tasks = array("keuken", "bar", "other", "interiour", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
 
 ?>
 
@@ -24,7 +24,7 @@ $tasks = array("", "keuken", "bar", "other", "interiour", "thee", "camping", "af
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-9 col-sm-6">
+                    <div class="col-xs-13 col-sm-10"> 
                         <div>
                             <select class='form-control taskselect' id="taskselect" name='taskselect'>
                                 <?php

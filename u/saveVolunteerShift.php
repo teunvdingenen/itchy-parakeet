@@ -25,12 +25,11 @@ if( $mysqli->connect_errno ) {
 $result = $mysqli->query( sprintf("UPDATE $current_table SET `task` = '%s' WHERE `email` = '%s'",
         $mysqli->real_escape_string($name),
         $mysqli->real_escape_string($email)));
+$mysqli->close();
 if( $result === FALSE ) {
 	echo 1;
-	$mysqli->close();
     return;
 }
-$mysqli->close();
 echo 0;
 return;
 ?>

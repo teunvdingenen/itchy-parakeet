@@ -234,7 +234,7 @@ function addError($value) {
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-12 col-sm-9"> 
+                    <div class="col-xs-13 col-sm-10"> 
                         <div class="form-intro-text">
                             <h1>Deelnemen Familiar voorjaar</h1>
                             <p>Familiar Voorjaar vindt plaats op 5, 6 en 7 mei 2017. Je kan via dit formulier een kaartje kopen tot en met 9 maart 2017.</p>

@@ -51,7 +51,7 @@ $mysqli->close();
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-12 col-sm-9">
+                    <div class="col-xs-13 col-sm-10"> 
                         <table class='table table-striped table-bordered table-hover table-condensed'>
                             <thead>
                                 <tr class='header-row'><th>Status</th><th>Betaald</th><th>Voornaam</th><th>Achternaam</th><th>Email</th><th>Telefoon</th><th>Ticket</th><th>Opmerking</th>

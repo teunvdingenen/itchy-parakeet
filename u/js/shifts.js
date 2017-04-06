@@ -46,13 +46,25 @@ $(document).ready(function() {
     	var p = $(this).closest('.input-group').find('.working');
     	p.html("<span class='glyphicon glyphicon-refresh spinning'></span>");
     	$.post("checkshiftname.php", {"name":name}, function(response) {
-    		console.log(response);
     		if( response == 0 ) {
 				p.html("<i class='glyphicon glyphicon-ok text-success'></i>");
 			} else {
 				p.html("<i class='glyphicon glyphicon-remove text-danger'></i>");
 			}
     	});
+    });
+
+    $('.changenr').change(function() {
+    	name = $(this).closest('tr').find('.name').html();
+    	p = $(this).closest('tr').find('.status');
+    	p.html("<span class='glyphicon glyphicon-refresh spinning'></span>");
+    	$.post("saveShiftChange.php", {"name":name, 'nrrequired':$(this).val()}, function(response) {
+    		if( response == 0 ) {
+				p.html("<i class='glyphicon glyphicon-ok text-success'></i>");
+			} else {
+				p.html("<i class='glyphicon glyphicon-remove text-danger'></i>");
+			}
+		});
     });
 
     $('#taskselect').change(function() {

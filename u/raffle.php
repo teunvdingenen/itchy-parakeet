@@ -48,7 +48,7 @@ if( isset($_GET['show_names'])) {
                 </div><!-- /.modal -->
                 <div class="row row-offcanvas row-offcanvas-left">
                 <?php include("navigation.php");?>
-                <div class="col-xs-12 col-sm-9"> 
+                <div class="col-xs-13 col-sm-10"> 
                 <div style='margin-top: 5px;'>
                 <?php include("generic_filter.php"); ?>
                 <?php include("stats.php");

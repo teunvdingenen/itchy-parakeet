@@ -141,4 +141,6 @@ $(document).ready(function() {
 			createVolunteerTable(JSON.parse(response));
 		});
 	});
+	$('.volunteerselect').change();
+	$('.taskselect').change();
 });

@@ -404,4 +404,8 @@ function translate_task($task) {
   }
   return "Onbekend (Error)";
 }
+
+function is_act($task) {
+  return in_array($task, ['act','game','lecture','schmink','other_act','perform','install']);
+}
 ?>

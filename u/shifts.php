@@ -104,17 +104,18 @@ function addError($value) {
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-12 col-sm-9"> 
+                    <div class="col-xs-13 col-sm-10"> 
                         <?php echo $returnVal ?>
                         <table class='table table-striped table-bordered table-hover table-condensed'>
                             <thead>
-                                <tr class='header-row'><th>Kenmerk</th><th>Taak</th><th>Startdatum</th><th>Dag</th><th>Starttijd</th><th>Einddatum</th><th>Dag</th><th>Eindtijd</th><th>Aantal vrijwilligers</th>
+                                <tr class='header-row'><th></th><th>Kenmerk</th><th>Taak</th><th>Startdatum</th><th>Dag</th><th>Starttijd</th><th>Einddatum</th><th>Dag</th><th>Eindtijd</th><th>Aantal vrijwilligers</th><th>Verwijderen</th>
                                 </tr>
                             </thead>
                             <tbody>
                             <?php
                             while($row = mysqli_fetch_array($sqlresult,MYSQLI_ASSOC)) {
                                 echo "<tr>";
+                                echo "<td class='status'><span class='glyphicon'></span></td>";
                                 echo "<td class='name'>".$row['name']."</td>";
                                 echo "<td>".translate_task($row['task'])."</td>";
                                 $startdate = DateTime::createFromFormat('Y-m-d H:i:s', $row['startdate']);
@@ -126,7 +127,10 @@ function addError($value) {
                                 echo "<td>".$enddate->format('l')."</td>";
                                 echo "<td>".$enddate->format('H:i:s')."</td>";
                                 //TOOD button -> popup -> editable
-                                echo "<td>".$row['nrrequired']."</td>";
+                                echo "<td class='input-group nrrequired'>
+                                        <input type='text' class='form-control changenr' value='".$row['nrrequired']."'/>
+                                    </td>";
+                                //echo "<td>".$row['nrrequired']."</td>";
                                 echo "<td><a class='btn btn-danger btn-sm btn-block removeshift'>Verwijderen</a></td>";
                                 echo "</tr>";
                             }
@@ -172,9 +176,9 @@ function addError($value) {
                                             <span class="glyphicon glyphicon-file"></span>
                                         </span>
                                     </div>
-                                    <div class="checkbox">
+                                    <div class="checkbox hidden">
                                       <label>
-                                        <input type="checkbox" id="autoname" checked> Kenmerk Automatisch genereren
+                                        <input type="checkbox" id="autoname" checked> Kenmerk automatisch genereren
                                       </label>
                                     </div>
                                 </div>

@@ -22,7 +22,7 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-12 col-sm-9">
+                    <div class="col-xs-13 col-sm-10"> 
                         <div class="jumbotron">
                             <h2>Familiar Voorjaar</h2>
                             <p class='lead'> We zijn in de zomer op avontuur gegaan door magische bossen. We hebben samen kastelen veroverd. We hebben in een intergalactisch schip de zee bevaren. We hebben elkaar warm gehouden tijdens de winter. We hebben zelfs een keer met de hele familie gezellig gepicknickt. Nu is het tijd voor iets nieuws. Nu is het tijd voor Familiar Voorjaar.

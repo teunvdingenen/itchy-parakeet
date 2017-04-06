@@ -2,7 +2,7 @@
 include_once "../functions.php";
 
 ?>
-<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+<div class="col-xs-5 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
 <?php
 if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
