@@ -113,5 +113,5 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#autoname').change();
+	$('#name').change();
 });

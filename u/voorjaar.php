@@ -31,7 +31,6 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
                             <div role="separator" class="divider"></div>
                             <p>Ook in het voorjaar maken we weer gebruik van twee rondes waarin iedereen zich kan inschrijven en kans maakt op deelname. De eerste inschrijfronde loopt tot en met 15 februari 2017. Kort daarna is de loting en kun je een ticket kopen tot en met 9 maart 2017. Niet ingeloot? Dan kun je je tot en met 15 maart 2017 aanmelden voor de tweede ronde. De laatste kaarten verkopen we op 6 april 2017 en dan hebben we nog een maandje voor we kunnen genieten van de aller eerste Familiar Voorjaar!
                         </div>
-                        <a href='signup' class='btn btn-lg btn-block btn-primary'>Inschrijven</a>
                     </div>
                 </div>
             </div>

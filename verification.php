@@ -17,8 +17,8 @@ try
     $code = $payment->metadata->raffle;
 
     if( $payment->isRefunded() ) {
-        if( isHalfTicket($mysqli, $code) ) {
-            send_confirmation_refund_half($mysqli, $payment_id);
+        if( !isFullTicket($mysqli, $code) ) {
+            //send_confirmation_refund_half($mysqli, $payment_id);
         } else {
             database_setpayed($mysqli, $payment_id, 3);
             if( !send_confirmation_refund($mysqli, $payment_id) ) {
@@ -27,6 +27,63 @@ try
         }
     } else if ($payment->isPaid()) {
         database_setpayed($mysqli, $payment_id, 1);
+        $result = $mysqli->query("SELECT seller, buyer FROM `swap` WHERE `code` = '%s'",$mysqli->real_escape_string($code));
+        if( !$result || $mysqli->num_rows != 1 ) {
+            //do nothing
+        } else {
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            $buyer_email = $row['buyer'];
+            $seller_email = $row['seller'];
+            $task = "";
+            $result = $mysqli->query("SELECT transactionid, share, task FROM $current_table WHERE `email` = '%s'",
+                $mysqli->real_escape_string($seller_email));
+            if( !$result ) {
+                email_error("Unable to do refund for seller: ".$seller_email);
+            } else {
+                $row = $result->fetch_array(MYSQLI_ASSOC);
+                $seller_payment = $row['transactionid'];
+                $share = $row['share'];
+                $task = $row['task'];
+                $amount = 120;
+                if( $share == "FREE" ) {
+                    email_error("Somehow I just wanted to refund a free ticket?!, code: ".$code);
+                    $mysqli->close();
+                    exit;
+                } else if( $share == "HALF")  {
+                    $amount = 60;
+                    email_error("Refunded half ticket for code: ".$code);
+                }
+                $amount -= 0.19;
+                $payment = $mollie->payments->get($seller_payment);
+                $refund = $mollie->payments->refund($payment, $amount);
+            }
+            if( $task != "" ) {
+                $taskresult = $mysqli->query(sprintf("SELECT task FROM `shifts` WHERE `name` = '%s'",
+                    $mysqli->real_escape_string($task)));
+                if( !$taskresult ) {
+                    email_error("Couldn't get task for name: ".$task);
+                } else {
+                    $tasktype = $taskresult->fetch_array(MYSQLI_ASSOC)['task'];
+                    if( is_act($tasktype) ) {
+                        $task = "";
+                        //email acts
+                    }
+                }
+            }
+            $result = $mysqli->query("UPDATE $current_table SET `rafflecode` = '%s', `task` = '%s' WHERE `email` = '%s'",
+                $mysqli->real_escape_string($code),
+                $mysqli->real_escape_string($task),
+                $mysqli->real_escape_string($buyer_email));
+            if( !$result || $mysqli->affected_rows != 1 ) {
+                email_error("Unable to set ticket code to: ".$code." for swap to: ".$buyer_email. "affected_rows = ".$mysqli->affected_rows);
+            }
+
+            $result = $mysqli->query("DELETE FROM $current_table WHERE `code` = '%s'",
+                $mysqli->real_escape_string($code));
+            if( !$result || $mysqli->affected_rows != 1 ) {
+                email_error("Swap for code: ".$code." might not have been deleted. Affected rows: ".$mysqli->affected_rows);
+            }
+        }
         if( !set_hash($mysqli, $payment_id, $code) ) {
             email_error("Unable to create ticket for payment: ".$payment_id);
         }
@@ -85,13 +142,13 @@ function send_confirmation_refund($mysqli, $payment_id) {
     $fullname = $row['firstname']." ".$row['lastname'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>Je verzoek voor een refund op je ticketgeld hebben we in goede orde ontvangen. Normaal gesproken ontvang je het geld na een werkdag terug op je rekening.</p>";
-    $content .= "<p>We vinden het erg jammer dat we je er niet bij hebben op Familiar Forest. Hopelijk zien we je bij de volgende editie!<p>";
-    $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen naar deze email.";
+    $content .= "<p>Je ontvangt deze email omdat we jou ticket opnieuw hebben kunnen verkopen. Met een beetje een dubbel gevoel sturen we je deze email. We vinden het erg fijn dat het gelukt is om iemand anders blij te maken jou Familiar Voorjaar ticket maar we hadden natuurlijk erg graag ook jou erbij gehad in mei.</p>";
+    $content .= "<p>We gaan er vanuit dat je vast hele goede redenen had om af te zien van ons weekendje weg en we hopen dat we bij de volgende editie (weer) van je aanwezigheid mogen genieten!<p>";
+    $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen op deze email.";
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Voorjaar 2017 Refund bevestiging", $content);
+    send_mail($row['email'], $fullname, "Familiar Voorjaar 2017 ticketruil bevestiging", $content);
     return true;
 }
 
@@ -108,8 +165,8 @@ function send_confirmation_refund_half($mysqli, $payment_id) {
     $fullname = $row['firstname']." ".$row['lastname'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>We hebben gezien dat jij dit jaar (weer) komt opbouwen, afbouwen of iets anders fantastisch doet bij Familiar Forest. Alvast super bedankt daarvoor! Naast lieve woorden ontvang je ook nog eens een half ticket!</p>";
-    $content .= "<p>We hebben opgemerkt dat je al een ticket had gekocht en hebben daarom 60EUR naar je terug overgemaakt. Normaal gesproken wordt dat na een werkdag verwerkt.<p>";
+    $content .= "<p>We hebben gezien dat jij dit jaar (weer) komt opbouwen, afbouwen of iets anders fantastisch doet bij Familiar Forest. Alvast super bedankt daarvoor! Naast lieve woorden ontvang je ook nog eens een half of heel ticket!</p>";
+    $content .= "<p>We hebben opgemerkt dat je al een ticket had gekocht en hebben daarom een deel of volledig naar je terug overgemaakt. Normaal gesproken wordt dat na een werkdag verwerkt.<p>";
     $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen naar deze email. Tot snel!";
 
     $content .= get_email_footer();
@@ -118,7 +175,7 @@ function send_confirmation_refund_half($mysqli, $payment_id) {
     return true;
 }
 
-function isHalfTicket($mysqli, $code) {
+function isFullTicket($mysqli, $code) {
     global $current_table;
     $sqlresult = $mysqli->query(sprintf("SELECT share FROM $current_table WHERE rafflecode = '%s'", 
         $mysqli->real_escape_string($code)));
@@ -131,7 +188,7 @@ function isHalfTicket($mysqli, $code) {
         return false;
     }
     $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
-    return ($row['share'] == "HALF");
+    return ($row['share'] == "FULL");
 }
 
 function database_setpayed($mysqli, $payment_id, $payed) {

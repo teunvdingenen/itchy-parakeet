@@ -227,6 +227,7 @@ section {
 
 .scrollable {
   overflow-y: scroll;
+  height: 600px;
 }
 
 .droppable td{

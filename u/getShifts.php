@@ -18,7 +18,7 @@ if( isset($_POST['shift'])) {
 	echo "noshift";
 	return;
 }
-$result = $mysqli->query(sprintf("SELECT name, nrrequired FROM shifts WHERE name LIKE '%%%s%%' ORDER BY startdate ASC",$mysqli->real_escape_string($shift)));
+$result = $mysqli->query(sprintf("SELECT name, nrrequired FROM shifts WHERE task = '%s' ORDER BY startdate ASC",$mysqli->real_escape_string($shift)));
 if( !$result ) {
 	$mysqli->close();
 	return;

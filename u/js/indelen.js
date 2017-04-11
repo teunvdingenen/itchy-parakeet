@@ -84,6 +84,7 @@ function createShiftsTable(shifts) {
 	$('.shiftcontent').html('');
 	var html = "";
 	html += table_shft;
+	var all_email = "";
 	$.each(shifts, function(shift, val) {
 		dShift = decodeshift(shift);
 		html += "<td><table class='shift'><tr>";
@@ -98,6 +99,7 @@ function createShiftsTable(shifts) {
 			html += "<tr id='"+tr_id+"' draggable='true'><td class='email hidden'>"+volunteer.email+"</td>";
 			html += "<td class='name'>"+volunteer.firstname+ " " + volunteer.lastname+"</td></tr>";
 			tr_id+=1;
+			all_email += volunteer.email + ", ";
 		});
 		while( count < val.num ) {
 			html+="<tr class='open'><td></td></tr>";
@@ -107,6 +109,7 @@ function createShiftsTable(shifts) {
 	});
 	html += "</table>";
 	$('.shiftcontent').html(html);
+	$('#emailadressen').html(all_email);
 	setShiftEvents();
 }
 
@@ -131,6 +134,7 @@ $(document).ready(function() {
 			createShiftsTable(JSON.parse(response));
 			$('.volunteerselect').change();
 		});
+		$('#emailheader').html("Email adressen ingedeeld bij "+$('.taskselect').val()+":");
 	});
 
 	$('.volunteerselect').change(function() {
@@ -141,6 +145,6 @@ $(document).ready(function() {
 			createVolunteerTable(JSON.parse(response));
 		});
 	});
-	$('.volunteerselect').change();
 	$('.taskselect').change();
+	$('.volunteerselect').change();
 });

@@ -7,7 +7,8 @@ if( ($user_permissions & PERMISSION_VOLUNTEERS) != PERMISSION_VOLUNTEERS ) {
         header('Location: oops');
 }
 
-$tasks = array("keuken", "bar", "other", "interiour", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
+//$tasks = array("keuken", "bar", "other", "interiour", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
+$tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb");
 
 ?>
 
@@ -24,7 +25,7 @@ $tasks = array("keuken", "bar", "other", "interiour", "thee", "camping", "afbouw
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-13 col-sm-10"> 
+                    <div class="col-xs-10 col-sm-7"> 
                         <div>
                             <select class='form-control taskselect' id="taskselect" name='taskselect'>
                                 <?php
@@ -34,7 +35,11 @@ $tasks = array("keuken", "bar", "other", "interiour", "thee", "camping", "afbouw
                                 ?>
                             </select> 
                         </div>
-                        <div class='shiftcontent scollable'>
+                        <div class='shiftcontent scrollable'>
+                        </div>
+                        <div>
+                            <h4 id='emailheader'></h4>
+                            <textarea class="form-control" id="emailadressen" cols="60" rows="4" readonly></textarea>
                         </div>
                     </div>
                     <div class="col-xs-3 col-sm-3">

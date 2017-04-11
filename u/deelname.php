@@ -7,9 +7,39 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
     header('Location: oops');
 }
 
-if( strtotime('now') > strtotime('2017-04-07 00:00') ) {
+$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+if( $mysqli->connect_errno ) {
+    addError("Het lijkt erop dat de website kapot is, probeer het later nog eens!");
+    $email_error("Database connectie is kapot: " . $mysqli->error);
+    exit;
+}
+$tickettype = "invalid";
+$code = "";
+$result = $mysqli->query(sprintf("SELECT rafflecode, valid FROM $current_table WHERE `email` = '%s'",
+        $mysqli->real_escape_string($user_email)));
+$row = $result->fetch_array(MYSQLI_ASSOC);
+if( !$result ) {
+    //do nothing
+} else if( (strtotime('now') > strtotime('2017-04-07 00:00') && ($row['rafflecode'] != "" || $row['valid'] == 1))) {
+    $code = $row['rafflecode'];
+    $tickettype = "regular";
+}
+
+if( $tickettype == "invalid" ) {
+    $swapresult = $mysqli->query(sprintf("SELECT `code` FROM `swap` WHERE `email` = '%s' and `lock_expire` < now()", $mysqli->real_escape_string($user_email)));
+
+    if( !$swapresult || $mysqli->num_rows != 1 ) {
+        //do nothing
+    } else {
+        $tickettype = "swap";
+        $code = $swapresult->fetch_array(MYSQLI_ASSOC)['code'];
+    }
+}
+
+if( $tickettype == "invalid" ) {
     header('Location: voorjaar');
 }
+
 try {
     include "mollie_api_init.php";
 } catch (Mollie_API_Exception $e) {
@@ -20,27 +50,7 @@ try {
 $methods = ["",'ideal', 'mistercash', 'creditcard'];
 $method_names = ["Betaalmethode Selecteren","IDeal (+€0,29)","BanContact/Mister Cash (+€2,05)", "CreditCard (+€3,61)"];
 $returnVal = "";
-$disp_amount = $code = $method = $street = $city = $postal = $terms4 = $share = "";
-
-
-$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-if( $mysqli->connect_errno ) {
-    addError("Het lijkt erop dat de website kapot is, probeer het later nog eens!");
-    $email_error("Database connectie is kapot: " . $mysqli->error);
-}
-
-$result = $mysqli->query(sprintf("SELECT rafflecode, valid FROM $current_table WHERE `email` = '%s'",
-        $mysqli->real_escape_string($user_email)));
-
-if( !$result ) {
-    addError("Het lijkt erop dat de website kapot is, probeer het later nog eens!");
-    $email_error("Broken query in deelname: " . $mysqli->error);
-} else {
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-    if( $row['rafflecode'] == "" || $row['valid'] != 1 ) {
-        header("Location: oops");
-    }
-}
+$disp_amount = $method = $street = $city = $postal = $terms4 = $share = "";
 
 $result = $mysqli->query(sprintf("SELECT city, street, postal, rafflecode, share from $current_table s join person p on s.email = p.email WHERE p.email = '%s'",
     $mysqli->real_escape_string($user_email)));
@@ -51,7 +61,6 @@ if(!$result) {
     $city = $row['city'];
     $street = $row['street'];
     $postal = $row['postal'];
-    $code = $row['rafflecode'];
     $share = $row['share'];
 }
 
@@ -98,13 +107,11 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         addError('Je hebt de voorwaarde niet geaccepteerd.');
     }
     if( $returnVal == "" ) {
-        if( $returnVal == "" ) {
-            $paystatus = hasPaid($mysqli, $user_email);
-            if( $paystatus == 1 ) {
-                addError("Het lijkt erop dat je al betaald hebt. Als je twijfelt of alles wel goed is gegaan kun je mailen naar: " . $mailtolink);
-            } else if( $paystatus == 2 ) {
-                addError("Je hebt nog een betaling open staan. We kunnen op dit moment niet verifiëren of deze betaald is. Probeer het over een kwartiertje nog eens. Voor meer informatie kun je mailen naar: " . $mailtolink);
-            }
+        $paystatus = hasPaid($mysqli, $user_email);
+        if( $paystatus == 1 ) {
+            addError("Het lijkt erop dat je al betaald hebt. Als je twijfelt of alles wel goed is gegaan kun je mailen naar: " . $mailtolink);
+        } else if( $paystatus == 2 ) {
+            addError("Je hebt nog een betaling open staan. We kunnen op dit moment niet verifiëren of deze betaald is. Probeer het over een kwartiertje nog eens. Voor meer informatie kun je mailen naar: " . $mailtolink);
         }
         if( $returnVal == "" ) {
             $query = sprintf("UPDATE person SET street = '%s', city = '%s', postal = '%s' WHERE email = '%s'",

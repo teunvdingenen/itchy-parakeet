@@ -377,13 +377,13 @@ function translate_task($task) {
     return "Bar";
   } else if( $task == "other" ) {
     return "Anders";
-  } else if ($task == "interiour" ) {
+  } else if ($task == "iv" ) {
     return "Interieur Verzorging";
   } else if ( $task == "thee") {
     return "Theetent";
   } else if( $task == "camping") {
     return "Campingwinkel";
-  } else if ($task == "afbouw" ) {
+  } else if ($task == "afb" ) {
     return "Afbouw";
   } else if ($task == "act" ) {
     return "Act, niet ingedeeld";

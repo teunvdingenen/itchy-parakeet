@@ -25,6 +25,13 @@ if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "</ul>";
 }
 
+if( $user_permissions & PERMISSION_VOLUNTEERS ) {
+    echo "<ul class='nav'>";
+    echo "<li><a class='menulink' href='shifts'>Shifts</a></li>";
+    echo "<li><a class='menulink' href='indelen'>Indelen</a></li>";
+    echo "</ul>";
+}
+
 if( $user_permissions & PERMISSION_RAFFLE ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' href='raffle'>Loten</a></li>";

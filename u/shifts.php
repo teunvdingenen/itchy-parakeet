@@ -6,7 +6,8 @@ if( ($user_permissions & PERMISSION_VOLUNTEERS) != PERMISSION_VOLUNTEERS ) {
         header('Location: oops');
 }
 
-$tasks = array("", "keuken", "bar", "other", "interiour", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
+//$tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
+$tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb", "crew");
 
 $nrrequired = $name = $taskselect = $returnVal = $startdate_output = $enddate_output = "";
 $startdate = "Friday, 05/05/2017 21:00";
@@ -32,13 +33,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if( !empty($_POST["startdate"])) {
         $startdate = $_POST["startdate"];
-        $sdate = DateTime::createFromFormat('dddd, DD/MM/YYYY HH:mm', $startdate);
+        $sdate = DateTime::createFromFormat('D, d/m/Y G:i', $startdate);
         if( $sdate === FALSE ) {
-            if( ($timestamp = strtotime($startdate)) == FALSE ) {
-                addError("De opgegeven startdatum klopt niet.");
-            } else {
-                $startdate_output = date( 'Y-m-d H:i:s', $timestamp );
-            }
+            addError("De opgegeven startdatum klopt niet.");
         } else {
             $startdate_output = $sdate->format('Y-m-d H:i:s');
         }
@@ -47,13 +44,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if( !empty($_POST["enddate"])) {
         $enddate = $_POST["enddate"];
-        $edate = DateTime::createFromFormat('dddd, DD/MM/YYYY HH:mm', $enddate);
+        $edate = DateTime::createFromFormat('D, d/m/Y G:i', $enddate);
         if( $edate === FALSE ) {
-            if( ($timestamp = strtotime($enddate)) == FALSE ) {
-                addError("De opgegeven einddatum klopt niet.");
-            } else {
-                $enddate_output = date( 'Y-m-d H:i:s', $timestamp );
-            }
+            addError("De opgegeven einddatum klopt niet.");
         } else {
             $enddate_output = $edate->format('Y-m-d H:i:s');
         }
