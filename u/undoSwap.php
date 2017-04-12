@@ -14,7 +14,7 @@ if( $mysqli->connect_errno ) {
     return;
 }
 
-$result = $mysqli->query(sprintf("UPDATE `swap` set `buyer` = '%s', `lock_expire` = date_add(now(), INTERVAL 1 hour) where `lock_expire` < now() ORDER BY date_sold ASC LIMIT 1",
+$result = $mysqli->query(sprintf("DELETE FROM `swap` where `seller` = '%s' and lock_expire < now()",
 	$mysqli->real_escape_string($user_email)));
 $affect = $mysqli->affected_rows;
 $mysqli->close();

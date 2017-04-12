@@ -1,7 +1,13 @@
 <?php
 require('fpdf/fpdf.php');
 
-include "initialize.php";
+include "../functions.php";
+
+include("checklogin.php");
+
+if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
+    header('Location: oops');
+}
 
 class PDF extends FPDF
 {
@@ -36,25 +42,25 @@ class PDF extends FPDF
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
     $email_error("Database connectie is kapot: " . $mysqli->error);
-    header('Location: index');
+    header('Location: voorjaar');
 }
 
 $hash = "";
 if( isset($_GET['ticket'])) {
     $hash = $mysqli->real_escape_string($_GET['ticket']);
 } else {
-    header('Location: index');
+    header('Location: voorjaar');
 }
 
 $query = sprintf("SELECT p.firstname, p.lastname, p.street, p.postal, p.city, s.motivation, s.code, s.id from person p join
-    $current_table s on p.email = s.email where s.ticket = '%s'",$hash);
+    $current_table s on p.email = s.email where s.ticket = '%s' and s.complete = 1",$hash);
 $result = $mysqli->query($query);
 
 if( !$result ) {
     $email_error("Fout bij zoeken naar: " . $hash." ".$mysqli->error);
-    header('Location: index');
+    header('Location: voorjaar');
 } else if ($result->num_rows != 1) {
-    header('Location: index');
+    header('Location: voorjaar');
 }
 
 $QRURL = 'http://stichtingfamiliarforest.nl/genqrcode.php?hash=';

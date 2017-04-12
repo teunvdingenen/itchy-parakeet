@@ -15,6 +15,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     if( add_buy($user_email) ) {
         echo "<li><a class='menulink' href='deelname'>Deelname Familiar Voorjaar</a></li>";
     }
+    echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";
     echo "</ul>";
 }
 
@@ -61,14 +62,13 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
 //TODO close mysqli
 function add_buy($email) {
     global $db_host, $db_user, $db_pass, $db_name, $current_table;
-    if( strtotime('now') > strtotime('2017-04-07 00:00') ) {
-        return false;
-    }
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
     if( $mysqli->connect_errno ) {
         return false;
     }
     $result = $mysqli->query(sprintf("SELECT rafflecode, valid, complete FROM $current_table WHERE `email` = '%s'",
+        $mysqli->real_escape_string($email)));
+    $swapresult = $mysqli->query(sprintf("SELECT 1 FROM swap where `buyer` = '%s' and lock_expire > now()",
         $mysqli->real_escape_string($email)));
     $mysqli->close();
     if( !$result ) {
@@ -78,6 +78,11 @@ function add_buy($email) {
         if( $row['rafflecode'] != "" && $row['valid'] == 1 && $row['complete'] != 1 ) {
             return true;
         }
+    }
+    if( !$swapresult || $swapresult->num_rows == 0 ) {
+        return false;
+    } else {
+        return true;
     }
     return false;
 }

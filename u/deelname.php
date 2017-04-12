@@ -15,19 +15,19 @@ if( $mysqli->connect_errno ) {
 }
 $tickettype = "invalid";
 $code = "";
-$result = $mysqli->query(sprintf("SELECT rafflecode, valid FROM $current_table WHERE `email` = '%s'",
+$result = $mysqli->query(sprintf("SELECT rafflecode, valid, complete FROM $current_table WHERE `email` = '%s'",
         $mysqli->real_escape_string($user_email)));
 $row = $result->fetch_array(MYSQLI_ASSOC);
 if( !$result ) {
     //do nothing
-} else if( (strtotime('now') > strtotime('2017-04-07 00:00') && ($row['rafflecode'] != "" || $row['valid'] == 1))) {
+//} else if( (strtotime('now') < strtotime('2017-04-07 00:00')) {
+} else if( $row['rafflecode'] != "" && $row['valid'] == 1 && $row['complete'] != 1 ) {
     $code = $row['rafflecode'];
     $tickettype = "regular";
 }
 
 if( $tickettype == "invalid" ) {
     $swapresult = $mysqli->query(sprintf("SELECT `code` FROM `swap` WHERE `email` = '%s' and `lock_expire` < now()", $mysqli->real_escape_string($user_email)));
-
     if( !$swapresult || $mysqli->num_rows != 1 ) {
         //do nothing
     } else {
@@ -37,6 +37,7 @@ if( $tickettype == "invalid" ) {
 }
 
 if( $tickettype == "invalid" ) {
+    $mysqli->close();
     header('Location: voorjaar');
 }
 

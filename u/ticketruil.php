@@ -11,7 +11,7 @@ $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 $ticket_reserved = FALSE;
 $can_sell = FALSE;
-$result = $mysqli->query(sprintf("SELECT 1 FROM `swap` where `buyer` = '%s' and lock_expire < now()",
+$result = $mysqli->query(sprintf("SELECT 1 FROM `swap` where `buyer` = '%s' and lock_expire > now()",
     $mysqli->real_escape_string($user_email)));
 if( !$result || $result->num_rows == 0 ) {
     //do nothing
@@ -27,12 +27,31 @@ if( !$result || $result->num_rows == 0 ) {
     $can_sell = true;
 }
 
-$result = $mysqli->query("SELECT sw.*, s.task from `swap` sw join $current_table s on s.email = sw.seller where lock_expire < now()");
+$tickets_available = FALSE;
+$result = $mysqli->query("SELECT * from `swap` where lock_expire < now()");
 if( !$result ) {
-    email_error("Error getting from swap".$mysqli->error);
-    exit;
+    //do nothing
+} else {
+    if ($result->num_rows > 0) {
+        $result = $mysqli->query(sprintf("SELECT 1 FROM $current_table WHERE `email` = '%s' and `complete` = 1",
+            $mysqli->real_escape_string($user_email)));
+        if( !$result || $result->num_rows > 0 ) {
+
+        } else {
+            $tickets_available = TRUE;
+        }
+
+    }
 }
 
+$can_undo = false;
+$result = $mysqli->query(sprintf("SELECT 1 from `swap` where seller = '%s' and lock_expire < now()",
+    $mysqli->real_escape_string($user_email)));
+if( !$result || $result->num_rows == 0 ) {
+    //do nothing
+} else {
+    $can_undo = TRUE;
+}
 
 $mysqli->close();
 
@@ -57,7 +76,7 @@ $mysqli->close();
                         <h4 class="modal-title">Ticket niet meer beschikbaar</h4>
                       </div>
                       <div class="modal-body">
-                        <p id="raffle-modal-content">Dit ticket is helaas niet meer beschikbaar.</p>
+                        <p id="raffle-modal-content">Ondertussen zijn er helaas geen tickets meer beschikbaar.</p>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default refresh" data-dismiss="modal">ok</button>
@@ -68,42 +87,32 @@ $mysqli->close();
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
                     <div class="col-xs-13 col-sm-10">
-                        <div>
+                        <div class="jumbotron">
+                            <h2>Familiar Ticketruil</h2>
+                            <p>
+                                Om ervoor te zorgen dat zoveel mogelijk mensen mee kunnen naar onze weekendjes weg,kan je hier aangeven of je je ticket wilt verkopen of een van de beschikbare tickets wilt overnemen.
+                            </p>
+                            <p>
+                                We vinden het belangrijk dat dit zo eerlijk mogelijk verloopt. Dat betekent dat de tickets voor de orginele ticketprijs verkocht worden en degene die als eerste te koop staan ook weer als eerste weer verkocht worden. Dat gaat gelukkig allemaal vanzelf, het enige wat je hoeft te doen is hieronder aan te geven wat je graag wilt doen.
+                            </p>
                             <?php
                                 if( $can_sell ) {
-                                    echo "<div><p>Als je jou ticket te koop wilt aanbieden kun je op de knop hieronder klikken.</p></div>";
-                                    echo "<a href='verkopen' class='btn btn-info btn-sm btn-block'>Ik wil mijn ticket verkopen</a>";
+                                    echo "<div role='separator' class='divider'></div><a href='verkopen' class='btn btn-info btn-sm btn-block'>Ik wil mijn ticket verkopen</a>";
+                                }
+                                if( $can_undo ) {
+                                    echo "<div role='separator' class='divider'></div><div><p class='undosale'>Je ticket staat op dit moment te koop. Op dit moment heeft nog niemand het gekocht dus je kunt het nog ongedaan maken.</p></div>";
+                                    echo "<a class='btn btn-info btn-sm btn-block undo'>Ik wil mijn ticket uit de verkoop halen</a>";
                                 }
                                 if( $ticket_reserved ) {
-                                    echo "<div><p>Je hebt al aangegeven een ticket te willen kopen. Klik op de knop hieronder om je deelname te bevestigen.</p></div>";
+                                    echo "<div role='separator' class='divider'></div><div><p>Je hebt al aangegeven een ticket te willen kopen. Klik op de knop hieronder om je deelname te bevestigen.</p></div>";
                                     echo "<a href='deelname' class='btn btn-info btn-sm btn-block'>Deelnemen</a>";   
+                                } else if($tickets_available) {
+                                    echo "<div role='separator' class='divider'></div><div><p>Op dit moment is er een ticket beschikbaar! Druk op de onderstaande knop om deze te kopen.</p></div>";
+                                    echo "<div class='btn btn-success btn-sm btn-block buyticket'>Ticket kopen</div>";
+                                } else if( !$can_sell && !$can_undo ){
+                                    echo "<div role='separator' class='divider'></div><div><p>Er zijn op dit moment geen tickets beschikbaar</p></div>";
                                 }
                             ?>
-                        </div>
-                        <div class='tickets'>
-                            <table class='table table-striped table-bordered table-hover table-condensed'>
-                                <thead>
-                                    <th>Ticket</th><th>Taak</th><th>Aangeboden sinds</th><th>Kopen</th>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-                                        $task = substr($row['task'], 0, -10);
-                                        if( $task == 'crew') {
-                                            continue;
-                                        } else if( is_act($task) ) {
-                                            $task = '';
-                                        }
-                                        echo "<tr>";
-                                        echo "<td class='code'>".$row['code']."</td>";
-                                        echo "<td>".translate_task($task)."</td>";
-                                        echo "<td>".$row['date_sold']."</td>";
-                                        echo "<td><a class='btn btn-info btn-sm btn-block buyticket'>Kopen</a></td>";
-                                        echo "</tr>";
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
