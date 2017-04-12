@@ -11,6 +11,7 @@ catch (Mollie_API_Exception $e) {
 }
 
 function get_hash($code,$id) {
+	global $ticketseed;
 	return md5($ticketseed.$code.$id);
 }
 
@@ -21,9 +22,10 @@ function set_hash($mysqli, $id, $code) {
 	    return false;
 	} else {
 		$hash = get_hash($code,$id);
-		$query = sprintf("UPDATE $current_table set ticket='%s' where rafflecode = '%s'",
+		$query = sprintf("UPDATE $current_table set ticket='%s' where rafflecode = '%s' and transactionid = '%s'",
 			$mysqli->real_escape_string($hash),
-			$mysqli->real_escape_string($code));
+			$mysqli->real_escape_string($code),
+			$mysqli->real_escape_string($id));
 		$sqlresult = $mysqli->query($query);
 		if( $sqlresult === FALSE ) {
 		    email_error("Failed to add ticket hash for : ".$code);

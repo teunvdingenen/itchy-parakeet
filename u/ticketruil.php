@@ -33,14 +33,13 @@ if( !$result ) {
     //do nothing
 } else {
     if ($result->num_rows > 0) {
-        $result = $mysqli->query(sprintf("SELECT 1 FROM $current_table WHERE `email` = '%s' and `complete` = 1",
+        $result = $mysqli->query(sprintf("SELECT complete FROM $current_table WHERE `email` = '%s'",
             $mysqli->real_escape_string($user_email)));
-        if( !$result || $result->num_rows > 0 ) {
-
-        } else {
+        if( !$result || $result->num_rows == 0 ) {
+            // do nothing
+        } else if( $result->fetch_array(MYSQLI_ASSOC)['complete'] == 0 ) {
             $tickets_available = TRUE;
         }
-
     }
 }
 
@@ -93,18 +92,18 @@ $mysqli->close();
                                 Om ervoor te zorgen dat zoveel mogelijk mensen mee kunnen naar onze weekendjes weg,kan je hier aangeven of je je ticket wilt verkopen of een van de beschikbare tickets wilt overnemen.
                             </p>
                             <p>
-                                We vinden het belangrijk dat dit zo eerlijk mogelijk verloopt. Dat betekent dat de tickets voor de orginele ticketprijs verkocht worden en degene die als eerste te koop staan ook weer als eerste weer verkocht worden. Dat gaat gelukkig allemaal vanzelf, het enige wat je hoeft te doen is hieronder aan te geven wat je graag wilt doen.
+                                We vinden het belangrijk dat dit zo eerlijk mogelijk verloopt. Dat betekent dat de tickets voor de originele ticketprijs verkocht worden en degene die als eerste te koop staan ook weer als eerste verkocht worden. Dat gaat gelukkig allemaal vanzelf, het enige wat jij hoeft te doen is hieronder aan te geven wat je graag wilt doen.
                             </p>
                             <?php
                                 if( $can_sell ) {
                                     echo "<div role='separator' class='divider'></div><a href='verkopen' class='btn btn-info btn-sm btn-block'>Ik wil mijn ticket verkopen</a>";
                                 }
                                 if( $can_undo ) {
-                                    echo "<div role='separator' class='divider'></div><div><p class='undosale'>Je ticket staat op dit moment te koop. Op dit moment heeft nog niemand het gekocht dus je kunt het nog ongedaan maken.</p></div>";
+                                    echo "<div role='separator' class='divider'></div><div><p class='undosale'>Je ticket staat op dit moment te koop. Nog niemand heeft je ticket gekocht, dus je kan het nu nog ongedaan maken.</p></div>";
                                     echo "<a class='btn btn-info btn-sm btn-block undo'>Ik wil mijn ticket uit de verkoop halen</a>";
                                 }
                                 if( $ticket_reserved ) {
-                                    echo "<div role='separator' class='divider'></div><div><p>Je hebt al aangegeven een ticket te willen kopen. Klik op de knop hieronder om je deelname te bevestigen.</p></div>";
+                                    echo "<div role='separator' class='divider'></div><div><p>Je hebt aangegeven een ticket te willen kopen. Klik op de knop hieronder om je deelname te bevestigen.</p></div>";
                                     echo "<a href='deelname' class='btn btn-info btn-sm btn-block'>Deelnemen</a>";   
                                 } else if($tickets_available) {
                                     echo "<div role='separator' class='divider'></div><div><p>Op dit moment is er een ticket beschikbaar! Druk op de onderstaande knop om deze te kopen.</p></div>";

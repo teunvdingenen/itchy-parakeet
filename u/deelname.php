@@ -27,9 +27,9 @@ if( !$result ) {
 }
 
 if( $tickettype == "invalid" ) {
-    $swapresult = $mysqli->query(sprintf("SELECT `code` FROM `swap` WHERE `email` = '%s' and `lock_expire` < now()", $mysqli->real_escape_string($user_email)));
-    if( !$swapresult || $mysqli->num_rows != 1 ) {
-        //do nothing
+    $swapresult = $mysqli->query(sprintf("SELECT `code` FROM `swap` WHERE `buyer` = '%s' and `lock_expire` > now()", $mysqli->real_escape_string($user_email)));
+    if( !$swapresult || $swapresult->num_rows == 0 ) {
+        //email_error("No swap info: ".$swapresult->num_rows . " " . $mysqli->error);
     } else {
         $tickettype = "swap";
         $code = $swapresult->fetch_array(MYSQLI_ASSOC)['code'];
@@ -56,7 +56,7 @@ $disp_amount = $method = $street = $city = $postal = $terms4 = $share = "";
 $result = $mysqli->query(sprintf("SELECT city, street, postal, rafflecode, share from $current_table s join person p on s.email = p.email WHERE p.email = '%s'",
     $mysqli->real_escape_string($user_email)));
 if(!$result) {
-    addError("We konden niet je gegevens ophalen, ververs de pagina of stuur een email naar: ".$mailtolink);
+    addError("We konden niet je gegevens ophalen, ververs de pagina of stuur een email naar: ".$mailtolink.$mysqli->error);
 } else {
     $row = $result->fetch_array(MYSQLI_ASSOC);
     $city = $row['city'];
@@ -425,7 +425,7 @@ function addError($value) {
                                 </div>
                             </div>
                             <?php
-                                if( $share != "FREE" && $user_email != "merel@stichtingfamiliarforest.nl" ) {
+                                if( $share != "FREE" ) {
                                     echo "<button class='btn btn-lg btn-primary btn-block' type='submit'>Naar betalen</button>";
                                 }
                             ?>

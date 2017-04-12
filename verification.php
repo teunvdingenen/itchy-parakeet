@@ -20,6 +20,7 @@ try
         if( !isFullTicket($mysqli, $code) ) {
             //send_confirmation_refund_half($mysqli, $payment_id);
         } else {
+            email_error("Please check swap with code: ".$code." and transaction (refund): ".$payment_id);
             $result = $mysqli->query(sprintf("UPDATE $current_table SET `task` = '', `complete` = 3, `valid` = 0, `ticket` = '', `rafflecode` = '' WHERE transactionid = '%s'",$mysqli->real_escape_string($payment_id)));
             if( !$result || $mysqli->affected_rows != 1 ) {
                 email_error("Something may have gone wrong with refund update transaction: ".$payment_id);
@@ -30,17 +31,18 @@ try
         }
     } else if ($payment->isPaid()) {
         database_setpayed($mysqli, $payment_id, 1);
-        $result = $mysqli->query("SELECT seller, buyer FROM `swap` WHERE `code` = '%s'",$mysqli->real_escape_string($code));
-        if( !$result || $mysqli->num_rows != 1 ) {
+        $result = $mysqli->query(sprintf("SELECT seller, buyer FROM `swap` WHERE `code` = '%s'",$mysqli->real_escape_string($code)));
+        if( !$result || $result->num_rows != 1 ) {
             //do nothing
         } else {
             $row = $result->fetch_array(MYSQLI_ASSOC);
             $buyer_email = $row['buyer'];
             $seller_email = $row['seller'];
             $task = "";
+
             if( !is_null($seller_email) ) {
-                $result = $mysqli->query("SELECT transactionid, share, task FROM $current_table WHERE `email` = '%s'",
-                    $mysqli->real_escape_string($seller_email));
+                $result = $mysqli->query(sprintf("SELECT transactionid, share, task FROM $current_table WHERE `email` = '%s'",
+                    $mysqli->real_escape_string($seller_email)));
                 if( !$result || $result->num_rows != 1 ) {
                     email_error("Unable to do refund for seller: ".$seller_email);
                 } else {
@@ -95,16 +97,16 @@ try
             } else {
                 email_error("Sold extra ticket");
             }
-            $result = $mysqli->query("UPDATE $current_table SET `rafflecode` = '%s', `task` = '%s' WHERE `email` = '%s'",
+            $result = $mysqli->query(sprintf("UPDATE $current_table SET `rafflecode` = '%s', `task` = '%s', valid = 1 WHERE `transactionid` = '%s'",
                 $mysqli->real_escape_string($code),
                 $mysqli->real_escape_string($task),
-                $mysqli->real_escape_string($buyer_email));
+                $mysqli->real_escape_string($payment_id)));
             if( !$result || $mysqli->affected_rows != 1 ) {
                 email_error("Unable to set ticket code to: ".$code." for swap to: ".$buyer_email. "affected_rows = ".$mysqli->affected_rows);
             }
 
-            $result = $mysqli->query("DELETE FROM `swap` WHERE `code` = '%s'",
-                $mysqli->real_escape_string($code));
+            $result = $mysqli->query(sprintf("DELETE FROM `swap` WHERE `code` = '%s'",
+                $mysqli->real_escape_string($code)));
             if( !$result || $mysqli->affected_rows != 1 ) {
                 email_error("Swap for code: ".$code." might not have been deleted. Affected rows: ".$mysqli->affected_rows);
             }
@@ -118,6 +120,7 @@ try
     } else { 
         database_setpayed($mysqli, $payment_id, 0);
     }
+    echo "OK";
     $mysqli->close();
 }
 catch (Mollie_API_Exception $e) {

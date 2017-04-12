@@ -17,28 +17,30 @@ $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 $code = $_GET["raffle"];
 $result = $mysqli->query(sprintf("SELECT p.firstname, p.email from $current_table s join person p on s.email = p.email WHERE rafflecode ='%s'", $mysqli->real_escape_string($code)));
 if( !$result || $result->num_rows != 1 ) {
-    email_error("Kon email en naam niet ophalen voor code: ".$code." ".$mysqli->error);
-    $mysqli->close();
-    return;
-} 
-$row = $result->fetch_array(MYSQLI_ASSOC);
-$firstname = $row['firstname'];
-$email = $row['email'];
-$paid = get_paid($mysqli, $email);
+    $result = $mysqli->query(sprintf("SELECT p.firstname, p.email from person p join swap s on p.email = s.buyer WHERE s.code = '%s'", $mysqli->real_escape_string($code)));
+    if( !$result || $result->num_rows != 1 ) {
+        email_error("Kon email en naam niet ophalen voor code: ".$code." ".$mysqli->error);
+    } else {
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $firstname = $row['firstname'];
+        $email = $row['email'];
+        $paid = get_paid($mysqli, $email);
 
-if( $paid === FALSE ) {
-    email_error("redirect.php: paid returned FALSE for: ".$firstname. " with code: ". $code);
-    $message = "<p>Er is een fout opgetreden in het betalingsysteem. <br> Voor mail informatie of geruststellingen kun je mailen naar: ".$mailtolink.".</p>";
-} else if( $paid == 0 ) {
-    $message = "<p>Het lijkt erop dat de betaling niet gelukt is of je hebt deze afgebroken.<p>";
-    $message .= "<p>Als je per ongeluk iets fout gedaan hebt kun het je nogmaals proberen door naar het <a href='u/deelname'>betalingscherm</a> te gaan.</p>";
-    $message .= "<p>Bij zorgen, voor vragen of je wilt iets anders kwijt, dan kun je altijd mailen naar: ". $mailtolink.".</p>";
-} else {
-    $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou het voorjaar te gaan vieren.</p>";
-    $message .= "<p>Ter bevestiging ontvang je ook nog een email met wat aanvullende gegevens.</p>";
-    $message .= "<p>Als je zorgen, vragen of je wilt iets anders kwijt wilt kun je altijd mailen naar: ". $mailtolink.".</p>";
+        if( $paid === FALSE ) {
+            email_error("redirect.php: paid returned FALSE for: ".$firstname. " with code: ". $code);
+            $message = "<p>Er is een fout opgetreden in het betalingsysteem. <br> Voor mail informatie of geruststellingen kun je mailen naar: ".$mailtolink.".</p>";
+        } else if( $paid == 0 ) {
+            $message = "<p>Het lijkt erop dat de betaling niet gelukt is of je hebt deze afgebroken.<p>";
+            $message .= "<p>Als je per ongeluk iets fout gedaan hebt kun het je nogmaals proberen door naar het <a href='u/deelname'>betalingscherm</a> te gaan.</p>";
+            $message .= "<p>Bij zorgen, voor vragen of je wilt iets anders kwijt, dan kun je altijd mailen naar: ". $mailtolink.".</p>";
+        } else {
+            $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou het voorjaar te gaan vieren.</p>";
+            $message .= "<p>Ter bevestiging ontvang je ook nog een email met wat aanvullende gegevens.</p>";
+            $message .= "<p>Als je zorgen, vragen of je wilt iets anders kwijt wilt kun je altijd mailen naar: ". $mailtolink.".</p>";
+        }
+        $message .= "<p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig,<br><br>Familiar Forest</p>";
+    }
 }
-$message .= "<p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig,<br><br>Familiar Forest</p>";
 $mysqli->close();
 
 function get_paid($mysqli, $email) {
