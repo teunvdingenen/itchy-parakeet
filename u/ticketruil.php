@@ -9,6 +9,12 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
 }
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
+$result = $mysqli->query(sprintf("SELECT 1 FROM $current_table WHERE `email` = '%s'",
+    $mysqli->real_escape_string($user_email)));
+if( !$result || $result->num_rows < 1 ) {
+    header('Location: oops');
+}
+
 $ticket_reserved = FALSE;
 $can_sell = FALSE;
 $result = $mysqli->query(sprintf("SELECT 1 FROM `swap` where `buyer` = '%s' and lock_expire > now()",
@@ -89,7 +95,7 @@ $mysqli->close();
                         <div class="jumbotron">
                             <h2>Familiar Ticketruil</h2>
                             <p>
-                                Om ervoor te zorgen dat zoveel mogelijk mensen mee kunnen naar onze weekendjes weg,kan je hier aangeven of je je ticket wilt verkopen of een van de beschikbare tickets wilt overnemen.
+                                Om ervoor te zorgen dat zoveel mogelijk mensen mee kunnen naar onze weekendjes weg, kan je hier aangeven of je je ticket wilt verkopen of een van de beschikbare tickets wilt overnemen.
                             </p>
                             <p>
                                 We vinden het belangrijk dat dit zo eerlijk mogelijk verloopt. Dat betekent dat de tickets voor de originele ticketprijs verkocht worden en degene die als eerste te koop staan ook weer als eerste verkocht worden. Dat gaat gelukkig allemaal vanzelf, het enige wat jij hoeft te doen is hieronder aan te geven wat je graag wilt doen.

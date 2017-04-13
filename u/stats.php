@@ -20,9 +20,14 @@ $cities = array();
 $visits = array();
 $contrib0 = array();
 $contrib1 = array();
-$tickets_half = $tickets_free = 0;
+$tickets_half = $tickets_free = $tickets_full_pay = 0;
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
+$countresult = $mysqli->query("SELECT COUNT(*) as 'count' from fv2017 where complete = 1 and share = 'FULL'");
+if(!$result ) {
+	$tickets_full_pay = $countresult->fetch_array(MYSQLI_ASSOC)['count'];
+}
 
 $displayname = "";
 
@@ -133,6 +138,8 @@ echo "<th>Totaal " . $displayname . "</th>";
 echo "<td>".$total."</td>";
 echo "<th>Waarvan crew: </th>";
 echo "<td>".$total_crew."</td>";
+echo "<th>Volle prijs tickets:</th>";
+echo "<td>".$tickets_full_pay."</td>";
 
 echo "<tr>";
 echo "<th>Leeftijd</th>";

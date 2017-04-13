@@ -15,7 +15,9 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     if( add_buy($user_email) ) {
         echo "<li><a class='menulink' href='deelname'>Deelname Familiar Voorjaar</a></li>";
     }
-    echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";
+    if( add_swap($user_email) ) {
+        echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";    
+    }
     echo "</ul>";
 }
 
@@ -59,7 +61,6 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
 }
 
 
-//TODO close mysqli
 function add_buy($email) {
     global $db_host, $db_user, $db_pass, $db_name, $current_table;
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
@@ -80,6 +81,23 @@ function add_buy($email) {
         }
     }
     if( !$swapresult || $swapresult->num_rows == 0 ) {
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+function add_swap($email) {
+    global $db_host, $db_user, $db_pass, $db_name, $current_table;
+    $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+    if( $mysqli->connect_errno ) {
+        return false;
+    }
+    $result = $mysqli->query(sprintf("SELECT 1 FROM $current_table WHERE `email` = '%s'",
+        $mysqli->real_escape_string($email)));
+    $mysqli->close();
+    if( !$result || $result->num_rows < 1 ) {
         return false;
     } else {
         return true;

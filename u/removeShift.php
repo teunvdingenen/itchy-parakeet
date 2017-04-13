@@ -20,6 +20,14 @@ if( $mysqli->connect_errno ) {
 
 $name = $_POST['name'];
 
+$result = $mysqli->query(sprintf("UPDATE $current_table SET `task` = '' WHERE `task` = '%s'",
+	$mysqli->real_escape_string($name)));
+if( !$result ) {
+	echo 1;
+	$mysqli->close();
+	return;
+}
+
 $result = $mysqli->query( sprintf("DELETE FROM `shifts` WHERE `name` = '%s'",
         $mysqli->real_escape_string($name)));
 if( $result === FALSE ) {

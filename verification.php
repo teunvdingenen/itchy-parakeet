@@ -17,7 +17,7 @@ try
     $code = $payment->metadata->raffle;
 
     if( $payment->isRefunded() ) {
-        if( !isFullTicket($mysqli, $code) ) {
+        if( !isFullTicket($mysqli, $payment_id) ) {
             //send_confirmation_refund_half($mysqli, $payment_id);
         } else {
             email_error("Please check swap with code: ".$code." and transaction (refund): ".$payment_id);
@@ -40,7 +40,7 @@ try
             $seller_email = $row['seller'];
             $task = "";
 
-            if( !is_null($seller_email) ) {
+            if( !is_null($row['seller']) ) {
                 $result = $mysqli->query(sprintf("SELECT transactionid, share, task FROM $current_table WHERE `email` = '%s'",
                     $mysqli->real_escape_string($seller_email)));
                 if( !$result || $result->num_rows != 1 ) {
@@ -62,6 +62,11 @@ try
                     $amount -= 0.19;
                     $payment = $mollie->payments->get($seller_payment);
                     $refund = $mollie->payments->refund($payment, $amount);
+                    $result = $mysqli->query(sprintf("UPDATE $current_table SET complete = 2 WHERE transactionid = '%s'",
+                        $mysqli->real_escape_string($seller_payment)));
+                    if( !$result || $mysqli->affected_rows != 1 ) {
+                        email_error("Refund complete to 2 didn't work for: ".$seller_payment);
+                    }
                 }
                 if( $task != "" ) {
                     $taskresult = $mysqli->query(sprintf("SELECT task FROM `shifts` WHERE `name` = '%s'",
@@ -120,7 +125,6 @@ try
     } else { 
         database_setpayed($mysqli, $payment_id, 0);
     }
-    echo "OK";
     $mysqli->close();
 }
 catch (Mollie_API_Exception $e) {
@@ -170,7 +174,7 @@ function send_confirmation_refund($mysqli, $payment_id) {
     $fullname = $row['firstname']." ".$row['lastname'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>Met een beetje een dubbel gevoel versturen we deze email omdat we jou ticket opnieuw hebben kunnen verkopen. We vinden het erg fijn dat het gelukt is om iemand anders blij te maken jou Familiar Voorjaar deelname maar we hadden natuurlijk erg graag ook jou erbij gehad in mei.</p>";
+    $content .= "<p>Met een beetje een dubbel gevoel versturen we deze email, we hebben namelijk jou ticket opnieuw kunnen verkopen. We vinden het erg fijn dat het gelukt is om iemand anders blij te maken jou Familiar Voorjaar deelname maar we hadden natuurlijk erg graag ook jou erbij gehad in mei.</p>";
     $content .= "<p>We gaan er vanuit dat je vast hele goede redenen had om af te zien van ons weekendje weg en we hopen dat we bij de volgende editie (weer) van je aanwezigheid mogen genieten!<p>";
     $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen op deze email.";
 
@@ -203,10 +207,10 @@ function send_confirmation_refund_half($mysqli, $payment_id) {
     return true;
 }
 
-function isFullTicket($mysqli, $code) {
+function isFullTicket($mysqli, $id) {
     global $current_table;
-    $sqlresult = $mysqli->query(sprintf("SELECT share FROM $current_table WHERE rafflecode = '%s'", 
-        $mysqli->real_escape_string($code)));
+    $sqlresult = $mysqli->query(sprintf("SELECT share FROM $current_table WHERE transactionid = '%s'", 
+        $mysqli->real_escape_string($id)));
     if( $sqlresult === FALSE) {
         //log error
         return FALSE;

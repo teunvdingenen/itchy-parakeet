@@ -13,6 +13,13 @@ if( $mysqli->connect_errno ) {
     $email_error("Database connectie is kapot: " . $mysqli->error);
     exit;
 }
+
+$result = $mysqli->query("SELECT COUNT(*) as 'sold' FROM $current_table WHERE complete = 1 and share = 'FULL'");
+if( !$result || $result->fetch_array(MYSQLI_ASSOC)['sold'] > 226) { 
+    email_error("Ticket sales seem to have gone over preset amount!!");
+    header('Location: oops');
+}
+
 $tickettype = "invalid";
 $code = "";
 $result = $mysqli->query(sprintf("SELECT rafflecode, valid, complete FROM $current_table WHERE `email` = '%s'",
