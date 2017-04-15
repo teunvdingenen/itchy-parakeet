@@ -242,7 +242,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $mysqli->query($query);
     if( $result && $result->num_rows == 1 ) {
         $row = $result->fetch_array(MYSQLI_ASSOC);
-        $act_types = array('workshop', 'game', 'lecture', 'schmink', 'other','perform','install');
+        $act_types = array('workshop', 'game', 'lecture', 'schmink', 'other_act','perform','install');
 
         if( in_array($row['contrib0_type'], $act_types) ) {
             $contrib0 = 'act';
@@ -377,7 +377,7 @@ function addError($value) {
                                 <option value="game" <?= $act0type == 'game' ? ' selected="selected"' : '';?>>Ervaring / Game</option>
                                 <option value="lecture" <?= $act0type == 'lecture' ? ' selected="selected"' : '';?>>Lezing</option>
                                 <option value="schmink" <?= $act0type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
-                                <option value="other" <?= $act0type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
+                                <option value="other_act" <?= $act0type == 'other_act' ? ' selected="selected"' : '';?>>Anders</option>
                                 <option value="perform" <?= $act0type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
                                 <option value="install" <?= $act0type == 'install' ? ' selected="selected"' : '';?>>Installatie / Beeld</option>
                             </select>
@@ -428,7 +428,7 @@ function addError($value) {
                                 <option value="game" <?= $act1type == 'game' ? ' selected="selected"' : '';?>>Ervaring / Game</option>
                                 <option value="lecture" <?= $act1type == 'lecture' ? ' selected="selected"' : '';?>>Lezing</option>
                                 <option value="schmink" <?= $act1type == 'schmink' ? ' selected="selected"' : '';?>>Schmink</option>
-                                <option value="other" <?= $act1type == 'other' ? ' selected="selected"' : '';?>>Anders</option>
+                                <option value="other_act" <?= $act1type == 'other_act' ? ' selected="selected"' : '';?>>Anders</option>
                                 <option value="perform" <?= $act1type == 'perform' ? ' selected="selected"' : '';?>>Performance</option>
                                 <option value="install" <?= $act1type == 'install' ? ' selected="selected"' : '';?>>Installatie / Beeld</option>
                             </select>
