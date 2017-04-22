@@ -18,6 +18,9 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     if( add_swap($user_email) ) {
         echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";    
     }
+    if( add_ticket($user_email) ) {
+        echo "<li><a class='menulink' href='ticket'>Ticket</a></li>";
+    }
     echo "</ul>";
 }
 
@@ -30,8 +33,15 @@ if( $user_permissions & PERMISSION_DISPLAY ) {
 
 if( $user_permissions & PERMISSION_VOLUNTEERS ) {
     echo "<ul class='nav'>";
-    echo "<li><a class='menulink' href='shifts'>Shifts</a></li>";
-    echo "<li><a class='menulink' href='indelen'>Indelen</a></li>";
+    echo "<li><a class='menulink' href='shifts?t=vrijwilligers'>Vrijwilliger shifts</a></li>";
+    echo "<li><a class='menulink' href='indelen?t=vrijwilligers'>Vrijwilligers indelen</a></li>";
+    echo "</ul>";
+}
+
+if( $user_permissions & PERMISSION_ACTS ) {
+    echo "<ul class='nav'>";
+    echo "<li><a class='menulink' href='shifts?t=acts'>Act shifts</a></li>";
+    echo "<li><a class='menulink' href='indelen?t=acts'>Acts indelen</a></li>";
     echo "</ul>";
 }
 
@@ -95,6 +105,23 @@ function add_swap($email) {
         return false;
     }
     $result = $mysqli->query(sprintf("SELECT 1 FROM $current_table WHERE `email` = '%s'",
+        $mysqli->real_escape_string($email)));
+    $mysqli->close();
+    if( !$result || $result->num_rows < 1 ) {
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+function add_ticket($email) {
+    global $db_host, $db_user, $db_pass, $db_name, $current_table;
+    $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+    if( $mysqli->connect_errno ) {
+        return false;
+    }
+    $result = $mysqli->query(sprintf("SELECT 1 FROM $current_table WHERE `email` = '%s' and complete = 1 and ticket != ''",
         $mysqli->real_escape_string($email)));
     $mysqli->close();
     if( !$result || $result->num_rows < 1 ) {

@@ -96,8 +96,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     $db_contrib0 = $db_contrib0_desc = $db_contrib0_need = "";
     $db_contrib1 = $db_contrib1_desc = $db_contrib1_need = "";
-
+    $is_act = false;
     if( $contrib0 == "act" ) {
+        $is_act = true;
         $db_contrib0 = $act0type;
         $db_contrib0_desc = $act0desc;
         $db_contrib0_need = $act0need;
@@ -179,8 +180,12 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $sqlresult = $mysqli->query($query);
             $query = "";
             $signupdate = date( 'Y-m-d H:i:s');
+            $task = ''
+            if( $is_act ) { 
+                $task = 'act';
+            }
             if( $sqlresult->num_rows == 0 ) {
-                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `question`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s');",
+                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `question`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `task`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s');",
                     $mysqli->real_escape_string($user_email),
                     $mysqli->real_escape_string($partner),
                     substr($mysqli->real_escape_string($motivation), 0, 1024),
@@ -194,12 +199,13 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $mysqli->real_escape_string($preparations),
                     $mysqli->real_escape_string($signupround),
                     $mysqli->real_escape_string($signupdate),
+                    $mysqli->real_escape_string($task),
                     $mysqli->real_escape_string($terms0),
                     $mysqli->real_escape_string($terms1),
                     $mysqli->real_escape_string($terms2),
                     $mysqli->real_escape_string($terms3));
             } else {
-                $query = sprintf("UPDATE `$current_table` SET `partner` = '%s', `motivation` = '%s', `question` = '%s', `contrib0_type` = '%s', `contrib0_desc` = '%s', `contrib0_need` = '%s', `contrib1_type` = '%s', `contrib1_desc` = '%s', `contrib1_need` = '%s', `preparations` = '%s', `round` = %s, `signupdate` = '%s', `terms0` = '%s', `terms1` = '%s', `terms2` = '%s', `terms3` = '%s' WHERE `email` = '%s'",
+                $query = sprintf("UPDATE `$current_table` SET `partner` = '%s', `motivation` = '%s', `question` = '%s', `contrib0_type` = '%s', `contrib0_desc` = '%s', `contrib0_need` = '%s', `contrib1_type` = '%s', `contrib1_desc` = '%s', `contrib1_need` = '%s', `preparations` = '%s', `round` = %s, `signupdate` = '%s', `terms0` = '%s', `terms1` = '%s', `terms2` = '%s', `terms3` = '%s', `task` = '%s' WHERE `email` = '%s'",
                     $mysqli->real_escape_string($partner),
                     substr($mysqli->real_escape_string($motivation), 0, 1024),
                     substr($mysqli->real_escape_string($question), 0, 1024),
@@ -216,6 +222,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $mysqli->real_escape_string($terms1),
                     $mysqli->real_escape_string($terms2),
                     $mysqli->real_escape_string($terms3),
+                    $mysqli->real_escape_string($task),
                     $mysqli->real_escape_string($user_email));
             }
             $result = $mysqli->query($query);

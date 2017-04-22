@@ -1,6 +1,6 @@
 <?php
-include_once "initialize.php";
-include('phpqrcode/qrlib.php');
+include_once "../initialize.php";
+include('../phpqrcode/qrlib.php');
 include "../functions.php";
 
 include("checklogin.php");

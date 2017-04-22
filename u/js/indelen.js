@@ -6,8 +6,6 @@ var tr_id = 1;
 
 function setVolunteerShift(task, email) {
 	$.post("saveVolunteerShift.php", {"name":task, "email":email}, function(response) {
-		console.log(task);
-		console.log(email);
 		if( response == 0 ) {
 			//console.log("OK");
 		} else {
@@ -96,7 +94,7 @@ function createShiftsTable(shifts) {
 		html += "<td id="+shift+">"+table_vol_shft;
 		$.each(val.volunteers, function(i,volunteer) {
 			count += 1;
-			html += "<tr id='"+tr_id+"' draggable='true'><td class='email hidden'>"+volunteer.email+"</td>";
+			html += "<tr class='data' data-content = '"+volunteer.contrib0_desc+" rel='popover' data-placement='left' data-original-title='Omschrijving' data-trigger='hover' id='"+tr_id+"' draggable='true'><td class='email hidden'>"+volunteer.email+"</td>";
 			html += "<td class='name'>"+volunteer.firstname+ " " + volunteer.lastname+"</td></tr>";
 			tr_id+=1;
 			all_email += volunteer.email + ", ";
@@ -110,6 +108,7 @@ function createShiftsTable(shifts) {
 	html += "</table>";
 	$('.shiftcontent').html(html);
 	$('#emailadressen').html(all_email);
+	$(".data").popover();
 	setShiftEvents();
 }
 
@@ -118,13 +117,14 @@ function createVolunteerTable(volunteers) {
 	var html = "";
 	html += table_vol;
 	$.each(volunteers, function(i,volunteer) {
-		html += "<tr id='"+tr_id+"' draggable='true'><td class='email hidden'>"+volunteer.email+"</td>";
+		html += "<tr class='data' data-content = '"+volunteer.contrib0_desc+" rel='popover' data-placement='left' data-original-title='Omschrijving' data-trigger='hover' id='"+tr_id+"' draggable='true'><td class='email hidden'>"+volunteer.email+"</td>";
 		html += "<td class='name'>"+volunteer.firstname+" "+volunteer.lastname+"</td></tr>";
 		tr_id+=1;
 	});
 	html += "<tr><td></td></tr>";
 	html += "</table>";
 	$('.volunteercontent').html(html);
+	$(".data").popover();
 	setVolunteerEvents();
 }
 
@@ -139,12 +139,37 @@ $(document).ready(function() {
 
 	$('.volunteerselect').change(function() {
 		var data = new Object();
-		data.task = $('.taskselect').val();
+		data.contrib = $('.taskselect').val();
 		data.type = $('.volunteerselect').val();
 		$.post("getVolunteers.php", data, function(response) {
 			createVolunteerTable(JSON.parse(response));
 		});
 	});
+
+	$('.team_droppable').on("dragenter dragover drop", function (event) {
+		event.preventDefault();
+	   if (event.type === 'drop') {
+	   		var team = "vrijwilligers";
+	   		if( $('.oth_team').html() == "acts" ) {
+	   			team = "acts";
+	   		}
+	   		var data = event.originalEvent.dataTransfer.getData('Text',$(this).attr('id'));
+	   		var name = $('#'+data).find('.name').html();
+		    $('#'+data).popover("hide")
+	   		$('#modal-content').text("Weet je zeker dat je "+name+" wilt overzetten naar "+team+"?");
+	   		$('#trid').html(data);
+    		$('#modal').modal('show');
+	   };
+	});
+
+	$("#signoff").click(function() {
+		var id = $('#trid').text();
+		de=$('#'+id).detach();
+		setVolunteerShift($('.oth_team').html(), de.children('.email').html());
+		$('#modal').modal('hide');
+	});
+
 	$('.taskselect').change();
 	$('.volunteerselect').change();
+	$('#modal').modal('hide');
 });

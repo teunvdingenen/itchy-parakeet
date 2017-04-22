@@ -399,6 +399,8 @@ function translate_task($task) {
     return "Performance";
   } else if ( $task == "install" ) {
     return "Installatie";
+  } else if( $task == "workshop" ) {
+    return "Workshop";
   } else if( $task == "crew" ) {
     return "Crew";
   }
@@ -406,6 +408,6 @@ function translate_task($task) {
 }
 
 function is_act($task) {
-  return in_array($task, ['act','game','lecture','schmink','other_act','perform','install']);
+  return in_array($task, ['act','game','lecture','schmink','other_act','perform','install','workshop']);
 }
 ?>

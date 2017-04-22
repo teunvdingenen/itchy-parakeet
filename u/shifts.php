@@ -2,12 +2,23 @@
 include "../functions.php";
 
 include("checklogin.php");
-if( ($user_permissions & PERMISSION_VOLUNTEERS) != PERMISSION_VOLUNTEERS ) {
-        header('Location: oops');
+
+$tasks = array();
+$team = '';
+if( !isset($_GET['t'])) {
+    $team = 'vrijwilligers';
+} else {
+    $team = $_GET['t'];
+}
+if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == PERMISSION_VOLUNTEERS ) {
+    $tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb");
+} else if ( $team == 'acts' && ( $user_permissions & PERMISSION_ACTS) == PERMISSION_ACTS ) {
+    $tasks = array("act", "game", "schmink", "other_act", "perform", "install", "workshop");
+} else {
+    header('Location: oops');
 }
 
 //$tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
-$tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb", "crew");
 
 $nrrequired = $name = $taskselect = $returnVal = $startdate_output = $enddate_output = "";
 $startdate = "Friday, 05/05/2017 21:00";
@@ -69,9 +80,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$sqlresult = $mysqli->query("SELECT * FROM shifts WHERE 1");
+$sqlresult = $mysqli->query("SELECT * FROM shifts WHERE `task` IN ('".implode("','",$tasks)."')");
 if( $sqlresult === FALSE ) {
-    email_error("Error on get shifts: ".$mysqli->error);
+    echo $mysqli->error;
 }
 
 $mysqli->close();
