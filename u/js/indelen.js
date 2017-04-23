@@ -130,6 +130,7 @@ function createVolunteerTable(volunteers) {
 
 $(document).ready(function() {
 	$('.taskselect').change(function() {
+		$('#roosterlink').attr('href','rooster?t='+$(this).val());
 		$.post("getShifts.php", {"shift":$(this).val()}, function(response) {
 			createShiftsTable(JSON.parse(response));
 			$('.volunteerselect').change();

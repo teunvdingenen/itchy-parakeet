@@ -80,10 +80,6 @@ if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == P
                         </div>
                         <div class='shiftcontent scrollable'>
                         </div>
-                        <div>
-                            <h4 id='emailheader'></h4>
-                            <textarea class="form-control" id="emailadressen" cols="60" rows="4" readonly></textarea>
-                        </div>
                     </div>
                     
                     <div class="col-xs-3 col-sm-3">
@@ -95,6 +91,15 @@ if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == P
                             </select>
                         </div>
                         <div class='volunteercontent scrollable'>
+                        </div>
+                    </div>
+                    <div class="col-xs-13 col-sm-10">
+                        <div>
+                            <h4 id='emailheader'></h4>
+                            <textarea class="form-control" id="emailadressen" cols="60" rows="4" readonly></textarea>
+                        </div>
+                        <div>
+                            <a id='roosterlink' class='btn btn-block btn-success' target='_blank'>Rooster</a>
                         </div>
                     </div>
                 </div>
