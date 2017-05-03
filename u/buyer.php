@@ -32,13 +32,14 @@ $request_for = 'buyer';
 							<?php include("pagination.php"); ?>
 							<table class='table table-striped table-bordered table-hover table-condensed'>
 								<thead>
-									<tr class='header-row'><th>Achternaam</th><th>Voornaam</th><th>Leeftijd</th><th>Woonplaats</th><th>Telefoon</th><th>Email</th><th>Taak</th><th>Aantal edities</th><th>Eerste keus</th><th></th><th>Tweede keus</th><th></th><th>Voorgaande edities</th><th>Lieveling</th>
+									<tr class='header-row'><th>Ticket</th><th>Achternaam</th><th>Voornaam</th><th>Leeftijd</th><th>Woonplaats</th><th>Telefoon</th><th>Email</th><th>Taak</th><th>Taak Start</th><th>Taak einde</th><th>Aantal edities</th><th>Eerste keus</th><th></th><th>Tweede keus</th><th></th><th>Voorgaande edities</th><th>Lieveling</th>
 								</thead>
 								<tbody>
 							<?php
 							while($row = mysqli_fetch_array($sqlresult,MYSQLI_ASSOC))
 							{
 								echo "<tr>";
+								echo "<td><a class='btn btn-block btn-info' href='ticketpdf?ticket=".$row['ticket']."' target='_blank'>Ticket</a>";
 								echo "<td>" . $row['lastname'] . "</td>";
 								echo "<td>" . $row['firstname'] . "</td>";
 								$age = (new DateTime($row['birthdate']))->diff(new DateTime('now'))->y;
@@ -46,7 +47,9 @@ $request_for = 'buyer';
 								echo "<td>" . $row['city'] . "</td>";
 								echo "<td>" . $row['phone'] . "</td>";
 								echo "<td>" . $row['email'] . "</td>";
-								echo "<td>" . $row['task'] . "</td>";
+								echo "<td>" . translate_task($row['task']) . "</td>";
+								echo "<td>" . $row['startdate'] . "</td>";
+								echo "<td>" . $row['enddate'] . "</td>";
 								echo "<td>" . $row['visits'] . "</td>";
 								echo "<td>" . translate_contrib($row['contrib0_type']) . "</td>";
 								echo "<td>" . $row['contrib0_desc'] . "</td>";

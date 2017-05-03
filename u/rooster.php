@@ -3,21 +3,21 @@ include "../functions.php";
 
 include("checklogin.php");
 
-if( ($user_permissions & PERMISSION_VOLUNTEERS) != PERMISSION_VOLUNTEERS || 
+if( ($user_permissions & PERMISSION_VOLUNTEERS) != PERMISSION_VOLUNTEERS &&
     ($user_permissions & PERMISSION_ACTS) != PERMISSION_ACTS ) {
-    header('oops');
+    header('Location: oops');
 }
 
 $task = "";
 if( !isset($_GET['t'])) {
-    header('indelen');
+    header('Location: indelen');
 }
 $task = $_GET['t'];
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 $shifts_result = $mysqli->query(sprintf("SELECT name, startdate, enddate FROM shifts where task = '%s' ORDER BY startdate ASC;",$mysqli->real_escape_string($task)));
 if( !$shifts_result ) {
-	header('indelen');
+	header('Location: indelen');
 }
 
 ?>

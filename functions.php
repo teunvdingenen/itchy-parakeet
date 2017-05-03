@@ -317,6 +317,8 @@ function translate_contrib($type) {
     return "Ontwerpen en/of bouw decoraties, podia etc.";
   } else if( $type == "" ) {
     return "";
+  } else if( $type == "other_act" ) {
+    return "Act Overig";
   } else {
     return $type;
   }
@@ -403,6 +405,8 @@ function translate_task($task) {
     return "Workshop";
   } else if( $task == "crew" ) {
     return "Crew";
+  } else if( $task == "other_act") {
+    return "Act Overig";
   }
   return "Onbekend (Error)";
 }

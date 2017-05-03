@@ -44,9 +44,14 @@ if( $mysqli->connect_errno ) {
     $email_error("Database connectie is kapot: " . $mysqli->error);
     header('Location: voorjaar');
 }
-
-$query = sprintf("SELECT p.firstname, p.lastname, p.street, p.postal, p.city, s.motivation, s.rafflecode, s.transactionid, s.ticket from person p join
-    $current_table s on p.email = s.email where s.email = '%s' and s.complete = 1",$mysqli->real_escape_string($user_email));
+$query = "";
+if( $_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['ticket'])) {
+    $query = $query = sprintf("SELECT p.firstname, p.lastname, p.street, p.postal, p.city, s.motivation, s.rafflecode, s.transactionid, s.ticket from person p join
+        $current_table s on p.email = s.email where s.ticket = '%s' and s.complete = 1",$mysqli->real_escape_string($_GET['ticket']));
+} else {
+    $query = sprintf("SELECT p.firstname, p.lastname, p.street, p.postal, p.city, s.motivation, s.rafflecode, s.transactionid, s.ticket from person p join
+        $current_table s on p.email = s.email where s.email = '%s' and s.complete = 1",$mysqli->real_escape_string($user_email));
+}
 $result = $mysqli->query($query);
 
 if( !$result || $result->num_rows != 1) {

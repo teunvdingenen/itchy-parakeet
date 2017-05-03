@@ -9,7 +9,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 		return;
 	}
 	$ticketId = $mysqli->real_escape_string($_POST['ticket']);
-	$sqlresult = $mysqli->query(sprintf("SELECT p.firstname, p.lastname, p.birthdate, s.task, s.transactionid, s.rafflecode, s.attending
+	$sqlresult = $mysqli->query(sprintf("SELECT p.firstname, p.lastname, p.birthdate, s.transactionid, s.rafflecode, s.attending, s.task
 		FROM $current_table s join person p on p.email = s.email where s.ticket = '%s' and s.complete = 1",$ticketId));
 	if( $sqlresult === FALSE ) {
 		$array = array('message' => $mysqli->error);
@@ -21,7 +21,18 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 		echo json_encode($array);
 	} else {
 		$row = $sqlresult->fetch_array(MYSQL_ASSOC);
-		$row['task'] = translate_task($row['task']);
+		$taskresult = $mysqli->query(sprintf("SELECT task, startdate, enddate FROM shifts WHERE name = '%s'",
+			$mysqli->real_escape_string($row['task'])));
+		if( !$taskresult || $taskresult->num_rows == 0 ) {
+			$row['startdate'] = "";
+			$row['enddate'] = "";
+			$row['task'] = "Onbekend";
+		} else {
+			$taskrow = $taskresult->fetch_array(MYSQL_ASSOC);
+			$row['startdate'] = $taskrow['startdate'];
+			$row['enddate'] = $taskrow['enddate'];
+			$row['task'] = translate_task($taskrow['task']);
+		}
 		if( $row['attending'] == 0 ) {
 			$updateresult = $mysqli->query("UPDATE $current_table set attending = 1 where ticket = '$ticketId'");
 			if( $updateresult === FALSE ) {
