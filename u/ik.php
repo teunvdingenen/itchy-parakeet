@@ -11,6 +11,7 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
 date_default_timezone_set('Europe/Amsterdam');
 $returnVal = "";
 $firstname = $lastname = $birthdate = $gender = $phone = $city = $phone = $postal = $steet = "";
+$email_future = $email_signup = $email_ticket = "";
 $email = $user_email;
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -58,15 +59,34 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         addError("Je hebt geen telefoonnummer opgegeven");
     }
 
+    if( !empty($_POST["email_future"]) ) {
+        $email_future = test_input($_POST["email_future"]);
+    } else {
+        $email_future = "";
+    }
+    if( !empty($_POST["email_signup"]) ) {
+        $email_signup = test_input($_POST["email_signup"]);
+    } else {
+        $email_signup = "";
+    }
+    if( !empty($_POST["email_ticket"]) ) {
+        $email_ticket = test_input($_POST["email_ticket"]);
+    } else {
+        $email_ticket = "";
+    }
+
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("UPDATE person SET `city` = '%s', `gender` = '%s', `phone` = '%s', `birthdate` = '%s', `street` ='%s', `postal` = '%s' WHERE `email` = '%s'",
+        $query = sprintf("UPDATE person SET `city` = '%s', `gender` = '%s', `phone` = '%s', `birthdate` = '%s', `street` ='%s', `postal` = '%s', `email_future` = '%s', `email_signup` = '%s', `email_ticket` = '%s' WHERE `email` = '%s'",
             $mysqli->real_escape_string($city),
             $mysqli->real_escape_string($gender),
             $mysqli->real_escape_string($phone),
             $mysqli->real_escape_string($birthdate),
             $mysqli->real_escape_string($street),
             $mysqli->real_escape_string($postal),
+            $mysqli->real_escape_string($email_future),
+            $mysqli->real_escape_string($email_signup),
+            $mysqli->real_escape_string($email_ticket),
             $mysqli->real_escape_string($email)
         );
         $result = $mysqli->query($query);
@@ -104,6 +124,9 @@ if( $result === FALSE ) {
     $birthdate = htmlspecialchars_decode($row['birthdate']);
     $birthdate = DateTime::createFromFormat('Y-m-d', $birthdate);
     $birthdate = $birthdate->format('d/m/Y');
+    $email_future = htmlspecialchars_decode($row['email_future']);
+    $email_signup = htmlspecialchars_decode($row['email_signup']);
+    $email_ticket = htmlspecialchars_decode($row['email_ticket']);
 }
 $mysqli->close();
 
@@ -211,6 +234,31 @@ function addError($value) {
                                 </div>
                             </div>
                             </fieldset>
+                            <fieldset>
+                                <legend>Email instellingen</legend>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label" for="email">Ik wil emails ontvangen over:</label>
+                                    <div class="col-sm-10">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input class="checkbox" type="checkbox" name="email_future" value="J" <?php if($email_future == "J") echo( "checked"); ?>>
+                                                Toekomstige Familiar edities
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input class="checkbox" type="checkbox" name="email_signup" value="J" <?php if($email_signup == "J") echo( "checked"); ?>>
+                                                Familiar edities waarvoor ik mezelf heb ingeschreven
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input class="checkbox" type="checkbox" name="email_ticket" value="J" <?php if($email_ticket == "J") echo( "checked"); ?>>
+                                                Familiar edities waar ik aan deelneem
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="glyphicon glyphicon-floppy-disk"></i> Opslaan</button>
                         </form>
                     </div>

@@ -205,11 +205,6 @@ function addError($value) {
                     <h2>Aanmaken Familiar Forest account</h2>
                     <p>Om in te toekomst het inschrijf- en deelname proces te vergemakkelijken willen we graag dat je een account aanmaakt. Zodra je een account hebt kun je jezelf inschrijven voor de aankomende editie. Meer informatie over het inloggen vind je <a href="https://www.facebook.com/FamiliarForest/posts/1308244099219461" target="_blank">op onze Facebook pagina. <span class="fa fa-facebook"></span></a>
                 </div>
-                <div style="padding-top:10px">
-                    <h4>Ingeschreven voor Familiar Forest 2016?</h4>
-                    Als je jezelf hebt ingeschreven voor Familiar Forest 2016 kun je een deel van je gegevens hergebruiken. Het enige wat je dan hoeft te doen is je emailadres op te geven en wij doen de rest. 
-                    <div><a class='btn btn-sm btn-primary' href='activate' role='button'>Automatisch account aanmaken</a></div>
-                </div>
             </div>
                 
             <?php echo $returnVal; ?>

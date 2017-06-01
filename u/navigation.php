@@ -7,16 +7,16 @@ include_once "../functions.php";
 if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
     echo "<li><a class='' href='ik'>Mijn gegevens</a></li>";
-    echo "<li><a class='menulink' href='voorjaar'>Familiar Voorjaar 2017</a></li>";
-    if( strtotime('now') < strtotime('2017-03-16 10:00') && !add_buy($user_email)) {
-        echo "<li><a class='menulink' href='signup'>Inschrijven Familiar Voorjaar</a></li>";
+    echo "<li><a class='menulink' href='forest'>Familiar Forest en de Magiefabriek</a></li>";
+    if( strtotime('now') < strtotime('2017-06-06 10:00') && !add_buy($user_email)) {
+        echo "<li><a class='menulink' href='signup'>Inschrijven Familiar Forest</a></li>";
     }
     //echo "<li><a class='menulink' id='forest' href='forest'>Familiar Forest 2017</a></li>";
     if( add_buy($user_email) ) {
-        echo "<li><a class='menulink' href='deelname'>Deelname Familiar Voorjaar</a></li>";
+        echo "<li><a class='menulink' href='deelname'>Deelname Familiar Forest</a></li>";
     }
     if( add_swap($user_email) ) {
-        echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";    
+        //echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";    
     }
     if( add_ticket($user_email) ) {
         echo "<li><a class='menulink' href='info'>Reis Info</a></li>";
@@ -27,8 +27,8 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
 
 if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "<ul class='nav'>";
-    echo "<li><a class='menulink' href='signups'>Inschrijvingen Voorjaar</a></li>";
-    echo "<li><a class='menulink' href='buyer'>Tickets Voorjaar</a></li>";
+    echo "<li><a class='menulink' href='signups'>Inschrijvingen Forest</a></li>";
+    echo "<li><a class='menulink' href='buyer'>Tickets Forest</a></li>";
     echo "</ul>";
 }
 
@@ -49,7 +49,7 @@ if( $user_permissions & PERMISSION_ACTS ) {
 if( $user_permissions & PERMISSION_RAFFLE ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' href='raffle'>Loten</a></li>";
-    echo "<li><a class='menulink' href='showraffle'>Voorjaar Loting</a></li>";
+    echo "<li><a class='menulink' href='showraffle'>Forest Loting</a></li>";
     echo "</ul>";
 }
 

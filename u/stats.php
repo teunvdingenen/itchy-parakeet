@@ -24,7 +24,7 @@ $tickets_half = $tickets_free = $tickets_full_pay = 0;
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-$countresult = $mysqli->query("SELECT COUNT(*) as 'count' from fv2017 where complete = 1 and share = 'FULL'");
+$countresult = $mysqli->query("SELECT COUNT(*) as 'count' from $current_table where complete = 1 and share = 'FULL'");
 if(!$result ) {
 	$tickets_full_pay = $countresult->fetch_array(MYSQLI_ASSOC)['count'];
 }

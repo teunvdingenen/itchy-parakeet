@@ -3,7 +3,6 @@ include "../functions.php";
 
 include("checklogin.php");
 
-//todo check signup
 if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
     header('Location: oops');
 }

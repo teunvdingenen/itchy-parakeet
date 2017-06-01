@@ -9,7 +9,7 @@ rememberMe();
 
 $user_permissions = $_SESSION['permissions'];
 if( ($user_permissions & PERMISSION_PARTICIPANT) == PERMISSION_PARTICIPANT ) {
-    header('Location: u/voorjaar');
+    header('Location: u/forest');
 }
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -50,7 +50,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                         setRememberMe($username);
                     }
                     if( login($username) ) {
-                        header('Location: u/voorjaar');
+                        header('Location: u/forest');
                     }
                 } else {
                     $error = TRUE;

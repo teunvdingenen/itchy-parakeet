@@ -9,11 +9,11 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
 
 date_default_timezone_set('Europe/Amsterdam');
 
-if( strtotime('now') > strtotime('2017-03-16 10:00') ) {
-    header('Location: voorjaar');
+if( strtotime('now') > strtotime('2017-06-06 10:00') ) {
+    header('Location: forest');
 }
 
-$signupround = 1;
+$signupround = 0;
 
 $returnVal = "";
 $is_save = FALSE;
@@ -180,12 +180,12 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $sqlresult = $mysqli->query($query);
             $query = "";
             $signupdate = date( 'Y-m-d H:i:s');
-            $task = ''
+            $task = '';
             if( $is_act ) { 
                 $task = 'act';
             }
             if( $sqlresult->num_rows == 0 ) {
-                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `question`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `task`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s');",
+                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `question`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `task`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s','%s');",
                     $mysqli->real_escape_string($user_email),
                     $mysqli->real_escape_string($partner),
                     substr($mysqli->real_escape_string($motivation), 0, 1024),
@@ -227,8 +227,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $result = $mysqli->query($query);
             if( !$result ) {
-                addError("We hebben niet je gegevens kunnen opslaan. Probeer het later nog eens of mail naar: ".$mailtolink);
-                email_error("Error bij inschrijven: ".$mysqli->error."<br>".$query);
+                addError($mysqli->error."We hebben niet je gegevens kunnen opslaan. Probeer het later nog eens of mail naar: ".$mailtolink);
+               // email_error("Error bij inschrijven: ".$mysqli->error."<br>".$query);
             } else {
                 $returnVal = '<div class="alert alert-success" role="alert"><i class="glyphicon glyphicon-ok"></i></span> We hebben je inschrijving in goede orde ontvangen.</div>';
             }
@@ -310,12 +310,12 @@ function addError($value) {
                 <?php include("navigation.php");?>
                 <div class="col-xs-13 col-sm-10">  
                 <div class="form-intro-text">
-                <h1>Inschrijven Familiar Voorjaar</h1>
+                <h1>Inschrijven Familiar Forest</h1>
                 <p class="lead">
-                    5, 6 en 7 mei 2017.
+                    9 en 10 september 2017.
                 </p>
                 <p>
-                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot 15 maart 2017 je antwoorden wijzigen. Pas op 15 maart 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
+                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot 6 juni 2017 je antwoorden wijzigen. Pas op 6 juni 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
             </div>
             <?php echo $returnVal; ?>
@@ -324,7 +324,7 @@ function addError($value) {
                 
                 <fieldset>
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="motivation">Motivatie</label>
+                        <label class="col-sm-2 form-control-label" for="motivation">Waarom wil je naar Familiar Forest en de Magiefabriek?</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="motivation" id="motivation" cols="60" rows="4"><?php echo $motivation; ?></textarea>
                             <label for="motivation">Max 1024 karakters</label>
@@ -332,7 +332,7 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="question">Welke vraag heb je altijd al in een inschrijfformulier willen zien?</label>
+                        <label class="col-sm-2 form-control-label" for="question">Wat is je favoriete kinderboek? En waarom? Als je er een kon meenemen naar een festival welke zou dit dan zijn?</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="question" id="question" cols="60" rows="4"><?php echo $question; ?></textarea>
                             <label for="question">Max 1024 karakters</label>
@@ -342,18 +342,32 @@ function addError($value) {
                 <div class="form-group row">
                         <label class="col-sm-2" for="partner">Lieveling<br>Email</label>
                         <div class="col-sm-10">
-                            <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
-                            <div class="alert alert-success">
-                                Je kunt voor Familiar Voorjaar wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! <br>
+                            <div class='input-group'>
+                                <input class="form-control" type="email" name="partner" id="partner" placeholder="Lieveling" value="<?php echo $partner; ?>">
+                                <span class="partnercheck working input-group-addon">
+                                    <span class="glyphicon glyphicon-question-sign"></span>
+                                </span>
+                            </div>
+                            <div id='partnerdefault' class="alert alert-success">
+                                Je kunt voor Familiar Forest wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! <br>
                                 Je lieveling moet het email adres invullen waarmee jij je registreert hebt en jij het emailadres waarmee jouw lieveling zich inschrijft. Als deze niet overeen komen, kunnen wij jullie niet aan elkaar linken. <strong>Let op: Als jullie van deze optie gebruik maken worden 
-                                    jullie samen ingeloot <i>of beide uitgeloot.</i> Mocht je lieveling ingeloot zijn in de eerste ronde en schrijf jij je nu voor het eerst in, kunnen we niet garanderen dat jullie alsnog gematched worden.</strong>
+                                    jullie samen ingeloot <i>of beide uitgeloot.</i> </strong>
+                            </div>
+                            <div id='partnersuccess' class="alert alert-success">
+                                In de inschrijving van dit email adres staat ook die van jouw. Helemaal in orde dus!
+                            </div>
+                            <div id='partnernosignup' class="alert alert-info">
+                                We hebben op dit moment nog geen inschrijving ontvangen op dit email adres. Misschien heb je een typfoutje gemaakt of heeft je lieveling zich nog niet ingeschreven.
+                            </div>
+                            <div id='partnernotsame' class="alert alert-info">
+                                Uh oh! We houden er niet van om ons in relaties te mengen maar in de inschrijving van je lieveling staat iets anders dan jouw email adres! Hij of zij heeft vast een typfoutje gemaakt of iets dergelijks. Dubbelcheck dit nog even want op dit moment kunnen we jullie niet aan elkaar linken.
                             </div>
                         </div>
                     </div>
                 </fieldset>
                         
                 <fieldset>
-                    <legend>Hoe wil jij bijdragen aan het Familiar Voorjaar?</legend>
+                    <legend>Hoe wil jij bijdragen aan het Familiar Forest?</legend>
                     <div class="form-group row">
                         <label for="contrib0" class="col-sm-2 form-control-label">Eerste keus</label>
                         <div class="col-sm-10">
@@ -363,7 +377,6 @@ function addError($value) {
                                 <option value="keuken" <?= $contrib0 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib0 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                                 <option value="afb" <?= $contrib0 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
-                                <option value="opb" <?= $contrib0 == 'opb' ? ' selected="selected"' : '';?>>Opbouw</option>
                             </select>
                         </div>
                     </div>
@@ -414,7 +427,6 @@ function addError($value) {
                                 <option value="keuken" <?= $contrib1 == 'keuken' ? ' selected="selected"' : '';?>>Keuken</option>
                                 <option value="act" <?= $contrib1 == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                                 <option value="afb" <?= $contrib1 == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
-                                <option value="opb" <?= $contrib0 == 'opb' ? ' selected="selected"' : '';?>>Opbouw</option>
                             </select>
                         </div>
                     </div>
@@ -478,7 +490,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms3">Telefoon en Foto's</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Familiar Forest zorgt voor een professionele fotograaf. Om de sfeer te verhogen en het contact tussen deelnemers te stimuleren is het niet toegestaan een telefoon of camera mee te nemen op het terrein van Familiar Voorjaar.</div>
+                            <div class="alert alert-warning">Familiar Forest zorgt voor een professionele fotograaf. Om de sfeer te verhogen en het contact tussen deelnemers te stimuleren is het niet toegestaan een telefoon of camera mee te nemen op het terrein van Familiar Forest.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms0" name="terms0" value="J">
@@ -493,7 +505,7 @@ function addError($value) {
                         
                         <label class="col-sm-2 form-control-label" for="terms1">Verzekering</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Familiar Voorjaar is een reis. De locatie verplicht de deelnemer om zich te kunnen identificeren en minimaal WA verzekerd te zijn.</div>
+                            <div class="alert alert-warning">Familiar Forest is een reis. De locatie verplicht de deelnemer om zich te kunnen identificeren en een aansprakelijkheidsverzekerd te hebben.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms1" name="terms1" value="J">
@@ -507,7 +519,7 @@ function addError($value) {
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="terms2">Gezondheid</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Tijdens Familiar Voorjaar is de deelnemer verantwoordelijk voor zijn eigen gezondheid. Als deelnemer is het niet mogelijk Familiar Forest aansprakelijk te stellen voor materiële en immateriële schade. <i>Je kunt deze verzekeren door een reisverzekering af te sluiten</i></div>
+                            <div class="alert alert-warning">Tijdens Familiar Forest is de deelnemer verantwoordelijk voor zijn eigen gezondheid. Als deelnemer is het niet mogelijk Familiar Forest aansprakelijk te stellen voor materiële en immateriële schade. <i>Je kunt deze verzekeren door een reisverzekering af te sluiten</i></div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms2" name="terms2" value="J">

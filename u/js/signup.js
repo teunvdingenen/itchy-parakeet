@@ -98,6 +98,41 @@ $(document).ready(function() {
 		}
 	});
 
+	$("#partner").change(function() {
+		if( $("#partner").val() == "" ) {
+			$("#partnerdefault").show();
+			$("#partnersuccess").hide();
+			$("#partnernosignup").hide();
+			$("#partnernotsame").hide();
+		} else {
+			$.post("checkpartnersignup.php", {"email":$("#partner").val()}, function(response) {
+				obj = JSON.parse(response);
+				if( obj.success ) {
+					if(obj.status == 0 ) {
+						$(".partnercheck").html('<span class="glyphicon glyphicon-ok"></span>');
+						$("#partnerdefault").hide();
+						$("#partnersuccess").show();
+						$("#partnernosignup").hide();
+						$("#partnernotsame").hide();
+					} else if( obj.status == 1 ) {
+						$(".partnercheck").html('<span class="glyphicon glyphicon-exclamation-sign"></span>');
+						$("#partnerdefault").hide();
+						$("#partnersuccess").hide();
+						$("#partnernosignup").hide();
+						$("#partnernotsame").show();
+					} else if( obj.status == 2 ) {
+						//NO SIGNUP
+						$(".partnercheck").html('<span class="glyphicon glyphicon-remove"></span>');
+						$("#partnerdefault").hide();
+						$("#partnersuccess").hide();
+						$("#partnernosignup").show();
+						$("#partnernotsame").hide();
+					}
+				}
+	    	});
+		}
+	});
+
 	$('#signup-form').validate({
 		ignore: ".ignore",
 		rules: {
@@ -182,5 +217,6 @@ $(document).ready(function() {
 	$("#contrib0").change();
 	$("#contrib1").change();
 	$("#preparationsbox").change();
+	$("#partner").change();
 
 });
