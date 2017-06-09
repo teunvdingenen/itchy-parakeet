@@ -58,6 +58,7 @@ if( isset($_GET['show_names'])) {
                         echo "<a href='".$url.($first ? "?" : "&")."p=".$page."&show_names=1' class='btn btn-default btn-block'><i class='glyphicon glyphicon-alert'></i> Namen tonen</a>";
                     }
                 ?>
+
                 <?php include("pagination.php"); ?>
                     <table class='table table-striped table-bordered table-hover table-condensed'>
                         <thead>
@@ -104,6 +105,7 @@ if( isset($_GET['show_names'])) {
                     </table>
                 </div>
                 <?php include("pagination.php"); ?>
+                <a class='btn btn-info btn-sm btn-block raffle_all'>Gehele pagina Inloten</a>
             </div>
             </div>
         </div>

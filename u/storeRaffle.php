@@ -36,6 +36,12 @@ function randomChar() {
 if( !isset($_POST['email'])) {
     return;
 }
+$auto_partner = 0;
+if( isset($_POST['auto_partner'])) {
+    $auto_partner = $_POST['auto_partner'];
+}
+echo $auto_partner;
+
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
     $mysqli->close();
@@ -45,17 +51,47 @@ if( $mysqli->connect_errno ) {
 $result = $mysqli->query(sprintf("SELECT COUNT(*) FROM $current_table WHERE valid=1"));
 $raffle_num = mysqli_fetch_array($result,MYSQLI_NUM)[0];
 
-$email = $_POST['email'];
+$emails = $_POST['email'];
 
-$raffle_key = get_key($raffle_num);
+foreach( $emails as $email ) {
+    $raffle_key = get_key($raffle_num);
 
-$sqlquery = sprintf("UPDATE $current_table SET rafflecode = '%s', valid = 1 WHERE email = '%s'",
-    $mysqli->real_escape_string($raffle_key),
-    $mysqli->real_escape_string($email));
+    $sqlquery = sprintf("UPDATE $current_table SET rafflecode = '%s', valid = 1 WHERE email = '%s'",
+        $mysqli->real_escape_string($raffle_key),
+        $mysqli->real_escape_string($email));
 
-$result = $mysqli->query($sqlquery);
-if( !$result ) {
-    email_error("Failed to add to raffle: email ".$email." code: ".$raffle_key . "<br>".$mysqli->error);
+    $result = $mysqli->query($sqlquery);
+    if( !$result ) {
+        email_error("Failed to add to raffle: email ".$email." code: ".$raffle_key . "<br>".$mysqli->error);
+    }
+
+    if( $auto_partner == 1) {
+        echo 'a';
+
+        $sqlresult = $mysqli->query(sprintf("SELECT partner from $current_table WHERE email = '%s'",
+            $mysqli->real_escape_string($email)));
+        if( !$sqlresult ) {
+
+        }
+        $partner = $sqlresult->fetch_array(MYSQLI_ASSOC)['partner'];
+
+        $sqlresult = $mysqli->query(sprintf("SELECT partner from $current_table WHERE email = '%s'",
+            $mysqli->real_escape_string($partner)));
+        if( $email == $sqlresult->fetch_array(MYSQLI_ASSOC)['partner'] ) {
+            $raffle_num+=1;
+            $raffle_key = get_key($raffle_num);
+
+            $sqlquery = sprintf("UPDATE $current_table SET rafflecode = '%s', valid = 1 WHERE email = '%s'",
+                $mysqli->real_escape_string($raffle_key),
+                $mysqli->real_escape_string($partner));
+
+            $result = $mysqli->query($sqlquery);
+            if( !$result ) {
+                email_error("Failed to add to raffle: email ".$email." code: ".$raffle_key . "<br>".$mysqli->error);
+            }
+        }
+    }
+    $raffle_num+=1;
 }
 $mysqli->close();
 

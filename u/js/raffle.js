@@ -11,7 +11,7 @@ $(document).ready(function() {
 	    		$('#emailB').text(obj.email);
 	    		$('#rafflemodal').modal('show');
 	    	} else {
-	    		$.post("storeRaffle.php", {"email":item}, function(response){
+	    		$.post("storeRaffle.php", {"email":[item]}, function(response){
 				});
 				button.attr("disabled", true);
 	    	}
@@ -39,7 +39,7 @@ $(document).ready(function() {
 		var email = $('#emailA').text();
 		var partner = $('#emailB').text();
 		$.post("storeRaffle.php", {"email":email}, function(response){
-			$.post("storeRaffle.php", {"email":partner}, function(response){
+			$.post("storeRaffle.php", {"email":[partner]}, function(response){
 				$('#rafflemodal').modal('hide');
 				location.reload();
 			});
@@ -53,6 +53,17 @@ $(document).ready(function() {
 				$('#rafflemodal').modal('hide');
 				location.reload();
 			});
+		});
+	});
+	$(".raffle_all").click(function() {
+		if( $(this).attr('disabled')) return;
+		var items = [];
+		$('.table tbody tr').each( function(){
+		   items.push($(this).find(".email").text());
+		});
+		$.post("storeRaffle.php", {"email":items, "auto_partner":1}, function(response){
+			console.log(response);
+			location.reload();
 		});
 	});
 });

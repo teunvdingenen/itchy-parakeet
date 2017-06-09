@@ -9,7 +9,7 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
 
 date_default_timezone_set('Europe/Amsterdam');
 
-if( strtotime('now') > strtotime('2017-06-06 10:00') ) {
+if( strtotime('now') > strtotime('2017-06-09 10:00') ) {
     header('Location: forest');
 }
 
@@ -315,7 +315,7 @@ function addError($value) {
                     9 en 10 september 2017.
                 </p>
                 <p>
-                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot 6 juni 2017 je antwoorden wijzigen. Pas op 6 juni 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
+                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 8 juni 2017 je antwoorden wijzigen. Pas op 9 juni 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
             </div>
             <?php echo $returnVal; ?>
