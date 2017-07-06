@@ -146,8 +146,8 @@ function send_confirmation($mysqli, $payment_id) {
     $ticketurl = "http://stichtingfamiliarforest.nl/ticket.php?ticket=".$row['ticket'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen naar Familiar Voorjaar 2017 kunnen!</p>";
-    $content .= "<p>Meer informatie over Familiar Voorjaar volgt nog maar houd alvast 5 tot en met 7 mei 2017 vrij te maken in je agenda. Houd onze <a href='https://www.facebook.com/events/1428059363879439/'>Facebook</a> in de gaten voor meer nieuws.</p>";
+    $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen naar Familiar Forest en de Magiefabriek kunnen!</p>";
+    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar houd alvast 9 en 10 september 2017 vrij te maken in je agenda. Houd onze <a href='https://www.facebook.com/events/699772610147796/'>Facebook</a> in de gaten voor meer nieuws.</p>";
     $content .= "<p>Bewaar ook de volgende informatie nog even goed:</p>";
     $content .= "<p>Je deelname code is: " . $row['rafflecode'] . "</p>";
     $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";
@@ -157,7 +157,7 @@ function send_confirmation($mysqli, $payment_id) {
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Voorjaar 2017 Deelname bevestiging", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2017 Deelname bevestiging", $content);
     return true;
 }
 
@@ -174,13 +174,13 @@ function send_confirmation_refund($mysqli, $payment_id) {
     $fullname = $row['firstname']." ".$row['lastname'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>Met een beetje een dubbel gevoel versturen we deze email, we hebben namelijk jou ticket opnieuw kunnen verkopen. We vinden het erg fijn dat het gelukt is om iemand anders blij te maken jou Familiar Voorjaar deelname maar we hadden natuurlijk erg graag ook jou erbij gehad in mei.</p>";
+    $content .= "<p>Met een beetje een dubbel gevoel versturen we deze email, we hebben namelijk jou ticket opnieuw kunnen verkopen. We vinden het erg fijn dat het gelukt is om iemand anders blij te maken jou Familiar Forest deelname maar we hadden natuurlijk erg graag ook jou erbij gehad in mei.</p>";
     $content .= "<p>We gaan er vanuit dat je vast hele goede redenen had om af te zien van ons weekendje weg en we hopen dat we bij de volgende editie (weer) van je aanwezigheid mogen genieten!<p>";
     $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen op deze email.";
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Voorjaar 2017 ticketruil bevestiging", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2017 ticketruil bevestiging", $content);
     return true;
 }
 
@@ -203,7 +203,7 @@ function send_confirmation_refund_half($mysqli, $payment_id) {
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Voorjaar 2017 Half ticket", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2017 Half ticket", $content);
     return true;
 }
 

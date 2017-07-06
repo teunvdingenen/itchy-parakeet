@@ -28,7 +28,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["lastname"]) ) {
         $lastname = test_input($_POST["lastname"]);
     }
-    $sqlresult = $mysqli->query(sprintf("SELECT p.email, p.firstname, p.lastname FROM person p WHERE p.firstname = '%s' or p.lastname = '%s'",
+    $sqlresult = $mysqli->query(sprintf("SELECT p.email, p.firstname, p.lastname FROM person p join $current_table s on s.email = p.email WHERE p.firstname = '%s' or p.lastname = '%s'",
         $mysqli->real_escape_string($firstname),
         $mysqli->real_escape_string($lastname)
         ));
@@ -52,67 +52,71 @@ $mysqli->close();
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
                     <div class="col-xs-13 col-sm-10"> 
-                        <table class='table table-striped table-bordered table-hover table-condensed'>
-                            <thead>
-                                <tr class='header-row'><th>Status</th><th>Betaald</th><th>Voornaam</th><th>Achternaam</th><th>Email</th><th>Telefoon</th><th>Ticket</th><th>Opmerking</th>
-                                    <?php
-                                    foreach ($permission_texts as $value) {
-                                        echo "<th>".$value."</th>";
-                                    }
-                                    ?>
-                            </thead>
-                            <tbody>
+                        <div>
+                            <form class="form-inline" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
+                                </div>
+                                <button class="btn btn-sm btn-primary" type="submit">Zoeken</button>
+                            </form>
+                            <table class='table table-striped table-bordered table-hover table-condensed'>
                             <?php
-                            while($row = mysqli_fetch_array($result,MYSQLI_ASSOC))
-                            {
-                                echo "<tr>";
-                                echo "<td class='working'></td>";
-                                echo "<td>". (($row['complete'] == 1 || $row['share'] == "FREE" ) ? "<i class='glyphicon glyphicon-ok'></i>" : "<i class='glyphicon glyphicon-remove'></i>")."</td>"; 
-                                echo "<td>" . $row['firstname'] . "</td>";
-                                echo "<td>" . $row['lastname'] . "</td>";
-                                echo "<td class='email'>" . $row['email'] . "</td>";
-                                echo "<td>" . $row['phone'] . "</td>";
-                                echo "<td><select class='share' name='share'>";
-                                echo "<option name='share' value='FULL' ".($row["share"] == "FULL" ? " selected='selected'" : "").">Betaald ticket</option>";
-                                echo "<option name='share' value='HALF' ".($row["share"] == "HALF" ? " selected='selected'" : "").">Half ticket</option>";
-                                echo "<option name='share' value='FREE' ".($row["share"] == "FREE" ? " selected='selected'" : "").">Heel ticket</option>";
-                                echo "</select></td>";
-                                echo "<td><div class='table-cell'><textarea class='note' cols='60' rows='4'>".$row['note']."</textarea></div></td>";
-                                $i = 0;
-                                foreach ($permission_texts as $value) {
-                                    echo '<td><input class="permission" type="checkbox" name="'.$value.'" value='.$permission_values[$i]." ".($row['permissions'] & $permission_values[$i] ? "checked=checked" : "").' ></td>';
-                                    $i++;
+                            if( $_SERVER["REQUEST_METHOD"] == "POST" ) {
+                                while($row = mysqli_fetch_array($sqlresult,MYSQLI_ASSOC))
+                                {
+                                    echo "<tr>";
+                                    echo "<td>" . $row['firstname'] . "</td>";
+                                    echo "<td>" . $row['lastname'] . "</td>";
+                                    echo "<td class='email'>" . $row['email'] . "</td>";
+                                    echo "<td><a class='btn btn-info btn-sm btn-block addcrew'>Aan crew toevoegen</a>";
+                                    echo "</tr>";
                                 }
-                                echo "<td><a class='btn btn-info btn-sm btn-block removecrew'>Verwijderen van crew</a></td>";
-                                echo "</tr>";
                             }
                             ?>
-                            </tbody>
-                        </table>
-                        <form class="form-inline" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
-                            <div class="form-group">
-                                <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname">
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname">
-                            </div>
-                            <button class="btn btn-sm btn-primary" type="submit">Zoeken</button>
-                        </form>
-                        <table class='table table-striped table-bordered table-hover table-condensed'>
-                        <?php
-                        if( $_SERVER["REQUEST_METHOD"] == "POST" ) {
-                            while($row = mysqli_fetch_array($sqlresult,MYSQLI_ASSOC))
-                            {
-                                echo "<tr>";
-                                echo "<td>" . $row['firstname'] . "</td>";
-                                echo "<td>" . $row['lastname'] . "</td>";
-                                echo "<td class='email'>" . $row['email'] . "</td>";
-                                echo "<td><a class='btn btn-info btn-sm btn-block addcrew'>Aan crew toevoegen</a>";
-                                echo "</tr>";
-                            }
-                        }
-                        ?>
-                        </table>
+                            </table>
+                        </div>
+                        <div>
+                            <table class='table table-striped table-bordered table-hover table-condensed'>
+                                <thead>
+                                    <tr class='header-row'><th>Status</th><th>Betaald</th><th>Voornaam</th><th>Achternaam</th><th>Email</th><th>Telefoon</th><th>Ticket</th><th>Opmerking</th>
+                                        <?php
+                                        foreach ($permission_texts as $value) {
+                                            echo "<th>".$value."</th>";
+                                        }
+                                        ?>
+                                </thead>
+                                <tbody>
+                                <?php
+                                while($row = mysqli_fetch_array($result,MYSQLI_ASSOC))
+                                {
+                                    echo "<tr>";
+                                    echo "<td class='working'></td>";
+                                    echo "<td>". (($row['complete'] == 1 || $row['share'] == "FREE" ) ? "<i class='glyphicon glyphicon-ok'></i>" : "<i class='glyphicon glyphicon-remove'></i>")."</td>"; 
+                                    echo "<td>" . $row['firstname'] . "</td>";
+                                    echo "<td>" . $row['lastname'] . "</td>";
+                                    echo "<td class='email'>" . $row['email'] . "</td>";
+                                    echo "<td>" . $row['phone'] . "</td>";
+                                    echo "<td><select class='share' name='share'>";
+                                    echo "<option name='share' value='FULL' ".($row["share"] == "FULL" ? " selected='selected'" : "").">Betaald ticket</option>";
+                                    echo "<option name='share' value='HALF' ".($row["share"] == "HALF" ? " selected='selected'" : "").">Half ticket</option>";
+                                    echo "<option name='share' value='FREE' ".($row["share"] == "FREE" ? " selected='selected'" : "").">Heel ticket</option>";
+                                    echo "</select></td>";
+                                    echo "<td><div class='table-cell'><textarea class='note' cols='60' rows='4'>".$row['note']."</textarea></div></td>";
+                                    $i = 0;
+                                    foreach ($permission_texts as $value) {
+                                        echo '<td><input class="permission" type="checkbox" name="'.$value.'" value='.$permission_values[$i]." ".($row['permissions'] & $permission_values[$i] ? "checked=checked" : "").' ></td>';
+                                        $i++;
+                                    }
+                                    echo "<td><a class='btn btn-info btn-sm btn-block removecrew'>Verwijderen van crew</a></td>";
+                                    echo "</tr>";
+                                }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

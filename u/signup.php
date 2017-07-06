@@ -9,11 +9,11 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
 
 date_default_timezone_set('Europe/Amsterdam');
 
-if( strtotime('now') > strtotime('2017-06-09 10:00') ) {
+if( strtotime('now') > strtotime('2017-07-07 10:00') ) {
     header('Location: forest');
 }
 
-$signupround = 0;
+$signupround = 1;
 
 $returnVal = "";
 $is_save = FALSE;
@@ -166,7 +166,9 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-        $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and complete = 1",
+        //$query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and (complete = 1 or valid = 1)",
+        //    $mysqli->real_escape_string($user_email));
+        $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and (complete = 1)",
             $mysqli->real_escape_string($user_email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
@@ -315,7 +317,7 @@ function addError($value) {
                     9 en 10 september 2017.
                 </p>
                 <p>
-                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 8 juni 2017 je antwoorden wijzigen. Pas op 9 juni 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
+                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 7 juli 2017 je antwoorden wijzigen. Pas op 8 juli 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
             </div>
             <?php echo $returnVal; ?>

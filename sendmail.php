@@ -7,7 +7,7 @@ include 'initialize.php';
 function get_email_header() {
 	return "<head>
 
-    <title>Familiar Voorjaar 2017</title>
+    <title>Familiar Forest 2017</title>
 
     <!-- Custom styles for this template -->
     <style>
@@ -30,12 +30,6 @@ function get_email_footer() {
 
 function send_mail($email, $fullname, $subject, $content) {
 	$mail = new PHPMailer(true);
-	//$mail->isSMTP();
-	//$mail->Host = 'mailfilter.hostnet.nl';
-	//$mail->SMTPAuth = true;
-	//$mail->Username = 'info@stichtingfamiliarforest.nl';
-	//$mail->Password = 'FDIxMilCcKQPi6VN';
-	//$mail->Port = 587;
 	$mail->CharSet="UTF-8";
 	$mail->Encoding="base64";
 	$mail->setFrom('info@stichtingfamiliarforest.nl','Stichting Familiar Forest');

@@ -42,7 +42,7 @@ if($received) {
         $message .= "<p>Als je per ongeluk iets fout gedaan hebt kun het je nogmaals proberen door naar het <a href='u/deelname'>betalingscherm</a> te gaan.</p>";
         $message .= "<p>Bij zorgen, voor vragen of je wilt iets anders kwijt, dan kun je altijd mailen naar: ". $mailtolink.".</p>";
     } else {
-        $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou het voorjaar te gaan vieren.</p>";
+        $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou aan het werk te gaan in de Magiefabriek.</p>";
         $message .= "<p>Ter bevestiging ontvang je ook nog een email met wat aanvullende gegevens.</p>";
         $message .= "<p>Als je zorgen, vragen of je wilt iets anders kwijt wilt kun je altijd mailen naar: ". $mailtolink.".</p>";
     }

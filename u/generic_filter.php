@@ -62,7 +62,7 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
         if( $contrib == '' || $contrib == 'all') {
             //nothing
         } else if( $contrib == 'act') {
-            $filtersql[] = "s.".$contribnr."_type IN ('workshop', 'game', 'lecture', 'schmink', 'other', 'perform', 'install')";    
+            $filtersql[] = "s.".$contribnr."_type IN ('workshop', 'game', 'lecture', 'schmink', 'other', 'perform', 'install', 'other_act')";    
         } else {
             $filtersql[] = "s.".$contribnr."_type = '" . $mysqli->real_escape_string($contrib)."'";
         }
@@ -160,8 +160,8 @@ if( $mysqli->connect_errno ) {
     return false;
 } else {
     $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations, t.task, t.startdate, t.enddate, s.ticket
-        FROM person p join $current_table s on s.email = p.email left join shifts t on s.task = t.name 
-        WHERE $restriction" . $filterstr . " LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
+        FROM person p join $current_table s on s.email = p.email left join shifts t on s.task = t.name
+        WHERE $restriction" . $filterstr . " ORDER BY p.lastname, p.firstname ASC LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
     $sqlresult = $mysqli->query($query);
     if( $sqlresult === FALSE ) {
          echo $mysqli->error;

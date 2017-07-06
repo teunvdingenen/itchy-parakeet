@@ -9,10 +9,10 @@ $(document).ready(function() {
 			if( response == 0 ) {
 				tr.find('td').fadeOut(1000, function(){ 
 		            $(this).parents('tr:first').remove();                    
-		        });  
+		        });
+		        location.reload(true);
 			} else {
 				alert("Wijziging niet opgeslagen");
-				console.log(response);
 			}
 		});
 	});
@@ -22,7 +22,8 @@ $(document).ready(function() {
 			if( response == 0 ) {
 				tr.find('td').fadeOut(1000, function(){ 
 		            $(this).parents('tr:first').remove();                    
-		        });  
+		        });
+		        location.reload(true);
 			} else {
 				alert("Wijziging niet opgeslagen");
 			}
@@ -35,6 +36,7 @@ $(document).ready(function() {
 				tr.find('td').fadeOut(1000, function(){ 
 		            $(this).parents('tr:first').remove();                    
 		        });  
+		        location.reload(true);
 			} else {
 				alert("Wijziging niet opgeslagen");
 			}

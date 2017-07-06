@@ -38,7 +38,7 @@ $(document).ready(function() {
 	$("#lieveling-inloten").click(function() {
 		var email = $('#emailA').text();
 		var partner = $('#emailB').text();
-		$.post("storeRaffle.php", {"email":email}, function(response){
+		$.post("storeRaffle.php", {"email":[email]}, function(response){
 			$.post("storeRaffle.php", {"email":[partner]}, function(response){
 				$('#rafflemodal').modal('hide');
 				location.reload();

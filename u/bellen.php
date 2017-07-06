@@ -54,7 +54,7 @@ if( $show_already_called ) {
                                             echo "<th>Gebeld</th><th>Geen Gehoor</th>";
                                         }
                                         ?>
-                                        <th>Stalk</th><th>Achternaam</th><th>Voornaam</th><th>Telefoon</th><th>Code</th><th>Leeftijd</th><th>Woonplaats</th><th>Motivatie</th><th>Vraag</th>
+                                        <th>Stalk</th><th>Achternaam</th><th>Voornaam</th><th>Telefoon</th><th>Code</th><th>Leeftijd</th><th>Woonplaats</th><th>Bezoeken</th><th>Motivatie</th><th>Vraag</th>
                                 </thead>
                                 <tbody>
                                 <?php
@@ -75,6 +75,7 @@ if( $show_already_called ) {
                                     $age = (new DateTime($row['birthdate']))->diff(new DateTime('now'))->y;
                                     echo "<td>" . $age . "</td>"; 
                                     echo "<td>" . $row['city'] . "</td>";
+                                    echo "<td>" . $row['visits'] . "</td>";
                                     echo "<td>" . $row['motivation'] . "</td>";
                                     echo "<td>" . $row['question'] . "</td>";
                                     echo "<td class='email hidden'>" . $row['email'] . "</td>";

@@ -8,18 +8,17 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
     echo "<li><a class='' href='ik'>Mijn gegevens</a></li>";
     echo "<li><a class='menulink' href='forest'>Familiar Forest en de Magiefabriek</a></li>";
-    if( strtotime('now') < strtotime('2017-06-09 10:00') && !add_buy($user_email)) {
+    if( strtotime('now') < strtotime('2017-07-07 10:00') && !add_ticket($user_email)) {
         echo "<li><a class='menulink' href='signup'>Inschrijven Familiar Forest</a></li>";
     }
-    //echo "<li><a class='menulink' id='forest' href='forest'>Familiar Forest 2017</a></li>";
     if( add_buy($user_email) ) {
-        echo "<li><a class='menulink' href='deelname'>Deelname Familiar Forest</a></li>";
+        //echo "<li><a class='menulink' href='deelname'>Deelname Familiar Forest</a></li>";
     }
     if( add_swap($user_email) ) {
         //echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";    
     }
     if( add_ticket($user_email) ) {
-        echo "<li><a class='menulink' href='info'>Reis Info</a></li>";
+        //echo "<li><a class='menulink' href='info'>Reis Info</a></li>";
         echo "<li><a class='menulink' href='ticket'>Ticket</a></li>";
     }
     echo "</ul>";

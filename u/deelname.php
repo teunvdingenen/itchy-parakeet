@@ -14,11 +14,11 @@ if( $mysqli->connect_errno ) {
     exit;
 }
 
-$result = $mysqli->query("SELECT COUNT(*) as 'sold' FROM $current_table WHERE complete = 1 and share = 'FULL'");
-if( !$result || $result->fetch_array(MYSQLI_ASSOC)['sold'] > 226) { 
-    email_error("Ticket sales seem to have gone over preset amount!!");
-    header('Location: oops');
-}
+//$result = $mysqli->query("SELECT COUNT(*) as 'sold' FROM $current_table WHERE complete = 1 and share = 'FULL'");
+//if( !$result || $result->fetch_array(MYSQLI_ASSOC)['sold'] > 226) { 
+//    email_error("Ticket sales seem to have gone over preset amount!!");
+//    header('Location: oops');
+//}
 
 $tickettype = "invalid";
 $code = "";
@@ -45,7 +45,7 @@ if( $tickettype == "invalid" ) {
 
 if( $tickettype == "invalid" ) {
     $mysqli->close();
-    header('Location: voorjaar');
+    header('Location: forest');
 }
 
 try {
@@ -173,7 +173,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $payment = $mollie->payments->create(array(
                       "amount" => $amount,
                       "method" => $method,
-                      "description" => "FV 2017 " . $code,
+                      "description" => "FF 2017 " . $code,
                       "redirectUrl" => "{$protocol}://{$hostname}/redirect?raffle={$raffle}",
                       "metadata" => array("raffle" => $raffle,)
                     ));
@@ -251,10 +251,10 @@ function addError($value) {
                     <?php include("navigation.php");?>
                     <div class="col-xs-13 col-sm-10"> 
                         <div class="form-intro-text">
-                            <h1>Deelnemen Familiar voorjaar</h1>
-                            <p>Familiar Voorjaar vindt plaats op 5, 6 en 7 mei 2017. Je kan via dit formulier een kaartje kopen tot en met 9 maart 2017.</p>
-                            <p>Deelname aan Familiar Voorjaar kost 120 euro. We hebben ervoor gekozen om de transactiekosten niet hierin te verwerken, omdat niet alle betaalmethodes dezelfde kosten hebben. Hierdoor is het voor ons makkelijker om een betrouwbare begroting te maken.</p>
-                            <p>Het kan altijd zo zijn dat je onverhoopt toch niet meer naar Familiar Voorjaar kan komen. We raden je daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering.</p>
+                            <h1>Deelnemen Familiar Forest en de Magiefabriek</h1>
+                            <p>Familiar Forest vindt plaats op 9 en 10 september 2017. Je kan via dit formulier een kaartje kopen tot en met 30 juni 2017.</p>
+                            <p>Deelname aan Familiar Forest kost 120 euro. We hebben ervoor gekozen om de transactiekosten niet hierin te verwerken, omdat niet alle betaalmethodes dezelfde kosten hebben. Hierdoor is het voor ons makkelijker om een betrouwbare begroting te maken.</p>
+                            <p>Het kan altijd zo zijn dat je onverhoopt toch niet meer naar Familiar Forest kan komen. We raden je daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering.</p>
                         </div>
                         <?php
                             if( $returnVal != "" ) {
@@ -314,7 +314,7 @@ function addError($value) {
                                 <label class="col-sm-2 form-control-label" for="terms4">Vrijwilliger</label>
                                 
                                 <div class="col-sm-10">
-                                    <div class="alert alert-warning">Deelname aan Familiar Voorjaar betekent dat je jezelf aanmeldt als vrijwilliger bij Stichting Familiar Forest. Tijdens het weekend zal je nader te bepalen werkzaamheden uit gaan voeren, een vrijwilligersshift. Vanuit de organisatie wordt een werkbegeleider en aanspreekpunt aangewezen.</div>
+                                    <div class="alert alert-warning">Deelname aan Familiar Forest betekent dat je jezelf aanmeldt als vrijwilliger bij Stichting Familiar Forest. Tijdens het weekend zal je nader te bepalen werkzaamheden uit gaan voeren, een vrijwilligersshift. Vanuit de organisatie wordt een werkbegeleider en aanspreekpunt aangewezen.</div>
                                     <div class="checkbox">
                                         <label>
                                             <input class="checkbox" type="checkbox" id="terms4" name="terms4" value="J">
@@ -328,7 +328,7 @@ function addError($value) {
                                 <label class="col-sm-2 form-control-label">Kosten</label> 
                                 <div class="col-sm-10">
                                     <div class="alert alert-success">
-                                        De onderstaande bedragen zijn op basis van onze begroting voor Familiar Voorjaar. De kans bestaat dat uitgaven afwijken van de hieronder genoemde bedragen.
+                                        De onderstaande bedragen zijn op basis van onze begroting voor Familiar Forest. De kans bestaat dat uitgaven afwijken van de hieronder genoemde bedragen.
                                     </div>
                                     <table class="table table-condensed">
                                         <tbody style='text-align:right'>
@@ -338,7 +338,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Locatie</th>
-                                                <td>30,00</td>
+                                                <td>8,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -346,7 +346,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Eten</th>
-                                                <td>21,50</td>
+                                                <td>23,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -354,7 +354,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Transport</th>
-                                                <td>19,50</td>
+                                                <td>20,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -362,7 +362,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Veiligheid</th>
-                                                <td>14,00</td>
+                                                <td>11,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -370,7 +370,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Techniek</th>
-                                                <td>13,00</td>
+                                                <td>24,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -378,7 +378,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Doorlopend</th>
-                                                <td>10,00</td>
+                                                <td>6,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -386,7 +386,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Decoraties</th>
-                                                <td>8,00</td>
+                                                <td>17,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -394,6 +394,14 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Muziek</th>
+                                                <td>7,00</td>
+                                            </tr>
+                                             <tr>
+                                                <th>
+                                                    <span class="btn data" href="#" data-content="Van dit bedrag huren we een container en verwerken we al het afval wat we samen genereren." rel="popover" data-placement="right" data-original-title="Afval" data-trigger="hover">
+                                                        <i class="fa fa-info"></i>
+                                                    </span>
+                                                    Afval</th>
                                                 <td>4,00</td>
                                             </tr>
                                             <tr>

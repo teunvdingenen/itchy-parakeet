@@ -35,7 +35,7 @@ $row = $result->fetch_array(MYSQLI_ASSOC);
                         <div class="jumbotron">
                             <h2>Familiar Voorjaar</h2>
                             <p class='lead'>5, 6 & 7 mei 2017</p>
-                            <p>Hieronder vind je alle informatie die je nodig hebt om deel te nemen aan Familiar Voorjaar. Omdat je natuurlijk je laptop, telefoon, tablet en andere schermen thuis laat wil je dit printen. Gelukkig bieden we daarvoor een <a href='ticketpdf' target='_blank'>PDF</a> aan.
+                            <p>Hieronder vind je alle informatie die je nodig hebt om deel te nemen aan Familiar Forest. <!-- Omdat je natuurlijk je laptop, telefoon, tablet en andere schermen thuis laat wil je dit printen. Gelukkig bieden we daarvoor een <a href='ticketpdf' target='_blank'>PDF</a> aan. -->
                             <p>
                                 <table class='table table-striped table-bordered table-hover table-condensed'>
                                     <tr>
