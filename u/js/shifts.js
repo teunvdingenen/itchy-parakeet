@@ -6,7 +6,7 @@ var enddate_set = false;
 
 function setName() {
 	if( $('#autoname').is(':checked') ) {
-		var name = task + startd + starth + endh;
+		var name = task + $('.shiftcount').html();
 		$('#name').val(name);
 	}
 }
@@ -39,6 +39,22 @@ $(document).ready(function() {
         endh = e.date.format("HHmm");
         setName();
         enddate_set = true;
+    });
+
+    $('#startdate_modal').datetimepicker({
+		format: "dddd, DD/MM/YYYY HH:mm",
+	});
+    $('#enddate_modal').datetimepicker({
+        useCurrent: false, //Important! See issue #1075
+		format: "dddd, DD/MM/YYYY HH:mm",
+    });
+    $("#startdate_modal").on("dp.change", function (e) {
+        $('#enddate_modal').data("DateTimePicker").minDate(e.date);
+        if( !enddate_set ) {
+        	end = moment(e.date).add(2, 'hours');
+        	$('#enddate_modal').val(end.format("dddd, DD/MM/YYYY HH:mm"));
+        	endh = end.format("HHmm");
+        }
     });
 
     $('#name').change(function() {
@@ -83,9 +99,25 @@ $(document).ready(function() {
     	element = $(this);
 		$.post("removeShift.php", {"name":get_name($(this))}, function(response) {
 			if( response == 0 ) {
-				console.log(response);
 				element.closest("tr").remove();
 			}
+		});
+	});
+
+	$(".editshift").click(function() {
+		name = $(this).closest('tr').find('.name').html();
+		$("#hiddenname").html(name);
+		$("#edit-modal-content").html("Tijden wijzigen voor: " + name);
+		$('#startdate_modal').val($(this).closest('tr').find('.hiddenstartdate').html());
+		$('#enddate_modal').val($(this).closest('tr').find('.hiddenenddate').html());
+		$('#editmodal').modal('show');
+	});
+
+	$("#saveedit").click(function() {
+		name = $('#hiddenname').text();
+		$.post("saveShiftChange.php", {"name":name,"startdate":$('#startdate_modal').val(), "enddate":$('#enddate_modal').val()}, function(response){
+			$('#editmodal').modal('hide');
+			location.reload();
 		});
 	});
 
@@ -114,4 +146,6 @@ $(document).ready(function() {
 	});
 
 	$('#name').change();
+	$('#taskselect').change();
+	setName();
 });

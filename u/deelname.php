@@ -252,7 +252,7 @@ function addError($value) {
                     <div class="col-xs-13 col-sm-10"> 
                         <div class="form-intro-text">
                             <h1>Deelnemen Familiar Forest en de Magiefabriek</h1>
-                            <p>Familiar Forest vindt plaats op 9 en 10 september 2017. Je kan via dit formulier een kaartje kopen tot en met 30 juni 2017.</p>
+                            <p>Familiar Forest vindt plaats op 9 en 10 september 2017. Je kan via dit formulier een kaartje kopen tot en met 31 juli 2017.</p>
                             <p>Deelname aan Familiar Forest kost 120 euro. We hebben ervoor gekozen om de transactiekosten niet hierin te verwerken, omdat niet alle betaalmethodes dezelfde kosten hebben. Hierdoor is het voor ons makkelijker om een betrouwbare begroting te maken.</p>
                             <p>Het kan altijd zo zijn dat je onverhoopt toch niet meer naar Familiar Forest kan komen. We raden je daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering.</p>
                         </div>

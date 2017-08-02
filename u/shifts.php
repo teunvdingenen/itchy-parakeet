@@ -21,8 +21,8 @@ if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == P
 //$tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
 
 $nrrequired = $name = $taskselect = $returnVal = $startdate_output = $enddate_output = "";
-$startdate = "Friday, 05/05/2017 21:00";
-$enddate = "Friday, 05/05/2017 21:00";
+$startdate = "Friday, 09/09/2017 11:00";
+$enddate = "Friday, 09/09/2017 11:00";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
@@ -80,6 +80,14 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+$shiftcount = 0;
+$sqlresult = $mysqli->query("SELECT COUNT(*) AS 'count' FROM shifts");
+if( $sqlresult === FALSE ) {
+    echo $mysqli->error;
+} else {
+    $shiftcount = $sqlresult->fetch_array(MYSQLI_ASSOC)['count'];
+}
+
 $sqlresult = $mysqli->query("SELECT * FROM shifts WHERE `task` IN ('".implode("','",$tasks)."')");
 if( $sqlresult === FALSE ) {
     echo $mysqli->error;
@@ -105,6 +113,43 @@ function addError($value) {
 
         <div class="page-container">
         <?php include("header.php"); ?>
+            <div class='shiftcount' style='display:none'><?php echo $shiftcount ?></div>
+            <div id='editmodal' class="modal fade" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Tijden wijzigen</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div id='hiddenname' style='display:none'></div>
+                    <p id="edit-modal-content"></p>
+                    <div class="form-group">
+                        <label class="sr-only" for="startdate">Start</label>
+                        <div class='input-group date'>
+                            <input id='startdate_modal' type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="enddate">Eind</label>
+                        <div class='input-group date'>
+                            <input id='enddate_modal' type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuleren</button>
+                    <button id='saveedit' type="button" class="btn btn-primary">Wijzigen</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
@@ -112,7 +157,7 @@ function addError($value) {
                         <?php echo $returnVal ?>
                         <table class='table table-striped table-bordered table-hover table-condensed'>
                             <thead>
-                                <tr class='header-row'><th></th><th>Kenmerk</th><th>Taak</th><th>Startdatum</th><th>Dag</th><th>Starttijd</th><th>Einddatum</th><th>Dag</th><th>Eindtijd</th><th>Aantal vrijwilligers</th><th>Verwijderen</th>
+                                <tr class='header-row'><th></th><th>Kenmerk</th><th>Taak</th><th>Startdatum</th><th>Dag</th><th>Starttijd</th><th>Einddatum</th><th>Dag</th><th>Eindtijd</th><th>Aantal vrijwilligers</th><th>Tijden wijzigen</th><th>Verwijderen</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,11 +175,12 @@ function addError($value) {
                                 echo "<td>".$enddate->format('d-m-Y')."</td>";
                                 echo "<td>".$enddate->format('l')."</td>";
                                 echo "<td>".$enddate->format('H:i:s')."</td>";
-                                //TOOD button -> popup -> editable
+                                echo "<td class='hiddenstartdate' style='display:none'>".$startdate->format('D, d/m/Y G:i')."</td>";
+                                echo "<td class='hiddenenddate' style='display:none'>".$enddate->format('D, d/m/Y G:i')."</td>";
                                 echo "<td class='input-group nrrequired'>
                                         <input type='text' class='form-control changenr' value='".$row['nrrequired']."'/>
                                     </td>";
-                                //echo "<td>".$row['nrrequired']."</td>";
+                                echo "<td><a class='btn btn-info btn-sm btn-block editshift'>Tijden wijzigen</a></td>";
                                 echo "<td><a class='btn btn-danger btn-sm btn-block removeshift'>Verwijderen</a></td>";
                                 echo "</tr>";
                             }
@@ -143,7 +189,7 @@ function addError($value) {
                         </table>
                         <div>
                             <h3>Shift toevoegen</h3>
-                            <form class="" method="post" id="shift-form" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
+                            <form class="" method="post" id="shift-form" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4).'t?='.$team;?>" target="_top">
                                 <div class="form-group">
                                     <label class="sr-only" for="taskselect">Taak</label>
                                     <select class='form-control taskselect' id="taskselect" name='taskselect'>

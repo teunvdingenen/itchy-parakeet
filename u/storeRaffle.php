@@ -68,20 +68,23 @@ foreach( $emails as $email ) {
     if( $auto_partner == 1) {
         echo 'a';
 
-        $sqlresult = $mysqli->query(sprintf("SELECT partner from $current_table WHERE email = '%s'",
+        $sqlresult = $mysqli->query(sprintf("SELECT partner, round from $current_table WHERE email = '%s'",
             $mysqli->real_escape_string($email)));
         if( !$sqlresult ) {
 
         }
-        $partner = $sqlresult->fetch_array(MYSQLI_ASSOC)['partner'];
+        $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+        $partner = $row['partner'];
+        $round = $row['round'];
 
-        $sqlresult = $mysqli->query(sprintf("SELECT partner from $current_table WHERE email = '%s'",
-            $mysqli->real_escape_string($partner)));
+        $sqlresult = $mysqli->query(sprintf("SELECT partner from $current_table WHERE email = '%s' AND round = %s",
+            $mysqli->real_escape_string($partner),
+            $mysqli->real_escape_string($round)));
         if( $email == $sqlresult->fetch_array(MYSQLI_ASSOC)['partner'] ) {
             $raffle_num+=1;
             $raffle_key = get_key($raffle_num);
 
-            $sqlquery = sprintf("UPDATE $current_table SET rafflecode = '%s', valid = 1 WHERE email = '%s'",
+            $sqlquery = sprintf("UPDATE $current_table SET rafflecode = '%s', valid = 1 WHERE email = '%s' and valid = 0",
                 $mysqli->real_escape_string($raffle_key),
                 $mysqli->real_escape_string($partner));
 

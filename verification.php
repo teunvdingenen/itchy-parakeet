@@ -17,8 +17,8 @@ try
     $code = $payment->metadata->raffle;
 
     if( $payment->isRefunded() ) {
-        if( !isFullTicket($mysqli, $payment_id) ) {
-            //send_confirmation_refund_half($mysqli, $payment_id);
+        if( !isCrewTicket($mysqli, $payment_id) ) {
+            send_confirmation_refund_crew($mysqli, $payment_id);
         } else {
             email_error("Please check swap with code: ".$code." and transaction (refund): ".$payment_id);
             $result = $mysqli->query(sprintf("UPDATE $current_table SET `task` = '', `complete` = 3, `valid` = 0, `ticket` = '', `rafflecode` = '' WHERE transactionid = '%s'",$mysqli->real_escape_string($payment_id)));
@@ -100,7 +100,7 @@ try
                     }
                 }
             } else {
-                email_error("Sold extra ticket");
+                //email_error("Sold extra ticket");
             }
             $result = $mysqli->query(sprintf("UPDATE $current_table SET `rafflecode` = '%s', `task` = '%s', valid = 1 WHERE `transactionid` = '%s'",
                 $mysqli->real_escape_string($code),
@@ -174,7 +174,7 @@ function send_confirmation_refund($mysqli, $payment_id) {
     $fullname = $row['firstname']." ".$row['lastname'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>Met een beetje een dubbel gevoel versturen we deze email, we hebben namelijk jou ticket opnieuw kunnen verkopen. We vinden het erg fijn dat het gelukt is om iemand anders blij te maken jou Familiar Forest deelname maar we hadden natuurlijk erg graag ook jou erbij gehad in mei.</p>";
+    $content .= "<p>Met een beetje een dubbel gevoel versturen we deze email, we hebben namelijk jou ticket opnieuw kunnen verkopen. We vinden het erg fijn dat het gelukt is om iemand anders blij te maken jou Familiar Forest deelname maar we hadden natuurlijk erg graag ook jou erbij gehad in september.</p>";
     $content .= "<p>We gaan er vanuit dat je vast hele goede redenen had om af te zien van ons weekendje weg en we hopen dat we bij de volgende editie (weer) van je aanwezigheid mogen genieten!<p>";
     $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen op deze email.";
 
@@ -184,7 +184,7 @@ function send_confirmation_refund($mysqli, $payment_id) {
     return true;
 }
 
-function send_confirmation_refund_half($mysqli, $payment_id) {
+function send_confirmation_refund_crew($mysqli, $payment_id) {
     global $current_table;
     $query = sprintf("SELECT p.firstname, p.lastname, p.email
         FROM person p join $current_table s on s.email = p.email
@@ -198,18 +198,18 @@ function send_confirmation_refund_half($mysqli, $payment_id) {
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
     $content .= "<p>We hebben gezien dat jij dit jaar (weer) komt opbouwen, afbouwen of iets anders fantastisch doet bij Familiar Forest. Alvast super bedankt daarvoor! Naast lieve woorden ontvang je ook nog eens een half of heel ticket!</p>";
-    $content .= "<p>We hebben opgemerkt dat je al een ticket had gekocht en hebben daarom een deel of volledig naar je terug overgemaakt. Normaal gesproken wordt dat na een werkdag verwerkt.<p>";
+    $content .= "<p>We hebben opgemerkt dat je al een ticket had gekocht en hebben daarom een deel of je volledige ticketgeld naar je terug overgemaakt. Normaal gesproken wordt dat na een werkdag verwerkt.<p>";
     $content .= "<p>Als je nog vragen, opmerkingen of andere zorgen hebt kun je een reply sturen naar deze email. Tot snel!";
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Forest 2017 Half ticket", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2017 Ticketgeld", $content);
     return true;
 }
 
-function isFullTicket($mysqli, $id) {
+function isCrewTicket($mysqli, $id) {
     global $current_table;
-    $sqlresult = $mysqli->query(sprintf("SELECT share FROM $current_table WHERE transactionid = '%s'", 
+    $sqlresult = $mysqli->query(sprintf("SELECT task FROM $current_table WHERE transactionid = '%s'", 
         $mysqli->real_escape_string($id)));
     if( $sqlresult === FALSE) {
         //log error
@@ -220,7 +220,7 @@ function isFullTicket($mysqli, $id) {
         return false;
     }
     $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
-    return ($row['share'] == "FULL");
+    return ($row['task'] === 'crew');
 }
 
 function database_setpayed($mysqli, $payment_id, $payed) {

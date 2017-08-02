@@ -17,15 +17,19 @@ if( $mysqli->connect_errno ) {
 
 $email = $_POST['email'];
 
-$result = $mysqli->query( sprintf("SELECT partner FROM $current_table WHERE `email` = '%s';",
+$result = $mysqli->query( sprintf("SELECT partner, round FROM $current_table WHERE `email` = '%s';",
         $mysqli->real_escape_string($email)));
 if( $result === FALSE ) {
 	$mysqli->close();
     return false;
 }
-$partner = mysqli_fetch_array($result,MYSQLI_ASSOC)['partner'];
-$result = $mysqli->query( sprintf("SELECT p.email, p.firstname, p.lastname, s.partner FROM $current_table s join person p on p.email = s.email WHERE p.email = '%s';",
-        $mysqli->real_escape_string($partner)));
+$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+$partner = $row['partner'];
+$round = $row['round'];
+
+$result = $mysqli->query( sprintf("SELECT p.email, p.firstname, p.lastname, s.partner FROM $current_table s join person p on p.email = s.email WHERE p.email = '%s' AND s.round = %s;",
+        $mysqli->real_escape_string($partner),
+        $mysqli->real_escape_string($round)));
 if( $result === FALSE ) {
 	echo $mysqli->error;
 	$mysqli->close();

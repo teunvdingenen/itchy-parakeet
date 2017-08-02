@@ -117,6 +117,8 @@ foreach($filtersql as $filter) {
 $restriction = "1";
 if( $request_for == 'raffle' ) {
     $restriction = 's.valid != 1 AND s.complete != 1';
+} else if( $request_for == 'prep' ) {
+    $restriction = "s.complete = 1 && s.preparations != 'N'";
 } else if( $request_for == 'buyer' ) {
     $restriction = 's.complete = 1 ';
 } else if( $request_for == 'signups' ) {
@@ -173,7 +175,7 @@ $url = substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);
 $first = true;
 if (!empty($_GET)) {
     foreach ($_GET as $parameter => $value) {
-        if( $parameter != 'p' && $parameter != 'show_names' ) {
+        if( $parameter != 'p' && $parameter != 'show_names' && $parameter != 'done' ) {
             $url .= ($first ? "?" : "&") . $parameter . "=" . urlencode($value);
             $first = false;
         }
@@ -190,6 +192,7 @@ if (!empty($_GET)) {
                     $link = '"'.substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4).'?';
                     $link .= !empty($_GET['p']) ? "p=".$_GET['p'] : "";
                     $link .= !empty($_GET['show_names']) ? "show_names=".$_GET['show_names'] : '';
+                    $link .= !empty($_GET['done']) ? "done=".$_GET['done'] : '';
                     echo $link.'"';
                 ?>
                 target="_top">

@@ -33,8 +33,8 @@ $row = $result->fetch_array(MYSQLI_ASSOC);
                     <?php include("navigation.php");?>
                     <div class="col-xs-13 col-sm-10"> 
                         <div class="jumbotron">
-                            <h2>Familiar Voorjaar</h2>
-                            <p class='lead'>5, 6 & 7 mei 2017</p>
+                            <h2>Familiar Forest en de Magiefabriek</h2>
+                            <p class='lead'>9 en 10 september 2017</p>
                             <p>Hieronder vind je alle informatie die je nodig hebt om deel te nemen aan Familiar Forest. <!-- Omdat je natuurlijk je laptop, telefoon, tablet en andere schermen thuis laat wil je dit printen. Gelukkig bieden we daarvoor een <a href='ticketpdf' target='_blank'>PDF</a> aan. -->
                             <p>
                                 <table class='table table-striped table-bordered table-hover table-condensed'>
@@ -59,7 +59,7 @@ $row = $result->fetch_array(MYSQLI_ASSOC);
                                         <td><?php echo $row['motivation']; ?></td>
                                     </tr>
                                     <tr>
-                                        <th>Vraagt zich af:</th>
+                                        <th>Favorite kinderboek:</th>
                                         <td><?php echo $row['question']; ?></td>
                                     </tr>
                                 </table>

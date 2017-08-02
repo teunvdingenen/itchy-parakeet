@@ -12,7 +12,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
         echo "<li><a class='menulink' href='signup'>Inschrijven Familiar Forest</a></li>";
     }
     if( add_buy($user_email) ) {
-        //echo "<li><a class='menulink' href='deelname'>Deelname Familiar Forest</a></li>";
+        echo "<li><a class='menulink' href='deelname'>Deelname Familiar Forest</a></li>";
     }
     if( add_swap($user_email) ) {
         //echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";    
@@ -28,6 +28,7 @@ if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' href='signups'>Inschrijvingen Forest</a></li>";
     echo "<li><a class='menulink' href='buyer'>Tickets Forest</a></li>";
+    echo "<li><a class='menulink' href='preparations'>Voorbereiding aanbod</a></li>";
     echo "</ul>";
 }
 
