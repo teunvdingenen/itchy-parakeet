@@ -22,7 +22,7 @@ if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == P
 
 $nrrequired = $name = $taskselect = $returnVal = $startdate_output = $enddate_output = "";
 $startdate = "Friday, 09/09/2017 11:00";
-$enddate = "Friday, 09/09/2017 11:00";
+$enddate = "Friday, 09/09/2017 13:00";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
@@ -167,16 +167,16 @@ function addError($value) {
                                 echo "<td class='status'><span class='glyphicon'></span></td>";
                                 echo "<td class='name'>".$row['name']."</td>";
                                 echo "<td>".translate_task($row['task'])."</td>";
-                                $startdate = DateTime::createFromFormat('Y-m-d H:i:s', $row['startdate']);
-                                $enddate = DateTime::createFromFormat('Y-m-d H:i:s', $row['enddate']);
-                                echo "<td>".$startdate->format('d-m-Y')."</td>";
-                                echo "<td>".$startdate->format('l')."</td>";
-                                echo "<td>".$startdate->format('H:i:s')."</td>";
-                                echo "<td>".$enddate->format('d-m-Y')."</td>";
-                                echo "<td>".$enddate->format('l')."</td>";
-                                echo "<td>".$enddate->format('H:i:s')."</td>";
-                                echo "<td class='hiddenstartdate' style='display:none'>".$startdate->format('D, d/m/Y G:i')."</td>";
-                                echo "<td class='hiddenenddate' style='display:none'>".$enddate->format('D, d/m/Y G:i')."</td>";
+                                $tstartdate = DateTime::createFromFormat('Y-m-d H:i:s', $row['startdate']);
+                                $tenddate = DateTime::createFromFormat('Y-m-d H:i:s', $row['enddate']);
+                                echo "<td>".$tstartdate->format('d-m-Y')."</td>";
+                                echo "<td>".$tstartdate->format('l')."</td>";
+                                echo "<td>".$tstartdate->format('H:i:s')."</td>";
+                                echo "<td>".$tenddate->format('d-m-Y')."</td>";
+                                echo "<td>".$tenddate->format('l')."</td>";
+                                echo "<td>".$tenddate->format('H:i:s')."</td>";
+                                echo "<td class='hiddenstartdate' style='display:none'>".$tstartdate->format('D, d/m/Y G:i')."</td>";
+                                echo "<td class='hiddenenddate' style='display:none'>".$tenddate->format('D, d/m/Y G:i')."</td>";
                                 echo "<td class='input-group nrrequired'>
                                         <input type='text' class='form-control changenr' value='".$row['nrrequired']."'/>
                                     </td>";
@@ -189,13 +189,13 @@ function addError($value) {
                         </table>
                         <div>
                             <h3>Shift toevoegen</h3>
-                            <form class="" method="post" id="shift-form" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4).'t?='.$team;?>" target="_top">
+                            <form class="" method="post" id="shift-form" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4).'?t='.$team;?>" target="_top">
                                 <div class="form-group">
                                     <label class="sr-only" for="taskselect">Taak</label>
                                     <select class='form-control taskselect' id="taskselect" name='taskselect'>
                                         <?php
-                                        foreach( $tasks as $task ) {
-                                            echo "<option name='".$task."' value='".$task."' ".($task == $taskselect ? " selected='selected'" : "").">".translate_task($task)."</option>";
+                                        foreach( $tasks as $t ) {
+                                            echo "<option name='".$t."' value='".$t."' ".($t == $task ? " selected='selected'" : "").">".translate_task($t)."</option>";
                                         }
                                         ?>
                                     </select>
@@ -203,7 +203,7 @@ function addError($value) {
                                 <div class="form-group">
                                     <label class="sr-only" for="startdate">Start</label>
                                     <div class='input-group date' id='startdate'>
-                                        <input type='text' class="form-control" name="startdate" />
+                                        <input type='text' class="form-control" name="startdate" value="<?php echo $startdate;?>">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -212,7 +212,7 @@ function addError($value) {
                                 <div class="form-group">
                                     <label class="sr-only" for="enddate">Einde</label>
                                     <div class='input-group date' id='enddate'>
-                                        <input type='text' class="form-control" name="enddate" id="enddate_input" />
+                                        <input type='text' class="form-control" name="enddate" id="enddate_input" value="<?php echo $enddate;?>">
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>

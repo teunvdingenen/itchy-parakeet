@@ -114,7 +114,7 @@ $mysqli->close();
                                     echo "<div role='separator' class='divider'></div><div><p>Op dit moment is er een ticket beschikbaar! Druk op de onderstaande knop om deze te kopen.</p></div>";
                                     echo "<div class='btn btn-success btn-sm btn-block buyticket'>Ticket kopen</div>";
                                 } else if( !$can_sell && !$can_undo ){
-                                    echo "<div role='separator' class='divider'></div><div><p>Er zijn op dit moment geen tickets beschikbaar</p></div>";
+                                    echo "<div role='separator' class='divider'></div><div><p>Er zijn op dit moment geen tickets beschikbaar.</p></div>";
                                 }
                             ?>
                         </div>

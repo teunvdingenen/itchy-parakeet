@@ -48,7 +48,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $mysqli->close();
             return;
         } else {
-            $returnVal = "<div class='alert alert-success'>We hebben je verzoek in goede orde ontvangen. Binnen een dag zullen anderen de mogelijkheid hebben om in jou plaats naar Familiar Voorjaar te gaan. Zodra iemand op dat aanbod in gaat ontvang je een email ter bevestiging.</div>";
+            $returnVal = "<div class='alert alert-success'>We hebben je verzoek in goede orde ontvangen. Binnen een dag zullen anderen de mogelijkheid hebben om in jou plaats naar Familiar Forest te gaan. Zodra iemand op dat aanbod in gaat ontvang je een email ter bevestiging.</div>";
         }
     }
     $mysqli->close();
@@ -97,13 +97,13 @@ function addError($value) {
                                 Lieve <?php echo $_SESSION['firstname'] ?>,
                             </p>
                             <p>
-                                Wat ontzettend jammer dat we je op deze pagina treffen. Dat betekent namelijk dat je speelt met het idee om toch niet mee te gaan naar Familiar Voorjaar en we hebben je natuurlijk wel heel graag erbij!
+                                Wat ontzettend jammer dat we je op deze pagina treffen. Dat betekent namelijk dat je speelt met het idee om toch niet mee te gaan naar Familiar Forest en we hebben je natuurlijk wel heel graag erbij!
                             </p>
                             <p>
                                 We begrijpen ook dat je waarschijnlijk heel goede redenen hebt voor deze keuze en je misschien zelf niets eraan kan doen. Mocht het iets zijn waar we je bij kunnen helpen of ondersteunen aarzel dan niet om het aan ons te vragen. Je kunt ons daarvoor mailen op: <?php echo $mailtolink ?>.
                             </p>
                             <p>
-                                Afzien van je deelname is heel simpel. Je drukt hieronder op de grote knop en vanaf dan kan iedereen die zich heeft ingeschreven voor Familiar Voorjaar je ticket van je overnemen. Wanneer het ticket verkocht is ontvang je een email ter bevestiging en wordt er €119,81 naar je terug overgemaakt, dat is je ticketgeld min de transactiekosten voor het terugstorten.  
+                                Afzien van je deelname is heel simpel. Je drukt hieronder op de grote knop en vanaf dan kan iedereen die zich heeft ingeschreven voor Familiar Forest je ticket van je overnemen. Wanneer het ticket verkocht is ontvang je een email ter bevestiging en wordt er €119,81 naar je terug overgemaakt, dat is je ticketgeld min de transactiekosten voor het terugstorten.  
                             </p>
                             <?php if( $show_form ) {
                                 echo '

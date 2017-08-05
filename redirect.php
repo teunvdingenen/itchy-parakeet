@@ -47,6 +47,8 @@ if($received) {
         $message .= "<p>Als je zorgen, vragen of je wilt iets anders kwijt wilt kun je altijd mailen naar: ". $mailtolink.".</p>";
     }
     $message .= "<p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig,<br><br>Familiar Forest</p>";
+} else {
+    header("Location: login");
 }
 
 $mysqli->close();

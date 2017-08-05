@@ -55,11 +55,11 @@ $row = $result->fetch_array(MYSQLI_ASSOC);
                                         <td><?php echo $row['transactionid']; ?></td>
                                     </tr>
                                     <tr>
-                                        <th>Wil naar Familiar Voorjaar omdat:</th>
+                                        <th>Wil naar Familiar Forest omdat:</th>
                                         <td><?php echo $row['motivation']; ?></td>
                                     </tr>
                                     <tr>
-                                        <th>Favorite kinderboek:</th>
+                                        <th>Favoriete kinderboek:</th>
                                         <td><?php echo $row['question']; ?></td>
                                     </tr>
                                 </table>
