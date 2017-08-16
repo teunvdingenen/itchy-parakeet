@@ -63,6 +63,7 @@ if( $user_permissions & PERMISSION_CALLER ) {
 if( $user_permissions & PERMISSION_EDIT ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' href='crew'>Crew</a></li>";
+    echo "<li><a class='menulink' href='people'>Accounts</a></li>";
     echo "</ul>";
 }
 

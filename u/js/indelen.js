@@ -50,32 +50,22 @@ function setShiftEvents() {
 }
 
 function translateDay(day) {
-	if( day == 'Su') {
+	if( day == 0) {
 		return "Zondag";
-	} else if( day == 'Mo' ) {
+	} else if( day == 1 ) {
 		return "Maandag";
-	}else if( day == 'Tu' ) {
+	}else if( day == 2 ) {
 		return "Dinsdag";
-	}else if( day == 'We' ) {
+	}else if( day == 3 ) {
 		return "Woensdag";
-	}else if( day == 'Th' ) {
+	}else if( day == 4 ) {
 		return "Donderdag";
-	}else if( day == 'Fr' ) {
+	}else if( day == 5 ) {
 		return "Vrijdag";
-	}else if( day == 'Sa' ) {
+	}else if( day == 6 ) {
 		return "Zaterdag";
 	}
 	return "Onbekend";
-}
-
-function decodeshift(shift) {
-	len = shift.length;
-	decoded = new Object();
-	decoded.end = shift.substring(len-4,len);
-	decoded.start = shift.substring(len-8,len-4);
-	decoded.day = translateDay(shift.substring(len-10,len-8));
-	decoded.task = shift.substring(0,len-10);
-	return decoded;
 }
 
 function createShiftsTable(shifts) {
@@ -84,11 +74,12 @@ function createShiftsTable(shifts) {
 	html += table_shft;
 	var all_email = "";
 	$.each(shifts, function(shift, val) {
-		dShift = decodeshift(shift);
+		var start = new Date(val.startdate);
+		var end = new Date(val.enddate);
 		html += "<td><table class='shift'><tr>";
 		html += "<th class='hidden shift_name'>"+shift+"</th></tr>";
-		html += "<tr><th>"+dShift.day+"</th></tr>";
-		html += "<tr><th>"+dShift.start+" tot "+dShift.end+"</th></tr>";
+		html += "<tr><th>"+translateDay(start.getDay())+"</th></tr>";
+		html += "<tr><th>"+start.getHours()+":"+start.getMinutes()+" tot "+end.getHours()+":"+end.getMinutes()+"</th></tr>";
 		html += "<tr><th>"+val.num+" personen</th></tr></table></td>";
 		var count = 0;
 		html += "<td id="+shift+">"+table_vol_shft;

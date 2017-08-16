@@ -374,7 +374,7 @@ function translate_gender($gender) {
 
 function translate_task($task) {
   if( $task == "" ) {
-    return "Niet ingedeeld";
+    return "Niet ingedeeld: ".$task;
   } else if( $task == "keuken") { 
     return "Keuken";
   } else if( $task == "bar" ) {
@@ -409,8 +409,10 @@ function translate_task($task) {
     return "Crew";
   } else if( $task == "other_act") {
     return "Act Overig";
+  } else if( $task == "jip" ) {
+    return "Jips hoekje";
   }
-  return "Onbekend (Error)";
+  return "Onbekend: ".$task;
 }
 
 function is_act($task) {

@@ -32,7 +32,7 @@ $request_for = 'buyer';
 							<?php include("pagination.php"); ?>
 							<table class='table table-striped table-bordered table-hover table-condensed'>
 								<thead>
-									<tr class='header-row'><th>Ticket</th><th>Achternaam</th><th>Voornaam</th><th>Leeftijd</th><th>Woonplaats</th><th>Telefoon</th><th>Email</th><th>Taak</th><th>Taak Start</th><th>Taak einde</th><th>Aantal edities</th><th>Eerste keus</th><th></th><th>Tweede keus</th><th></th><th>Voorgaande edities</th><th>Lieveling</th>
+									<tr class='header-row'><th>Ticket</th><th>Achternaam</th><th>Voornaam</th><th>Leeftijd</th><th>Woonplaats</th><th>Telefoon</th><th>Email</th><th>Transactie</th><th>Taak</th><th>Taak Start</th><th>Taak einde</th><th>Aantal edities</th><th>Eerste keus</th><th></th><th>Tweede keus</th><th></th><th>Voorgaande edities</th><th>Lieveling</th>
 								</thead>
 								<tbody>
 							<?php
@@ -47,6 +47,7 @@ $request_for = 'buyer';
 								echo "<td>" . $row['city'] . "</td>";
 								echo "<td>" . $row['phone'] . "</td>";
 								echo "<td>" . $row['email'] . "</td>";
+								echo "<td>" . $row['transactionid'] . "</td>";
 								echo "<td>" . translate_task($row['task']) . "</td>";
 								echo "<td>" . $row['startdate'] . "</td>";
 								echo "<td>" . $row['enddate'] . "</td>";

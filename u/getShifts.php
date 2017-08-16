@@ -20,7 +20,7 @@ if( isset($_POST['shift'])) {
 	$mysqli->close();
 	return;
 }
-$result = $mysqli->query(sprintf("SELECT name, nrrequired FROM shifts WHERE task = '%s' ORDER BY startdate ASC",$mysqli->real_escape_string($shift)));
+$result = $mysqli->query(sprintf("SELECT name, startdate, enddate, nrrequired FROM shifts WHERE task = '%s' ORDER BY startdate ASC",$mysqli->real_escape_string($shift)));
 if( !$result ) {
 	$mysqli->close();
 	return;
@@ -29,6 +29,8 @@ $volunteers = array();
 while( $row = mysqli_fetch_array($result,MYSQLI_ASSOC) ) {
 	$vshift = array();
 	$vshift['num'] = $row['nrrequired'];
+	$vshift['startdate'] = $row['startdate'];
+	$vshift['enddate'] = $row['enddate'];
 	$vresult = $mysqli->query(sprintf("SELECT p.email, p.lastname, p.firstname, s.contrib0_desc FROM person p join $current_table s on p.email = s.email WHERE task = '%s'",$row["name"]));
 	if( $vresult != FALSE ) {
 		$varray = array();

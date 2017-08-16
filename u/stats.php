@@ -39,18 +39,21 @@ if( $request_for == 'raffle' || $request_for == 'showraffle' ) {
     $statsrestriction = 's.complete = 1';
     $displayname = "verkocht";
 } else if( $request_for == 'signups' ) {
-    $statsrestriction = '1';
+    $statsrestriction = "1 AND EXISTS (SELECT 1 FROM $current_table s WHERE s.email = p.email)";
     $displayname = "ingeschreven";
 } else if( $request_for == 'caller' ) {
     $statsrestriction = "s.valid = 1 AND s.called = 0 AND s.task != 'crew'";
 } else if( $request_for == 'called_done' ) {
     $statsrestriction = 's.valid = 1 AND s.called != 0';
+} else if( $request_for == 'people' ) {
+    $statsrestriction = '1';
+    return;
 } else {
 	exit;
 }
 
 $statsresult = $mysqli->query("SELECT p.birthdate, p.gender, p.city, p.visits, s.contrib0_type, s.contrib1_type, s.task, s.share 
-        FROM person p join $current_table s on s.email = p.email
+        FROM person p left join $current_table s on s.email = p.email
         WHERE $statsrestriction");
 $mysqli->close();
 if( $statsresult === FALSE ) {

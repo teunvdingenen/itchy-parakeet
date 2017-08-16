@@ -17,7 +17,7 @@ try
     $code = $payment->metadata->raffle;
 
     if( $payment->isRefunded() ) {
-        if( !isCrewTicket($mysqli, $payment_id) ) {
+        if( isCrewTicket($mysqli, $payment_id) ) {
             send_confirmation_refund_crew($mysqli, $payment_id);
         } else {
             email_error("Please check swap with code: ".$code." and transaction (refund): ".$payment_id);

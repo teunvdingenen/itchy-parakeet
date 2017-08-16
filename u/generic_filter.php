@@ -122,7 +122,7 @@ if( $request_for == 'raffle' ) {
 } else if( $request_for == 'buyer' ) {
     $restriction = 's.complete = 1 ';
 } else if( $request_for == 'signups' ) {
-    $restriction = '1';
+    $restriction = "1 AND EXISTS (SELECT 1 FROM $current_table s WHERE s.email = p.email)";
 } else if( $request_for == 'showraffle' ) {
     $restriction = 's.valid = 1 AND s.complete != 1 AND s.share = "FULL"';
 } else if( $request_for == 'caller' ) {
@@ -135,11 +135,13 @@ if( $request_for == 'raffle' ) {
     } else {
         $restriction = "s.complete = 1 and s.task = '".$mysqli->real_escape_string($task)."'";
     }
-} else {
+} else if( $request_for == 'people' ) {
+    $restriction = '1';
+}else {
     exit;
 }
 
-$query = "SELECT COUNT(*) FROM person p join $current_table s on p.email = s.email
+$query = "SELECT COUNT(*) FROM person p left join $current_table s on p.email = s.email
         WHERE $restriction" . $filterstr;
 
 $sqlresult = $mysqli->query($query);
@@ -161,8 +163,8 @@ $sqlresult = "";
 if( $mysqli->connect_errno ) {
     return false;
 } else {
-    $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations, t.task, t.startdate, t.enddate, s.ticket
-        FROM person p join $current_table s on s.email = p.email left join shifts t on s.task = t.name
+    $query = sprintf("SELECT p.lastname, p.firstname, p.birthdate, p.gender, p.city, p.email, p.phone, p.familiar, p.visits, p.editions, s.motivation, s.question, s.partner, s.called, s.rafflecode, s.transactionid, s.contrib0_type, s.contrib0_desc, s.contrib0_need, s.contrib1_type, s.contrib1_desc, s.contrib1_need, s.preparations, t.task, t.startdate, t.enddate, s.ticket
+        FROM person p left join $current_table s on s.email = p.email left join shifts t on s.task = t.name
         WHERE $restriction" . $filterstr . " ORDER BY p.lastname, p.firstname ASC LIMIT %s OFFSET %s", $mysqli->real_escape_string($limit), $mysqli->real_escape_string($offset));
     $sqlresult = $mysqli->query($query);
     if( $sqlresult === FALSE ) {
