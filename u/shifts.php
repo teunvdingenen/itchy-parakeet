@@ -11,7 +11,7 @@ if( !isset($_GET['t'])) {
     $team = $_GET['t'];
 }
 if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == PERMISSION_VOLUNTEERS ) {
-    $tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb", "jip");
+    $tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb", "jip", "silent");
 } else if ( $team == 'acts' && ( $user_permissions & PERMISSION_ACTS) == PERMISSION_ACTS ) {
     $tasks = array("act", "game", "schmink", "other_act", "perform", "install", "workshop");
 } else {

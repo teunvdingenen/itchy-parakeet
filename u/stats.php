@@ -47,7 +47,6 @@ if( $request_for == 'raffle' || $request_for == 'showraffle' ) {
     $statsrestriction = 's.valid = 1 AND s.called != 0';
 } else if( $request_for == 'people' ) {
     $statsrestriction = '1';
-    return;
 } else {
 	exit;
 }

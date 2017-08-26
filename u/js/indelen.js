@@ -68,6 +68,13 @@ function translateDay(day) {
 	return "Onbekend";
 }
 
+function addZero(minutes) {
+	if( minutes < 10 ) {
+		return "0" + minutes;
+	}
+	return minutes;
+}
+
 function createShiftsTable(shifts) {
 	$('.shiftcontent').html('');
 	var html = "";
@@ -79,7 +86,7 @@ function createShiftsTable(shifts) {
 		html += "<td><table class='shift'><tr>";
 		html += "<th class='hidden shift_name'>"+shift+"</th></tr>";
 		html += "<tr><th>"+translateDay(start.getDay())+"</th></tr>";
-		html += "<tr><th>"+start.getHours()+":"+start.getMinutes()+" tot "+end.getHours()+":"+end.getMinutes()+"</th></tr>";
+		html += "<tr><th>"+start.getHours()+":"+addZero(start.getMinutes())+" tot "+end.getHours()+":"+addZero(end.getMinutes())+"</th></tr>";
 		html += "<tr><th>"+val.num+" personen</th></tr></table></td>";
 		var count = 0;
 		html += "<td id="+shift+">"+table_vol_shft;

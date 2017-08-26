@@ -411,6 +411,8 @@ function translate_task($task) {
     return "Act Overig";
   } else if( $task == "jip" ) {
     return "Jips hoekje";
+  } else if( $task = "silent" ) {
+    return "Silent Disco";
   }
   return "Onbekend: ".$task;
 }
