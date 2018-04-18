@@ -7,7 +7,7 @@ include 'initialize.php';
 function get_email_header() {
 	return "<head>
 
-    <title>Familiar Forest 2017</title>
+    <title>Back to the FFFuture: '95</title>
 
     <!-- Custom styles for this template -->
     <style>

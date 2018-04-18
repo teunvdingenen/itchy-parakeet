@@ -7,12 +7,12 @@ include_once "../functions.php";
 if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
     echo "<li><a class='' href='ik'>Mijn gegevens</a></li>";
-    echo "<li><a class='menulink' href='forest'>Familiar Forest en de Magiefabriek</a></li>";
-    if( strtotime('now') < strtotime('2017-07-07 10:00') && !add_ticket($user_email)) {
-        echo "<li><a class='menulink' href='signup'>Inschrijven Familiar Forest</a></li>";
+    echo "<li><a class='menulink' href='future'>Back to the FFFuture: '95</a></li>";
+    if( !add_buy($user_email) ) {
+        echo "<li><a class='menulink' href='signup'>Inschrijven</a></li>";
     }
     if( add_buy($user_email) ) {
-        echo "<li><a class='menulink' href='deelname'>Deelname Familiar Forest</a></li>";
+        echo "<li><a class='menulink' href='deelname'>Deelname</a></li>";
     }
     if( add_swap($user_email) ) {
         echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";    
@@ -20,14 +20,16 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     if( add_ticket($user_email) ) {
         //echo "<li><a class='menulink' href='info'>Reis Info</a></li>";
         echo "<li><a class='menulink' href='ticket'>Ticket</a></li>";
+        //echo "<li><a class='menulink' href='ticketpdf' target='_blank'>Ticket [PDF]</a></li>";
     }
     echo "</ul>";
 }
 
 if( $user_permissions & PERMISSION_DISPLAY ) {
     echo "<ul class='nav'>";
-    echo "<li><a class='menulink' href='signups'>Inschrijvingen Forest</a></li>";
-    echo "<li><a class='menulink' href='buyer'>Tickets Forest</a></li>";
+    echo "<li><a class='menulink' href='signups'>Inschrijvingen</a></li>";
+    echo "<li><a class='menulink' href='buyer'>Tickets</a></li>";
+    echo "<li><a class='menulink' href='displayraffle'>Loting</a></li>";
     echo "<li><a class='menulink' href='preparations'>Voorbereiding aanbod</a></li>";
     echo "<li><a class='menulink' href='swap'>Ticketaanbod in swap</a></li>";
     echo "</ul>";
@@ -50,7 +52,7 @@ if( $user_permissions & PERMISSION_ACTS ) {
 if( $user_permissions & PERMISSION_RAFFLE ) {
     echo "<ul class='nav'>";
     echo "<li><a class='menulink' href='raffle'>Loten</a></li>";
-    echo "<li><a class='menulink' href='showraffle'>Forest Loting</a></li>";
+    echo "<li><a class='menulink' href='unraffle'>Uitloten</a></li>";
     echo "</ul>";
 }
 

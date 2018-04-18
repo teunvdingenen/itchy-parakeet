@@ -21,9 +21,11 @@ function store_user_token($username, $token) {
     return false;
   } else {
     $now = new DateTime();
+    $oneweek = $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s');
+    $now = new DateTime();
     $query = sprintf("UPDATE `users` u SET u.token = '%s', u.expire = '%s', u.lastlogin = '%s' WHERE u.email = '%s'", 
       $mysqli->real_escape_string($token),
-      $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s'),
+      $oneweek,
       $now->format('Y-m-d H:i:s'),
       $mysqli->real_escape_string($username));
     $result = $mysqli->query($query);
@@ -42,7 +44,7 @@ function get_user_token($username) {
   if( $mysqli->connect_errno ) {
     return "false";
   } else {
-    $query = sprintf("SELECT u.token FROM `users` WHERE (`email` = '%s')",
+    $query = sprintf("SELECT token FROM `users` WHERE (`email` = '%s')",
         $mysqli->real_escape_string($username));
     $result = $mysqli->query($query);
     $mysqli->close();
@@ -52,13 +54,22 @@ function get_user_token($username) {
       $row = $result->fetch_array(MYSQLI_ASSOC);
       return $row['token'];
     } else {
+      email_error(sprintf("Unable to get Token for: %s", $username));
       return "false";
     }
   }
   return "false";
 }
 
-function login($username) {
+function updateSession($username, $permissions, $firstname) {
+  $_SESSION['email'] = $username;
+  $_SESSION['permissions'] = $permissions;
+  $_SESSION['firstname'] = $firstname;
+  $_SESSION['LAST_ACTIVITY'] = time();
+  $_SESSION['CREATED'] = time();
+}
+
+function login($username, $remember) {
     global $db_host, $db_user, $db_pass, $db_name;
     $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
     if( $mysqli->connect_errno ) {
@@ -88,12 +99,12 @@ function login($username) {
     }
     $firstname = $result->fetch_array(MYSQLI_ASSOC)['firstname'];
     $mysqli->close();
-    $_SESSION['email'] = $username;
-    $_SESSION['permissions'] = $permissions;
-    $_SESSION['firstname'] = $firstname;
-    $_SESSION['LAST_ACTIVITY'] = time();
-    $_SESSION['CREATED'] = time();
-    store_user_token($username, generateRandomToken(128));
+    updateSession($username, $permissions, $firstname);
+    $token = generateRandomToken(128);
+    store_user_token($username, $token);
+    if( $remember ) {
+      setRememberMe($username, $token);
+    }
     return true;
 }
 
@@ -117,13 +128,11 @@ function logout($user) {
   }
 }
 
-function setRememberMe($user) {
-    $token = generateRandomToken(128); // generate a token, should be 128 - 256 bit
-    store_user_token($user, $token);
-    $cookie = $user . ':' . $token;
-    $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
-    $cookie .= ':' . $mac;
-    setcookie('ff_rememberme', $cookie);
+function setRememberMe($user, $token) {
+  $cookie = $user . ':' . $token;
+  $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
+  $cookie .= ':' . $mac;
+  setcookie('ff_rememberme', $cookie, time()+604800, '/u');
 }
 
 function rememberMe() {
@@ -131,12 +140,14 @@ function rememberMe() {
     if ($cookie) {
         list ($user, $token, $mac) = explode(':', $cookie);
         if (!hash_equals(hash_hmac('sha256', $user . ':' . $token, SECRET_KEY), $mac)) {
+            email_error(sprintf("No rememberme match for: %s, token: %s, mac: %s", $user, $token, $mac));
             return false;
         }
         $usertoken = get_user_token($user);
         if (hash_equals($usertoken, $token)) {
-            login($user);
-            setRememberMe();
+            updateSession($user, get_permissions($user), get_firstname($user));
+        } else {
+          email_error(sprintf("No hash match for user: %s, usertoken: %s, token: %s", $user, $usertoken, $token));
         }
     }
 }
@@ -192,6 +203,27 @@ function get_firstname($username) {
     } else {
       return false;
     }
+  }
+  return false;
+}
+
+function get_permissions($username) {
+  global $db_host, $db_user, $db_pass, $db_name;
+  $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+  if( $mysqli->connect_errno ) {
+    return false;
+  } else {
+    $query = sprintf("SELECT `permissions` FROM users WHERE `email` = '%s'", 
+      $mysqli->real_escape_string($username));
+    $result = $mysqli->query($query);
+    if( $result === FALSE ) {
+      $mysqli->close();
+      return FALSE;
+    } else if( $result->num_rows != 1 ) {
+      $mysqli->close();
+      return FALSE;
+    }
+    return $result->fetch_array(MYSQLI_ASSOC)['permissions'];
   }
   return false;
 }
@@ -355,6 +387,8 @@ function translate_edition($edition) {
     return "Familiar Forest Festival 2016";
   } else if( $edition == "fv2017" ) {
     return "Familiar Voorjaar 2017";
+  } else if ( $edition == "fff2017") {
+    return "Familiar Forest 2017";
   } else if( $edition == "" ) {
     return "";
   } else {
@@ -413,6 +447,8 @@ function translate_task($task) {
     return "Jips hoekje";
   } else if( $task = "silent" ) {
     return "Silent Disco";
+  } else if( $task == "vuur") { 
+    return "Vuurmeester";
   }
   return "Onbekend: ".$task;
 }

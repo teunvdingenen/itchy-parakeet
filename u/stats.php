@@ -33,7 +33,7 @@ $displayname = "";
 
 $statsrestriction = "1";
 if( $request_for == 'raffle' || $request_for == 'showraffle' ) {
-    $statsrestriction = "(s.complete = 1 or s.valid = 1) AND s.task != 'crew'";
+    $statsrestriction = "(s.complete = 1 or s.valid = 1) ";
     $displayname = "ingeloot & verkocht";
 } else if( $request_for == 'buyer' ) {
     $statsrestriction = 's.complete = 1';

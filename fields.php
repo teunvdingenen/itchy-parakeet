@@ -28,6 +28,6 @@ if( !defined('PERMISSION_ALL')) {
 	define('PERMISSION_ALL', 65535);
 }
 
-$current_table = 'fv2017';
+$current_table = 'fv2018';
 
 ?>

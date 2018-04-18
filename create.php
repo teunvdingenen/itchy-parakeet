@@ -77,36 +77,19 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $query = sprintf("SELECT 1 FROM `person` WHERE `email` = '%s'",
             $mysqli->real_escape_string($email));
         $result = $mysqli->query($query);
-        if( $result && $result->num_rows == 1 ) {
-            $query = sprintf("UPDATE `person` SET `firstname` = '%s', `lastname` = '%s', `birthdate` = '%s', `gender` = '%s', `phone` = '%s', `city` = '%s', `familiar` = '%s', `editions` = '%s', `visits` = %s WHERE `email` = '%s'",
-                $mysqli->real_escape_string($firstname),
-                $mysqli->real_escape_string($lastname),
-                $mysqli->real_escape_string($birthdate),
-                $mysqli->real_escape_string($gender),
-                $mysqli->real_escape_string($phone),
-                $mysqli->real_escape_string($city),
-                substr($mysqli->real_escape_string($familiar),0,1024),
-                $mysqli->real_escape_string($editions_str),
-                $mysqli->real_escape_string($nr_editions),
-                $mysqli->real_escape_string($email)
-            );
-        } else {
-            $query = sprintf("INSERT INTO `person` (`email`, `firstname`, `lastname`, `birthdate`, `gender`, `phone`, `city`, `familiar`, `editions`, `visits`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s',%s)",
-                $mysqli->real_escape_string($email),
-                $mysqli->real_escape_string($firstname),
-                $mysqli->real_escape_string($lastname),
-                $mysqli->real_escape_string($birthdate),
-                $mysqli->real_escape_string($gender),
-                $mysqli->real_escape_string($phone),
-                $mysqli->real_escape_string($city),
-                substr($mysqli->real_escape_string($familiar),0,1024),
-                $mysqli->real_escape_string($editions_str),
-                $mysqli->real_escape_string($nr_editions)
-            );
-        }
+        $query = sprintf("INSERT INTO `person` (`email`, `firstname`, `lastname`, `birthdate`, `gender`, `phone`, `city`, `familiar`, `editions`, `visits`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s',%s)",
+            $mysqli->real_escape_string($email),
+            $mysqli->real_escape_string($firstname),
+            $mysqli->real_escape_string($lastname),
+            $mysqli->real_escape_string($birthdate),
+            $mysqli->real_escape_string($gender),
+            $mysqli->real_escape_string($phone),
+            $mysqli->real_escape_string($city),
+            substr($mysqli->real_escape_string($familiar),0,1024),
+            $mysqli->real_escape_string($editions_str),
+            $mysqli->real_escape_string($nr_editions));
         if( !$mysqli->query($query) ) {
-            addError("We konden helaas je gegevens niet opslaan. Als het probleem aanhoud kun je het beste even mailen naar: ".$mailtolink);
-            email_error("Error insert into person: ".$mysqli->error."<br>".$query);
+            addError("We konden helaas je gegevens niet opslaan. Heb je al een account?");
         } else {
             $result = $mysqli->query(sprintf("SELECT 1 FROM `users` WHERE `email` = '%s'",
                 $mysqli->real_escape_string($email)));

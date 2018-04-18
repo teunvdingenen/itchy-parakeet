@@ -9,7 +9,7 @@ rememberMe();
 
 $user_permissions = $_SESSION['permissions'];
 if( ($user_permissions & PERMISSION_PARTICIPANT) == PERMISSION_PARTICIPANT ) {
-    header('Location: u/forest');
+    header('Location: u/future');
 }
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -46,11 +46,8 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $row = $result->fetch_array(MYSQLI_ASSOC);
                 $db_hash = $row["password"];
                 if( password_verify($password, $db_hash)) {
-                    if( $rememberme == "rememberme" ) {
-                        setRememberMe($username);
-                    }
-                    if( login($username) ) {
-                        header('Location: u/forest');
+                    if( login($username, TRUE) ) {
+                        header('Location: u/signup');
                     }
                 } else {
                     $error = TRUE;
@@ -97,16 +94,19 @@ if($error) {
             <?php if($returnVal != "") {
                 echo '<div class="alert alert-danger" role="alert">'.$returnVal.'</div>';
             } ?>
+            <!--
+            <div class="alert alert-danger" role="alert">Hey daar! We zijn eventjes aan het sleutelen aan de website.. Het kan zijn dat sommige dingetjes niet werken, of dat er rare dingen gebeuren. We adviseren je over een uurtje terug te komen.</div> -->
             <form class="form-small" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>">
                 <h2 class="form-small-heading">Inloggen</h2>
                 <label for="username" class="sr-only">Emailadres</label>
                 <input type="text" id="username" class="form-control" placeholder="Emailadres" name="username" required autofocus>
                 <label for="password" class="sr-only">Wachtwoord</label>
                 <input type="password" id="password" class="form-control" placeholder="Wachtwoord" name="password" required>
-                <!-- <div class="checkbox">
+                <!--
+                <div class="checkbox">
                     <label><input type="checkbox" name="rememberme" value="rememberme">Ingelogd blijven</label>
                 </div>
-            -->
+                -->
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Inloggen</button>
                 <a href="create">Ik heb nog geen account</a><br>
                 <a href="wachtwoordvergeten">Ik ben mijn wachtwoord vergeten</a>

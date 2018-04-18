@@ -21,7 +21,7 @@ class PDF extends FPDF
         // Move to the right
         $this->Cell(80);
         // Title
-        $this->Cell(30,10,'Familiar Voorjaar 2017',0,0,'C');
+        $this->Cell(30,10,'Back to the FFFuture: 95',0,0,'C');
         // Line break
         $this->Ln(20);
     }
@@ -34,7 +34,6 @@ class PDF extends FPDF
         // Arial italic 8
         $this->SetFont('Arial','I',8);
         // Page number
-        $this->Cell(0,4,'Familiar Forest geeft geen "kutfeest, geld terug"-garantie',0,1,'C');
         $this->Cell(0,4,'Voor meer informatie kun je altijd mailen naar info@stichingfamiliarforest.nl',0,0,'C');
     }
 }
@@ -42,7 +41,7 @@ class PDF extends FPDF
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
     $email_error("Database connectie is kapot: " . $mysqli->error);
-    header('Location: voorjaar');
+    header('Location: forest');
 }
 $query = "";
 if( $_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['ticket'])) {
@@ -55,7 +54,7 @@ if( $_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['ticket'])) {
 $result = $mysqli->query($query);
 
 if( !$result || $result->num_rows != 1) {
-    header('Location: voorjaar');
+    header('Location: forest');
 }
 
 //$QRURL = 'http://stichtingfamiliarforest.nl/u/genqrcode?hash=';
@@ -97,16 +96,5 @@ $pdf->Ln();
 $pdf->Ln();
 $pdf->SetFont('Arial','',12);
 $pdf->Cell(30);
-$pdf->MultiCell(130,6,'Lieve '.htmlspecialchars_decode($firstname).',',0,'C');
-$pdf->Cell(30);
-$pdf->MultiCell(130,6,'Met dit ticket in de hand ben jij helemaal klaar om naar Familiar Voorjaar te gaan. Denk er dus wel even aan om het uit te printen.',0,'C');
-$pdf->Ln();
-$pdf->Cell(30);
-$pdf->MultiCell(130,6,'Daarnaast willen we je ook eraan herinneren dat je dit ticket niet kan doorverkopen en het alleen door jou gebruikt kan worden samen met een geldig legitimatiebewijs.',0,'C');
-$pdf->Ln();
-$pdf->Cell(30);
-$pdf->MultiCell(130,6,'De high fives zijn gratis, de knuffels oprecht en de liefde oneindig,',0,'C');
-$pdf->Cell(30);
-$pdf->MultiCell(130,6,'Familiar Forest',0,'C');
 $pdf->Output();
 ?>

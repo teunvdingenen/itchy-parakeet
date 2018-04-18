@@ -9,10 +9,6 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
 
 date_default_timezone_set('Europe/Amsterdam');
 
-if( strtotime('now') > strtotime('2017-07-07 10:00') ) {
-    header('Location: forest');
-}
-
 $signupround = 1;
 
 $returnVal = "";
@@ -312,12 +308,12 @@ function addError($value) {
                 <?php include("navigation.php");?>
                 <div class="col-xs-13 col-sm-10">  
                 <div class="form-intro-text">
-                <h1>Inschrijven Familiar Forest</h1>
+                <h1>Inschrijven Back to the FFFuture: '95</h1>
                 <p class="lead">
-                    9 en 10 september 2017.
+                    27 & 28 april 2018.
                 </p>
                 <p>
-                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 7 juli 2017 je antwoorden wijzigen. Pas op 8 juli 2017 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
+                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 8 maart 2018 je antwoorden wijzigen. Pas op 9 maart 2018 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
             </div>
             <?php echo $returnVal; ?>
@@ -326,7 +322,7 @@ function addError($value) {
                 
                 <fieldset>
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="motivation">Waarom wil je naar Familiar Forest en de Magiefabriek?</label>
+                        <label class="col-sm-2 form-control-label" for="motivation">Waarom wil je naar Back to the FFFuture: '95?</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="motivation" id="motivation" cols="60" rows="4"><?php echo $motivation; ?></textarea>
                             <label for="motivation">Max 1024 karakters</label>
@@ -334,7 +330,7 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="question">Wat is je favoriete kinderboek? En waarom? Als je er een kon meenemen naar een festival welke zou dit dan zijn?</label>
+                        <label class="col-sm-2 form-control-label" for="question">Wat stel je je voor bij '95?</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="question" id="question" cols="60" rows="4"><?php echo $question; ?></textarea>
                             <label for="question">Max 1024 karakters</label>
@@ -351,7 +347,7 @@ function addError($value) {
                                 </span>
                             </div>
                             <div id='partnerdefault' class="alert alert-success">
-                                Je kunt voor Familiar Forest wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar Forest wilt! <br>
+                                Je kunt voor deze editie wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar wilt! <br>
                                 Je lieveling moet het email adres invullen waarmee jij je registreert hebt en jij het emailadres waarmee jouw lieveling zich inschrijft. Als deze niet overeen komen, kunnen wij jullie niet aan elkaar linken. <strong>Let op: Als jullie van deze optie gebruik maken worden 
                                     jullie samen ingeloot <i>of beide uitgeloot.</i> </strong>
                             </div>
@@ -369,7 +365,7 @@ function addError($value) {
                 </fieldset>
                         
                 <fieldset>
-                    <legend>Hoe wil jij bijdragen aan het Familiar Forest?</legend>
+                    <legend>Hoe wil jij bijdragen aan het Familiar?</legend>
                     <div class="form-group row">
                         <label for="contrib0" class="col-sm-2 form-control-label">Eerste keus</label>
                         <div class="col-sm-10">
