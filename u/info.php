@@ -19,8 +19,7 @@ include("checklogin.php");
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
                     <div class="col-xs-13 col-sm-10"> 
-                        <div class="jumbotron">
-                        </div>
+                        <img class="img-responsive" src="img/future.png"/>
                     </div>
                 </div>
             </div>

@@ -60,10 +60,14 @@ try
                         email_error("Refunded half ticket for code: ".$code);
                     }
                     $amount -= 0.19;
-                    $payment = $mollie->payments->get($seller_payment);
-                    $refund = $mollie->payments->refund($payment, $amount);
-                    $result = $mysqli->query(sprintf("UPDATE $current_table SET complete = 2 WHERE transactionid = '%s'",
-                        $mysqli->real_escape_string($seller_payment)));
+                    try {
+                        $payment = $mollie->payments->get($seller_payment);
+                        $refund = $mollie->payments->refund($payment, $amount);
+                    }catch (Mollie_API_Exception $e) {
+                        email_error(sprintf("Something went wrong with the refund for: %s, amount: %d, with error: %s",$seller_payment, $amount, htmlspecialchars($e->getMessage())));
+                    }
+                    
+                    $result = $mysqli->query(sprintf("UPDATE $current_table SET complete = 2 WHERE transactionid = '%s'", $mysqli->real_escape_string($seller_payment)));
                     if( !$result || $mysqli->affected_rows != 1 ) {
                         email_error("Refund complete to 2 didn't work for: ".$seller_payment);
                     }
