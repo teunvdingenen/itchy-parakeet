@@ -1,69 +1,44 @@
-<?php session_start(); 
+<?php
 $username=$password=$rememberme=$returnVal="";
 $error = FALSE;
-include "initialize.php";
-include "functions.php";
-include "fields.php";
-
-rememberMe();
-
-$user_permissions = $_SESSION['permissions'];
-if( ($user_permissions & PERMISSION_PARTICIPANT) == PERMISSION_PARTICIPANT ) {
-    header('Location: u/future');
-}
+include_once "model/user.php";
+include_once "model/loginmanager.php";
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( !empty($_POST["username"]) ) {
-        $username = test_input($_POST["username"]);
+        $username = $_POST["username"];
     } else {
         $username = "";
         $error = TRUE;
     }
 
     if( !empty($_POST["password"]) ) {
-        $password = test_input($_POST["password"]);
+        $password = $_POST["password"];
     } else {
         $password = "";
         $error = TRUE;
     }
 
     if( !empty($_POST["rememberme"]) ) {
-        $rememberme = test_input($_POST["rememberme"]);
+        $rememberme = $_POST["rememberme"] == 'Y';
     } else {
         $rememberme = "";
     }
 
-    if(!$error) { //SO FAR SO GOOD
-        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $username = $mysqli->real_escape_string($username);
-        if( $mysqli->connect_errno ) {
-            $returnVal = "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error. " ";
-        } else {
-            $result = $mysqli->query("SELECT * FROM `users` WHERE 
-                (`email` = '$username')");
-            if( $result && $result->num_rows == 1 ) {
-                $row = $result->fetch_array(MYSQLI_ASSOC);
-                $db_hash = $row["password"];
-                if( password_verify($password, $db_hash)) {
-                    if( login($username, TRUE) ) {
-                        header('Location: u/signup');
-                    }
-                } else {
-                    $error = TRUE;
-                }
-            } else {
-                $error = TRUE;
-            }
+    if(!$error) {
+        $user = model\User::findByEmail($username);
+        if( $user != FALSE && password_verify($password, $user->password)) {
+            model\LoginManager::Instance()->login($user, $rememberme);
+            header('Location: u/signup');
         }
-        $mysqli->close();
+        $error = true;
     }
 }
 
 if($error) {
     $returnVal = "Ongeldige gebruikersnaam of paswoord.";
 }
-
 ?>
 <!doctype html>
 <html class="no-js" lang="">
@@ -102,11 +77,9 @@ if($error) {
                 <input type="text" id="username" class="form-control" placeholder="Emailadres" name="username" required autofocus>
                 <label for="password" class="sr-only">Wachtwoord</label>
                 <input type="password" id="password" class="form-control" placeholder="Wachtwoord" name="password" required>
-                <!--
                 <div class="checkbox">
-                    <label><input type="checkbox" name="rememberme" value="rememberme">Ingelogd blijven</label>
+                    <label><input type="checkbox" name="rememberme" value="Y">Ingelogd blijven</label>
                 </div>
-                -->
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Inloggen</button>
                 <a href="create">Ik heb nog geen account</a><br>
                 <a href="wachtwoordvergeten">Ik ben mijn wachtwoord vergeten</a>

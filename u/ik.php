@@ -1,101 +1,68 @@
 <?php
-include_once "../functions.php";
-
-include("checklogin.php");
-
-if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
-    header('Location: oops.php');
+include_once "../model/loginmanager.php";
+include_once "../model/person.php";
+include_once "../model/user.php";
+model\LoginManager::Instance()->isLoggedIn();
+if( model\LoginManager::Instance()->getPermissions() & PERMISSION_PARICIPANT != PERMISSION_PARICIPANT ) {
+    header('Location: oops');
 }
 
-
 date_default_timezone_set('Europe/Amsterdam');
+$person = model\LoginManager::Instance()->person;
 $returnVal = "";
-$firstname = $lastname = $birthdate = $gender = $phone = $city = $phone = $postal = $steet = "";
-$email_future = $email_signup = $email_ticket = "";
-$email = $user_email;
-
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["street"]) ) {
-        $street = test_input($_POST["street"]);
+        $person->street = ($_POST["street"]);
     } else {
-        $street = "";
+        $person->street = "";
     }
     if( !empty($_POST["postal"]) ) {
-        $postal = test_input($_POST["postal"]);
+        $person->postal = ($_POST["postal"]);
     } else {
-        $postal = "";
+        $person->postal = "";
     }
     if( !empty($_POST["city"]) ) {
-        $city = test_input($_POST["city"]);
+        $person->city = ($_POST["city"]);
     } else {
-        $city = "";
+        $person->city = "";
         addError("Je hebt je woonplaats niet opgegeven.");
     }
     if( !empty($_POST["birthdate"]) ) {
-        $birthdate = test_input($_POST["birthdate"]);
-        $date = DateTime::createFromFormat('d/m/Y', $birthdate);
+        $birthdate_str = ($_POST["birthdate"]);
+        $date = DateTime::createFromFormat('d/m/Y', $birthdate_str);
         if( $date == FALSE ) {
-            if( ($timestamp = strtotime($birthdate)) == FALSE ) {
+            if( ($timestamp = strtotime($birthdate_str)) == FALSE ) {
                 addError("De opgegeven geboortedatum klopt niet.");
             } else {
-                $birthdate = date( 'Y-m-d H:i:s', $timestamp );
+                $person->birthdate = date( 'Y-m-d H:i:s', $timestamp );
             }
         } else {
-            $birthdate = $date->format('Y-m-d H:i:s');
+            $person->birthdate = $date->format('Y-m-d H:i:s');
         }
     } else {
         addError("Je hebt je geboortedatum niet opgegeven");
     }
     if( !empty($_POST["gender"]) ) {
-        $gender = test_input($_POST["gender"]);
+        $person->gender = ($_POST["gender"]);
     } else {
-        $gender = "";
+        $person->gender = "";
         addError("Je hebt je geslacht niet opgegeven.");
     }
     if( !empty($_POST["phone"]) ) {
-        $phone = test_input($_POST["phone"]);
+        $person->phone = ($_POST["phone"]);
     } else {
-        $phone = "";
+        $person->phone = "";
         addError("Je hebt geen telefoonnummer opgegeven");
     }
 
-    if( !empty($_POST["email_future"]) ) {
-        $email_future = test_input($_POST["email_future"]);
+    if( !empty($_POST["allow_email"]) ) {
+        $person->allow_email = $_POST["allow_email"] == 'Y';
     } else {
-        $email_future = "";
-    }
-    if( !empty($_POST["email_signup"]) ) {
-        $email_signup = test_input($_POST["email_signup"]);
-    } else {
-        $email_signup = "";
-    }
-    if( !empty($_POST["email_ticket"]) ) {
-        $email_ticket = test_input($_POST["email_ticket"]);
-    } else {
-        $email_ticket = "";
+        $email_future = false;
     }
 
     if( $returnVal == "" ) {
-        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-        $query = sprintf("UPDATE person SET `city` = '%s', `gender` = '%s', `phone` = '%s', `birthdate` = '%s', `street` ='%s', `postal` = '%s', `email_future` = '%s', `email_signup` = '%s', `email_ticket` = '%s' WHERE `email` = '%s'",
-            $mysqli->real_escape_string($city),
-            $mysqli->real_escape_string($gender),
-            $mysqli->real_escape_string($phone),
-            $mysqli->real_escape_string($birthdate),
-            $mysqli->real_escape_string($street),
-            $mysqli->real_escape_string($postal),
-            $mysqli->real_escape_string($email_future),
-            $mysqli->real_escape_string($email_signup),
-            $mysqli->real_escape_string($email_ticket),
-            $mysqli->real_escape_string($email)
-        );
-        $result = $mysqli->query($query);
-        if( !$result ) {
-            addError("We konden je gegevens niet opslaan. Je kunt het beste even contact opnemen met Familiar Forest op het email adres: ".$mailtolink);
-        }
-        $date = DateTime::createFromFormat('Y-m-d H:i:s', $birthdate);
-        $birthdate = $date->format('d/m/Y');
-        $mysqli->close();
+        $person->save();
     } else {
         //try again..
     }
@@ -104,32 +71,6 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
     }
 } //End POST
-$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-$query = sprintf("SELECT * FROM person where `email` = '%s'",
-    $mysqli->real_escape_string($user_email));
-$result = $mysqli->query($query);
-if( $result === FALSE ) {
-    addError("We konden niet je gegevens ophalen. Je kunt het beste even contact opnemen met Familiar Forest op: ".$mailtolink);
-} else if( $result->num_rows != 1 ) {
-    addError("We konden niet je huidige gevens ophalen. Je kunt het beste even contact opnemen met Familiar Forest op: ".$mailtolink);
-} else {
-    $row = $result->fetch_array(MYSQLI_ASSOC);
-    $firstname = htmlspecialchars_decode($row['firstname']);
-    $lastname = htmlspecialchars_decode($row['lastname']);
-    $city = htmlspecialchars_decode($row['city']);
-    $gender = htmlspecialchars_decode($row['gender']);
-    $phone = htmlspecialchars_decode($row['phone']);
-    $postal = htmlspecialchars_decode($row['postal']);
-    $street = htmlspecialchars_decode($row['street']);
-    $birthdate = htmlspecialchars_decode($row['birthdate']);
-    $birthdate = DateTime::createFromFormat('Y-m-d', $birthdate);
-    $birthdate = $birthdate->format('d/m/Y');
-    $email_future = htmlspecialchars_decode($row['email_future']);
-    $email_signup = htmlspecialchars_decode($row['email_signup']);
-    $email_ticket = htmlspecialchars_decode($row['email_ticket']);
-}
-$mysqli->close();
-
 function addError($value) {
     global $returnVal;
     $returnVal .= '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> ' . $value . '</div>';
@@ -160,49 +101,49 @@ function addError($value) {
                             <div class="form-group row">
                                 <label for="email" class="col-sm-2 form-control-label">Email*</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $email;?>" name="email" disabled>
+                                    <input class="form-control" type="email" id="email" placeholder="Email" value="<?php echo $person->email;?>" name="email" disabled>
                                 </div>
                             </div>
                             <fieldset>
                             <div class="form-group row">
                                 <label for="firstname" class="col-sm-2 form-control-label">Voornaam*</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $firstname;?>" name="firstname" disabled>
+                                    <input class="form-control" type="text" id="firstname" placeholder="Voornaam" value="<?php echo $person->firstname;?>" name="firstname" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="lastname" class="col-sm-2 form-control-label">Achternaam*</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $lastname;?>" name="lastname" disabled>
+                                    <input class="form-control" type="text" id="lastname" placeholder="Achternaam" value="<?php echo $person->lastname;?>" name="lastname" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="street" class="col-sm-2 form-control-label">Straatnaam & Huisnummer</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" id="street" placeholder="Straatnaam & Huisnummer" value="<?php echo $street;?>" name="street">
+                                    <input class="form-control" type="text" id="street" placeholder="Straatnaam & Huisnummer" value="<?php echo $person->street;?>" name="street">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="postal" class="col-sm-2 form-control-label">Postcode</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" id="postal" placeholder="Postcode" value="<?php echo $postal;?>" name="postal">
+                                    <input class="form-control" type="text" id="postal" placeholder="Postcode" value="<?php echo $person->postal;?>" name="postal">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="city" class="col-sm-2 form-control-label">Woonplaats*</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" id="city" placeholder="Woonplaats" value="<?php echo $city;?>" name="city">
+                                    <input class="form-control" type="text" id="city" placeholder="Woonplaats" value="<?php echo $person->city;?>" name="city">
                                 </div>
                             </div>
                         
                             <div class="form-group row">
                                 <label for="birthdate" class="col-sm-2 form-control-label">Geboortedatum*<br>(dd/mm/yyyy)</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control ignore datepicker" type="text" id="birthdate" value="<?php echo $birthdate;?>" name="birthdate" placeholder="dd/mm/yyyy">
+                                    <input class="form-control ignore datepicker" type="text" id="birthdate" value="<?php echo $person->birthdate->format('d/m/Y');?>" name="birthdate" placeholder="dd/mm/yyyy">
                                     <div>
                                         <label for="birthdate" class="error" style="display:none;"></label>
                                     </div>
@@ -214,13 +155,13 @@ function addError($value) {
                                 <div class="col-sm-10">
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
+                                            <input type="radio" name="gender" id="male" value="male" <?php if($person->gender == "M") echo( "checked"); ?>>
                                             Jongeman
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
+                                            <input type="radio" name="gender" id="female" value="female" <?php if($person->gender == "F") echo( "checked"); ?> >
                                             Jongedame
                                         </label>
                                     </div>
@@ -230,35 +171,22 @@ function addError($value) {
                             <div class="form-group row">
                                 <label for="phone" class="col-sm-2 form-control-label">Telefoonnummer*</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $phone;?>" name="phone">
+                                    <input class="form-control" type="text" id="phone" placeholder="Telefoonnummer" value="<?php echo $person->phone;?>" name="phone">
                                 </div>
                             </div>
                             </fieldset>
-                            <fieldset>
-                                <legend>Email instellingen</legend>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 form-control-label" for="email">Ik wil emails ontvangen over:</label>
-                                    <div class="col-sm-10">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input class="checkbox" type="checkbox" name="email_future" value="J" <?php if($email_future == "J") echo( "checked"); ?>>
-                                                Toekomstige Familiar edities
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input class="checkbox" type="checkbox" name="email_signup" value="J" <?php if($email_signup == "J") echo( "checked"); ?>>
-                                                Familiar edities waarvoor ik mezelf heb ingeschreven
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input class="checkbox" type="checkbox" name="email_ticket" value="J" <?php if($email_ticket == "J") echo( "checked"); ?>>
-                                                Familiar edities waar ik aan deelneem
-                                            </label>
-                                        </div>
+                          
+                            <div class="form-group row">
+                                <label class="col-sm-2 form-control-label" for="email">Email:</label>
+                                <div class="col-sm-10">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input class="checkbox" type="checkbox" name="allow_email" value="Y" <?php if($person->allow_email) echo( "checked"); ?>>
+                                            Ik wil graag op de hoogte worden gehouden van toekomstige Familiar edities
+                                        </label>
                                     </div>
                                 </div>
+                            </div>
                             <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="glyphicon glyphicon-floppy-disk"></i> Opslaan</button>
                         </form>
                     </div>
