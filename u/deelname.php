@@ -15,7 +15,7 @@ if( $mysqli->connect_errno ) {
 }
 
 $result = $mysqli->query("SELECT COUNT(*) as 'sold' FROM $current_table WHERE complete = 1 and share = 'FULL'");
-if( !$result || $result->fetch_array(MYSQLI_ASSOC)['sold'] > 600) { 
+if( !$result || $result->fetch_array(MYSQLI_ASSOC)['sold'] > 600) {
     email_error("Ticket sales seem to have gone over preset amount!!");
     header('Location: oops');
 }
@@ -56,7 +56,7 @@ try {
 }
 
 $methods = ["",'ideal', 'mistercash', 'creditcard'];
-$method_names = ["Betaalmethode Selecteren","IDeal (+€0,29)","BanContact/Mister Cash (+€2,05)", "CreditCard (+€3,61)"];
+$method_names = ["Betaalmethode Selecteren","IDeal (+€0,29)","BanContact/Mister Cash (+€0,39)", "CreditCard (+€4,38)"];
 $returnVal = "";
 $disp_amount = $method = $street = $city = $postal = $terms4 = $share = "";
 
@@ -73,11 +73,11 @@ if(!$result) {
 }
 
 if( $share == "HALF" ) {
-    $disp_amount = "65,00";
+    $disp_amount = "73,75";
 } else if( $share == "FREE" ) {
     $disp_amount = "0,00";
 } else {
-    $disp_amount = "130,00";
+    $disp_amount = "147,50";
 }
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -108,7 +108,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["terms4"]) ) {
         $terms4 = test_input($_POST["terms4"]);
         if( $terms4 != 'J' ) {
-            addError('Je hebt de voorwaarde niet geaccepteerd.');    
+            addError('Je hebt de voorwaarde niet geaccepteerd.');
         }
     } else {
         $terms4 = "";
@@ -152,28 +152,26 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $hostname = $_SERVER['HTTP_HOST'];
                 $path = dirname(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] :
                     $_SERVER['PHP_SELF']);
-                $amount = 130;
+                $amount = 147.50;
                 if( $share == "HALF" ) {
-                    $amount = 65;
+                    $amount = 73.75;
                 } else if ( $share == "FREE" ) {
                     $amount = 0;
                 }
-                
+
                 $raffle = $code;
                 if( $method == 'ideal' ) {
                     $amount += 0.29;
                 } else if( $method == 'creditcard') {
                     $amount += 0.25 + $amount * 0.028;
                 } else if( $method == 'mistercash') {
-                    $amount += 0.25 + $amount *0.015;
-                } else if( $method == 'banktransfer' ) {
-                    $amount += 0.25;
+                    $amount += 0.39;
                 }
                 try {
                     $payment = $mollie->payments->create(array(
                       "amount" => $amount,
                       "method" => $method,
-                      "description" => "FF2018 " . $code,
+                      "description" => "FF2019 " . $code,
                       "redirectUrl" => "{$protocol}://{$hostname}/redirect?raffle={$raffle}",
                       "metadata" => array("raffle" => $raffle,)
                     ));
@@ -204,13 +202,13 @@ function updatePaymentId($mysqli, $paymentid, $email) {
         $mysqli->real_escape_string($email)));
     if( $sqlresult === FALSE) {
         return FALSE;
-    } 
+    }
     return TRUE;
 }
 
 function hasPaid($mysqli, $email) {
     global $mollie, $current_table;
-    $sqlresult = $mysqli->query(sprintf("SELECT transactionid FROM $current_table 
+    $sqlresult = $mysqli->query(sprintf("SELECT transactionid FROM $current_table
         WHERE `email`='%s';",$mysqli->real_escape_string($email)));
     if($sqlresult === FALSE) {
         //log error
@@ -249,11 +247,11 @@ function addError($value) {
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-13 col-sm-10"> 
+                    <div class="col-xs-13 col-sm-10">
                         <div class="form-intro-text">
-                            <h1>Deelnemen Familiar Forest 2018 : Kleurenrevolutie</h1>
-                            <p>Familiar Forest vindt plaats op 8 & 9 september 2018. Je kan via dit formulier een kaartje kopen tot en met 27 juli 2018.</p>
-                            <p>Deelname aan Familiar Forest kost 130 euro. We hebben ervoor gekozen om de transactiekosten niet hierin te verwerken, omdat niet alle betaalmethodes dezelfde kosten hebben. Hierdoor is het voor ons makkelijker om een betrouwbare begroting te maken.</p>
+                            <h1>Deelnemen Familiar Forest 2019 : evolutie van de homo familiaris</h1>
+                            <p>Familiar Forest vindt plaats op 7 & 8 september 2019. Je kan via dit formulier een kaartje kopen tot en met 2 juni 2019.</p>
+                            <p>Deelname aan Familiar Forest kost 147,50 euro. We hebben ervoor gekozen om de transactiekosten niet hierin te verwerken, omdat niet alle betaalmethodes dezelfde kosten hebben. Hierdoor is het voor ons makkelijker om een betrouwbare begroting te maken.</p>
                             <p>Het kan altijd zo zijn dat je onverhoopt toch niet meer naar Familiar Forest kan komen. We raden je daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering.</p>
                         </div>
                         <?php
@@ -312,7 +310,7 @@ function addError($value) {
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 form-control-label" for="terms4">Vrijwilliger</label>
-                                
+
                                 <div class="col-sm-10">
                                     <div class="alert alert-warning">Deelname aan Familiar Forest betekent dat je jezelf aanmeldt als vrijwilliger bij Stichting Familiar Forest. Tijdens het weekend zal je nader te bepalen werkzaamheden uit gaan voeren, een vrijwilligersshift. Vanuit de organisatie wordt een werkbegeleider en aanspreekpunt aangewezen.</div>
                                     <div class="checkbox">
@@ -325,7 +323,7 @@ function addError($value) {
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 form-control-label">Kosten</label> 
+                                <label class="col-sm-2 form-control-label">Kosten</label>
                                 <div class="col-sm-10">
                                     <div class="alert alert-success">
                                         De onderstaande bedragen zijn op basis van onze begroting voor Familiar Forest. De kans bestaat dat uitgaven afwijken van de hieronder genoemde bedragen.

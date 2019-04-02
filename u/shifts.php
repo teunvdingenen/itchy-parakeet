@@ -21,8 +21,8 @@ if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == P
 //$tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
 
 $nrrequired = $name = $taskselect = $returnVal = $startdate_output = $enddate_output = "";
-$startdate = "Friday, 09/09/2018 11:00";
-$enddate = "Friday, 09/09/2018 13:00";
+$startdate = "Friday, 07/09/2019 11:00";
+$enddate = "Friday, 08/09/2019 13:00";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
@@ -65,7 +65,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         addError("Geen einddatum/tijd opgegeven");
     }
     if( $returnVal == "" ) {
-        $sqlresult = $mysqli->query(sprintf("INSERT INTO `shifts` (`name`, `task`, `startdate`, `enddate`, `nrrequired`) VALUES 
+        $sqlresult = $mysqli->query(sprintf("INSERT INTO `shifts` (`name`, `task`, `startdate`, `enddate`, `nrrequired`) VALUES
             ('%s','%s','%s','%s',%s);",
             $mysqli->real_escape_string($name),
             $mysqli->real_escape_string($task),
@@ -153,7 +153,7 @@ function addError($value) {
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-13 col-sm-10"> 
+                    <div class="col-xs-13 col-sm-10">
                         <?php echo $returnVal ?>
                         <table class='table table-striped table-bordered table-hover table-condensed'>
                             <thead>

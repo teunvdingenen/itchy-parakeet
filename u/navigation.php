@@ -7,15 +7,15 @@ include_once "../functions.php";
 if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
     echo "<li><a class='' href='ik'>Mijn gegevens</a></li>";
-    echo "<li><a class='menulink' href='kleuren'>Familiar Forest 2018 : Kleurenrevolutie</a></li>";
+    echo "<li><a class='menulink' href='evolutie'>Familiar Forest 2019</a></li>";
     if( !add_buy($user_email) && !add_ticket($user_email) ) {
-        echo "<li><a class='menulink' href='signup'>Inschrijven</a></li>";
+        //echo "<li><a class='menulink' href='signup'>Inschrijven</a></li>";
     }
     if( add_buy($user_email) ) {
         echo "<li><a class='menulink' href='deelname'>Deelname</a></li>";
     }
     if( add_swap($user_email) ) {
-      //  echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";    
+      //  echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";
     }
     if( add_ticket($user_email) ) {
         echo "<li><a class='menulink' href='info'>Reis Info</a></li>";

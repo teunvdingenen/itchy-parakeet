@@ -28,7 +28,7 @@ if( !$result || $result->num_rows != 1 ) {
     $received = true;
 }
 
-if($received) { 
+if($received) {
     $row = $result->fetch_array(MYSQLI_ASSOC);
     $firstname = $row['firstname'];
     $email = $row['email'];
@@ -42,7 +42,7 @@ if($received) {
         $message .= "<p>Als je per ongeluk iets fout gedaan hebt kun het je nogmaals proberen door naar het <a href='u/deelname'>betalingscherm</a> te gaan.</p>";
         $message .= "<p>Bij zorgen, voor vragen of je wilt iets anders kwijt, dan kun je altijd mailen naar: ". $mailtolink.".</p>";
     } else {
-        $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou de revolutie aan te gaan!</p>";
+        $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou de het onderzoek aan te gaan!</p>";
         $message .= "<p>Ter bevestiging ontvang je ook nog een email met wat aanvullende gegevens.</p>";
         $message .= "<p>Als je zorgen, vragen of je wilt iets anders kwijt kun je altijd mailen naar: ". $mailtolink.".</p>";
     }
@@ -101,7 +101,7 @@ function get_paid($mysqli, $email) {
         <?php include("header.php"); ?>
             <div class="container">
                 <div class="jumbotron">
-                    <h2>Familiar Forest 2018 : Kleurenrevolutie</h2>
+                    <h2>Familiar Forest 2019 : evolutie van de homo familiaris</h2>
                     <p class="lead">
                         Lieve <? echo $firstname ?>,
                     </p>

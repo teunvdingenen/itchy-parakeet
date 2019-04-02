@@ -7,6 +7,7 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
     header('Location: oops.php');
 }
 
+header('Location: oops.php');
 date_default_timezone_set('Europe/Amsterdam');
 
 $signupround = 1;
@@ -64,7 +65,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $act1type = "";
     }
-    
+
     if( !empty($_POST["act1desc"])) {
         $act1desc = test_input($_POST["act1desc"]);
     } else {
@@ -85,7 +86,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
 
     if( !empty($_POST["question"])) {
         $question = test_input($_POST["question"]);
-        
+
     } else {
         $question = "";
     }
@@ -179,7 +180,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
             $query = "";
             $signupdate = date( 'Y-m-d H:i:s');
             $task = '';
-            if( $is_act ) { 
+            if( $is_act ) {
                 $task = 'act';
             }
             if( $sqlresult->num_rows == 0 ) {
@@ -282,7 +283,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         //this is ok
     }
-} 
+}
 
 function addError($value) {
     global $returnVal;
@@ -302,23 +303,23 @@ function addError($value) {
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                 <?php include("navigation.php");?>
-                <div class="col-xs-13 col-sm-10">  
+                <div class="col-xs-13 col-sm-10">
                 <div class="form-intro-text">
-                <h1>Familiar Forest 2018 : Kleurenrevolutie</h1>
+                <h1>Familiar Forest 2019 : evolutie van de homo familiaris</h1>
                 <p class="lead">
-                    8 & 9 september 2018.
+                    7 & 8 september 2019.
                 </p>
                 <p>
-                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 12 juli 2018 je antwoorden wijzigen. Pas op 13 juli 2018 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
+                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 9 mei 2019 je antwoorden wijzigen. Pas op 10 mei 2019 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
             </div>
             <?php echo $returnVal; ?>
 
             <form id="signup-form" method="post" action="<?php echo substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4);?>" target="_top">
-                
+
                 <fieldset>
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="motivation">Waarom wil je naar Familiar Forest 2018?</label>
+                        <label class="col-sm-2 form-control-label" for="motivation">Waarom wil je naar Familiar Forest 2019?</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="motivation" id="motivation" cols="60" rows="4"><?php echo $motivation; ?></textarea>
                             <label for="motivation">Max 1024 karakters</label>
@@ -326,7 +327,7 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-sm-2 form-control-label" for="question">Wat is je favorite kleur? Waarom? Gebruik hem in een zin met nog twee andere kleuren en noem een liedje waarin de kleur voorkomt die niet Paint it black is van de Rolling Stones.</label>
+                        <label class="col-sm-2 form-control-label" for="question">Wat is het allervetste wat je ooit in een museum hebt gezien? Waarom? Gebruik bij je motivatie een moment uit het verleden en de toekomst.</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" name="question" id="question" cols="60" rows="4"><?php echo $question; ?></textarea>
                             <label for="question">Max 1024 karakters</label>
@@ -344,7 +345,7 @@ function addError($value) {
                             </div>
                             <div id='partnerdefault' class="alert alert-success">
                                 Je kunt voor deze editie wederom je beste vriend, vriendin, partner, kind of oma opgeven waarmee jij naar Familiar wilt! <br>
-                                Je lieveling moet het email adres invullen waarmee jij je registreert hebt en jij het emailadres waarmee jouw lieveling zich inschrijft. Als deze niet overeen komen, kunnen wij jullie niet aan elkaar linken. <strong>Let op: Als jullie van deze optie gebruik maken worden 
+                                Je lieveling moet het email adres invullen waarmee jij je registreert hebt en jij het emailadres waarmee jouw lieveling zich inschrijft. Als deze niet overeen komen, kunnen wij jullie niet aan elkaar linken. <strong>Let op: Als jullie van deze optie gebruik maken worden
                                     jullie samen ingeloot <i>of beide uitgeloot.</i> </strong>
                             </div>
                             <div id='partnersuccess' class="alert alert-success">
@@ -359,7 +360,7 @@ function addError($value) {
                         </div>
                     </div>
                 </fieldset>
-                        
+
                 <fieldset>
                     <legend>Hoe wil jij bijdragen aan het Familiar?</legend>
                     <div class="form-group row">
@@ -424,7 +425,7 @@ function addError($value) {
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="contrib1desc">Vertel iets over je ervaring hierin</label>
                         <div class="col-sm-10">
@@ -479,7 +480,7 @@ function addError($value) {
                         </div>
                     </div>
                 </fieldset>
-                    
+
                 <fieldset>
                     <legend>Voorwaarden</legend>
                     <div class="form-group row">
@@ -497,7 +498,7 @@ function addError($value) {
                     </div>
 
                     <div class="form-group row">
-                        
+
                         <label class="col-sm-2 form-control-label" for="terms1">Verzekering</label>
                         <div class="col-sm-10">
                             <div class="alert alert-warning">Familiar Forest is een reis. De locatie verplicht de deelnemer om zich te kunnen identificeren en een aansprakelijkheidsverzekerd te hebben.</div>
@@ -540,7 +541,7 @@ function addError($value) {
                     </div>
                 </fieldset>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">
-                    <?php if( !$is_save ) { 
+                    <?php if( !$is_save ) {
                         echo '<i class="fa fa-paper-plane"></i> Versturen';
                     } else {
                         echo '<i class="glyphicon glyphicon-floppy-disk"></i> Opslaan';

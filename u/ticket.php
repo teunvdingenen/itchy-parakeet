@@ -12,7 +12,7 @@ $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 $result = $mysqli->query(sprintf("SELECT p.firstname, p.lastname, p.birthdate, s.rafflecode, s.transactionid, s.ticket, s.motivation, s.question from person p join $current_table s on p.email = s.email where p.email = '%s' and s.complete = 1",$mysqli->real_escape_string($user_email)));
 $mysqli->close();
 if( !$result || $result->num_rows != 1 ) {
-    header('Location: kleuren');
+    header('Location: evolutie');
 }
 $row = $result->fetch_array(MYSQLI_ASSOC);
 
@@ -31,10 +31,10 @@ $row = $result->fetch_array(MYSQLI_ASSOC);
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-13 col-sm-10"> 
+                    <div class="col-xs-13 col-sm-10">
                         <div class="jumbotron">
-                            <h2>Familiar Forest 2018 : Kleurenrevolutie</h2>
-                            <p class='lead'>8 & 9 september 2018</p>
+                            <h2>Familiar Forest 2019 : evolutie van de homo familiaris</h2>
+                            <p class='lead'>7 & 8 september 2019</p>
                             <p>Hieronder vind je alle informatie die je nodig hebt om deel te nemen aan Familiar Forest. Omdat je natuurlijk je laptop, telefoon, tablet en andere schermen thuis laat wil je dit printen. Gelukkig bieden we daarvoor een <a href='ticketpdf' target='_blank'>PDF</a> aan.
                             <p>
                                 <table class='table table-striped table-bordered table-hover table-condensed'>

@@ -127,7 +127,7 @@ try
         if( !send_confirmation($mysqli, $payment_id) ) {
             email_error("Failed to send confirmation for payment: ".$payment_id);
         }
-    } else { 
+    } else {
         database_setpayed($mysqli, $payment_id, 0);
     }
     $mysqli->close();
@@ -151,8 +151,8 @@ function send_confirmation($mysqli, $payment_id) {
     $ticketurl = "http://stichtingfamiliarforest.nl/u/ticket.php?ticket=".$row['ticket'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen een revolutie aan kunnen gaan!</p>";
-    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar houd alvast 8 en 9 september vrij in je agenda. Houd onze <a href='https://www.facebook.com/events/432339810535676/'>Facebook</a> in de gaten voor meer nieuws.</p>";
+    $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen op onderzoek uit kunnen gaan!</p>";
+    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar houd alvast 7 en 8 september vrij in je agenda. Houd onze <a href='https://www.facebook.com/events/432339810535676/'>Facebook</a> in de gaten voor meer nieuws.</p>";
     $content .= "<p>Bewaar ook de volgende informatie nog even goed:</p>";
     $content .= "<p>Je deelname code is: " . $row['rafflecode'] . "</p>";
     $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";
@@ -162,7 +162,7 @@ function send_confirmation($mysqli, $payment_id) {
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Forest 2018 Deelname bevestiging", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2019 Deelname bevestiging", $content);
     return true;
 }
 
@@ -185,7 +185,7 @@ function send_confirmation_refund($mysqli, $payment_id) {
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Forest 2018 : Kleurenrevolutie ticketruil bevestiging", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2019 ticketruil bevestiging", $content);
     return true;
 }
 
@@ -208,13 +208,13 @@ function send_confirmation_refund_crew($mysqli, $payment_id) {
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Forest 2018 : Kleurenrevolutie Ticketgeld", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2019 Ticketgeld", $content);
     return true;
 }
 
 function isCrewTicket($mysqli, $id) {
     global $current_table;
-    $sqlresult = $mysqli->query(sprintf("SELECT task FROM $current_table WHERE transactionid = '%s'", 
+    $sqlresult = $mysqli->query(sprintf("SELECT task FROM $current_table WHERE transactionid = '%s'",
         $mysqli->real_escape_string($id)));
     if( $sqlresult === FALSE) {
         //log error

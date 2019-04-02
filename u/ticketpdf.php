@@ -21,7 +21,7 @@ class PDF extends FPDF
         // Move to the right
         $this->Cell(80);
         // Title
-        $this->Cell(30,10,'Familiar Forest 2018 : Kleurenrevolutie',0,0,'C');
+        $this->Cell(30,10,'Familiar Forest 2019 : evolutie van de homo familiaris',0,0,'C');
         // Line break
         $this->Ln(20);
     }

@@ -23,7 +23,7 @@ function store_user_token($username, $token) {
     $now = new DateTime();
     $oneweek = $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s');
     $now = new DateTime();
-    $query = sprintf("UPDATE `users` u SET u.token = '%s', u.expire = '%s', u.lastlogin = '%s' WHERE u.email = '%s'", 
+    $query = sprintf("UPDATE `users` u SET u.token = '%s', u.expire = '%s', u.lastlogin = '%s' WHERE u.email = '%s'",
       $mysqli->real_escape_string($token),
       $oneweek,
       $now->format('Y-m-d H:i:s'),
@@ -76,7 +76,7 @@ function login($username, $remember) {
       $mysqli->close();
       return false;
     }
-    $query = sprintf("SELECT `permissions` FROM users WHERE `email` = '%s'", 
+    $query = sprintf("SELECT `permissions` FROM users WHERE `email` = '%s'",
       $mysqli->real_escape_string($username));
     $result = $mysqli->query($query);
     if( $result === FALSE ) {
@@ -87,7 +87,7 @@ function login($username, $remember) {
       return FALSE;
     }
     $permissions = $result->fetch_array(MYSQLI_ASSOC)['permissions'];
-    $query = sprintf("SELECT `firstname` FROM person WHERE `email` = '%s'", 
+    $query = sprintf("SELECT `firstname` FROM person WHERE `email` = '%s'",
       $mysqli->real_escape_string($username));
     $result = $mysqli->query($query);
     if( $result === FALSE ) {
@@ -116,7 +116,7 @@ function logout($user) {
     return false;
   } else {
     $now = new DateTime();
-    $query = sprintf("UPDATE `users` u SET u.expire = '%s' WHERE u.email = '%s'", 
+    $query = sprintf("UPDATE `users` u SET u.expire = '%s' WHERE u.email = '%s'",
       $now->format('Y-m-d H:i:s'),
       $mysqli->real_escape_string($user));
     $result = $mysqli->query($query);
@@ -153,7 +153,7 @@ function rememberMe() {
 }
 
 function email_error($message) {
-    send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);  
+    send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);
 }
 
 function test_input($data) {
@@ -213,7 +213,7 @@ function get_permissions($username) {
   if( $mysqli->connect_errno ) {
     return false;
   } else {
-    $query = sprintf("SELECT `permissions` FROM users WHERE `email` = '%s'", 
+    $query = sprintf("SELECT `permissions` FROM users WHERE `email` = '%s'",
       $mysqli->real_escape_string($username));
     $result = $mysqli->query($query);
     if( $result === FALSE ) {
@@ -331,11 +331,11 @@ function translate_contrib($type) {
     return "Keuken";
   } else if( $type == "workshop" ) {
     return "Workshop of Cursus";
-  } else if( $type == "game" ) { 
+  } else if( $type == "game" ) {
     return "Ervaring of Game";
   } else if ( $type == "lecture" ) {
     return "Lezing";
-  } else if( $type == "other" ) { 
+  } else if( $type == "other" ) {
     return "Anders";
   } else if ( $type == "perform" ) {
     return "Performance";
@@ -393,6 +393,8 @@ function translate_edition($edition) {
     return "Familiar Forest 2017";
   } else if ( $edition == "fff2018") {
     return "Familiar Forest 2018";
+  } else if ( $edition == "fff2019") {
+    return "Familiar Forest 2019: evolutie van de homo familiaris"
   } else if( $edition == "" ) {
     return "";
   } else {
@@ -401,7 +403,7 @@ function translate_edition($edition) {
 }
 
 function translate_gender($gender) {
-  if( $gender == "male" ) { 
+  if( $gender == "male" ) {
     return "Jongeman";
   } else if( $gender == "female" ) {
     return "Jongedame";
@@ -413,21 +415,17 @@ function translate_gender($gender) {
 function translate_task($task) {
   if( $task == "" ) {
     return "Niet ingedeeld: ".$task;
-  } else if( $task == "keuken") { 
-    return "Voedselverschaffing";
+  } else if( $task == "keuken") {
     return "Keuken";
   } else if( $task == "bar" ) {
-    return "Hydratatie";
     return "Bar";
   } else if( $task == "other" ) {
     return "Anders";
   } else if ($task == "iv" ) {
-    return "Hygiene";
     return "Interieur Verzorging";
   } else if ( $task == "thee") {
     return "Theetent";
   } else if( $task == "camping") {
-    return "Kiosk";
     return "Campingwinkel";
   } else if ($task == "afb" ) {
     return "Afbouw";
@@ -452,17 +450,16 @@ function translate_task($task) {
   } else if( $task == "other_act") {
     return "Act Overig";
   } else if( $task == "jip" ) {
-    return "Huigs hoekje";
+    return "Het hoekje";
   } else if( $task == "silent" ) {
     return "Silent Disco";
-  } else if( $task == "vuur") { 
+  } else if( $task == "vuur") {
     return "Vuurmeester";
   } else if( $task == "acteren") {
     return "Acteren";
   } else if( $task == "techniek") {
     return "Electra";
   } else if( $task == "reserve") {
-    return "Reservist";
     return "Reserve";
   }
   return "Onbekend: ".$task;

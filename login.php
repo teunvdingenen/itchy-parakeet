@@ -1,4 +1,4 @@
-<?php session_start(); 
+<?php session_start();
 $username=$password=$rememberme=$returnVal="";
 $error = FALSE;
 include "initialize.php";
@@ -9,7 +9,7 @@ rememberMe();
 
 $user_permissions = $_SESSION['permissions'];
 if( ($user_permissions & PERMISSION_PARTICIPANT) == PERMISSION_PARTICIPANT ) {
-    header('Location: u/kleuren');
+    header('Location: u/evolutie');
 }
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -40,14 +40,14 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         if( $mysqli->connect_errno ) {
             $returnVal = "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error. " ";
         } else {
-            $result = $mysqli->query("SELECT * FROM `users` WHERE 
+            $result = $mysqli->query("SELECT * FROM `users` WHERE
                 (`email` = '$username')");
             if( $result && $result->num_rows == 1 ) {
                 $row = $result->fetch_array(MYSQLI_ASSOC);
                 $db_hash = $row["password"];
                 if( password_verify($password, $db_hash)) {
                     if( login($username, TRUE) ) {
-                        header('Location: u/kleuren');
+                        header('Location: u/evolutie');
                     }
                 } else {
                     $error = TRUE;
@@ -80,7 +80,7 @@ if($error) {
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" media="all"
-            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>        
+            href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css"/>
         <link href="css/bootstrap-social.css" rel="stylesheet">
         <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     </head>
