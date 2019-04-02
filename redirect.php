@@ -42,13 +42,13 @@ if($received) {
         $message .= "<p>Als je per ongeluk iets fout gedaan hebt kun het je nogmaals proberen door naar het <a href='u/deelname'>betalingscherm</a> te gaan.</p>";
         $message .= "<p>Bij zorgen, voor vragen of je wilt iets anders kwijt, dan kun je altijd mailen naar: ". $mailtolink.".</p>";
     } else {
-        $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou de toekomst te gaan ontdekken!</p>";
+        $message = "<p>De betaling is helemaal rond! We hebben erg veel zin om met jou de revolutie aan te gaan!</p>";
         $message .= "<p>Ter bevestiging ontvang je ook nog een email met wat aanvullende gegevens.</p>";
-        $message .= "<p>Als je zorgen, vragen of je wilt iets anders kwijt wilt kun je altijd mailen naar: ". $mailtolink.".</p>";
+        $message .= "<p>Als je zorgen, vragen of je wilt iets anders kwijt kun je altijd mailen naar: ". $mailtolink.".</p>";
     }
     $message .= "<p>De high fives zijn gratis, de knuffels oprecht en de liefde oneindig,<br><br>Familiar Forest</p>";
 } else {
-    header("Location: login");
+    $message = "<p>We hebben je betalingsgegevens niet kunnen achterhalen. Als je het idee hebt dat er iets fout is gegaan, stuur dan even een mailtje naar: ".$mailtolink."</p>";
 }
 
 $mysqli->close();
@@ -101,7 +101,7 @@ function get_paid($mysqli, $email) {
         <?php include("header.php"); ?>
             <div class="container">
                 <div class="jumbotron">
-                    <h2>Back to the FFFuture: '95</h2>
+                    <h2>Familiar Forest 2018 : Kleurenrevolutie</h2>
                     <p class="lead">
                         Lieve <? echo $firstname ?>,
                     </p>

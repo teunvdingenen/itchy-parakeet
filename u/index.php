@@ -1,10 +1,7 @@
 <?php
-include_once "../model/loginmanager.php";
+include "../functions.php";
 
-model\LoginManager::Instance()->isLoggedIn();
-if( model\LoginManager::Instance()->getPermissions() != PERMISSION_PARTICIPANT ) {
-    header('Location: oops.php');
-}
+include("checklogin.php");
 
 ?>
 

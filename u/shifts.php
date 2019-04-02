@@ -11,9 +11,9 @@ if( !isset($_GET['t'])) {
     $team = $_GET['t'];
 }
 if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == PERMISSION_VOLUNTEERS ) {
-    $tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb", "jip", "silent", "vuur");
+    $tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb", "jip", "silent", "vuur", "techniek", "reserve");
 } else if ( $team == 'acts' && ( $user_permissions & PERMISSION_ACTS) == PERMISSION_ACTS ) {
-    $tasks = array("act", "game", "schmink", "other_act", "perform", "install", "workshop");
+    $tasks = array("act", "game", "schmink", "other_act", "perform", "install", "workshop", "acteren");
 } else {
     header('Location: oops');
 }
@@ -21,8 +21,8 @@ if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == P
 //$tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afbouw", "act", "game", "schmink", "other_act", "perform", "install", "crew");
 
 $nrrequired = $name = $taskselect = $returnVal = $startdate_output = $enddate_output = "";
-$startdate = "Friday, 09/09/2017 11:00";
-$enddate = "Friday, 09/09/2017 13:00";
+$startdate = "Friday, 09/09/2018 11:00";
+$enddate = "Friday, 09/09/2018 13:00";
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 

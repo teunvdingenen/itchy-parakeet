@@ -18,8 +18,8 @@ include("checklogin.php");
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-13 col-sm-10"> 
-                        <img class="img-responsive" src="img/future.png"/>
+                    <div class="col-xs-13 col-sm-10">
+                        <img src="img/infomail.jpg"/>
                     </div>
                 </div>
             </div>

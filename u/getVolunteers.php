@@ -4,7 +4,7 @@ include "../functions.php";
 
 include("checklogin.php");
 
-$tasks_act = array("act", "game", "schmink", "other_act", "perform", "install", "workshop");
+$tasks_act = array("act", "game", "schmink", "other_act", "perform", "install", "workshop", "acteren");
 $tasks_vol = array("keuken", "bar", "other", "iv", "thee", "camping", "afb");
 $default_task = '';
 if( ($user_permissions & PERMISSION_VOLUNTEERS) != PERMISSION_VOLUNTEERS && 

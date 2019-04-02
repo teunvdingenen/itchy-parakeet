@@ -1,24 +1,39 @@
 <?php
-include_once "loginmanager.php";
-include_once "signup.php";
-model\LoginManager::Instance()->isLoggedIn();
-if( model\LoginManager::Instance()->getPermissions() & PERMISSION_PARICIPANT != PERMISSION_PARICIPANT ) {
+include "../functions.php";
+
+include("checklogin.php");
+
+if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
     echo '{"success": false}';
-    return;
+    exit;
 }
 
 if( !isset($_POST['email'])) {
     echo '{"success": false}';
     return;
 }
+$mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+if( $mysqli->connect_errno ) {
+    echo '{"success": false}';
+    $mysqli->close();
+    return;
+}
 
 $email = $_POST['email'];
-$signup = model\Signup::findByPersonAndEvent(model\Person::findByEmail($email), model\Event::getCurrentEvent());
-if($signup == false) {
+
+$result = $mysqli->query( sprintf("SELECT partner FROM $current_table WHERE `email` = '%s';",
+        $mysqli->real_escape_string($email)));
+$mysqli->close();
+if( $result === FALSE ) {
+    echo '{"success": false}';
+    return;
+}
+if( $result->num_rows == 0 ) {
     echo '{"success": true, "status": 2}';
     return;
 }
-if( strcasecmp($signup->partner->email, model\LoginManager::Instance()->user->email) == 0 ) {
+$partner = mysqli_fetch_array($result,MYSQLI_ASSOC)['partner'];
+if( strcasecmp($partner, $user_email) == 0 ) {
     echo '{"success": true, "status": 0}';
 } else {
     echo '{"success": true, "status": 1}';

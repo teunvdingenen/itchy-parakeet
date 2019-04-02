@@ -1,6 +1,8 @@
 <?php
-include_once '../model/loginmanager.php';
-model\LoginManager::Instance()->isLoggedIn();
+include "../functions.php";
+
+include("checklogin.php");
+
 ?>
 
 <!doctype html>

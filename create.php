@@ -1,20 +1,8 @@
 <?php session_start();
-use model\User;
-use model\Person;
-use model\PasswordReset;
-use model\Event;
-use model\PersonEvent;
-use model\Utilities;
 include_once "functions.php";
-include "model/user.php";
-include "model/person.php";
-include "model/passwordreset.php";
-include "model/event.php";
-include "model/personevent.php";
-include "model/util.php";
 date_default_timezone_set('Europe/Amsterdam');
 $returnVal = "";
-$firstname = $lastname = $birthdate = $inputdate = $street = $postal = $gender = $email = $phone = $city = $familiar = $allow_email = ""; 
+$firstname = $lastname = $birthdate = $inputdate = $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = $email_future = ""; 
 $editions = array();
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -37,14 +25,16 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         addError("Je hebt je woonplaats niet opgegeven.");
     }
     if( !empty($_POST["inputdate"]) ) {
-        $birthdate_str = test_input($_POST["inputdate"]);
-        $birthdate = DateTime::createFromFormat('d/m/Y', $birthdate_str);
-        if( $birthdate == FALSE ) {
-            if( ($timestamp = strtotime($birthdate_str)) == FALSE ) {
+        $birthdate = test_input($_POST["inputdate"]);
+        $date = DateTime::createFromFormat('d/m/Y', $birthdate);
+        if( $date == FALSE ) {
+            if( ($timestamp = strtotime($birthdate)) == FALSE ) {
                 addError("De opgegeven geboortedatum klopt niet.");
             } else {
-                $birthdate = new DateTime(date( 'Y-m-d H:i:s', $timestamp ));
+                $birthdate = date( 'Y-m-d H:i:s', $timestamp );
             }
+        } else {
+            $birthdate = $date->format('Y-m-d H:i:s');
         }
     } else {
         addError("Je hebt je geboortedatum niet opgegeven");
@@ -70,63 +60,109 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $phone = "";
         addError("Je hebt geen telefoonnummer opgegeven");
     }
+    $nr_editions = 0;
+    $editions = isset($_POST['editions']) ? $_POST['editions'] : array();
+    foreach($editions as $edition) {
+        $editions_str .= test_input($edition) . ",";
+        $nr_editions += 1;
+    }
 
     if( !empty($_POST["familiar"])) {
         $familiar = test_input($_POST["familiar"]);
     } else {
         $familiar = "";
     }
-    
-    if( !empty($_POST["allow_email"])) {
-        $allow_email = $_POST["allow_email"] == 'Y';
+
+    if( !empty($_POST["email_future"])) {
+        $email_future = test_input($_POST["email_future"]);
+    } else {
+        $email_future = "";
     }
-    
+
+    if( empty($_POST["privacy"]) || $_POST['privacy'] != 'J') {
+        addError("Je kunt niet een account aanmaken zonder onze privacyverklaring te accepteren.");
+    }
+
     if( $returnVal == "" ) {
-        if( User::exists($email) || Person::exists($email)) {
-            addError("Het lijkt erop dat je al een account hebt. Mocht dat niet zo zijn neem dan even contact met ons op via ".$emailtolink);
+        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+        $query = sprintf("SELECT 1 FROM `person` WHERE `email` = '%s'",
+            $mysqli->real_escape_string($email));
+        $result = $mysqli->query($query);
+        $query = sprintf("INSERT INTO `person` (`email`, `firstname`, `lastname`, `birthdate`, `gender`, `phone`, `city`, `familiar`, `editions`, `visits`, `email_future`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s')",
+            $mysqli->real_escape_string($email),
+            $mysqli->real_escape_string($firstname),
+            $mysqli->real_escape_string($lastname),
+            $mysqli->real_escape_string($birthdate),
+            $mysqli->real_escape_string($gender),
+            $mysqli->real_escape_string($phone),
+            $mysqli->real_escape_string($city),
+            substr($mysqli->real_escape_string($familiar),0,1024),
+            $mysqli->real_escape_string($editions_str),
+            $mysqli->real_escape_string($nr_editions),
+            $mysqli->real_escape_string($email_future));
+        if( !$mysqli->query($query) ) {
+            addError("We konden helaas je gegevens niet opslaan. Heb je al een account?");
         } else {
-            $date_now = new DateTime();
-            $user = new User();
-            $user->setValues($email, model\Utilities::generateRandomToken(128), model\Utilities::generateRandomToken(128), PERMISSION_PARTICIPANT, $date_now, $date_now);
-            $user->save();
-            $person = new Person();
-            $person->setValues($email, $firstname, $lastname, $birthdate, $street, $postal, $city, $gender, $phone, $familiar, $allow_email);
-            $person->save();
-            forEach($editions as $edition) {
-                $event = Event::findByShorthand($edition);
-                if( $event != FALSE ) {
-                    $personevent = new PersonEvent();
-                    $personevent->setValues($event, $person);
-                    $personevent->save();
+            $result = $mysqli->query(sprintf("SELECT 1 FROM `users` WHERE `email` = '%s'",
+                $mysqli->real_escape_string($email)));
+            if( !$result ) {
+                addError("Het is niet gelukt om een account voor je aan te maken. Als het probleem aanhoud kun je het beste even mail naar: ".$mailtolink);
+                email_error("Error insert into users: ".$mysqli->error);
+            } else if( $result->num_rows == 1 ) {
+                addError("Volgens onze gegevens heb je al een account. Je kunt inloggen op onze <a href='login'>loginpagina</a>.");
+            } else {
+                $user_add_query = sprintf(
+                    "INSERT INTO `users` (`email`, `permissions`) VALUES ('%s', '%s')",
+                    $mysqli->real_escape_string($email),
+                    $mysqli->real_escape_string(PERMISSION_PARTICIPANT)
+                );
+                $result = $mysqli->query($user_add_query);
+
+                $query = sprintf("DELETE FROM `pwreset` WHERE `email` = '%s'",
+                $mysqli->real_escape_string($email));
+                if( !$mysqli->query($query) ) {
+                    //email_error("Error removing from pwreset ".$mysqli->error);
+                }
+                $query = sprintf("SELECT * FROM `person` WHERE `email` = '%s'",
+                    $mysqli->real_escape_string($email));
+                $sqlresult = $mysqli->query($query);
+                if( $sqlresult === FALSE ) {
+                    addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
+                    email_error("Error looking for person: ".$mysqli->error);
+                } else {
+                    $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+                    $fullname = $row['firstname']." ".$row['lastname'];
+                    $token = generateRandomToken(128);
+                    $now = new DateTime();
+                    $pw_reset_query = sprintf(
+                        "INSERT INTO `pwreset` (`email`, `token`, `expire`) VALUES ('%s', '%s', '%s')",
+                        $mysqli->real_escape_string($email),
+                        $mysqli->real_escape_string($token),
+                        $now->add(new DateInterval('P1W'))->format('Y-m-d H:i:s')
+                    );
+                    $link = "https://stichtingfamiliarforest.nl/pw?t=".$token;
+                    if( $mysqli->query($pw_reset_query) ) {
+                        $subject = "Familiar Forest wachtwoord";
+                        $content = "<html>".get_email_header();
+                        $content .= "<p>Lieve ".$row['firstname'].",</p>";
+                        $content .= "<p>Je kunt een wachtwoord instellen door op de onderstaande link te klikken, of deze in de adresbalk van je browser te plakken:</p>";
+                        $content .= "<p><a href='".$link."'>".$link."</a>";
+                        $content .= "<p>De link blijft een week geldig.</p>";
+                        $content .= "<p>Je ontvangt deze email omdat je een account hebt aangemaakt bij Familiar Forest. Weet je hier niets van? Stuur dan even een reply op deze email.</p>";
+                        $content .= get_email_footer();
+                        $content .= "</html>";
+                        send_mail($email, $fullname, $subject, $content);
+                        $returnVal .= '<div class="alert alert-success" role="alert">Gelukt! We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
+                        $firstname = $lastname = $birthdate = $inputdate= $gender = $email = $phone = $city = $familiar = $editions_str = $nr_editions = "";
+                        $editions = array(); 
+                    } else {
+                        addError("Helaas konden we op dit moment niet een wachtwoord voor je instellen. Probeer het later nog eens of mail naar: ".$mailtolink);
+                        email_error("Error resetting password on create: ".$mysqli->error);
+                    }
                 }
             }
-            $passwordreset = null;
-            $expire = new DateTime();
-            if( PasswordReset::exists($email)) {
-              $passwordreset = new PasswordReset();
-              $passwordreset = $passwordreset->findByEmail($email);
-              $passwordreset->token = Utilities::generateRandomToken(128);
-              $passwordreset->expire = $expire->add("P1W");
-            } else {
-              $passwordreset = new PasswordReset();
-              $passwordreset->setValues($user, Utilities::generateRandomToken(128), $expire->add(new DateInterval("P1W")));
-            }
-            $passwordreset->save();
-            $link = "https://stichtingfamiliarforest.nl/pw?t=".$passwordreset->token;
-            $subject = "Familiar Forest wachtwoord";
-            $content = "<html>".get_email_header();
-            $content .= "<p>Lieve ".$person->firstname.",</p>";
-            $content .= "<p>Je kunt een wachtwoord instellen door op de onderstaande link te klikken, of deze in de adresbalk van je browser te plakken:</p>";
-            $content .= "<p><a href='".$link."'>".$link."</a>";
-            $content .= "<p>De link blijft een week geldig.</p>";
-            $content .= "<p>Je ontvangt deze email omdat je een account hebt aangemaakt bij Familiar Forest. Weet je hier niets van? Stuur dan even een reply op deze email.</p>";
-            $content .= get_email_footer();
-            $content .= "</html>";
-            //send_mail($person->email, $person->getFullName(), $subject, $content);
-            $returnVal .= '<div class="alert alert-success" role="alert">Gelukt! We hebben je een email verstuurd waarmee je een wachtwoord kunt instellen.</div>';
-            $firstname = $lastname = $birthdate = $gender = $email = $phone = $city = $familiar = $allow_email = "";
-            $editions = array(); 
         }
+        $mysqli->close();
     } else {
         //try again..
     }
@@ -212,13 +248,13 @@ function addError($value) {
                     <div class="col-sm-10">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="male" value="M" <?php if($gender == "M") echo( "checked"); ?>>
+                                <input type="radio" name="gender" id="male" value="male" <?php if($gender == "male") echo( "checked"); ?>>
                                 Jongeman
                             </label>
                         </div>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" id="female" value="F" <?php if($gender == "F") echo( "checked"); ?> >
+                                <input type="radio" name="gender" id="female" value="female" <?php if($gender == "female") echo( "checked"); ?> >
                                 Jongedame
                             </label>
                         </div>
@@ -332,12 +368,23 @@ function addError($value) {
                     </div>
                 </fieldset>
                 <div class="form-group row">
-                    <label class="col-sm-2">Email Instellingen</label>
+                    <label class="col-sm-2 form-control-label" for="email">Email instellingen</label>
                     <div class="col-sm-10">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="allow_email" id="male" value="Y" <?php if($allow_email) echo( "checked"); ?>>
-                                Ik wil graag email ontvangen over toekomstige evenementen van Stichting Familiar Forest.
+                                <input class="checkbox" type="checkbox" name="email_future" value="J">
+                                Ik wil graag op de hoogte worden gehouden over toekomstige edities van Familiar Forest.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 form-control-label" for="email">Voorwaarden</label>
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input class="checkbox" type="checkbox" name="privacy" value="J">
+                                Ik ga akkoord met de <a href='privacy' target='_blank'>privacyverklaring</a> van Stichting Familiar Forest.
                             </label>
                         </div>
                     </div>

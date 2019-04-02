@@ -12,10 +12,10 @@ if( !isset($_GET['t'])) {
     $team = $_GET['t'];
 }
 if( $team == 'vrijwilligers' && ($user_permissions & PERMISSION_VOLUNTEERS) == PERMISSION_VOLUNTEERS ) {
-    $tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb", "jip", "silent", "vuur");
+    $tasks = array("keuken", "bar", "other", "iv", "thee", "camping", "afb", "jip", "silent", "vuur", "reserve");
 } else if ( $team == 'acts' && ( $user_permissions & PERMISSION_ACTS) == PERMISSION_ACTS ) {
     $is_acts = true;
-    $tasks = array("act", "game", "schmink", "other_act", "perform", "install","workshop");
+    $tasks = array("act", "game", "schmink", "other_act", "perform", "install","workshop", "acteren");
 } else {
     header('Location: oops');
 }

@@ -16,8 +16,6 @@
         <!-- Bootstrap social CSS -->
         <link href="css/bootstrap-social.css" rel="stylesheet">
         <link href="fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
-
         <!-- Custom styles for this template -->
         <link href="css/main.css" rel="stylesheet">
 
@@ -34,50 +32,26 @@
 
         <!-- Add your site or application content here -->
         <?php include("header.php"); ?>
+
         <!--parallax 1 -->
         <section class="bg-1">
             <!--<p class="lead"></p>-->
         </section>
         <!--/parallax 1-->
         <div class="container">
-            <hr class="">
-                <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-3">
-                        <h3 class="">Participatie</h3>
-                        <div>Stichting Familiar Forest organiseert evenementen waarbij iedereen zijn steentje bij kan dragen. Co-creatie staat voorop en iedereen is deelnemer! Dit vertaalt zich niet alleen in kunstenaars, artiesten en muzikanten want er is voor iedereen plaats. Bijvoorbeeld op het gebied van gastvrijheid, koken, chaufferen, afwassen, opbouwen of afbouwen.</div>
-                    </div>
-                    <div class="col-md-3">
-                        <h3 class="">Veiligheid</h3>
-                        <div>Familiar Forest probeert een plaats neer te zetten waar je helemaal jezelf kan zijn. Los van conventies en met een eigen beeldtaal. Iedereen is welkom op een manier die je zelf kiest. Niets is te gek en alles is normaal.</div>
-                    </div>
-                    <div class="col-md-3">
-                        <h3 class="">Samen op reis</h3>
-                        <div>Familiar Forest is een reis. Iedereen vertrekt op hetzelfde moment per bus naar onze geheime locatie en vertrekt een dag later weer terug naar huis. Op deze manier kun je samen, op gelijke voet, het bos ontdekken.</div>
-                    </div>
-                    <div class="col-md-1"></div>
-                </div>
-            <!--/row-->
-            <hr class="">
-        </div>
-        <!--/container-->
-        <div class="divider"></div>
-        <section class="bg-2">
-            <div class="col-sm-10 col-sm-offset-1 text-center">
-                <h1 class=""></h1>
-            </div>
-        </section>
-        <div class="divider"></div>
-        <div class="container">
             <div class="row">
-                
-                <div class="col-md-12">
+                <div class="col-md-1"></div>
+                <div class="col-md-9 text-center jumbotron">
+                    <h3>Jij vraagt je af wat je hier doet, lees verder</h3>
+                    <p>Familiar Forest is een weekendje weg met je beste vrienden, vriendinnen, broertjes en zusjes. Het kan in eerste instantie misschien een sprong in het diepe lijken maar eenmaal gemaakt zul je vinden dat de val eindigt in een heerlijk warm bad.</p>
+                    <p>Bij Familiar Forest draagt iedereen iets bij. Je kunt helpen achter de bar, opbouwen, afbouwen, performances, zorgen voor muziek of interieur: voor iedereen kunnen we wel een taakje vinden. Op deze manier maken we samen het weekend en kunnen we met z'n allen trots zijn op het eindresultaat.</p>
+                    <p>Meedoen is simpel. Je maakt een account aan op onze website, na het inloggen schrijf je jezelf in voor de aankomende editie en duimen maar! We doen voor iedere editie twee keer een loting. Mocht je naam daaruit rollen kun je meteen een kaartje kopen. Mocht je beide keren achter het net vissen maak je nog wel kans op deelname! In de laatste weken voor ons weekendje weg hebben deelnemers de kans om hun kaartje te verkopen mochten ze onverhoopt niet mee kunnen. Dat geeft een aantal gelukkige dan nog een laatste kans om met de bus mee te gaan.</p>
+                    <p>Met je kaartje in de hand is het tijd om op reis te gaan. Je ontvangt vlak voor vertek nog informatie via de mail zoals vertrektijd, vertrekpunt en wat je allemaal te wachten staat. Je wordt met de bus naar locatie gebracht en aan het einde van het weekend ga je ook met de bus weer terug. Wat je in de tussentijd doet? Dat mag je helemaal zelf invullen en we vermoeden dat je onze hulp daar ook echt niet bij nodig hebt.</p>
                     <h3 class="text-center">De high fives zijn gratis, de knuffels oprecht en de liefde oneindig</h3>
                 </div>
-
+                <div class="col-md-1"></div>
             </div>
         </div>
-        <!--/container-->
         <div class="divider"></div>
         <!--parallax 2 -->
             <section class="bg-3 text-center">
@@ -88,7 +62,7 @@
         <div id="footer" class="">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <p class="text-muted">Foto's van <a target="_blank" href="http://www.fotografiegroen.nl/">Jan Willem Groen</a> en <a target="_blank" href="https://www.facebook.com/studiogrinnitch/">Grinnitch Photography</a>.
                         </p>
                     </div>
@@ -104,6 +78,11 @@
                         </p>
                     </div>
                     <div class="col-md-5">
+                        <h4>Meer over ons:</h4>
+                        <ul>
+                          <li><a href="kernwaarden">Onze kernwaarden</a></li>
+                          <li><a href="privacy">Privacy voorwaarden</a></li>
+                        </ul>
                     </div>
                     <div class=".col-xs-11 col-md-1">
                         <a href="https://www.facebook.com/FamiliarForest" target="_blank" class="btn btn-lg btn-social-icon btn-facebook text-right">

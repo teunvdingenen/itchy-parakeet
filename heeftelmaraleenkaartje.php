@@ -10,7 +10,7 @@ $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if( $mysqli->connect_errno ) {
     $mysqli->close();
 } else {
-    $query = "SELECT 1 FROM fv2018 s JOIN person p on p.email = s.email WHERE p.firstname = 'Elmar' and s.complete = 1";
+    $query = "SELECT 1 FROM ff2018 s JOIN person p on p.email = s.email WHERE p.firstname = 'Elmar' and s.complete = 1";
     $result = $mysqli->query($query);
     if( $result->num_rows == 1 ) {
         $retval = "Ja! Hij heeft een kaarte!";

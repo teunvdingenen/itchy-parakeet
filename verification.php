@@ -94,8 +94,6 @@ try
                             } else {
                                 $rownew = $result->fetch_array(MYSQLI_ASSOC);
                                 $buyername = $rownew['firstname']." ".$rownew['lastname'];
-
-                                send_mail("merel@stichtingfamiliarforest.nl", 'Ticketruil', "Hey lieverd! Even een update'je want er is een ticketruil geweest! <br> - ".$sellername." komt niet meer.<br>".$buyername." komt daarvoor in de plaats.<br><br> Liefs!");
                                 if( is_act($tasktype) ) {
                                     $task = "";
                                     send_mail('acts@stichtingfamiliarforest.nl', 'Team Acts', "Automatische email: Ticketruil", "Hoi lieve team acts! <br> Even ter info: ".$sellername." heeft zijn of haar ticket verkocht en zal dus geen act meer doen.");
@@ -150,21 +148,21 @@ function send_confirmation($mysqli, $payment_id) {
     }
     $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
     $fullname = $row['firstname']." ".$row['lastname'];
-    $ticketurl = "http://stichtingfamiliarforest.nl/ticket.php?ticket=".$row['ticket'];
+    $ticketurl = "http://stichtingfamiliarforest.nl/u/ticket.php?ticket=".$row['ticket'];
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
-    $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen terug naar de toekomst kunnen!</p>";
-    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar houd alvast 27 en 28 april vrij in je agenda. Houd onze <a href='https://www.facebook.com/events/755891027954235/'>Facebook</a> in de gaten voor meer nieuws.</p>";
+    $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen een revolutie aan kunnen gaan!</p>";
+    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar houd alvast 8 en 9 september vrij in je agenda. Houd onze <a href='https://www.facebook.com/events/432339810535676/'>Facebook</a> in de gaten voor meer nieuws.</p>";
     $content .= "<p>Bewaar ook de volgende informatie nog even goed:</p>";
     $content .= "<p>Je deelname code is: " . $row['rafflecode'] . "</p>";
     $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";
-    $content .= "<p>Binnenkort zal het mogelijk zijn om je ticket te downloaden van onze website. Zodra we die voor je klaar hebben ontvang je nog een email daarover.</p>";
-    //$content .= "<p>Je kunt je ticket downloaden en printen door op deze link te klikken <a href='".$ticketurl."'>".$ticketurl."</a></p>";
+    //$content .= "<p>Binnenkort zal het mogelijk zijn om je ticket te downloaden van onze website. Zodra we die voor je klaar hebben ontvang je nog een email daarover.</p>";
+    $content .= "<p>Je kunt je ticket downloaden en printen door op deze link te klikken <a href='".$ticketurl."'>".$ticketurl."</a></p>";
     //$content .= "<p>En tot slot hebben we wat <a href='http://stichtingfamiliarforest.nl/info.html'>informatie</a> voor je klaar gezet</p>";
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Familiar Forest 2017 Deelname bevestiging", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2018 Deelname bevestiging", $content);
     return true;
 }
 
@@ -187,7 +185,7 @@ function send_confirmation_refund($mysqli, $payment_id) {
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Back to the FFFuture: '95 ticketruil bevestiging", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2018 : Kleurenrevolutie ticketruil bevestiging", $content);
     return true;
 }
 
@@ -210,7 +208,7 @@ function send_confirmation_refund_crew($mysqli, $payment_id) {
 
     $content .= get_email_footer();
 
-    send_mail($row['email'], $fullname, "Back to the FFFuture '95 Ticketgeld", $content);
+    send_mail($row['email'], $fullname, "Familiar Forest 2018 : Kleurenrevolutie Ticketgeld", $content);
     return true;
 }
 

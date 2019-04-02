@@ -1,7 +1,5 @@
 <?php session_start();
-include_once "model/passwordreset.php";
-include_once "model/user.php";
-include_once "model/loginmanager.php";
+include_once "functions.php";
 date_default_timezone_set('Europe/Amsterdam');
 $returnVal = "";
 $email = ""; 
@@ -9,15 +7,22 @@ $email = "";
 if( $_SERVER["REQUEST_METHOD"] == "GET") {
     if(!empty($_GET["t"]) ) {
         $token = $_GET["t"];
-        $passwordreset = model\PasswordReset::findByToken($token);
-        if($passwordreset == false) {
+        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+        $query = sprintf("SELECT * FROM `pwreset` WHERE `token` = '%s'",
+            $mysqli->real_escape_string($token));
+        $sqlresult = $mysqli->query($query);
+        if( !$sqlresult || $sqlresult->num_rows < 1 ) {
+            $mysqli->close();
             header('Location: index'); 
         }
-        if( new Datetime() < $passwordreset->expire ) {
-            $_SESSION['tmp_email'] = $passwordreset->user->email;
+        $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+        $expire = new DateTime($row['expire']);
+        if( new Datetime() < $expire ) {
+            $_SESSION['tmp_email'] = $row['email'];
         } else {
             addError("Je link is verlopen. Ga naar <a href='wachtwoordvergeten'>wachtwoord vergeten</a> om het nogmaals te proberen");
         }
+        $mysqli->close();
     } else {
         header('Location: index');
     }
@@ -25,13 +30,13 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST["password"]) ) {
-        $password = $_POST["password"];
+        $password = test_input($_POST["password"]);
     } else {
         $password = "";
         addError("Je hebt je wachtwoord niet opgegeven.");
     }
     if( !empty($_POST["repeat"]) ) {
-        $repeat = $_POST["repeat"];
+        $repeat = test_input($_POST["repeat"]);
     } else {
         $repeat = "";
         addError("Je hebt je herhaling niet opgegeven.");
@@ -46,19 +51,34 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         addError("We weten niet wie je bent! Als je zeker weet dat je niets fout doet kun je even mail naar: ".$mailtolink);
     }
     if( $returnVal == "" ) {
-        $passwordreset = model\PasswordReset::findByEmail($email);
-        $passwordreset->delete();
-        $user = $passwordreset->user;
-        
-        $pw_hash = password_hash($password, PASSWORD_DEFAULT);
-        $user->password = $pw_hash;
-        $user->save();
-        $returnVal = '<div class="alert alert-success" role="alert">Je wachtwoord is ingesteld. Ga naar de <a href="login">login</a> pagina om verder te gaan.</div>';
-        $password = $passwordrepeat = "";
-        model\LoginManager::Instance()->setUser($user);
-        if( model\LoginManager::Instance()->login(false) ) {
-            header('Location: u/signup');
+        $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+        $query = sprintf("DELETE FROM `pwreset` WHERE `email` = '%s'",
+            $mysqli->real_escape_string($email));
+        if( !$mysqli->query($query) ) {
+            email_error("Error removing from pwreset ".$mysqli->error);
         }
+
+        $pw_hash = password_hash($password, PASSWORD_DEFAULT);
+        $query = sprintf(
+            "UPDATE `users` SET `password` = '%s' WHERE `email` = '%s'",
+            $mysqli->real_escape_string($pw_hash),
+            $mysqli->real_escape_string($email)
+        );
+        $mysqli->query($query);
+        if( $mysqli->affected_rows > 1 ) {
+            addError("Er is iets fout gegaan met het opslaan van je wachtwoord. Stuur een email naar ".$mailtolink." voor hulp.");
+            email_error("Multiple effected rows (".$mysqli->affected_rows.") for password update on email: ".$email);
+        } else if ( $mysqli->affected_rows == 0 ) {
+            addError("Er is iets fout gegaan met het opslaan van je wachtwoord. Stuur een email naar ".$mailtolink." voor hulp.");
+            email_error("error storing password: ".$mysqli->error."<br>".$query);
+        } else {
+            $returnVal = '<div class="alert alert-success" role="alert">Je wachtwoord is ingesteld. Ga naar de <a href="login">login</a> pagina om verder te gaan.</div>';
+            $password = $passwordrepeat = "";
+            if( login($email, false) ) {
+                header('Location: u/signup');
+            }
+        }
+        $mysqli->close();
     } else {
         //try again..
     }
@@ -115,13 +135,13 @@ function addError($value) {
                 <div class="form-group row">
                     <label for="password" class="col-sm-2 form-control-label">Wachtwoord</label>
                     <div class="col-sm-10">
-                        <input type="password" id="password" class="form-control" placeholder="Wachtwoord" name="password">
+                        <input type="password" id="password" class="form-control" placeholder="Paswoord" name="password">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="passwordrepeat" class="col-sm-2 form-control-label">Wachtwoord Herhalen</label>
                     <div class="col-sm-10">
-                        <input type="password" id="repeat" class="form-control" placeholder="Wachtwoord Herhalen" name="repeat">
+                        <input type="password" id="repeat" class="form-control" placeholder="Paswoord Herhalen" name="repeat">
                     </div>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Versturen</button>

@@ -62,7 +62,7 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
         if( $contrib == '' || $contrib == 'all') {
             //nothing
         } else if( $contrib == 'act') {
-            $filtersql[] = "s.".$contribnr."_type IN ('workshop', 'game', 'lecture', 'schmink', 'other', 'perform', 'install', 'other_act')";    
+            $filtersql[] = "s.".$contribnr."_type IN ('workshop', 'game', 'lecture', 'schmink', 'other', 'perform', 'install', 'other_act', 'acteren')";    
         } else {
             $filtersql[] = "s.".$contribnr."_type = '" . $mysqli->real_escape_string($contrib)."'";
         }
@@ -261,6 +261,7 @@ if (!empty($_GET)) {
                             <option value="act" <?= $contrib == 'act' ? ' selected="selected"' : '';?>>Act of Performance</option>
                             <option value="afb" <?= $contrib == 'afb' ? ' selected="selected"' : '';?>>Afbouw</option>
                             <option value="opb" <?= $contrib == 'opb' ? ' selected="selected"' : '';?>>Opbouw</option>
+                            <option value="acteren" <?= $contrib == 'acteren' ? ' selected="selected"' : '';?>>Acteren</option>
                         </select>
                         <div class="radio">
                             <label>

@@ -1,4 +1,7 @@
 <?php
+include "../functions.php";
+
+include("checklogin.php");
 
 if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
     header('Location: oops.php');

@@ -15,7 +15,7 @@ if( $mysqli->connect_errno ) {
 }
 
 $result = $mysqli->query("SELECT COUNT(*) as 'sold' FROM $current_table WHERE complete = 1 and share = 'FULL'");
-if( !$result || $result->fetch_array(MYSQLI_ASSOC)['sold'] > 220) { 
+if( !$result || $result->fetch_array(MYSQLI_ASSOC)['sold'] > 600) { 
     email_error("Ticket sales seem to have gone over preset amount!!");
     header('Location: oops');
 }
@@ -173,7 +173,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $payment = $mollie->payments->create(array(
                       "amount" => $amount,
                       "method" => $method,
-                      "description" => "FV2018 " . $code,
+                      "description" => "FF2018 " . $code,
                       "redirectUrl" => "{$protocol}://{$hostname}/redirect?raffle={$raffle}",
                       "metadata" => array("raffle" => $raffle,)
                     ));
@@ -251,8 +251,8 @@ function addError($value) {
                     <?php include("navigation.php");?>
                     <div class="col-xs-13 col-sm-10"> 
                         <div class="form-intro-text">
-                            <h1>Deelnemen Back to the FFFuture '95</h1>
-                            <p>Familiar Forest vindt plaats op 27 en 28 april 2018. Je kan via dit formulier een kaartje kopen tot en met 30 maart 2018.</p>
+                            <h1>Deelnemen Familiar Forest 2018 : Kleurenrevolutie</h1>
+                            <p>Familiar Forest vindt plaats op 8 & 9 september 2018. Je kan via dit formulier een kaartje kopen tot en met 27 juli 2018.</p>
                             <p>Deelname aan Familiar Forest kost 130 euro. We hebben ervoor gekozen om de transactiekosten niet hierin te verwerken, omdat niet alle betaalmethodes dezelfde kosten hebben. Hierdoor is het voor ons makkelijker om een betrouwbare begroting te maken.</p>
                             <p>Het kan altijd zo zijn dat je onverhoopt toch niet meer naar Familiar Forest kan komen. We raden je daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering.</p>
                         </div>
@@ -338,7 +338,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Locatie</th>
-                                                <td>27,00</td>
+                                                <td>11,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -346,7 +346,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Eten</th>
-                                                <td>28,00</td>
+                                                <td>13,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -354,7 +354,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Transport</th>
-                                                <td>24,00</td>
+                                                <td>22,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -362,7 +362,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Veiligheid</th>
-                                                <td>15,00</td>
+                                                <td>10,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -370,7 +370,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Techniek</th>
-                                                <td>11,00</td>
+                                                <td>31,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -386,7 +386,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Decoraties</th>
-                                                <td>11,00</td>
+                                                <td>21,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -394,18 +394,16 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Muziek</th>
-                                                <td>4,00</td>
+                                                <td>12,00</td>
                                             </tr>
-                                            <!--
                                              <tr>
                                                 <th>
                                                     <span class="btn data" href="#" data-content="Van dit bedrag huren we een container en verwerken we al het afval wat we samen genereren." rel="popover" data-placement="right" data-original-title="Afval" data-trigger="hover">
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Afval</th>
-                                                <td>4,00</td>
+                                                <td>8,00</td>
                                             </tr>
-                                        -->
                                             <tr>
                                                 <th>
                                                     <span class="btn data" href="#" data-content="Dit geld gaat naar het bedrijf dat de betaling verwerkt en je bank of creditcard maatschappij" rel="popover" data-placement="right" data-original-title="Transactie kosten" data-trigger="hover">
@@ -421,7 +419,7 @@ function addError($value) {
                                                         <span class="btn data" href="#" data-content="Omdat je veel meer tijd investeert in Familiar dan anderen krijg je korting!" rel="popover" data-placement="right" data-original-title="Korting" data-trigger="hover">
                                                             <i class="fa fa-info"></i>
                                                         </span> Korting</th>';
-                                                    echo "<td>-60,00</td>";
+                                                    echo "<td>-65,00</td>";
                                                     echo "</tr>";
                                                 } else if( $share == "FREE" ) {
                                                     echo "<tr>";

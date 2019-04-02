@@ -4,7 +4,7 @@ include "../functions.php";
 include("checklogin.php");
 
 if( ($user_permissions & PERMISSION_DISPLAY) != PERMISSION_DISPLAY ) {
-  header('Location: oops.php');
+        header('Location: oops.php');
 }
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
