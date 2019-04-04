@@ -26,7 +26,7 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
                         <div class="jumbotron">
                             <h2>Familiar Forest 2019 : Evolutie van de homo familiaris</h2>
                             <p class='lead'>
-                              Binnenkort..
+                              Ja ja, echt vandaag! Waarschijnlijk rond 20u
                             </p>
                             <!--
                             <p class='lead'>We gaan een revolutie starten, een revolutie van kleur! Komende editie wordt de kleurrijkste Familiar tot nu toe. We gaan de lucht roze verven, het bos blauw, het gras paars en de sterren goud. We zullen zoveel kleur in het bos gooien, dat je aan het einde van het weekend alleen nog maar regenboog poept.

@@ -7,14 +7,13 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
     header('Location: oops.php');
 }
 
-header('Location: oops.php');
 date_default_timezone_set('Europe/Amsterdam');
 
-$signupround = 1;
+$signupround = 0;
 
 $returnVal = "";
 $is_save = FALSE;
-$contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $question = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = "";
+$contrib0 = $contrib1 = $contrib0desc = $contrib1desc = $act0type = $act0desc = $act0need = $act1type = $act1desc = $act1need = $partner = $motivation = $question = $preparations = $terms0 = $terms1 = $terms2 = $terms3 = $nightshift = "";
 $preparationsbox = false;
 $editions = array();
 
@@ -134,6 +133,12 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $preparations = "N";
     }
 
+    if( !empty($_POST["nightshift"])) {
+        $nightshift = test_input($_POST["nightshift"]);
+    } else {
+        $nightshift = "";
+    }
+
     if( !empty($_POST["terms0"])) {
         $terms0 = test_input($_POST["terms0"]);
     } else {
@@ -184,7 +189,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                 $task = 'act';
             }
             if( $sqlresult->num_rows == 0 ) {
-                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `question`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `task`, `terms0`, `terms1`, `terms2`, `terms3`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s','%s');",
+                $query = sprintf("INSERT INTO `$current_table` (`email`, `partner`, `motivation`, `question`, `contrib0_type`, `contrib0_desc`, `contrib0_need`, `contrib1_type`, `contrib1_desc`, `contrib1_need`, `preparations`, `round`, `signupdate`, `task`, `terms0`, `terms1`, `terms2`, `terms3`, `nightshift`) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,'%s','%s','%s','%s','%s','%s','%s');",
                     $mysqli->real_escape_string($user_email),
                     $mysqli->real_escape_string($partner),
                     substr($mysqli->real_escape_string($motivation), 0, 1024),
@@ -202,9 +207,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $mysqli->real_escape_string($terms0),
                     $mysqli->real_escape_string($terms1),
                     $mysqli->real_escape_string($terms2),
-                    $mysqli->real_escape_string($terms3));
+                    $mysqli->real_escape_string($terms3),
+                    $mysqli->real_escape_string($nightshift));
             } else {
-                $query = sprintf("UPDATE `$current_table` SET `partner` = '%s', `motivation` = '%s', `question` = '%s', `contrib0_type` = '%s', `contrib0_desc` = '%s', `contrib0_need` = '%s', `contrib1_type` = '%s', `contrib1_desc` = '%s', `contrib1_need` = '%s', `preparations` = '%s', `round` = %s, `signupdate` = '%s', `terms0` = '%s', `terms1` = '%s', `terms2` = '%s', `terms3` = '%s', `task` = '%s' WHERE `email` = '%s'",
+                $query = sprintf("UPDATE `$current_table` SET `partner` = '%s', `motivation` = '%s', `question` = '%s', `contrib0_type` = '%s', `contrib0_desc` = '%s', `contrib0_need` = '%s', `contrib1_type` = '%s', `contrib1_desc` = '%s', `contrib1_need` = '%s', `preparations` = '%s', `round` = %s, `signupdate` = '%s', `terms0` = '%s', `terms1` = '%s', `terms2` = '%s', `terms3` = '%s', `task` = '%s', `nightshift` = '%s' WHERE `email` = '%s'",
                     $mysqli->real_escape_string($partner),
                     substr($mysqli->real_escape_string($motivation), 0, 1024),
                     substr($mysqli->real_escape_string($question), 0, 1024),
@@ -222,6 +228,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
                     $mysqli->real_escape_string($terms2),
                     $mysqli->real_escape_string($terms3),
                     $mysqli->real_escape_string($task),
+                    $mysqli->real_escape_string($nightshift),
                     $mysqli->real_escape_string($user_email));
             }
             $result = $mysqli->query($query);
@@ -270,6 +277,7 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
         $motivation = htmlspecialchars_decode($row['motivation']);
         $question = htmlspecialchars_decode($row['question']);
         $preparations = htmlspecialchars_decode($row['preparations']);
+        $nightshift = htmlspecialchars_decode($row['nightshift']);
         if( $preparations == "N" ) {
             $preparationsbox = FALSE;
             $preparations = "";
@@ -465,6 +473,17 @@ function addError($value) {
                     </div>
                     <div id='afbdesc' class="alert alert-success">Super fijn dat je wilt komen afbouwen! Als je in de gelegenheid bent om naast zondag en maandag ook nog meer dagen te helpen met de afbouw horen we dat graag! Ook als je bijvoorbeeld alleen dinsdag beschikbaar bent horen we dat graag en proberen we dat mogelijk te maken.</div>
                     <div class="form-group row">
+                      <label class="col-sm-2 form-control-label" for="preparations">Nachtdienst</label>
+                      <div class="col-sm-10">
+                        <div class="checkbox">
+                          <label for="nightshift">
+                            <input class="checkbox" type="checkbox" id="nightshift" name="nightshift" value="J" <?php if($nightshift) echo("checked"); ?>>
+                            Ik vind het niet erg om een nachtshift uit te voeren. Denk bijvoorbeeld aan nachtbar of vuurmeester.
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-2 form-control-label" for="preparations">Voorbereidingen</label>
                         <div class="col-sm-10">
                             <div class="checkbox">
@@ -474,7 +493,7 @@ function addError($value) {
                                 </label>
                             </div>
                             <div class="alert alert-success" id="prepinfo">We zijn altijd op zoek naar enthoursiastelingen die ons willen helpen bij de voorbereidingen voor Famliar Forest. Lijkt het je leuk om ons hierbij te helpen?</div>
-                            <div class="alert alert-success" id="prepintro">Te gek! Wat zou je leuk vinden om te doen?</div>
+                            <div class="alert alert-success" id="prepintro">Te gek! Wat zou je leuk vinden om te doen? Het is niet zeker dat we contact met je opnemen via deze route. Voor een snelle uitnodiging kun je het beste mailen naar: <?php echo $mailtolink ?></div>
                             <textarea class="form-control" name="preparations" id="preparations" cols="60" rows="4"><?php echo $preparations; ?></textarea>
                             <label id="prepcounter" for="preparations">Max 1024 karakters</label>
                         </div>
@@ -501,7 +520,7 @@ function addError($value) {
 
                         <label class="col-sm-2 form-control-label" for="terms1">Verzekering</label>
                         <div class="col-sm-10">
-                            <div class="alert alert-warning">Familiar Forest is een reis. De locatie verplicht de deelnemer om zich te kunnen identificeren en een aansprakelijkheidsverzekerd te hebben.</div>
+                            <div class="alert alert-warning">Familiar Forest is een reis. De locatie verplicht de deelnemer om zich te kunnen identificeren en een aansprakelijkheidsverzekering te hebben.</div>
                             <div class="checkbox">
                                 <label>
                                     <input class="checkbox" type="checkbox" id="terms1" name="terms1" value="J">
