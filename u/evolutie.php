@@ -25,25 +25,22 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
                     <div class="col-xs-13 col-sm-10">
                         <div class="jumbotron">
                             <h2>Familiar Forest 2019 : Evolutie van de homo familiaris</h2>
-                            <p class='lead'>
-                              Ja ja, echt vandaag! Waarschijnlijk rond 20u
-                            </p>
-                            <!--
-                            <p class='lead'>We gaan een revolutie starten, een revolutie van kleur! Komende editie wordt de kleurrijkste Familiar tot nu toe. We gaan de lucht roze verven, het bos blauw, het gras paars en de sterren goud. We zullen zoveel kleur in het bos gooien, dat je aan het einde van het weekend alleen nog maar regenboog poept.
+                            <p class='lead'>Onderzoekers, historici, geschiedschrijvers en archeologen,
                             </p>
                             <p>
-                            Je gaat kleuren zien die je niet eens kende. Het geelste geel, het turquoiseste turquoise. Wist je dat je oranje kan ruiken? Heb je weleens rood gevoeld?
+                              Wij willen jullie graag uitnodigen voor een spiksplinternieuwe expositie in een zeer tijdelijk museum die gebouwd wordt op een prachtige archeologische vondst. Tien jaar lang heeft hier een proces plaatsgevonden dat wij samen willen gaan onderzoeken.
                             </p><p>
-                            Samen zullen we het weekend inkleuren met een palet aan muziek, acts, grappen en grollen, gratis high-fives, oprechte knuffels, heel veel glitters en nog meer liefde. Speciaal voor deze editie is Stef Uijens lid geworden van de Blue Man Group. Wat draag jij bij?
+                              De raarste dingen worden hier opgegraven: piepkleine spiegeltjes waarvan we vermoeden deze ooit op een bol zaten. Een rare fascinatie voor echt heel hard geluid waarvan vermoed wordt dat hierop werd “gedanst”. Daarnaast allerlei teksten over een vermoedelijk fictief persoon genaamd “Stef Uijens”. DJ’s booths van het verleden en de toekomst, piramides, kastelen, watervallen, zeppelins, tipi’s en grijze stucloper. Ze hadden het hier allemaal, deden het samen: voor elkaar. Wij noemen dit fenomeen: de evolutie van Homo Familiaris.
                             </p><p>
-                            Broeders en zusters, verenig jullie. Het is tijd voor de kleurenrevolutie!
+                              Op 7 en 8 september openen wij onze deuren op deze super geheime locatie. Om toegang te verkrijgen tot het museum moet men zich inschrijven. Daarvoor gebruiken we deze historisch accurate website. Hier kun je helemaal in thema jezelf inschrijven voor het bezoek. Dat kan tot en met 9 mei van dit jaar waarna nog een tweede ronde zal volgen.
                             </p>
-                            <blockquote class="blockquote">
-                              <p class="mb-0">‘Van Afrika tot in Amerika, ja we zijn zoveel mooier als we samen zijn. Hand in hand, oog in oog, alle kleuren van de regenboog’</p>
-                              <footer class="blockquote-footer">Kristel Verbeke, 2001. <cite title="Source Title">2001</cite></footer>
-                            </blockquote>
-                          -->
-                        </div>
+                            <p>
+                              Dus schrijf je in, nodig je vrienden en familie uit en dan ontdekken we samen het verleden en vieren we 10 jaar gratis high fives, oprechte knuffels en oneindige liefde,
+                            </p>
+                            <p>
+                              Familiar Forest
+                            </p>
+                            </div>
                     </div>
                 </div>
             </div>

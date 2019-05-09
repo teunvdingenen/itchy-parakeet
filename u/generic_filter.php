@@ -21,7 +21,7 @@ $limit = 50;
 $page = 0;
 
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
-    
+
 $filtersql = array();
 if( $_SERVER["REQUEST_METHOD"] == "GET") {
     if( !empty($_GET['p'])) {
@@ -47,7 +47,7 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
     }
     if( !empty($_GET["gender"]) ) {
         if( $_GET["gender"] == 'male') {
-            $filtersql[] = "p.gender = 'male'";    
+            $filtersql[] = "p.gender = 'male'";
         } else if( $_GET["gender"] == 'female') {
             $filtersql[] = "p.gender = 'female'";
         }
@@ -62,7 +62,7 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
         if( $contrib == '' || $contrib == 'all') {
             //nothing
         } else if( $contrib == 'act') {
-            $filtersql[] = "s.".$contribnr."_type IN ('workshop', 'game', 'lecture', 'schmink', 'other', 'perform', 'install', 'other_act', 'acteren')";    
+            $filtersql[] = "s.".$contribnr."_type IN ('workshop', 'game', 'lecture', 'schmink', 'other', 'perform', 'install', 'other_act', 'acteren')";
         } else {
             $filtersql[] = "s.".$contribnr."_type = '" . $mysqli->real_escape_string($contrib)."'";
         }
@@ -71,7 +71,7 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
         $requestedage = test_input($_GET["requestedage"]);
         $agetype = test_input($_GET["agetype"]);
         $operator = "";
-        if( $agetype == "min") { 
+        if( $agetype == "min") {
             $operator = ">=";
         } else if( $agetype == "max") {
             $operator = "<=";
@@ -84,7 +84,7 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
         $visits = test_input($_GET["visits"]);
         $visitstype = test_input($_GET["visitstype"]);
         $operator = "";
-        if( $visitstype == "min") { 
+        if( $visitstype == "min") {
             $operator = ">=";
         } else if( $visitstype == "max") {
             $operator = "<=";
@@ -104,7 +104,7 @@ if( $_SERVER["REQUEST_METHOD"] == "GET") {
         } else if ($roundstr == "third") {
             $round = 2;
         }
-    } 
+    }
 }
 if( $round != -1 ) {
     $filtersql[] = sprintf("s.round = %s", $mysqli->real_escape_string($round));
@@ -118,7 +118,7 @@ $restriction = "1";
 if( $request_for == 'raffle' ) {
     $restriction = 's.valid != 1 AND s.complete != 1';
 } else if( $request_for == 'prep' ) {
-    $restriction = "s.complete = 1 && s.preparations != 'N'";
+    $restriction = "s.preparations != 'N'";
 } else if( $request_for == 'buyer' ) {
     $restriction = 's.complete = 1 ';
 } else if( $request_for == 'signups' ) {
@@ -190,7 +190,7 @@ if (!empty($_GET)) {
     <div class="panel panel-default">
         <div id="formcontent" class="panel-body">
             <form id="user-form" method="get" action=
-                <?php 
+                <?php
                     $link = '"'.substr(htmlspecialchars($_SERVER["PHP_SELF"]),0,-4).'?';
                     $link .= !empty($_GET['p']) ? "p=".$_GET['p'] : "";
                     $link .= !empty($_GET['show_names']) ? "show_names=".$_GET['show_names'] : '';

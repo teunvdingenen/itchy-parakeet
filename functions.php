@@ -50,7 +50,7 @@ function get_user_token($username) {
     $mysqli->close();
     if( $result === FALSE ) {
       return "FALSE";
-    } elseif( $result->num_rows == 1 ) {
+    } else if( $result->num_rows == 1 ) {
       $row = $result->fetch_array(MYSQLI_ASSOC);
       return $row['token'];
     } else {
@@ -391,10 +391,10 @@ function translate_edition($edition) {
     return "Back to the FFFuture: '95";
   } else if ( $edition == "fff2017") {
     return "Familiar Forest 2017";
-  } else if ( $edition == "fff2018") {
+  } else if ( $edition == "ff2018") {
     return "Familiar Forest 2018";
   } else if ( $edition == "fff2019") {
-    return "Familiar Forest 2019: evolutie van de homo familiaris"
+    return "Familiar Forest 2019: evolutie van de homo familiaris";
   } else if( $edition == "" ) {
     return "";
   } else {
