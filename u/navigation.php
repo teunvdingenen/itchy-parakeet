@@ -12,7 +12,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
         echo "<li><a class='menulink' href='signup'>Inschrijven</a></li>";
     }
     if( add_buy($user_email) ) {
-        //echo "<li><a class='menulink' href='deelname'>Deelname</a></li>";
+        echo "<li><a class='menulink' href='deelname'>Deelname</a></li>";
     }
     if( add_swap($user_email) ) {
       //  echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";

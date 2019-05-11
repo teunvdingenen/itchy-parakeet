@@ -1,16 +1,17 @@
 
 $(document).ready(function() {
 	$('#transactionmethod').change(function() {
-		total = parseInt($('#hidden-total').text());
+		total = parseFloat($('#hidden-total').text());
 		if( $(this).val() == "ideal") {
 			$('.transaction').text('0,29');
 			total += 0.29;
 		} else if( $(this).val() == "mistercash") {
-			$('.transaction').text('2,05');
-			total += 2.05;
+			$('.transaction').text('0,39');
+			total += 0.39;
 		} else if( $(this).val() == "creditcard") {
-			$('.transaction').text('3,61');
-			total += 3.61;
+			amount = 0.25 + total * 0.028;
+			total += amount;
+			$('.transaction').text(amount);
 		} else {
 			$('.transaction').text('0,00');
 		}

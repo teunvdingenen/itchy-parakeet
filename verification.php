@@ -152,7 +152,7 @@ function send_confirmation($mysqli, $payment_id) {
     $content = get_email_header();
     $content .= "<p>Lieve ".$row['firstname'].",</p>";
     $content .= "<p>We hebben al je gegevens ontvangen en de betaling is rond dus dat betekent dat we samen op onderzoek uit kunnen gaan!</p>";
-    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar houd alvast 7 en 8 september vrij in je agenda. Houd onze <a href='https://www.facebook.com/events/432339810535676/'>Facebook</a> in de gaten voor meer nieuws.</p>";
+    $content .= "<p>Meer informatie over Familiar Forest volgt nog maar houd alvast 7 en 8 september vrij in je agenda. Houd onze <a href='https://www.facebook.com/events/572102219964658/'>Facebook</a> in de gaten voor meer nieuws.</p>";
     $content .= "<p>Bewaar ook de volgende informatie nog even goed:</p>";
     $content .= "<p>Je deelname code is: " . $row['rafflecode'] . "</p>";
     $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";

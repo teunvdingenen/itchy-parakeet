@@ -73,11 +73,11 @@ if(!$result) {
 }
 
 if( $share == "HALF" ) {
-    $disp_amount = "73,75";
+    $disp_amount = "73.75";
 } else if( $share == "FREE" ) {
     $disp_amount = "0,00";
 } else {
-    $disp_amount = "147,50";
+    $disp_amount = "147.50";
 }
 
 if( $_SERVER["REQUEST_METHOD"] == "POST") {
@@ -250,8 +250,8 @@ function addError($value) {
                     <div class="col-xs-13 col-sm-10">
                         <div class="form-intro-text">
                             <h1>Deelnemen Familiar Forest 2019 : evolutie van de homo familiaris</h1>
-                            <p>Familiar Forest vindt plaats op 7 & 8 september 2019. Je kan via dit formulier een kaartje kopen tot en met 2 juni 2019.</p>
-                            <p>Deelname aan Familiar Forest kost 147,50 euro. We hebben ervoor gekozen om de transactiekosten niet hierin te verwerken, omdat niet alle betaalmethodes dezelfde kosten hebben. Hierdoor is het voor ons makkelijker om een betrouwbare begroting te maken.</p>
+                            <p>Familiar Forest vindt plaats op 7 & 8 september 2019. Je kan via dit formulier een kaartje kopen tot en met 9 juni 2019.</p>
+                            <p>Deelname aan Familiar Forest kost 147,50 euro. Op <a target="_blank" href="https://www.facebook.com/events/572102219964658/permalink/591248231383390/">Facebook</a> hebben we informatie gedeeld over deze prijs. Daarnaast hebben we ervoor gekozen om de transactiekosten niet hierin te verwerken, omdat niet alle betaalmethodes dezelfde kosten hebben. Hierdoor is het voor ons makkelijker om een betrouwbare begroting te maken.</p>
                             <p>Het kan altijd zo zijn dat je onverhoopt toch niet meer naar Familiar Forest kan komen. We raden je daarom aan een annuleringsverzekering af te sluiten bij je reisverzekering.</p>
                         </div>
                         <?php
@@ -332,27 +332,27 @@ function addError($value) {
                                         <tbody style='text-align:right'>
                                             <tr>
                                                 <th>
-                                                    <span class="btn data" href="#" data-content="Hieronder vallen de kosten voor de locatie zoals het gebruik van een bed, de douches, wc's en afvalverwerking" rel="popover" data-placement="right" data-original-title="Locatie" data-trigger="hover">
+                                                    <span class="btn data" href="#" data-content="Hieronder vallen de kosten voor de locatie zoals het gebruik van een bed, de douches, wc's en een deel van de afvalverwerking" rel="popover" data-placement="right" data-original-title="Locatie" data-trigger="hover">
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Locatie</th>
-                                                <td>11,00</td>
+                                                <td>8,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
                                                     <span class="btn data" href="#" data-content="Dit zijn de kosten voor ontbijt, lunch, avondeten en gezonde snacks zoals fruit tussendoor" rel="popover" data-placement="right" data-original-title="Eten" data-trigger="hover">
                                                         <i class="fa fa-info"></i>
                                                     </span>
-                                                    Eten</th>
-                                                <td>13,00</td>
+                                                    Horeca</th>
+                                                <td>20,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
-                                                    <span class="btn data" href="#" data-content="Hiermee wordt naast de busreis, ook al het transport betaald van bijvoorbeeld decoratie of techniek." rel="popover" data-placement="right" data-original-title="Transport" data-trigger="hover">
+                                                    <span class="btn data" href="#" data-content="Hiermee wordt naast de busreis, ook al het transport betaald van bijvoorbeeld decoratie of techniek. En het allemaal weer op te ruimen" rel="popover" data-placement="right" data-original-title="Transport" data-trigger="hover">
                                                         <i class="fa fa-info"></i>
                                                     </span>
-                                                    Transport</th>
-                                                <td>22,00</td>
+                                                    Transport en afval</th>
+                                                <td>27,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -360,7 +360,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Veiligheid</th>
-                                                <td>10,00</td>
+                                                <td>14,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -368,7 +368,7 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Techniek</th>
-                                                <td>31,00</td>
+                                                <td>28,50</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -376,15 +376,15 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Doorlopend</th>
-                                                <td>10,00</td>
+                                                <td>14,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
                                                     <span class="btn data" href="#" data-content="Voor dit bedrag zorgen we dat alles er leuk uitziet. Hiervan wordt bijvoorbeeld verf, stof, papier, hout, planten en nog veel meer gekocht." rel="popover" data-placement="right" data-original-title="Decoraties" data-trigger="hover">
                                                         <i class="fa fa-info"></i>
                                                     </span>
-                                                    Decoraties</th>
-                                                <td>21,00</td>
+                                                    Decoraties en Bouw</th>
+                                                <td>25,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
@@ -392,15 +392,15 @@ function addError($value) {
                                                         <i class="fa fa-info"></i>
                                                     </span>
                                                     Muziek</th>
-                                                <td>12,00</td>
+                                                <td>8,00</td>
                                             </tr>
                                              <tr>
                                                 <th>
-                                                    <span class="btn data" href="#" data-content="Van dit bedrag huren we een container en verwerken we al het afval wat we samen genereren." rel="popover" data-placement="right" data-original-title="Afval" data-trigger="hover">
+                                                    <span class="btn data" href="#" data-content="Teams kunnen aanspraak doen op een deel van dit duurzaamheidsbudget om voor een duurzaam alternatief te kunnen gaan." rel="popover" data-placement="right" data-original-title="Afval" data-trigger="hover">
                                                         <i class="fa fa-info"></i>
                                                     </span>
-                                                    Afval</th>
-                                                <td>8,00</td>
+                                                    Duurzaam</th>
+                                                <td>3,00</td>
                                             </tr>
                                             <tr>
                                                 <th>
