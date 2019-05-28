@@ -9,7 +9,7 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
 
 date_default_timezone_set('Europe/Amsterdam');
 
-$signupround = 0;
+$signupround = 1;
 
 $returnVal = "";
 $is_save = FALSE;
@@ -168,10 +168,10 @@ if( $_SERVER["REQUEST_METHOD"] == "POST") {
     if( $returnVal == "" ) {
         $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
-        //$query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and (complete = 1 or valid = 1)",
-        //    $mysqli->real_escape_string($user_email));
-        $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and (complete = 1)",
+        $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and (complete = 1 or valid = 1)",
             $mysqli->real_escape_string($user_email));
+        // $query = sprintf("SELECT 1 FROM $current_table WHERE email = '%s' and (complete = 1)",
+        //    $mysqli->real_escape_string($user_email));
         $sqlresult = $mysqli->query($query);
         if( $sqlresult === FALSE ) {
             addError("Helaas konden we je gegevens niet opslaan, probeer het later nog eens of mail naar: ".$mailtolink);
@@ -318,7 +318,7 @@ function addError($value) {
                     7 & 8 september 2019.
                 </p>
                 <p>
-                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 9 mei 2019 je antwoorden wijzigen. Pas op 10 mei 2019 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
+                    Vul dit formulier zo volledig mogelijk in. Ook nadat je het formulier hebt verstuurd, kun je nog tot en met 20 juni 2019 je antwoorden wijzigen. Pas op 21 juni 2019 maken wij je inschrijving definitief. Heb je hulp nodig of wil je meer informatie over het inschrijven? Dan kun je mailen naar: <?php echo $mailtolink ?>
                 </p>
             </div>
             <?php echo $returnVal; ?>

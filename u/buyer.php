@@ -3,15 +3,14 @@ include "../functions.php";
 
 include("checklogin.php");
 
-if( ($user_permissions & PERMISSION_DISPLAY) != PERMISSION_DISPLAY ) {
-        header('Location: oops.php');
+if( ($user_permissions & (PERMISSION_DISPLAY | PERMISSION_BAR | PERMISSION_ACTS | PERMISSION_VOLUNTEERS)) == 0 ) {
+  header('Location: oops.php');
 }
-$required_permissions = PERMISSION_DISPLAY;
+
+$required_permissions = (PERMISSION_DISPLAY | PERMISSION_BAR | PERMISSION_ACTS | PERMISSION_VOLUNTEERS);
 $request_for = 'buyer';
 
-
 ?>
-
 <!doctype html>
 <html class="no-js" lang="">
     <?php include("head.html"); ?>
@@ -25,7 +24,7 @@ $request_for = 'buyer';
             <div class="container">
                 <div class="row row-offcanvas row-offcanvas-left">
                     <?php include("navigation.php");?>
-                    <div class="col-xs-13 col-sm-10"> 
+                    <div class="col-xs-13 col-sm-10">
                     	<div style='margin-top: 5px;'>
 							<?php include("generic_filter.php"); ?>
 							<?php include("stats.php"); ?>

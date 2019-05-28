@@ -7,7 +7,6 @@ if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
     header('Location: oops.php');
 }
 
-header('Location: oops.php');
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 $result = $mysqli->query(sprintf("SELECT p.firstname, p.lastname, p.birthdate, s.rafflecode, s.transactionid, s.ticket, s.motivation, s.question from person p join $current_table s on p.email = s.email where p.email = '%s' and s.complete = 1",$mysqli->real_escape_string($user_email)));
@@ -59,11 +58,7 @@ $row = $result->fetch_array(MYSQLI_ASSOC);
                                         <th>Wil naar Familiar Forest omdat:</th>
                                         <td><?php echo $row['motivation']; ?></td>
                                     </tr>
-                                    <tr>
-                                        <th>Favoriete Kleur:</th>
-                                        <td><?php echo $row['question']; ?></td>
-                                    </tr>
-                                </table>
+                                  </table>
                                 <img src=<?php echo "'https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=".$row['ticket']."'"; ?> >
                             </p>
                         </div>

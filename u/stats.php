@@ -9,7 +9,7 @@ if( !isset($request_for) ) {
     exit;
 }
 
-if( ($user_permissions & $required_permissions) != $required_permissions ) {
+if( ($user_permissions & $required_permissions) == 0) {
     exit;
 }
 
@@ -51,7 +51,7 @@ if( $request_for == 'raffle' || $request_for == 'showraffle' ) {
 	exit;
 }
 
-$statsresult = $mysqli->query("SELECT p.birthdate, p.gender, p.city, p.visits, s.contrib0_type, s.contrib1_type, s.task, s.share 
+$statsresult = $mysqli->query("SELECT p.birthdate, p.gender, p.city, p.visits, s.contrib0_type, s.contrib1_type, s.task, s.share
         FROM person p left join $current_table s on s.email = p.email
         WHERE $statsrestriction");
 $mysqli->close();
@@ -70,7 +70,7 @@ while($row = mysqli_fetch_array($statsresult,MYSQLI_ASSOC))
 {
 	$total += 1;
 	foreach($row as $key=>$value) {
-		if( $key == 'birthdate' ) { 
+		if( $key == 'birthdate' ) {
 			$age = (new DateTime($value))->diff(new DateTime('now'))->y;
 			$age_total += $age;
 		    if(array_key_exists($age, $ages)) {
@@ -78,7 +78,7 @@ while($row = mysqli_fetch_array($statsresult,MYSQLI_ASSOC))
 		    } else {
 		    	$ages[$age] = 1;
 		    }
-		} elseif( $key == 'gender' ) { 
+		} elseif( $key == 'gender' ) {
 		    if( $value=='male' || $value=='Male') $gender_m += 1;
 		    elseif( $value=='female' || $value=='Female') $gender_f += 1;
 		} elseif( $key == 'city' ) { //city
@@ -87,13 +87,13 @@ while($row = mysqli_fetch_array($statsresult,MYSQLI_ASSOC))
 		    } else {
 		        $cities[strtolower($value)] = 1;
 		    }
-		} elseif( $key == 'visits' ) { 
+		} elseif( $key == 'visits' ) {
 		    if(array_key_exists(strtolower($value), $visits)) {
 		        $visits[$value] += 1;
 		    } else {
 		        $visits[$value] = 1;
 		    }
-		} elseif( $key == 'contrib0_type') { 
+		} elseif( $key == 'contrib0_type') {
 			$storevalue = $value;
 			if( $value != 'iv' && $value != 'bar' && $value != 'keuken' && $value != 'afb') {
 				$storevalue = 'act';

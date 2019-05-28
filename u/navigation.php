@@ -19,7 +19,7 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     }
     if( add_ticket($user_email) ) {
         //echo "<li><a class='menulink' href='info'>Reis Info</a></li>";
-        //echo "<li><a class='menulink' href='ticket'>Ticket</a></li>";
+        echo "<li><a class='menulink' href='ticket'>Ticket</a></li>";
     }
     echo "</ul>";
 }
@@ -36,6 +36,7 @@ if( $user_permissions & PERMISSION_DISPLAY ) {
 
 if( $user_permissions & PERMISSION_VOLUNTEERS ) {
     echo "<ul class='nav'>";
+    echo "<li><a class='menulink' href='buyer'>Zoeken</li>";
     echo "<li><a class='menulink' href='shifts?t=vrijwilligers'>Vrijwilliger shifts</a></li>";
     echo "<li><a class='menulink' href='indelen?t=vrijwilligers'>Vrijwilligers indelen</a></li>";
     echo "</ul>";
@@ -43,8 +44,15 @@ if( $user_permissions & PERMISSION_VOLUNTEERS ) {
 
 if( $user_permissions & PERMISSION_ACTS ) {
     echo "<ul class='nav'>";
+    echo "<li><a class='menulink' href='buyer'>Zoeken</li>";
     echo "<li><a class='menulink' href='shifts?t=acts'>Act shifts</a></li>";
     echo "<li><a class='menulink' href='indelen?t=acts'>Acts indelen</a></li>";
+    echo "</ul>";
+}
+
+if( $user_permissions & PERMISSION_BAR) {
+    echo "<ul class='nav'>";
+    echo "<li><a class='menulink' href='buyer'>Vrijwilliger zoeken</li>";
     echo "</ul>";
 }
 

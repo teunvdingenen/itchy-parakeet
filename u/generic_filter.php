@@ -4,14 +4,14 @@ include_once("../functions.php");
 include_once("checklogin.php");
 
 if( !isset($required_permissions) ) {
-    exit;
+  exit;
 }
 if( !isset($request_for) ) {
-    exit;
+  exit;
 }
 
-if( ($user_permissions & $required_permissions) != $required_permissions ) {
-    exit;
+if( ($user_permissions & $required_permissions) == 0 ) {
+  exit;
 }
 
 $email = $firstname = $lastname = $gender = $contrib = $contribnr = $requestedage = $agetype = $visits = $visitstype = "";
@@ -137,7 +137,7 @@ if( $request_for == 'raffle' ) {
     }
 } else if( $request_for == 'people' ) {
     $restriction = '1';
-}else {
+} else {
     exit;
 }
 
