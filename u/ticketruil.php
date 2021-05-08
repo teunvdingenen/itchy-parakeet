@@ -3,9 +3,11 @@ include "../functions.php";
 
 include("checklogin.php");
 
-if( (TRUE ) {
-    header('Location: oops');
+header('Location: oops.php');
+if( ($user_permissions & PERMISSION_PARTICIPANT) != PERMISSION_PARTICIPANT ) {
+    header('Location: oops.php');
 }
+
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
 $result = $mysqli->query(sprintf("SELECT 1 FROM $current_table WHERE `email` = '%s'",
@@ -42,7 +44,7 @@ if( !$result ) {
             $mysqli->real_escape_string($user_email)));
         if( !$result || $result->num_rows == 0 ) {
             // do nothing
-        } else if( $result->fetch_array(MYSQLI_ASSOC)['complete'] == 0 ) {
+        } else if( $result->fetch_array(MYSQLI_ASSOC)['complete'] != 1 ) {
             $tickets_available = TRUE;
         }
     }

@@ -70,8 +70,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p class="text-muted">
-                            Stichting Familiar Forest <br> Wielingenstraat 30P <br> 1078KL Amsterdam <br>
-                            Tel: +316 46 37 30 69<br>
+                            Stichting Familiar Forest <br>Wichersstraat 100 <br> 1051ML Amsterdam<br>
+                            Tel: +316 25 47 44 26<br>
                             KVK: 608 735 66 <br>
                             BTW: NL 854 097 739 B01 <br>
                             <a href='mailto:info@stichtingfamiliarforest.nl' target='_top'>info@stichtingfamiliarforest.nl</a>

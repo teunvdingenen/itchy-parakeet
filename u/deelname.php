@@ -15,7 +15,7 @@ if( $mysqli->connect_errno ) {
 }
 
 $result = $mysqli->query("SELECT COUNT(*) as 'sold' FROM $current_table WHERE complete = 1 and share = 'FULL'");
-if( !$result || $result->fetch_array(MYSQLI_ASSOC)['sold'] > 600) {
+if( !$result || $result->fetch_array(MYSQLI_ASSOC)['sold'] > 610) {
     email_error("Ticket sales seem to have gone over preset amount!!");
     header('Location: oops');
 }
@@ -45,7 +45,7 @@ if( $tickettype == "invalid" ) {
 
 if( $tickettype == "invalid" ) {
     $mysqli->close();
-    header('Location: forest');
+    header('Location: evolutie');
 }
 
 try {

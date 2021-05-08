@@ -116,7 +116,7 @@ function createVolunteerTable(volunteers) {
 	html += table_vol;
 	$.each(volunteers, function(i,volunteer) {
 		html += "<tr class='data' data-content = '"+volunteer.contrib0_desc+" rel='popover' data-placement='left' data-original-title='Omschrijving' data-trigger='hover' id='"+tr_id+"' draggable='true'><td class='email hidden'>"+volunteer.email+"</td>";
-		html += "<td class='name'>"+volunteer.firstname+" "+volunteer.lastname+"</td></tr>";
+		html += "<td class='name'>"+volunteer.firstname+" "+volunteer.lastname+(volunteer.nightshift === 'J' ? "*" : "") + "</td></tr>";
 		tr_id+=1;
 	});
 	html += "<tr><td></td></tr>";

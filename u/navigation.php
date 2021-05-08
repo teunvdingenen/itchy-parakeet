@@ -7,19 +7,20 @@ include_once "../functions.php";
 if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "<ul class='nav first'>";
     echo "<li><a class='' href='ik'>Mijn gegevens</a></li>";
-    echo "<li><a class='menulink' href='evolutie'>Familiar Forest 2019</a></li>";
+    echo "<li><a class='' href='buybook'>Fotoboek</a></li>";
+    //echo "<li><a class='menulink' href='evolutie'>Familiar Forest 2019</a></li>";
     if( !add_buy($user_email) && !add_ticket($user_email) ) {
-        echo "<li><a class='menulink' href='signup'>Inschrijven</a></li>";
+        //echo "<li><a class='menulink' href='signup'>Inschrijven</a></li>";
     }
     if( add_buy($user_email) ) {
-        echo "<li><a class='menulink' href='deelname'>Deelname</a></li>";
+        //echo "<li><a class='menulink' href='deelname'>Deelname</a></li>";
     }
     if( add_swap($user_email) ) {
-      //  echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";
+     //   echo "<li><a class='menulink' href='ticketruil'>Ticketruil</a></li>";
     }
     if( add_ticket($user_email) ) {
         //echo "<li><a class='menulink' href='info'>Reis Info</a></li>";
-        echo "<li><a class='menulink' href='ticket'>Ticket</a></li>";
+        //echo "<li><a class='menulink' href='ticket'>Ticket</a></li>";
     }
     echo "</ul>";
 }
@@ -82,6 +83,22 @@ if( $user_permissions & PERMISSION_PARTICIPANT ) {
     echo "</ul>";
 }
 
+function add_book($email) {
+    global $db_host, $db_user, $db_pass, $db_name, $current_table;
+    $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+    if( $mysqli->connect_errno ) {
+        return false;
+    }
+    $result = $mysqli->query(sprintf("SELECT 1 FROM photobook WHERE `email` = '%s'",
+        $mysqli->real_escape_string($email)));
+    $mysqli->close();
+    if( !$result || $result->num_rows < 1 ) {
+        return true;
+    } else {
+        return false;
+    }
+    return true;
+}
 
 function add_buy($email) {
     global $db_host, $db_user, $db_pass, $db_name, $current_table;

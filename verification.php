@@ -14,6 +14,21 @@ try
 
     $payment_id = $_POST["id"];
     $payment = $mollie->payments->get($payment_id);
+
+    if(isBook($mysqli, $payment_id)) {
+      echo "isbook";
+      if($payment->isPaid()) {
+        echo "ispaid";
+        $result = $mysqli->query(sprintf("UPDATE buybook set complete = 1 where transactionid = '%s'",
+          $mysqli->real_escape_string($payment_id)));
+        send_confirmation_book($mysqli, $payment_id);
+      } else {
+        $result = $mysqli->query(sprintf("UPDATE buybook set complete = 0 where transactionid = '%s'",
+          $mysqli->real_escape_string($payment_id)));
+      }
+      exit(0);
+    }
+
     $code = $payment->metadata->raffle;
 
     if( $payment->isRefunded() ) {
@@ -50,13 +65,13 @@ try
                     $seller_payment = $row['transactionid'];
                     $share = $row['share'];
                     $task = $row['task'];
-                    $amount = 130;
+                    $amount = 147.5;
                     if( $share == "FREE" ) {
                         email_error("Somehow I just wanted to refund a free ticket?!, code: ".$code);
                         $mysqli->close();
                         exit;
                     } else if( $share == "HALF")  {
-                        $amount = 65;
+                        $amount = 73.75;
                         email_error("Refunded half ticket for code: ".$code);
                     }
                     $amount -= 0.19;
@@ -135,6 +150,30 @@ try
 catch (Mollie_API_Exception $e) {
     //email error
     email_error("Transaction: ".$payment_id." "."API call failed: " . htmlspecialchars($e->getMessage()));
+}
+
+function send_confirmation_book($mysqli, $payment_id) {
+    global $current_table;
+    $query = sprintf("SELECT p.firstname, p.lastname, p.email, b.id, b.number
+        FROM person p join buybook b on b.email = p.email
+        WHERE b.transactionid = '%s'", $mysqli->real_escape_string($payment_id));
+    $sqlresult = $mysqli->query($query);
+    if( $sqlresult->num_rows != 1 ) {
+        return FALSE;
+    }
+    $row = $sqlresult->fetch_array(MYSQLI_ASSOC);
+    $fullname = $row['firstname']." ".$row['lastname'];
+    $content = get_email_header();
+    $content .= "<p>Lieve ".$row['firstname'].",</p>";
+    $content .= "<p>We hebben je bestelling ontvangen voor ".$row['number']." fotoboek(en)!</p>";
+    $content .= "<p>We houden je op de hoogte van het drukproces maar je mag verwachten dat je het midden september in ontvangst kan nemen.</p>";
+    $content .= "<p>Bewaar ook de volgende informatie nog even goed:</p>";
+    $content .= "<p>Je bestellingnummer is: " . $row['id'] . "</p>";
+    $content .= "<p>Je transactienummer is: " . $payment_id . "</p>";
+    $content .= get_email_footer();
+
+    send_mail($row['email'], $fullname, "Familiar Forest Fotoboek bestelling", $content);
+    return true;
 }
 
 function send_confirmation($mysqli, $payment_id) {
@@ -238,6 +277,16 @@ function database_setpayed($mysqli, $payment_id, $payed) {
         return FALSE;
     }
     return true;
+}
+
+function isBook($mysqli, $payment_id) {
+  $sqlquery = sprintf("SELECT 1 from buybook where transactionid = '%s'",
+    $mysqli->real_escape_string($payment_id));
+  $sqlresult = $mysqli->query($sqlquery);
+  if( $sqlresult === FALSE || $sqlresult->num_rows != 1 ) {
+    return false;
+  }
+  return true;
 }
 
 ?>

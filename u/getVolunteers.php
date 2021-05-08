@@ -34,7 +34,7 @@ if( $type == "contrib0") {
 } else {
 	
 }
-$result = $mysqli->query("SELECT p.email, p.lastname, p.firstname, s.contrib0_desc FROM person p join $current_table s on p.email = s.email WHERE ".$filter);
+$result = $mysqli->query("SELECT p.email, p.lastname, p.firstname, s.contrib0_desc, s.nightshift FROM person p join $current_table s on p.email = s.email WHERE ".$filter);
 $mysqli->close();
 if( !$result ) {
 	//echo $mysqli->error;

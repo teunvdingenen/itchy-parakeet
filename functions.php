@@ -153,7 +153,7 @@ function rememberMe() {
 }
 
 function email_error($message) {
-    send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);
+    //send_mail('info@stichtingfamiliarforest.nl', 'Web Familiar Forest', 'Found ERROR!', $message);
 }
 
 function test_input($data) {
